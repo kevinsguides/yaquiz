@@ -1,0 +1,9 @@
+label.mchoice{
+    width: 100%;
+}
+
+//when label for mchoice is checked
+input:checked+label.mchoice{
+    background-color: black;
+    color: white;
+}

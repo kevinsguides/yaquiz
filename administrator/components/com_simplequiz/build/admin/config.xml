@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<inlinehelp button="hide"/>
+	<fieldset
+		name="component"
+		label="COM_SIMPLEQUIZ_COMPONENT">
+
+        <field
+            name="theme"
+            type="list"
+            label="COM_SIMPLEQUIZ_FIELD_THEME_LABEL"
+            description="COM_SIMPLEQUIZ_FIELD_THEME_DESC"
+            default="default"
+            >
+            <option value="default">Default</option>
+        </field>
+</fieldset>
+<fieldset
+name="globaloptions"
+label="COM_SIMPLEQUIZ_GLOBAL_OPTIONS_LABEL">
+<field
+name="noteglobal"
+type="note"
+label="COM_SIMPLEQUIZ_GLOBAL_OPTIONS_LABEL"
+description="COM_SIMPLEQUIZ_GLOBAL_OPTIONS_DESC"
+/>
+<field
+name="randomize_mchoice"
+type="radio"
+label="COM_SIMPLEQUIZ_FIELD_RANDOMIZE_MCHOICE_LABEL"
+description="COM_SIMPLEQUIZ_FIELD_RANDOMIZE_MCHOICE_DESC"
+default="0"
+>
+<option value="1">JYES</option>
+<option value="0">JNO</option>
+</field>
+
+</fieldset>
+</config>
