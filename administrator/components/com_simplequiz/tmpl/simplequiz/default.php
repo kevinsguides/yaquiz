@@ -1,4 +1,12 @@
 <?php
+/**
+ * @package     KevinsGuides.SimpleQuiz
+ * 
+ * This template is for the default quiz view
+ * It displays details about the quiz and allows you to add questions to it
+ */
+
+
 namespace KevinsGuides\Component\SimpleQuiz\Administrator\View\SimpleQuiz;
 use JFactory;
 use JHtml;
@@ -73,23 +81,25 @@ $questions = $model->getQuestionsInQuiz($item->id);
 
 
 ?>
-<a class="btn btn-lg btn-primary" href="index.php?option=com_simplequiz&view=simplequiz&layout=edit&id=<?php echo $item->id; ?>">Edit Details</a>
-<h1>Details: <?php echo $item->title; ?></h1>
+<div class="card">
+<h1 class="card-header">Details: <?php echo $item->title; ?></h1>
 
-<div>
+
+
+<div class="card-body">
     <p><?php echo $item->description; ?></p>
 </div>
+</div>
 
-<div class="card">
+<div class="card mt-4">
     <h2 class="card-header">Question Insertion</h2>
     <div class="card-body">
 <!-- filter by category -->
-<form action="index.php?option=com_simplequiz&view=simplequiz&id=<?php echo $item->id; ?>" method="POST">
-
+<form id="adminForm" action="index.php?option=com_simplequiz&view=simplequiz&id=<?php echo $item->id; ?>" method="POST">
+<input type="hidden" name="task" value="simplequiz.display">
 <input type="hidden" name="option" value="com_simplequiz">
     <input type="hidden" name="view" value="simplequiz">
     <input type="hidden" name="id" value="<?php echo $item->id; ?>">
-
     <!-- render filters fieldset -->
     <?php echo $this->form->renderFieldset('filters'); ?>
     <div class="control-group">
@@ -121,14 +131,23 @@ $questions = $model->getQuestionsInQuiz($item->id);
 
 
 
-
-<h3>Questions On This Quiz...</h3>
+<div class="card bg-light mt-4">
+    <h2 class="card-header">Questions In Quiz</h2>
+    <div class="card-body">
 <p>Note, removing items from the quiz does not delete the question itself.</p>
 <?php foreach ($questions as $question): ?>
-    <div class="card mb-2 card-body">
-        <p><?php echo $question->question; ?></p>
+    <div class="card mb-2">
+    <h4 class="card-header"><?php echo $question->question; ?></h4>
+        <div class="card-body">
+        </div>
+        
+        <div class="card-footer">
         <a href="index.php?option=com_simplequiz&task=simplequiz.removeQuestionFromQuiz&quiz_id=<?php echo $item->id; ?>&question_id=<?php echo $question->id; ?>">Remove</a>
+    
+</div>
     </div>
 <?php endforeach; ?>
+</div>
+</div>
 
 

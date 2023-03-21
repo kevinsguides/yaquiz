@@ -52,18 +52,15 @@ class SimpleQuizController extends BaseController
     }
 
     public function cancel($key = null){
-        Log::add('SimpleQuizController::cancel() called', Log::INFO, 'com_simplequiz');
 
-        
-        //redirect to the view
-        $this->setRedirect('index.php?option=com_simplequiz');
+        $this->setRedirect('index.php?option=com_simplequiz&view=simplequiz&id=' . $_GET['id']);
     }
 
     public function saveclose(){
         //call save
         $this->save();
         //redirect to the view
-        $this->setRedirect('index.php?option=com_simplequiz');
+        $this->setRedirect('index.php?option=com_simplequiz&view=simplequiz&id=' . $_GET['id']);
 
     }
 
@@ -106,6 +103,11 @@ class SimpleQuizController extends BaseController
         $model->removeQuestionFromQuiz($quizid, $questionid);
         //redirect to the view
         $this->setRedirect('index.php?option=com_simplequiz&view=simplequiz&id=' . $quizid);
+    }
+
+    public function redirectEdit(){
+        //redirect to edit view
+        $this->setRedirect('index.php?option=com_simplequiz&view=simplequiz&layout=edit&id=' . $this->input->get('id', '', 'raw'));
     }
 
 

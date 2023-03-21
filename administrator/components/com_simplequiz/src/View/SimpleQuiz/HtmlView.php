@@ -39,6 +39,7 @@ class HtmlView extends BaseHtmlView
         {
         //set this item to that quiz
             $this->item = $model->getQuiz($id);
+            ToolbarHelper::custom('SimpleQuiz.redirectEdit', 'edit', 'edit', 'Quiz Settings', false);
             return parent::display($tpl);
         }
 
