@@ -1,8 +1,10 @@
 <?php
 namespace KevinsGuides\Component\SimpleQuiz\Site\View\Quiz;
+use Joomla\CMS\Log\Log;
 use KevinsGuides\Component\SimpleQuiz\Site\Helper\QuestionBuilderHelper;
 use JHtml;
 use Joomla\CMS\Factory;
+use KevinsGuides\Component\SimpleQuiz\Site\Model\QuizModel;
 
 
 
@@ -21,19 +23,19 @@ if($globalParams->get('load_mathjax') === '1'){
     $wa->registerAndUseScript('com_simplequiz.mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
 }
 
+//if $this-> item is already set
+if(isset($this->item)){
+    $quiz = $this->item;
+}
+else{
+    $quiz = $this->get('Item');
+}
 
-//get this quiz from the model
-$quiz = $this->get('Item');
+$model = new QuizModel();
 
 //get the questions (a list of objects)
-$questions = $this->get('Questions');
-
+$questions = $model->getQuestions($quiz->id);
 $questionBuilder = new QuestionBuilderHelper();
-
-$model = $this->getModel();
-
-
-
 
 //if the quiz is null, show error
 if ($quiz == null):
@@ -60,6 +62,7 @@ else:
     <input type="hidden" name="quiz_id" value="<?php echo $quiz->id; ?>" />
     
 <?php foreach($questions as $question): ?>
+    
             <?php echo $questionBuilder->buildQuestion($question, $model->getQuizParams()); ?>
             <br/>
 <?php endforeach; ?>

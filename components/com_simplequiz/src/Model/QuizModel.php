@@ -73,7 +73,9 @@ class QuizModel extends ItemModel{
         //the __simplequiz_question_quiz_map table has question_id and quiz_id cols
         //need to join with the questions table to get the questions for this quiz
         //get pk from GET
-        $pk = $this->getState('quiz.id');
+        if($pk == null){
+            $pk = $this->getState('quiz.id');
+        }
 
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);

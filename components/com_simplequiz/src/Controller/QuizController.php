@@ -28,6 +28,7 @@ class QuizController extends BaseController{
         parent::display($cachable, $urlparams);
         //register tasks
         $this->registerTask('submitquiz', 'submitquiz');
+        Log::add('QuizController::display() called', Log::INFO, 'com_simplequiz');
 
     }
 
