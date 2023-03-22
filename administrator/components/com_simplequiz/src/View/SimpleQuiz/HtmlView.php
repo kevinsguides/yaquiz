@@ -1,5 +1,6 @@
 <?php
 namespace KevinsGuides\Component\SimpleQuiz\Administrator\View\SimpleQuiz;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
@@ -23,7 +24,6 @@ class HtmlView extends BaseHtmlView
         $toolbar = Toolbar::getInstance('toolbar');
         //add component options
         $toolbar->appendButton('Link', 'options', 'Options', 'index.php?option=com_config&view=component&component=com_simplequiz');
-        
 
         //get id from url
         $id = $_GET['id'];
@@ -33,14 +33,25 @@ class HtmlView extends BaseHtmlView
 
         //get quiz from the model
         $model = $this->getModel();
+        $app = Factory::getApplication();
+        $wa = $app->getDocument()->getWebAssetManager();
 
+        $cParams = ComponentHelper::getParams('com_simplequiz');
+        if($cParams->get('load_mathjax')==='1'){
+            $wa->registerAndUseScript('com_simplequiz.mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
+
+        }
+        
         //if view is default
         if($this->getLayout() == 'default')
         {
         //set this item to that quiz
             $this->item = $model->getQuiz($id);
             ToolbarHelper::custom('SimpleQuiz.redirectEdit', 'edit', 'edit', 'Quiz Settings', false);
+           
             return parent::display($tpl);
+            
+
         }
 
         //if view is edit
@@ -65,6 +76,8 @@ class HtmlView extends BaseHtmlView
                 return parent::display($tpl);
             }
         }
+
+
 
     }
 

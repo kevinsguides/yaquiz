@@ -13,6 +13,7 @@ class DisplayController extends BaseController
     //display the view
     public function display($cachable = false, $urlparams = array())
     {
+
         Log::add('DisplayController::display() called', Log::INFO, 'com_simplequiz');
         return parent::display($cachable, $urlparams);
 

@@ -12,6 +12,7 @@ use JFactory;
 use JHtml;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
+use Joomla\Registry\Registry;
 //this the template to display 1 quiz info
 
 defined('_JEXEC') or die;
@@ -43,7 +44,6 @@ $this->form->setValue('filter_categories', null, $categoryfilter);
 
 //get the question categories
 $questionsModel = new \KevinsGuides\Component\SimpleQuiz\Administrator\Model\QuestionsModel();
-
 
 
 //get a listbox of all questions in the database
@@ -79,8 +79,9 @@ function getQuestionListBox($titleFilter = null, $categoryfilter = null){
 $model = $this->getModel();
 $questions = $model->getQuestionsInQuiz($item->id);
 
-
 ?>
+
+
 <div class="card">
 <h1 class="card-header">Details: <?php echo $item->title; ?></h1>
 
@@ -131,19 +132,22 @@ $questions = $model->getQuestionsInQuiz($item->id);
 
 
 
-<div class="card bg-light mt-4">
-    <h2 class="card-header">Questions In Quiz</h2>
+<div class="card bg-light mt-4 shadow-sm">
+    <h2 class="card-header bg-primary text-white">Questions In Quiz</h2>
     <div class="card-body">
 <p>Note, removing items from the quiz does not delete the question itself.</p>
 <?php foreach ($questions as $question): ?>
     <div class="card mb-2">
-    <h4 class="card-header"><?php echo $question->question; ?></h4>
-        <div class="card-body">
-        </div>
+        <div class="card-header bg-dark text-white">
         
+    <h4 class="text-white"><?php echo $question->question; ?></h4>
+    </div>
+        <div class="card-body"><a class="float-end" href="index.php?option=com_simplequiz&view=Question&layout=edit&qnid=<?php echo $question->id; ?>"><span class="icon-edit"></span></a>
+        <p><?php echo $question->details; ?></p>
+        </div>
         <div class="card-footer">
-        <a href="index.php?option=com_simplequiz&task=simplequiz.removeQuestionFromQuiz&quiz_id=<?php echo $item->id; ?>&question_id=<?php echo $question->id; ?>">Remove</a>
-    
+        <a class="btn btn-danger btn-sm" title="Remove Question From Quiz" href="index.php?option=com_simplequiz&task=simplequiz.removeQuestionFromQuiz&quiz_id=<?php echo $item->id; ?>&question_id=<?php echo $question->id; ?>"><span class="icon-delete"></span> Remove</a>
+    <span class="float-end"> Type: <?php echo ((json_decode($question->params)->question_type === 'multiple_choice')?'Multiple Choice':'');?> </span>
 </div>
     </div>
 <?php endforeach; ?>

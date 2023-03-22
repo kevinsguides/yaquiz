@@ -68,7 +68,9 @@ class QuestionController extends BaseController
     }
 
     public function cancel(){
-            $this->setRedirect('index.php?option=com_simplequiz&view=questions');
+        
+        $this->setRedirect('index.php?option=com_simplequiz&view=questions');
+
     }
 
     public function saveclose(){
