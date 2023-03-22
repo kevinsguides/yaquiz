@@ -1,5 +1,6 @@
 <?php
 namespace KevinsGuides\Component\SimpleQuiz\Administrator\View\Questions;
+use Joomla\CMS\Log\Log;
 use KevinsGuides\Component\SimpleQuiz\Administrator\Helper\SimpleQuizHelper;
 //this the template to display 1 quiz info
 
@@ -9,40 +10,39 @@ defined('_JEXEC') or die;
 
 $sqhelper = new SimpleQuizHelper();
 
-//get model
-$this->model = $this->getModel();
-$this->categories = $this->model->getCategories();
-
-//check for category id _POST
-if(isset($_POST['category_id']) && $_POST['category_id'] > 0){
-    $this->category_id = $_POST['category_id'];
-    //get items from this category
-    $items = $this->model->getItemsByCategory($this->category_id);  
+//get this form
+$form = $this->form;
+$filter_title = null;
+$filter_categories = null;
+//check filters
+if($_POST['filters']['filter_title']){
+    $form->setValue('filter_title', null, $_POST['filters']['filter_title']);
+    $filter_title = $_POST['filters']['filter_title'];
 }
-else{
-    $this->category_id = 0;
-    //get items
-    $items = $this->items;
+if($_POST['filters']['filter_categories']){
+    $form->setValue('filter_categories', null, $_POST['filters']['filter_categories']);
+    $filter_categories = $_POST['filters']['filter_categories'];
 }
 
 
 
+//get items
+$model = $this->getModel('Questions');
+$items = $model->getItems($filter_title, $filter_categories);
 
 ?>
 
-<h1>Questions Manager</h1>
-<a class="btn btn-lg btn-success" href="index.php?option=com_simplequiz&view=Question&layout=edit">Add New Question</a>
-<br/><br/>
+<div class="card mb-2">
+<h1 class="card-header">Questions Manager</h1>
+<div class="card-body">
 <form id="adminForm" action="index.php?option=com_simplequiz&view=Questions" method="post">
-    <select name="category_id" onchange="this.form.submit()">
-        <option value="0">All Categories</option>
-        <?php foreach($this->categories as $category): ?>
-            <option value="<?php echo $category->id; ?>" <?php if($category->id == $this->category_id) echo 'selected'; ?>><?php echo $category->title; ?></option>
-        <?php endforeach; ?>
-    </select>
+    <!-- load the form "filters" fieldset -->
+    <?php echo $form->renderFieldset('filters'); ?>
+    
     <input name="task" type="hidden">
+    <input type="submit" value="Filter" class="btn btn-primary float-end">
 </form>
-
+</div></div>
 <?php if($items != null): ?>
     <?php foreach($items as $item): ?>
         <div class="card mb-2">

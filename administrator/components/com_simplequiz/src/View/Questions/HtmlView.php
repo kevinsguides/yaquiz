@@ -16,14 +16,16 @@ class HtmlView extends BaseHtmlView{
         //get model
         $model = $this->getModel();
 
+        $this->form = $model->getForm();
         //get all questions
         $this->items = $model->getItems();
 
         $toolbar = Toolbar::getInstance('toolbar');
         //add component options
-        $toolbar->appendButton('Link', 'options', 'SQ Options', 'index.php?option=com_config&view=component&component=com_simplequiz');
+        $toolbar->appendButton('Link', 'options', 'Options', 'index.php?option=com_config&view=component&component=com_simplequiz');
         ToolbarHelper::title('Simple Quiz - Questions', 'list');
-        ToolbarHelper::custom('SimpleQuizzes.display', 'home', 'home', 'Quizzes', false);
+        ToolbarHelper::custom('SimpleQuizzes.display', 'list', 'list', 'Quizzes', false);
+        ToolbarHelper::addNew('Questions.newQuestion');
 
         //display the view
         return parent::display($tpl);

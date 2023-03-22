@@ -47,4 +47,8 @@ class QuestionsController extends BaseController
         }
         $this->setRedirect('index.php?option=com_simplequiz&view=questions');
     }
+
+    public function newQuestion(){
+        $this->setRedirect('index.php?option=com_simplequiz&view=Question&layout=edit');
+    }
 }

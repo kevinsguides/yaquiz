@@ -4,6 +4,7 @@ use Exception;
 use JFactory;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Model\BaseModel;
 
@@ -11,17 +12,25 @@ defined ( '_JEXEC' ) or die;
 
 //this is a model for multiple question operations
 
-class QuestionsModel extends BaseDatabaseModel
+class QuestionsModel extends AdminModel
 {
 
     //get all the Items
-    public function getItems()
+    public function getItems($filter_title = null, $filter_categories = null)
     {
         //get the database driver
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('*');
         $query->from('#__simplequiz_questions');
+        if($filter_title){
+            Log::add('attempt filter by title '.$filter_title, Log::INFO, 'com_simplequiz');
+            $query->where($db->quoteName('question') . ' LIKE ' . $db->quote('%'.$filter_title.'%'));
+        }
+        if($filter_categories){
+            Log::add('attempt filter by category '.$filter_categories, Log::INFO, 'com_simplequiz');
+            $query->where($db->quoteName('catid') . ' = ' . $db->quote($filter_categories));
+        }
         $db->setQuery($query);
         $items = $db->loadObjectList();
         return $items;
@@ -67,5 +76,18 @@ class QuestionsModel extends BaseDatabaseModel
         return $items;
     }
 
+    
+    public function getForm($data = [], $loadData = true)
+    {
+        Log::add('getform called in questionsmodel', Log::INFO, 'com_simplequiz');
+        $app  = Factory::getApplication();
+        // Get the form.
+        $form = $this->loadForm('com_simplequiz.questionsfilter', 'questionsfilter', ['control' => 'filters', 'load_data' => $loadData]);
+        if (empty($form)) {
+            return false;
+        }
+        return $form;
 
+
+    }
 }
