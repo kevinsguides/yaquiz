@@ -97,7 +97,7 @@ $questions = $model->getQuestionsInQuiz($item->id);
     <div class="card-body">
 <!-- filter by category -->
 <form id="adminForm" action="index.php?option=com_simplequiz&view=simplequiz&id=<?php echo $item->id; ?>" method="POST">
-<input type="hidden" name="task" value="simplequiz.display">
+<input type="hidden" name="task" value="SimpleQuiz.display">
 <input type="hidden" name="option" value="com_simplequiz">
     <input type="hidden" name="view" value="simplequiz">
     <input type="hidden" name="id" value="<?php echo $item->id; ?>">
