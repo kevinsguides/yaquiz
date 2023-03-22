@@ -13,6 +13,7 @@ use JHtml;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\Registry\Registry;
+use JUri;
 //this the template to display 1 quiz info
 
 defined('_JEXEC') or die;
@@ -79,6 +80,7 @@ function getQuestionListBox($titleFilter = null, $categoryfilter = null){
 $model = $this->getModel();
 $questions = $model->getQuestionsInQuiz($item->id);
 
+$quizlink = JUri::root().'index.php?option=com_simplequiz&view=quiz&id='.$item->id;
 ?>
 
 
@@ -89,6 +91,12 @@ $questions = $model->getQuestionsInQuiz($item->id);
 
 <div class="card-body">
     <p><?php echo $item->description; ?></p>
+</div>
+<div class="card-footer">
+    <p>Quiz ID: <?php echo $item->id; ?></p>
+    <p>Raw Quiz Link: <a href="<?php echo $quizlink; ?>" target="_blank"><?php echo $quizlink; ?></a>
+</p>
+    </pre>
 </div>
 </div>
 

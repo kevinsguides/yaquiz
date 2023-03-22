@@ -6,6 +6,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use JUri;
 defined ( '_JEXEC' ) or die;
 
 //this view for 1 quiz
@@ -48,7 +49,9 @@ class HtmlView extends BaseHtmlView
         //set this item to that quiz
             $this->item = $model->getQuiz($id);
             ToolbarHelper::custom('SimpleQuiz.redirectEdit', 'edit', 'edit', 'Quiz Settings', false);
-           
+        
+            //an external link with target blank
+            ToolbarHelper::custom('SimpleQuiz.preview', 'link', 'preview', 'Preview', false);
             return parent::display($tpl);
             
 

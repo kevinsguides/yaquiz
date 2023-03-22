@@ -14,11 +14,12 @@ defined('_JEXEC') or die;
 <h3>Categories</h3>
 <p>Categories are used to help organize your quizzes <em>and</em> questions. Using them is optional.</p>
 <p>There is only 1 set of categories, so quizzes and questions share the same categories.</p>
-<p>You can create subcategories, but the component will only load from 1 category at a time (not a category AND its subcategories)</p>
+<p>You can create subcategories, but the component will only filter 1 category at a time (not a category AND its subcategories)</p>
+<p>How you structure your categories is up to you. If you only have a few quizzes, you might not need any categories. If you have dozens or hundreds, you'll want a lot of categories.</p>
 <h3>Getting Started...</h3>
 <p>After installing the component, here is how to create a quiz with questions.</p>
 <ol>
-    <li>First, create a category for your quiz. This is optional, but recommended.</li>
+    <li>First, create a category for your quiz. It could be the subject of the quiz, the name of the quiz, or whatever else you come up with.  This is optional, but recommended.</li>
     <li>Next, create a few questions for the quiz using the "Questions" menu item.</li>
     <li>Once you're ready, create a quiz using the "Quizzes" menu item. Configure it according to your preferences (read the field descriptions)</li>
     <li>Finally, navigate to the "Details/Questions" page under each Quiz and add the respective questions to the quiz.</p>
@@ -30,4 +31,3 @@ defined('_JEXEC') or die;
 <p>Once enabled, you must wrap your equations using backslash then parenthesis like so:</p>
 <pre>\(y=mx+b\)</pre>
 <p>You can try a tool like this <a href="https://latexeditor.lagrida.com/" target="_blank">Latex Editor</a> to help you format your equations.</p>
-<p>Note: Formatted equations only show on the front-end</p>
