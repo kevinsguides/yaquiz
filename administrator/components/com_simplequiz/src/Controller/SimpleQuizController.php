@@ -8,6 +8,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Component\Menus\Administrator\Controller\ItemController;
 use Joomla\Input\Input;
 use JSession;
+use JUri;
 
 defined('_JEXEC') or die;
 
@@ -108,6 +109,12 @@ class SimpleQuizController extends BaseController
     public function redirectEdit(){
         //redirect to edit view
         $this->setRedirect('index.php?option=com_simplequiz&view=simplequiz&layout=edit&id=' . $this->input->get('id', '', 'raw'));
+    }
+
+    public function preview(){
+        //open a page in a new tab
+        //redirect to preview view
+        $this->setRedirect(JUri::root().'index.php?option=com_simplequiz&view=quiz&id=' . $this->input->get('id', '', 'raw'));
     }
 
 
