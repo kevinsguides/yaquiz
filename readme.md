@@ -17,5 +17,17 @@ Currently, this is unstable. Do not use on production sites.
 * Basic Question Feedback System
 
 ## Todo
+* Proper form validation
+* Proper checkin/out
+* Respect quiz access levels
 * Other question types
-* Clean interfgace
+    * fill in blank
+    * true false
+    * hot spot
+* Clean/consistent interface
+* Fix Language Files
+* 1 question per page option
+* Additional template styles
+* Record user results
+* Quiz statistics/review results
+* Quiz Certificates

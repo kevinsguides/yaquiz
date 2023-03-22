@@ -82,7 +82,10 @@ class QuizController extends BaseController{
         }
 
         $passfail = 'pass';
-        if(($points/$total) < $quizParams->quiz_passing_score){
+        $scorepercentage = $points/$total * 100;
+        Log::add('scorepercentage is calc at '.$scorepercentage, Log::INFO, 'com_simplequiz');
+        Log::add('quiz_passing_score is '.$quizParams->passing_score, Log::INFO, 'com_simplequiz');
+        if(($points/$total * 100) < $quizParams->passing_score){
             $passfail = 'fail';
         }
 
