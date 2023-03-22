@@ -19,6 +19,7 @@ Currently, this is unstable. Do not use on production sites.
 ## Todo
 * Proper form validation
 * Proper checkin/out
+* Change question ordering
 * Respect quiz access levels
 * Other question types
     * fill in blank
