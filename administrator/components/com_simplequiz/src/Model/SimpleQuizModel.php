@@ -1,12 +1,13 @@
 <?php
 namespace KevinsGuides\Component\SimpleQuiz\Administrator\Model;
+
 use JFactory;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\MVC\Model\BaseModel;
 
-defined ( '_JEXEC' ) or die;
+defined('_JEXEC') or die;
 
 //this is a model for a single quiz
 
@@ -18,7 +19,7 @@ class SimpleQuizModel extends AdminModel
     //get the quiz
     public function getQuiz($qid)
     {
-        Log::add('try get quiz with qid '.$qid, Log::INFO, 'com_simplequiz');
+        Log::add('try get quiz with qid ' . $qid, Log::INFO, 'com_simplequiz');
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('*');
@@ -32,59 +33,59 @@ class SimpleQuizModel extends AdminModel
 
 
     //get the quiz form
-    public function getForm($data = [], $loadData = true)
+    public function getForm($data = new \stdClass, $loadData = true)
     {
 
         Log::add('getform called in quizmodel', Log::INFO, 'com_simplequiz');
-        $app  = Factory::getApplication();
+        $app = Factory::getApplication();
 
         //if layout is edit
-        if($app->input->get('layout') == 'edit')
-        {
-// Get the form.
-$form = $this->loadForm('com_simplequiz.quiz', 'quiz', ['control' => 'jform', 'load_data' => $loadData]);
-if (empty($form)) {
-    return false;
-}
-//if new quiz
-if($data->id == 0 || $data->id == null)
-{
-    //set created_by to current user
-    $data['created_by'] = $app->getIdentity()->id;
-    //set created to current time
-    $data['created'] = date('Y-m-d H:i:s');
-    //set modified_by to current user
-    $data['modified_by'] = $app->getIdentity()->id;
-    //set modified to current time
-    $data['modified'] = date('Y-m-d H:i:s');
-    //set checked out to this users id
-    $data['checked_out'] = $app->getIdentity()->id;
-    //set checked_out_time to current time
-    $data['checked_out_time'] = date('Y-m-d H:i:s');
-    $data['quiz_displaymode'] = 'default';
-}
-else{
-    $params = $this->getParams($data->id);
-    //get 'quiz_displaymode' from params
-    Log::add('params: ' . $params['quiz_displaymode'], Log::INFO, 'com_simplequiz');
-    $data->quiz_displaymode = $params['quiz_displaymode'];
-    $data->quiz_showfeedback = $params['quiz_showfeedback'];
-    $data->quiz_feedback_showcorrect = $params['quiz_feedback_showcorrect'];
-    $data->quiz_question_numbering = $params['quiz_question_numbering'];
-    $data->quiz_use_points = $params['quiz_use_points'];
-    $data->passing_score = $params['passing_score'];
+        if ($app->input->get('layout') == 'edit') {
+            // Get the form.
+            $form = $this->loadForm('com_simplequiz.quiz', 'quiz', ['control' => 'jform', 'load_data' => $loadData]);
+            if (empty($form)) {
+                return false;
+            }
+            if(!isset($data->id)){
+                $data->id = 0;
+            }
 
-}
+            //if new quiz
+            if ($data->id == 0) {
+                //set created_by to current user
+                $data->created_by = $app->getIdentity()->id;
+                //set created to current time
+                $data->created= date('Y-m-d H:i:s');
+                //set modified_by to current user
+                $data->modified_by = $app->getIdentity()->id;
+                //set modified to current time
+                $data->modified = date('Y-m-d H:i:s');
+                //set checked out to this users id
+                $data->checked_out = $app->getIdentity()->id;
+                //set checked_out_time to current time
+                $data->checked_out_time = date('Y-m-d H:i:s');
+                $data->quiz_displaymode = 'default';
+            } else {
+                $params = $this->getParams($data->id);
+                //get 'quiz_displaymode' from params
+                Log::add('params: ' . $params['quiz_displaymode'], Log::INFO, 'com_simplequiz');
+                $data->quiz_displaymode = $params['quiz_displaymode'];
+                $data->quiz_showfeedback = $params['quiz_showfeedback'];
+                $data->quiz_feedback_showcorrect = $params['quiz_feedback_showcorrect'];
+                $data->quiz_question_numbering = $params['quiz_question_numbering'];
+                $data->quiz_use_points = $params['quiz_use_points'];
+                $data->passing_score = $params['passing_score'];
 
-
-//bind data to form
-$form->bind($data);
+            }
 
 
+            //bind data to form
+            $form->bind($data);
 
-return $form;
-        }
-        else{
+
+
+            return $form;
+        } else {
             Log::add('try to get simplequiz default filter form', Log::INFO, 'com_simplequiz');
             //get the simplequiz form
             $form = $this->loadForm('com_simplequiz.simplequiz', 'simplequiz', ['control' => 'filters', 'load_data' => $loadData]);
@@ -99,26 +100,26 @@ return $form;
 
 
 
-        
+
     }
 
-    public function save($data){
+    public function save($data)
+    {
         //see if is new quiz or update
 
         //if new quiz
-        if($data['id'] == 0 || $data['id'] == null)
-        {
+        if ($data['id'] == 0 || $data['id'] == null) {
             //call insert
             return $this->insert($data);
-        }
-        else{
+        } else {
             //call update
             return $this->update($data);
 
         }
     }
 
-    public function insert($data){
+    public function insert($data)
+    {
         //insert quiz
         $db = Factory::getContainer()->get('DatabaseDriver');
         $app = Factory::getApplication();
@@ -134,7 +135,8 @@ return $form;
         return true;
     }
 
-    public function update($data){
+    public function update($data)
+    {
         //update quiz
         $app = Factory::getApplication();
         $db = Factory::getContainer()->get('DatabaseDriver');
@@ -155,7 +157,8 @@ return $form;
 
     }
 
-    public function addQuestionsToQuiz($quizid, $questionids){
+    public function addQuestionsToQuiz($quizid, $questionids)
+    {
 
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
@@ -168,20 +171,16 @@ return $form;
         $existingQuestions = $db->loadColumn();
 
         //return if no quiz id or questionids are given
-        if($quizid == null || $questionids == null)
-        {
+        if ($quizid == null || $questionids == null) {
             return;
         }
 
         //if there are existing questions
-        if(count($existingQuestions) > 0)
-        {
+        if (count($existingQuestions) > 0) {
             //loop through the existing questions
-            foreach($existingQuestions as $existingQuestion)
-            {
+            foreach ($existingQuestions as $existingQuestion) {
                 //check if this existingQuestion matches any of the questionids
-                if(in_array($existingQuestion, $questionids))
-                {
+                if (in_array($existingQuestion, $questionids)) {
                     //if it does, remove it from the questionids array
                     $key = array_search($existingQuestion, $questionids);
                     unset($questionids[$key]);
@@ -192,14 +191,12 @@ return $form;
         }
 
         //if there are no questions to add, return
-        if(count($questionids) == 0)
-        {
+        if (count($questionids) == 0) {
             return;
         }
 
         //loop through the questionids
-        foreach($questionids as $questionid)
-        {
+        foreach ($questionids as $questionid) {
             //insert the questionid and quizid into the __simplequiz_question_quiz_map table
             $query = $db->getQuery(true);
             $query->insert('#__simplequiz_question_quiz_map');
@@ -211,7 +208,8 @@ return $form;
 
     }
 
-    public function getQuestionsInQuiz($quiz_id){
+    public function getQuestionsInQuiz($quiz_id)
+    {
 
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
@@ -228,7 +226,8 @@ return $form;
 
     }
 
-    public function removeQuestionFromQuiz($quiz_id, $question_id){
+    public function removeQuestionFromQuiz($quiz_id, $question_id)
+    {
 
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
@@ -241,7 +240,8 @@ return $form;
 
     }
 
-    public function getParams($qid){
+    public function getParams($qid)
+    {
 
         //get params from db
         $db = Factory::getContainer()->get('DatabaseDriver');
@@ -262,7 +262,8 @@ return $form;
 
     }
 
-    public function setParams($qid, $params){
+    public function setParams($qid, $params)
+    {
 
         //encode params
         $params = json_encode($params);
@@ -281,7 +282,8 @@ return $form;
     /**
      * Takes data from form and converts it to params json
      */
-    public function dataToParams($data){
+    public function dataToParams($data)
+    {
         $params = array();
         //set params
         $params['quiz_displaymode'] = $data['quiz_displaymode'];
@@ -295,7 +297,8 @@ return $form;
         return $params;
     }
 
-    public function getCategoryName($pk){
+    public function getCategoryName($pk)
+    {
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('title');

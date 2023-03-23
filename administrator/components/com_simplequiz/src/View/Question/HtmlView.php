@@ -15,7 +15,13 @@ class HtmlView extends BaseHtmlView{
         //get model
         $model = $this->getModel();
 
-        $question_id = $_GET['qnid'];
+        if(isset($_GET['qnid'])){
+            $question_id = $_GET['qnid'];
+        }
+        else{
+            $question_id = null;
+        }
+
 
         //if question_id is not set, set to zero
         if($question_id == null)

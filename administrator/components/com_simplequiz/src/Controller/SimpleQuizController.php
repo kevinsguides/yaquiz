@@ -61,7 +61,7 @@ class SimpleQuizController extends BaseController
         //call save
         $this->save();
         //redirect to the view
-        $this->setRedirect('index.php?option=com_simplequiz&view=simplequiz&id=' . $_GET['id']);
+        $this->setRedirect('index.php?option=com_simplequiz&view=simplequizzes');
 
     }
 

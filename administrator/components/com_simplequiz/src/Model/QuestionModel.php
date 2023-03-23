@@ -53,7 +53,7 @@ class QuestionModel extends AdminModel
         }
 
 
-
+        if(isset($data)){
         //if the form is not new, disable the question_type field
         if($data->id != null && $data->id != 0)
         {
@@ -68,6 +68,9 @@ class QuestionModel extends AdminModel
             $data->randomize_mchoice = $params->randomize_mchoice;
             $data->points = $params->points;
         }
+        }
+
+
 
 
         //populate details with details

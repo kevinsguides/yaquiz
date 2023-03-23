@@ -10,11 +10,16 @@ $form = $this->form;
 //tell Joomla we're using the SimpleQuizController
 JHtml::_('behavior.formvalidator');
 JHtml::_('behavior.keepalive');
+
+if(!isset($_GET['id'])){
+    $_GET['id'] = 0;
+}
+
 ?>
 <h1>Quiz Details Editor</h1>
 
-<form action="index.php?option=com_simplequiz&view=simplequiz&layout=edit&id=<?php echo $_GET['id']; ?>" method="post" name="adminForm" id="item-form" aria-label="New Quiz" class="form-validate">
+<form action="index.php?option=com_simplequiz&task=SimpleQuiz.save&id=<?php echo $_GET['id']; ?>" method="post" name="adminForm" id="item-form" aria-label="New Quiz" class="form-validate">
 <?php echo $form->renderFieldset('simplequiz'); ?>
-<input name="task" type="hidden">
+<input name="task" type="hidden" value="SimpleQuiz.save">
 <?php echo JHtml::_('form.token'); ?>
 </form>

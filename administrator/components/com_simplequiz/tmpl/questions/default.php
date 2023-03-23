@@ -14,7 +14,9 @@ $sqhelper = new SimpleQuizHelper();
 $form = $this->form;
 $filter_title = null;
 $filter_categories = null;
-//check filters
+//check if filters exist in POST
+if(isset($_POST['filters'])){
+    //check filters
 if($_POST['filters']['filter_title']){
     $form->setValue('filter_title', null, $_POST['filters']['filter_title']);
     $filter_title = $_POST['filters']['filter_title'];
@@ -23,6 +25,9 @@ if($_POST['filters']['filter_categories']){
     $form->setValue('filter_categories', null, $_POST['filters']['filter_categories']);
     $filter_categories = $_POST['filters']['filter_categories'];
 }
+
+}
+
 
 
 

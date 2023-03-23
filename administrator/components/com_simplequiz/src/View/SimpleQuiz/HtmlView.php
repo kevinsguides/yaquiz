@@ -27,7 +27,13 @@ class HtmlView extends BaseHtmlView
         $toolbar->appendButton('Link', 'options', 'Options', 'index.php?option=com_config&view=component&component=com_simplequiz');
 
         //get id from url
-        $id = $_GET['id'];
+        if(isset($_GET['id'])){
+            $id = $_GET['id'];
+        }
+        else{
+            $id = 0;
+        }
+        
 
         Log::add("i found this id: $id", Log::INFO, 'com_simplequiz');
 

@@ -57,6 +57,7 @@ class QuestionBuilderHelper
     protected function buildMChoice($question, $params)
     {
 
+        $html = '';
         //get the answers
         $answers = $question->answers;
         //decode

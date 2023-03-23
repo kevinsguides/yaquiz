@@ -17,17 +17,24 @@ $quizModel = new SimpleQuizModel();
 //get this form
 $this->form = $this->get('Form');
 
-$filter_title = $_POST['filters']['filter_title'];
-$filter_categories = $_POST['filters']['filter_categories'];
-$model = $this->getModel();
-//get the items from model
-$this->items = $model->getItems($filter_title, $filter_categories);
-
-//if $filter_title or $filter_categories are set, then we need to set the form values
-if($filter_title || $filter_categories){
+if(isset($_POST['filters'])){
+  $filter_title = $_POST['filters']['filter_title'];
+  $filter_categories = $_POST['filters']['filter_categories'];
+  $this->items = $model->getItems($filter_title, $filter_categories);
+  //if $filter_title or $filter_categories are set, then we need to set the form values
+  if($filter_title || $filter_categories){
     $this->form->setValue('filter_title', null, $filter_title);
     $this->form->setValue('filter_categories', null, $filter_categories);
+  }
 }
+else{
+  $this->items = $this->get('Items');
+}
+
+$model = $this->getModel();
+//get the items from model
+
+
 
 
 
