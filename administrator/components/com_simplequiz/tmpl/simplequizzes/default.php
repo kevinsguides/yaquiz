@@ -14,6 +14,9 @@ use KevinsGuides\Component\SimpleQuiz\Administrator\Model\SimpleQuizModel;
 
 $quizModel = new SimpleQuizModel();
 
+$model = $this->getModel();
+//get the items from model
+
 //get this form
 $this->form = $this->get('Form');
 
@@ -31,8 +34,7 @@ else{
   $this->items = $this->get('Items');
 }
 
-$model = $this->getModel();
-//get the items from model
+
 
 
 
