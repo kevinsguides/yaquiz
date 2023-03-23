@@ -34,7 +34,6 @@ class QuizModel extends ItemModel{
 	 * @return object
 	 */
 	public function getItem($pk = null) {
-        
         if($pk == null){
             $pk = $this->getState('quiz.id');
         }
@@ -50,8 +49,13 @@ class QuizModel extends ItemModel{
 	}
 
     public function getQuizParams($pk = null){
-        if($pk == null){
+        if(isset($_GET['id'])){
             $pk = $this->getState('quiz.id');
+        }
+        else{
+            $active = Factory::getApplication()->getMenu()->getActive();
+            //get params from the menu item
+            $pk = $active->getParams()->get('quiz_id');
         }
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
@@ -73,9 +77,17 @@ class QuizModel extends ItemModel{
         //the __simplequiz_question_quiz_map table has question_id and quiz_id cols
         //need to join with the questions table to get the questions for this quiz
         //get pk from GET
-        if($pk == null){
-            $pk = $this->getState('quiz.id');
+        if(isset($_GET['id'])){
+            Log::add('id set', Log::INFO, 'com_simplequiz');
+            $pk = $_GET['id'];
         }
+        else{
+            $active = Factory::getApplication()->getMenu()->getActive();
+            //get params from the menu item
+            $pk = $active->getParams()->get('quiz_id');
+        }
+ 
+        Log::add('attempt get questions with quiz id'.$pk, Log::INFO, 'com_simplequiz');
 
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);

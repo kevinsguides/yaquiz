@@ -57,6 +57,8 @@ class QuestionBuilderHelper
     protected function buildMChoice($question, $params)
     {
 
+        Log::add('buildMChoice', Log::INFO, 'com_simplequiz');
+
         $html = '';
         //get the answers
         $answers = $question->answers;

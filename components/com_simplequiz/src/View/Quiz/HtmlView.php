@@ -15,16 +15,13 @@ class HtmlView extends BaseHtmlView
 
         $app = Factory::getApplication();
         $active = $app->getMenu()->getActive();
-        $qid = '1';
-        if($qid === '0'){
-            $this->quiz_id = $qid_manual;
-        }
-        else{
-            $this->quiz_id = $qid;
-        }
 
+        //get params from the menu item
+        $this->params = $active->getParams();
+        $this->quiz_id = $this->params->get('quiz_id');
         $model = $this->getModel();
         $this->item = $model->getItem($this->quiz_id);
+        
     
         parent::display($tpl);
         
