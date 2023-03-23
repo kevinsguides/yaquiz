@@ -109,13 +109,15 @@ class QuizController extends BaseController{
 
         $buildResults = $qbhelper->buildResultsArea($title, $quiz_id, $results);
 
-        //set app view to results
-        $app->input->set('view', 'quiz');
-        $app->input->set('layout', 'results');
         
-        echo $buildResults;
+        //echo $buildResults;
+        $this->setRedirect('index.php?option=com_simplequiz&view=quiz&layout=results');
 
-        //$this->setRedirect('index.php?option=com_simplequiz&view=quiz&layout=results');
+        //set the results state var
+        $app->setUserState('com_simplequiz.results', $buildResults);
+
+
+
 
     }
 
