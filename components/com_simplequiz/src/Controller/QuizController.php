@@ -52,8 +52,10 @@ class QuizController extends BaseController{
         $input = $app->input;
         $answers = $input->get('answers', array(), 'array');
         $quiz_id = $input->get('quiz_id', 0, 'int');
+        Log::add('i think the quiz id is    '.$quiz_id, Log::INFO, 'com_simplequiz' );
         $quiz = $this->getModel('Quiz')->getItem($quiz_id);
-        $quizParams = $this->getModel('Quiz')->getQuizParams($quiz_id);
+        $model = new QuizModel();
+        $quizParams = $model->getQuizParams($quiz_id);
 
         //for each answer, check if its correct
         

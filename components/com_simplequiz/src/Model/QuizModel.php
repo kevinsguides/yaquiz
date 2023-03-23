@@ -49,14 +49,9 @@ class QuizModel extends ItemModel{
 	}
 
     public function getQuizParams($pk = null){
-        if(isset($_GET['id'])){
-            $pk = $this->getState('quiz.id');
-        }
-        else{
-            $active = Factory::getApplication()->getMenu()->getActive();
-            //get params from the menu item
-            $pk = $active->getParams()->get('quiz_id');
-        }
+        
+
+        Log::add('getquizparams called with id '.$pk, Log::INFO, 'com_simplequiz');
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('params');
