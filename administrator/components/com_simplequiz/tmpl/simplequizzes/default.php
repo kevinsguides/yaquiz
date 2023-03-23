@@ -45,11 +45,11 @@ else{
 <div class="accordion" id="accordionFilters">
   <div class="accordion-item">
     <h2 class="accordion-header" id="hdgFilters">
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilters" aria-expanded="true" aria-controls="collapseFilters">
+      <button class="accordion-button <?php echo (isset($_POST['filters']) ? '' : 'collapsed') ?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilters" aria-expanded="true" aria-controls="collapseFilters">
         Filters...
       </button>
     </h2>
-    <div id="collapseFilters" class="accordion-collapse collapse hide" aria-labelledby="hdgFilters" data-bs-parent="#accordionFilters">
+    <div id="collapseFilters" class="accordion-collapse collapse <?php echo (isset($_POST['filters']) ? 'show' : '') ?>" aria-labelledby="hdgFilters" data-bs-parent="#accordionFilters">
       <div class="accordion-body">
       <form id="adminForm" action="index.php?option=com_simplequiz&view=SimpleQuizzes" method="post">
         <!-- render simplequizzes_filterset fieldset -->
