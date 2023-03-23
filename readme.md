@@ -16,6 +16,7 @@ Currently, this is unstable. Do not use on production sites.
 * Basic Question Feedback System
 
 ## Todo
+* Fix issue with results page not loading MathJax
 * Proper form validation
 * Proper checkin/out
 * Change question ordering

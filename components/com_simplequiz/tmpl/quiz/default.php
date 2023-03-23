@@ -23,6 +23,8 @@ if($globalParams->get('load_mathjax') === '1'){
     $wa->registerAndUseScript('com_simplequiz.mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
 }
 
+
+
 //if $this-> item is already set
 if(isset($this->item)){
     $quiz = $this->item;
@@ -37,6 +39,8 @@ $model = new QuizModel();
 $questions = $model->getQuestions($quiz->id);
 Log::add('i found this many questions: ' . count($questions), Log::INFO, 'com_simplequiz');
 $questionBuilder = new QuestionBuilderHelper();
+
+$quizparams = $model->getQuizParams($quiz->id);
 
 //if the quiz is null, show error
 if ($quiz == null):
@@ -64,7 +68,7 @@ else:
     
 <?php foreach($questions as $question): ?>
     
-            <?php echo $questionBuilder->buildQuestion($question, $model->getQuizParams()); ?>
+            <?php echo $questionBuilder->buildQuestion($question, $quizparams); ?>
             <br/>
 <?php endforeach; ?>
 
