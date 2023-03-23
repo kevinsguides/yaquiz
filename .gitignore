@@ -1,0 +1,27 @@
+#ignore everything
+*
+*/
+
+#dont ignore components/com_simplequiz
+!components/
+components/com_simplequiz
+!components/com_simplequiz
+!components/com_simplequiz/**
+
+
+#dont ignore administrator/components/com_simplequiz
+!administrator/
+administrator/components/com_simplequiz
+!administrator/components/com_simplequiz
+!administrator/components/com_simplequiz/**
+
+
+
+
+
+
+
+!.gitignore
+
+
+
