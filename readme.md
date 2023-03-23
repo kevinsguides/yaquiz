@@ -1,5 +1,4 @@
 # Simple Quiz
-## An extension by Kevin Olson
 [KevinsGuides.com](https://kevinsguides.com)
 
 This is a component for Joomla 4.
