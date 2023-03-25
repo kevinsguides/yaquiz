@@ -161,6 +161,7 @@ class SimpleQuizModel extends AdminModel
         $query->set('modified = CURRENT_TIMESTAMP');
         $query->set('params = ' . $db->quote($this->dataToParams($data)));
         $query->set('catid = ' . $db->quote($data['catid']));
+        $query->set('access = ' . $db->quote($data['access']));
         $query->where('id = ' . $data['id']);
         $db->setQuery($query);
         $db->execute();
