@@ -2,10 +2,13 @@
 namespace KevinsGuides\Component\SimpleQuiz\Administrator\Model;
 
 use JFactory;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\MVC\Factory\MVCFactory;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\MVC\Model\BaseModel;
+use Joomla\CMS\Table\Table;
 
 defined('_JEXEC') or die;
 
@@ -15,6 +18,13 @@ defined('_JEXEC') or die;
 
 class SimpleQuizModel extends AdminModel
 {
+
+    public function __construct($config = [])
+    {
+        Log::add('SimpleQuizModel::__construct() called', Log::INFO, 'com_simplequiz');
+        parent::__construct($config);
+    }
+
 
     //get the quiz
     public function getQuiz($qid)
@@ -35,9 +45,10 @@ class SimpleQuizModel extends AdminModel
     //get the quiz form
     public function getForm($data = new \stdClass, $loadData = true)
     {
-
         Log::add('getform called in quizmodel', Log::INFO, 'com_simplequiz');
         $app = Factory::getApplication();
+        $cParams = ComponentHelper::getParams('com_simplequiz');
+        $access = $cParams->get('access', 1);
 
         //if layout is edit
         if ($app->input->get('layout') == 'edit') {
@@ -47,6 +58,7 @@ class SimpleQuizModel extends AdminModel
                 return false;
             }
             if(!isset($data->id)){
+                $data = new \stdClass;
                 $data->id = 0;
             }
 
@@ -65,6 +77,7 @@ class SimpleQuizModel extends AdminModel
                 //set checked_out_time to current time
                 $data->checked_out_time = date('Y-m-d H:i:s');
                 $data->quiz_displaymode = 'default';
+                $data->access = $access;
             } else {
                 $params = $this->getParams($data->id);
                 //get 'quiz_displaymode' from params
@@ -81,9 +94,6 @@ class SimpleQuizModel extends AdminModel
 
             //bind data to form
             $form->bind($data);
-
-
-
             return $form;
         } else {
             Log::add('try to get simplequiz default filter form', Log::INFO, 'com_simplequiz');
@@ -109,17 +119,18 @@ class SimpleQuizModel extends AdminModel
 
         //if new quiz
         if ($data['id'] == 0 || $data['id'] == null) {
+
             //call insert
             return $this->insert($data);
         } else {
             //call update
             return $this->update($data);
-
         }
     }
 
     public function insert($data)
     {
+        Log::add('insert called in quizmodel', Log::INFO, 'com_simplequiz');
         //insert quiz
         $db = Factory::getContainer()->get('DatabaseDriver');
         $app = Factory::getApplication();
@@ -132,11 +143,12 @@ class SimpleQuizModel extends AdminModel
         $query->values($db->quote($data['title']) . ', ' . $db->quote($data['description']) . ', ' . $db->quote($data['published']) . ', ' . $db->quote($data['created_by']) . ', ' . $db->quote($data['created']) . ', ' . $db->quote($data['modified_by']) . ', ' . $db->quote($data['modified']) . ', ' . $db->quote($data['checked_out']) . ', ' . $db->quote($data['checked_out_time']) . ', ' . $db->quote($this->dataToParams($data)) . ', ' . $db->quote($data['access']) . ', ' . $db->quote($data['hits']) . ', ' . $db->quote($data['catid']));
         $db->setQuery($query);
         $db->execute();
-        return true;
+        return $db->insertid();
     }
 
     public function update($data)
     {
+        Log::add('update called in quizmodel', Log::INFO, 'com_simplequiz');
         //update quiz
         $app = Factory::getApplication();
         $db = Factory::getContainer()->get('DatabaseDriver');
@@ -152,8 +164,7 @@ class SimpleQuizModel extends AdminModel
         $query->where('id = ' . $data['id']);
         $db->setQuery($query);
         $db->execute();
-
-        return true;
+        return $data['id'];
 
     }
 
@@ -308,7 +319,6 @@ class SimpleQuizModel extends AdminModel
         $category = $db->loadResult();
         return $category;
     }
-
 
 
 }
