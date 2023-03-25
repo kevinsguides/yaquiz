@@ -34,6 +34,11 @@ else{
   $this->items = $this->get('Items');
 }
 
+//does user have core.delete access
+$user = \JFactory::getUser();
+$canDelete = $user->authorise('core.delete', 'com_simplequiz');
+
+
 
 
 
@@ -41,7 +46,7 @@ else{
 
 
 ?>
-
+<form id="adminForm" action="index.php?option=com_simplequiz&view=SimpleQuizzes" method="post">
 <div class="accordion" id="accordionFilters">
   <div class="accordion-item">
     <h2 class="accordion-header" id="hdgFilters">
@@ -51,7 +56,7 @@ else{
     </h2>
     <div id="collapseFilters" class="accordion-collapse collapse <?php echo (isset($_POST['filters']) ? 'show' : '') ?>" aria-labelledby="hdgFilters" data-bs-parent="#accordionFilters">
       <div class="accordion-body">
-      <form id="adminForm" action="index.php?option=com_simplequiz&view=SimpleQuizzes" method="post">
+
         <!-- render simplequizzes_filterset fieldset -->
         <?php echo $this->form->renderFieldset('filters'); ?>
 
@@ -59,7 +64,7 @@ else{
     
     <button type="submit" class="btn btn-primary">Filter</button>
     <a href="index.php?option=com_simplequiz&view=SimpleQuizzes" class="btn btn-dark">Reset</a>
-    </form></div>
+ </div>
     </div>
   </div>
   </div>
@@ -90,6 +95,9 @@ else{
                     <div class="col-4">
                     <a class="btn btn-secondary" href="index.php?option=com_simplequiz&view=simplequiz&layout=edit&id=<?php echo $item->id ?>">Quiz Settings</a>
                     <a class="btn btn-primary" href="index.php?option=com_simplequiz&view=simplequiz&id=<?php echo $item->id ?>">Select Questions</a>
+                    <?php if($canDelete): ?>
+                      <a class="btn btn-danger" href="index.php?option=com_simplequiz&view=simplequiz&task=SimpleQuiz.remove&quizid=<?php echo $item->id ?>">Delete</a>
+                    <?php endif; ?>
                 </div>
                 </div>
             <?php endforeach; ?>
@@ -99,3 +107,6 @@ else{
     <?php endif; ?>
 
 </div>
+
+
+</form>

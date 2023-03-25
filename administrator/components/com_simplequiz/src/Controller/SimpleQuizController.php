@@ -20,6 +20,9 @@ class SimpleQuizController extends BaseController
     public function __construct($config = [])
     {
         Log::add('SimpleQuizController::__construct() called', Log::INFO, 'com_simplequiz');
+
+        //register delete task
+        //$this->registerTask('remove', 'remove');
         parent::__construct($config);
 
     }
@@ -43,12 +46,13 @@ class SimpleQuizController extends BaseController
                 return;
             }
             //save the data
-            if($model->save($data)){
+            $newid = $model->save($data);
+            if($newid > 0){
                 Log::add('SimpleQuizController::save() saved successfully', Log::INFO, 'com_simplequiz');
                 //cue success message
                 $this->setMessage('Quiz saved successfully');
                 //return to edit form
-                $this->setRedirect('index.php?option=com_simplequiz&view=simplequiz&layout=edit&id=' . $data['id']);
+                $this->setRedirect('index.php?option=com_simplequiz&view=simplequiz&layout=edit&id=' . $newid);
             }
     }
 
@@ -115,6 +119,22 @@ class SimpleQuizController extends BaseController
         //open a page in a new tab
         //redirect to preview view
         $this->setRedirect(JUri::root().'index.php?option=com_simplequiz&view=quiz&id=' . $this->input->get('id', '', 'raw'));
+    }
+
+    public function remove($pk = null){
+        //get the model
+        $model = $this->getModel('SimpleQuiz');
+
+        //get the data from form GET
+        $quizid = $this->input->get('quizid', '', 'raw');
+        Log::add('SimpleQuizController::delete() called for quizid: ' . $quizid, Log::INFO, 'com_simplequiz');
+
+        if($model->delete($quizid)){
+            //message
+            $this->setMessage('Quiz deleted successfully');
+        }
+        //redirect to the view
+        $this->setRedirect('index.php?option=com_simplequiz&view=simplequizzes');
     }
 
 
