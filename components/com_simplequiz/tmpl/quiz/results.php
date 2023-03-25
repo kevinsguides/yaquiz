@@ -19,6 +19,10 @@ if($globalParams->get('load_mathjax') === '1'){
     $wa->registerAndUseScript('com_simplequiz.mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
 }
 
+$wa->useStyle('fontawesome');
+
+
+
 //if results are empty
 if(empty($results)){
     $results = 'No results to display';
