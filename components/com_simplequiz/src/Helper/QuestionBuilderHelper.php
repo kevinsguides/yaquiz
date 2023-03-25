@@ -113,7 +113,7 @@ class QuestionBuilderHelper
 
         //the default will be a simple x/x with percentage
         //trim to 2 decimal places
-        $resultPercent = round((($results->correct / $results->total) * 100), 2);
+        $resultPercent = round((($results->correct / $results->total) * 100),0);
 
         //get quiz params
         $quizParams = $this->getQuizParams($quiz_id);
@@ -139,14 +139,20 @@ $feedback .= $this->getQuestionFeedback($quiz_id, $question['question'], $questi
 
 
         $html .= '<div class="card m-1 mb-3"><div class="card-body">';
-        $html .= '<h1><i class="fa-solid fa-chart-simple"></i> Results: ' . $title . '</h3>';
+        $html .= '<h1><i class="fa-solid fa-chart-simple"></i> Results: ' . $title . '</h3><hr/>';
         $html .= '<p>You got ' . $results->correct . ' out of ' . $results->total . ' '.$pointtext.'</p>';
         $html .= '<p>That is a ' . $resultPercent . '%</p>';
+
+        //progress bar
+        $passColor = ($results->passfail === 'pass') ? 'bg-success' : 'bg-danger';
+        $html .= '<div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="'.$resultPercent.'" aria-valuemin="0" aria-valuemax="100">';
+        $html .= '<div class="progress-bar '.$passColor.'" style="width: '.$resultPercent.'%">'.$resultPercent.'%</div>  </div>';
+        $html .= '<br/>';
         if($results->passfail === 'pass'){
-            $html .= '<p class="p-3 bg-success text-light">You passed!</p>';
+            $html .= '<p class="p-3 bg-light text-success">You passed!</p>';
         }
         else{
-            $html .= '<p class="p-3 bg-danger text-light">You failed.</p>';
+            $html .= '<p class="p-3 bg-light text-danger">Unfortunately, you have not passed.</p>';
         }
         $html .= '</div></div>';
         $html .= $feedback;
@@ -169,7 +175,7 @@ $feedback .= $this->getQuestionFeedback($quiz_id, $question['question'], $questi
         
         if ($iscorrect){
             $feedback .= '<div class="card m-1 mb-3">';
-            $feedback .= '<h3 class="card-header bg-success text-light"><i class="fa-solid fa-circle-check float-end"></i> Question: ' . $question->question . '</h3><div class="card-body">';
+            $feedback .= '<h3 class="card-header bg-success text-light"><i class="fas fa-check-circle"></i> ' . $question->question . '</h3><div class="card-body">';
             $feedback .= $question->details;
             $feedback .= '<br/>';
             $feedback .= '<p>The answer was: ' . $question->correct_answer . '</p>';
@@ -179,7 +185,7 @@ $feedback .= $this->getQuestionFeedback($quiz_id, $question['question'], $questi
 
         } else {
             $feedback .= '<div class="card m-1 mb-3">';
-            $feedback .= '<h3 class="card-header bg-danger text-light"><i class="fa-solid fa-circle-xmark float-end"></i> ' . $question->question . '</h3>';
+            $feedback .= '<h3 class="card-header bg-danger text-light"><i class="fas fa-times-circle"></i> ' . $question->question . '</h3>';
             $feedback .= '<div class="card-body">'.$question->details;
             $feedback .= '<br/>';
             $feedback .= '<p>You answered: ' . $useranswer . '</p>';

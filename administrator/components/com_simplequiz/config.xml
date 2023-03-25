@@ -47,4 +47,23 @@ default="0"
 </field>
 
 </fieldset>
+
+<fieldset
+name="language"
+>
+<field
+name="lang-pass"
+type="textarea"
+label="COM_SIMPLEQUIZ_FIELD_LANG_PASS_LABEL"
+description="COM_SIMPLEQUIZ_FIELD_LANG_PASS_DESC"
+default="You have passed this quiz!"
+/>
+<field
+name="lang-fail"
+type="textarea"
+label="COM_SIMPLEQUIZ_FIELD_LANG_FAIL_LABEL"
+description="COM_SIMPLEQUIZ_FIELD_LANG_FAIL_DESC"
+default="Unfortunately, you haven't passed this quiz."
+/>
+</fieldset>
 </config>
