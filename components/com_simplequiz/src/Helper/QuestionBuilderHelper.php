@@ -143,7 +143,7 @@ $feedback .= $this->getQuestionFeedback($quiz_id, $question['question'], $questi
         $html .= '<p>You got ' . $results->correct . ' out of ' . $results->total . ' '.$pointtext.'</p>';
         $html .= '<p>That is a ' . $resultPercent . '%</p>';
 
-        //progress bar
+        //progress bar display
         $passColor = ($results->passfail === 'pass') ? 'bg-success' : 'bg-danger';
         $html .= '<div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="'.$resultPercent.'" aria-valuemin="0" aria-valuemax="100">';
         $html .= '<div class="progress-bar '.$passColor.'" style="width: '.$resultPercent.'%">'.$resultPercent.'%</div>  </div>';
