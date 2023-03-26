@@ -13,7 +13,7 @@
         label="COM_SIMPLEQUIZ_FILTER_CATEGORIES_LABEL"
         default="0"
         >
-        <option value="0">Uncategorized</option>
+        <option value="0">Uncategorized (All)</option>
         </field>
 
 

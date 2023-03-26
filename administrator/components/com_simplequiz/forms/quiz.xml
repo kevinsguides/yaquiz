@@ -23,7 +23,7 @@ extension="com_simplequiz"
 class="inputbox"
 default="0"
 label="COM_SIMPLEQUIZ_QUESTION_CATID_LABEL"
-description="COM_SIMPLEQUIZ_QUESTION_CATID_DESC"
+description="COM_SIMPLEQUIZ_QUIZ_CATID_DESC"
 required="true"
 >
 <option value="0">Uncategorized</option>
