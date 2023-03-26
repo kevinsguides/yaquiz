@@ -24,6 +24,17 @@ if($globalParams->get('load_mathjax') === '1'){
 }
 
 
+if($app->input->get('status') == 'retry'){
+    //get their old answers from the session
+    $session = Factory::getSession();
+    $oldanswers = $session->get('sq_retryanswers');
+}
+else{
+    $oldanswers = null;
+}
+
+
+
 
 //if $this-> item is already set
 if(isset($this->item)){
@@ -58,17 +69,34 @@ else:
 <h2 class="card-header"><?php echo $quiz->title; ?></h2>
 <div class="card-body">
     <?php echo $quiz->description; ?>
-
 </div>
 </div>
 <br/>
 <form action="index.php?option=com_simplequiz&task=quiz.submitquiz" method="post">
     <input type="hidden" name="quiz_id" value="<?php echo $quiz->id; ?>" />
-    
+
 <?php foreach($questions as $question): ?>
-    
-            <?php echo $questionBuilder->buildQuestion($question, $quizparams); ?>
-            <br/>
+            <?php 
+                $actualid = $question->id - 1;
+                //check if $oldanswers is set
+                if($oldanswers){
+                    //see if this question is in the old answers
+                    foreach($oldanswers as $oldanswer){
+                        if($oldanswer['question_id'] == $actualid){
+                            $question->defaultanswer = $oldanswer['answer'];
+                        }
+                    }
+                    if(!isset($question->defaultanswer) && ($app->input->get('status') == 'retry')){
+                        $question->defaultanswer = 'missing';
+                    }
+                }
+
+
+
+                echo $questionBuilder->buildQuestion($question, $quizparams); 
+                
+            ?>
+    <br/>
 <?php endforeach; ?>
 
 <?php echo JHtml::_('form.token'); ?>

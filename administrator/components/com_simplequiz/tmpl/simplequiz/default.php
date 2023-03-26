@@ -70,6 +70,8 @@ function getQuestionListBox($titleFilter = null, $categoryfilter = null){
     $list = '';
     foreach($results as $result){
         $truncated_details = substr($result->details, 0, 100);
+        //strip tags
+        $truncated_details = strip_tags($truncated_details);
         $truncated_details = ' ('.$truncated_details.'...)';
         $list .= '<option value="'.$result->id.'">[ID: '.$result->id.'] '.$result->question.'   ' . $truncated_details . '</option>';
     }

@@ -28,7 +28,12 @@ class QuestionBuilderHelper
         } else {
             $this->questionnumber = '';
         }
-        $html = '<div class="card"><h3 class="card-header">' . $formatted_questionnum . $question->question . '</h3>';
+        $itemMissing = '';
+        if(isset($question->defaultanswer) && $question->defaultanswer === 'missing'){
+            $itemMissing .= '<i class="text-danger fas fa-exclamation-triangle me-2" title="You forgot to answer this..."></i>';
+        }
+        $html = '<div class="card"><h3 class="card-header">' . $itemMissing . $formatted_questionnum . $question->question . '</h3>';
+
         $html .= '<div class="card-body">' . $question->details . '<hr/>';
         //if question type is multiple_choice
         if ($questionType == 'multiple_choice') {
@@ -60,10 +65,17 @@ class QuestionBuilderHelper
         //for each answer
         $answeridx = 0;
         $answerArr = array();
+        //if we are retrying
+        if (isset($question->defaultanswer)){
+            $defaultanswer = $question->defaultanswer;
+        }
+        else{
+            $defaultanswer = -1;
+        }
         foreach ($answers as $answer) {
             $ans = '<div class="form-check">';
             //add radio button
-            $ans .= '<input class="form-check-input" type="radio" name="answers[' . $question->question_id . ']" id="question_' . $question->question_id . '_answer_' . $answeridx . '" value="' . $answeridx . '" />';
+            $ans .= '<input class="form-check-input" type="radio" name="answers[' . $question->question_id . ']" id="question_' . $question->question_id . '_answer_' . $answeridx . '" value="' . $answeridx . '" '.($defaultanswer==$answeridx?'checked':'').'/>';
             //add label
             $ans .= '<label class="form-check-label mchoice btn btn-dark text-start" for="question_' . $question->question_id . '_answer_' . $answeridx . '">' . $answer . '</label>';
             $answeridx++;
@@ -85,13 +97,21 @@ class QuestionBuilderHelper
 
 
     protected function build_truefalse($question){
+
+        if (isset($question->defaultanswer)){
+            $defaultanswer = $question->defaultanswer;
+        }
+        else{
+            $defaultanswer = -1;
+        }
+
         $html = '
         <div class="form-check">
-        <input class="form-check-input" type="radio" name="answers['.$question->question_id.']" id="answers['.$question->question_id.']t" value="1" />
+        <input class="form-check-input" type="radio" name="answers['.$question->question_id.']" id="answers['.$question->question_id.']t" value="1" '.($defaultanswer==1?'checked':'').'/>
         <label for="answers['.$question->question_id.']t">True</label><br/>'
         ;
         $html .= '
-        <input class="form-check-input" type="radio" name="answers['.$question->question_id.']" id="answers['.$question->question_id.']f" value="0" />
+        <input class="form-check-input" type="radio" name="answers['.$question->question_id.']" id="answers['.$question->question_id.']f" value="0" '.($defaultanswer==0?'checked':'').'/>
         <label for="answers['.$question->question_id.']f">False</label><br/>
         ';
         $html .= '</div>';

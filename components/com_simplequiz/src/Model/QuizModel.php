@@ -60,15 +60,12 @@ class QuizModel extends ItemModel{
         $db->setQuery($query);
         $params = $db->loadResult();
         return json_decode($params);
-        
-
     }
 
 
 
     public function getQuestions($pk = null)
     {
-
         //the __simplequiz_question_quiz_map table has question_id and quiz_id cols
         //need to join with the questions table to get the questions for this quiz
         //get pk from GET
@@ -233,6 +230,24 @@ class QuizModel extends ItemModel{
             }
         }
         return null;
+    }
+
+
+    public function getTotalQuestions($pk = null){
+        if ($pk === null) {
+            $active = Factory::getApplication()->getMenu()->getActive();
+            //get params from the menu item
+            $pk = $active->getParams()->get('quiz_id');
+        }
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('COUNT(*)');
+        $query->from($db->quoteName('#__simplequiz_questions'));
+        $query->join('INNER', $db->quoteName('#__simplequiz_question_quiz_map') . ' ON (' . $db->quoteName('#__simplequiz_questions.id') . ' = ' . $db->quoteName('#__simplequiz_question_quiz_map.question_id') . ')');
+        $query->where($db->quoteName('#__simplequiz_question_quiz_map.quiz_id') . ' = ' . $db->quote($pk));
+        $db->setQuery($query);
+        $total_questions = $db->loadResult();
+        return $total_questions;
     }
 }
 

@@ -43,6 +43,8 @@ class QuizController extends BaseController{
             return;
         }
 
+
+
         //grade the quiz by comparing the answers to the correct answers
         //get submitted answers
         $app = Factory::getApplication();
@@ -53,8 +55,30 @@ class QuizController extends BaseController{
         $model = new QuizModel();
         $quizParams = $model->getQuizParams($quiz_id);
 
-        //for each answer, check if its correct
+        //make sure they answered all the questions...
+        if(count($answers) < $model->getTotalQuestions($quiz_id)){
+            $this->setMessage('You did not answer all the questions', 'warning');
+
+            //foreach question, save its answer and id to an array
+            $answered = array();
+            foreach($answers as $question_id=>$answer){
+                $answered[] = array(
+                    'question_id' => $question_id,
+                    'answer' => $answer
+                );
+            }
+
+
+            //save all answered info to their session
+            $session = Factory::getSession();
+            $session->set('sq_retryanswers', $answered);
+            $this->setRedirect('index.php?option=com_simplequiz&view=quiz&id=' . $quiz_id.'&status=retry');
+            return;
+        }
         
+
+
+        //for each answer, check if its correct
         $points = 0;
         $total = 0;
         $model = new QuizModel();
@@ -105,10 +129,6 @@ class QuizController extends BaseController{
 
         //set the results state var
         $app->setUserState('com_simplequiz.results', $buildResults);
-
-
-
-
     }
 
 
