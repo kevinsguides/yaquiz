@@ -92,6 +92,8 @@ class SimpleQuizModel extends AdminModel
             }
 
 
+
+
             //bind data to form
             $form->bind($data);
             return $form;

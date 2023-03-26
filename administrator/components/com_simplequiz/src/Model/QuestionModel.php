@@ -1,9 +1,10 @@
 <?php
 namespace KevinsGuides\Component\SimpleQuiz\Administrator\Model;
+
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\MVC\Model\BaseModel;
 
-defined ( '_JEXEC' ) or die;
+defined('_JEXEC') or die;
 
 
 use Joomla\CMS\Factory;
@@ -43,7 +44,7 @@ class QuestionModel extends AdminModel
     public function getForm($data = [], $loadData = true)
     {
         Log::add('getform called in questionmodel', Log::INFO, 'com_simplequiz');
-        $app  = Factory::getApplication();
+        $app = Factory::getApplication();
 
         // Get the form.
         $form = $this->loadForm('com_simplequiz.question', 'question', ['control' => 'jform', 'load_data' => $loadData]);
@@ -53,22 +54,29 @@ class QuestionModel extends AdminModel
         }
 
 
-        if(isset($data)){
-        //if the form is not new, disable the question_type field
-        if($data->id != null && $data->id != 0)
-        {
-            //$form->setFieldAttribute('question_type', 'disabled', 'true');
+        if (isset($data)) {
+            //if the form is not new, disable the question_type field
+            if ($data->id != null && $data->id != 0) {
+                //$form->setFieldAttribute('question_type', 'disabled', 'true');
 
-            //make question_type readonly
-            $form->setFieldAttribute('question_type', 'readonly', 'true');
+                //make question_type readonly
+                $form->setFieldAttribute('question_type', 'readonly', 'true');
 
-            //json params to object
-            $params = json_decode($data->params);
-            $data->question_type = $params->question_type;
-            $data->randomize_mchoice = $params->randomize_mchoice;
-            $data->points = $params->points;
+                //json params to object
+                $params = json_decode($data->params);
+                $data->question_type = $params->question_type;
+                $data->randomize_mchoice = $params->randomize_mchoice;
+                $data->points = $params->points;
+
+                //if question type is not multiple_choice
+                if ($data->question_type != 'multiple_choice') {
+                    //hide the randomize_mchoice field
+                    $form->setFieldAttribute('randomize_mchoice', 'type', 'hidden');
+                }
+            }
         }
-        }
+
+
 
 
 
@@ -87,24 +95,23 @@ class QuestionModel extends AdminModel
 
         //log everything in $data array
         $data_array_to_string = '';
-        foreach($data as $key => $value)
-        {
+        foreach ($data as $key => $value) {
             $data_array_to_string .= $key . ' => ' . $value . ', ';
         }
-        Log::add('QuestionModel::save() called with data '.$data_array_to_string, Log::INFO, 'com_simplequiz');
-        
+        Log::add('QuestionModel::save() called with data ' . $data_array_to_string, Log::INFO, 'com_simplequiz');
+
 
         $qtype = $data['question_type'];
-        if($qtype == 'multiple_choice'){
+        if ($qtype == 'multiple_choice') {
             //get possible answers from data
             $answers = $data['answers'];
-            
+
             //turn into json where key is index and value is answer
             $json_answers = json_encode($answers);
             $data['answers'] = $json_answers;
         }
 
-        if($qtype == 'true_false'){
+        if ($qtype == 'true_false') {
             //get correct answer from data
             $correct = $data['tfcorrect'];
             Log::add('tf correct answer is ' . $correct, Log::INFO, 'com_simplequiz');
@@ -116,13 +123,10 @@ class QuestionModel extends AdminModel
         Log::add('save question type is ' . $data['question_type'], Log::INFO, 'com_simplequiz');
 
         //see if we are updating or creating
-        if($data['id'] != null && $data['id'] != 0)
-        {
+        if ($data['id'] != null && $data['id'] != 0) {
             //update
             return $this->update($data);
-        }
-        else
-        {
+        } else {
             //create
             return $this->create($data);
         }
@@ -162,7 +166,8 @@ class QuestionModel extends AdminModel
         return true;
     }
 
-    public function create($data){
+    public function create($data)
+    {
         Log::add('create function called', Log::INFO, 'com_simplequiz');
 
         $db = Factory::getContainer()->get('DatabaseDriver');
@@ -176,7 +181,8 @@ class QuestionModel extends AdminModel
 
     }
 
-    public function getLastInsertedId(){
+    public function getLastInsertedId()
+    {
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('id');
@@ -187,8 +193,9 @@ class QuestionModel extends AdminModel
         return $id;
     }
 
-    
-    public function deleteQuestion($pk){
+
+    public function deleteQuestion($pk)
+    {
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->delete('#__simplequiz_questions');

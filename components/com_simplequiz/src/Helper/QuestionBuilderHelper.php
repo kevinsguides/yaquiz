@@ -33,7 +33,12 @@ class QuestionBuilderHelper
         //if question type is multiple_choice
         if ($questionType == 'multiple_choice') {
             $html .= $this->buildMChoice($question, $params);
-        } else {
+        } 
+        else if ($questionType == 'true_false'){
+            $html .= $this->build_truefalse($question);
+        }
+        
+        else {
             $html .= 'question type' . $questionType . ' not supported';
         }
         $html .= '</div>';
@@ -77,6 +82,22 @@ class QuestionBuilderHelper
         //end radio button group
         return $html;
     }
+
+
+    protected function build_truefalse($question){
+        $html = '
+        <div class="form-check">
+        <input class="form-check-input" type="radio" name="answers['.$question->question_id.']" id="answers['.$question->question_id.']t" value="1" />
+        <label for="answers['.$question->question_id.']t">True</label><br/>'
+        ;
+        $html .= '
+        <input class="form-check-input" type="radio" name="answers['.$question->question_id.']" id="answers['.$question->question_id.']f" value="0" />
+        <label for="answers['.$question->question_id.']f">False</label><br/>
+        ';
+        $html .= '</div>';
+        return $html;
+    }
+
     public function getQuizParams($pk)
     {
         $db = Factory::getContainer()->get('DatabaseDriver');
@@ -151,6 +172,9 @@ class QuestionBuilderHelper
                 $pointsFeedback = '0 / ' . $question->params->points . ' points';
             }
         }
+
+
+
         if ($iscorrect) {
             $feedback .= '<div class="card m-1 mb-3">';
             $feedback .= '<h3 class="card-header bg-success text-light">' . $questionnum . '<i class="fas fa-check-circle float-end"></i> ' . $question->question . '</h3><div class="card-body">';
@@ -168,6 +192,9 @@ class QuestionBuilderHelper
             $feedback .= '<div class="card-body">' . $question->details;
             $feedback .= '<br/>';
             $feedback .= '<p>You answered: ' . $useranswer . '</p>';
+            if($quizParams->quiz_feedback_showcorrect === '1'){
+                $feedback .= 'The correct answer was: '. $question->correct_answer;
+            }
             $feedback .= '</div>';
             if ($question->feedback_wrong != '' || $pointsFeedback != '') {
                 $feedback .= '<div class="card-footer">' . $question->feedback_wrong . ' <span class="float-end">' . $pointsFeedback . '</span></div>';

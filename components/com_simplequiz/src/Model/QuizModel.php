@@ -119,7 +119,20 @@ class QuizModel extends ItemModel{
         $db->setQuery($query);
         $question = $db->loadObject();
         $question->params = json_decode($question->params);
-        $question->correct_answer= $this->getCorrectAnswerText($question);
+        if($question->params->question_type === 'multiple_choice'){
+            $question->correct_answer= $this->getCorrectAnswerText($question);
+        }
+        else if($question->params->question_type === 'true_false'){
+            if($question->correct === '1'){
+                $tf = 'True';
+            }
+            else{
+                $tf = 'False';
+            }
+
+            $question->correct_answer= $tf;
+        }
+
         return $question;
     }
 
@@ -137,6 +150,14 @@ class QuizModel extends ItemModel{
         $params = $this->getQuestionParams($question_id);
         $type = $params->question_type;
         if ($type === 'multiple_choice') {
+            $answer = (int)$answer;
+            if ($answer == $correct_answer) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+        else if ($type ==='true_false'){
             $answer = (int)$answer;
             if ($answer == $correct_answer) {
                 return 1;
@@ -176,6 +197,16 @@ class QuizModel extends ItemModel{
             $correct_answer_text = $possible_answers[$correct_answer];
             return $correct_answer_text;
         }
+        if ($question_type === 'true_false'){
+            if($question->correct === '1'){
+                return 'True';
+            }
+            else{
+                return 'False';
+            }
+
+
+        }
 
         return null;
     }
@@ -192,6 +223,14 @@ class QuizModel extends ItemModel{
             $possible_answers = $this->getPossibleAnswers($question_id);
             $selected_answer_text = $possible_answers[$useranswer];
             return $selected_answer_text;
+        }
+        if ($question_type === 'true_false'){
+            if($useranswer === '1'){
+                return 'True';
+            }
+            else{
+                return 'False';
+            }
         }
         return null;
     }
