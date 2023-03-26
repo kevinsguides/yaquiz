@@ -77,6 +77,39 @@ function load_mchoice_editor($answers, $correct_answer){
     return $html;
 }
 
+
+// $correct_answer is either 1 true or 0 false
+function load_truefalse($correct_answer = 1){
+    $html = '<div class="control-group">
+                <div class="control-label">
+                <h3>Select Correct Answer</h3>
+                </div>
+                <div class="controls">
+                <div class="truefalse-editor">
+                <div class="form-check">
+                <input class="form-check-input" type="radio" name="jform[correct]" id="radioTF1" value="1" '.($correct_answer==1?'checked':'').'>
+                    <label class="form-check-label" for="radioTF1">
+                    True
+                    </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="jform[correct]" id="radioTF2" value="0" '.($correct_answer==0?'checked':'').'>
+                <label class="form-check-label" for="radioTF2">
+                False
+                </label>
+            </div>
+            </div>
+            </div>
+            
+            ';
+
+
+    $html .= '</div>';
+     
+    return $html;
+
+}
+
 ?>
 
 <h1>Question Editor</h1>
@@ -89,6 +122,9 @@ function load_mchoice_editor($answers, $correct_answer){
 
          if ($question_type == 'multiple_choice'){
             echo load_mchoice_editor($answers, $correct_answer); 
+         }
+         if ($question_type == 'true_false'){
+            echo load_truefalse($correct_answer);
          }
     }
     else{

@@ -72,10 +72,10 @@ max="100"
 <field
 name="randomize_mchoice"
 type="list"
+showon="question_type:multiple_choice"
 label="COM_SIMPLEQUIZ_QUESTION_RANDOMIZE_MCHOICE_LABEL"
 required="false"
 default="-1"
-showon="question_type:multiple_choice"
 >
 <option value="-1">Use Global</option>
 <option value="0">JNO</option>

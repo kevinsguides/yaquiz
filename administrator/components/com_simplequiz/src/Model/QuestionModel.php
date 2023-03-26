@@ -92,12 +92,25 @@ class QuestionModel extends AdminModel
             $data_array_to_string .= $key . ' => ' . $value . ', ';
         }
         Log::add('QuestionModel::save() called with data '.$data_array_to_string, Log::INFO, 'com_simplequiz');
-        //get answers from data
-        $answers = $data['answers'];
         
-        //turn into json where key is index and value is answer
-        $json_answers = json_encode($answers);
-        $data['answers'] = $json_answers;
+
+        $qtype = $data['question_type'];
+        if($qtype == 'multiple_choice'){
+            //get possible answers from data
+            $answers = $data['answers'];
+            
+            //turn into json where key is index and value is answer
+            $json_answers = json_encode($answers);
+            $data['answers'] = $json_answers;
+        }
+
+        if($qtype == 'true_false'){
+            //get correct answer from data
+            $correct = $data['tfcorrect'];
+            Log::add('tf correct answer is ' . $correct, Log::INFO, 'com_simplequiz');
+        }
+
+
 
         Log::add('save called from q model', Log::INFO, 'com_simplequiz');
         Log::add('save question type is ' . $data['question_type'], Log::INFO, 'com_simplequiz');
