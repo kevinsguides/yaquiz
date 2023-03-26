@@ -28,23 +28,20 @@ class QuizController extends BaseController{
         parent::display($cachable, $urlparams);
         //register tasks
         $this->registerTask('submitquiz', 'submitquiz');
-        Log::add('QuizController::display() called', Log::INFO, 'com_simplequiz');
 
     }
 
     public function submitquiz()
     {
-        Log::add('QuizController::submitquiz() called', Log::INFO, 'com_simplequiz');
-
-            //check for token
-            if(!JSession::checkToken()){
-                Log::add('SimpleQuizController::save() token failed', Log::INFO, 'com_simplequiz');
-                //cue error message
-                $this->setMessage('Token failed');
-                //redirect to the view
-                $this->setRedirect('index.php?option=com_simplequiz');
-                return;
-            }
+        //check for token
+        if(!JSession::checkToken()){
+            Log::add('SimpleQuizController::save() token failed', Log::INFO, 'com_simplequiz');
+            //cue error message
+            $this->setMessage('Token failed');
+            //redirect to the view
+            $this->setRedirect('index.php?option=com_simplequiz');
+            return;
+        }
 
         //grade the quiz by comparing the answers to the correct answers
         //get submitted answers
@@ -52,7 +49,6 @@ class QuizController extends BaseController{
         $input = $app->input;
         $answers = $input->get('answers', array(), 'array');
         $quiz_id = $input->get('quiz_id', 0, 'int');
-        Log::add('i think the quiz id is    '.$quiz_id, Log::INFO, 'com_simplequiz' );
         $quiz = $this->getModel('Quiz')->getItem($quiz_id);
         $model = new QuizModel();
         $quizParams = $model->getQuizParams($quiz_id);
@@ -86,8 +82,6 @@ class QuizController extends BaseController{
 
         $passfail = 'pass';
         $scorepercentage = $points/$total * 100;
-        Log::add('scorepercentage is calc at '.$scorepercentage, Log::INFO, 'com_simplequiz');
-        Log::add('quiz_passing_score is '.$quizParams->passing_score, Log::INFO, 'com_simplequiz');
         if(($points/$total * 100) < $quizParams->passing_score){
             $passfail = 'fail';
         }
@@ -105,11 +99,7 @@ class QuizController extends BaseController{
         //set quiz title state var
         $quiz = $model->getItem($quiz_id);
         $title = $quiz->title;
-        Log::add('QuizController::submitquiz() quiz title: '.$title, Log::INFO, 'com_simplequiz');
-
         $buildResults = $qbhelper->buildResultsArea($title, $quiz_id, $results);
-
-        
         //echo $buildResults;
         $this->setRedirect('index.php?option=com_simplequiz&view=quiz&layout=results&id='.$quiz_id);
 

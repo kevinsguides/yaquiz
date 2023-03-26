@@ -37,7 +37,7 @@ class QuizModel extends ItemModel{
         if($pk == null){
             $pk = $this->getState('quiz.id');
         }
-        Log::add('QuizModel::getItem() called with pk '.$pk, Log::INFO, 'com_simplequiz');
+
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('*');
@@ -51,7 +51,7 @@ class QuizModel extends ItemModel{
     public function getQuizParams($pk = null){
         
 
-        Log::add('getquizparams called with id '.$pk, Log::INFO, 'com_simplequiz');
+
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('params');
@@ -73,7 +73,7 @@ class QuizModel extends ItemModel{
         //need to join with the questions table to get the questions for this quiz
         //get pk from GET
         if(isset($_GET['id'])){
-            Log::add('id set', Log::INFO, 'com_simplequiz');
+
             $pk = $_GET['id'];
         }
         else{
@@ -111,7 +111,6 @@ class QuizModel extends ItemModel{
 
     public function getQuestion($question_id)
     {
-        Log::add('GOT TO GET QUESTION', Log::INFO, 'com_simplequiz');
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('*');
@@ -126,7 +125,6 @@ class QuizModel extends ItemModel{
 
     public function checkAnswer($question_id, $answer)
     {
-        Log::add('checkAnswer() called with question_id '.$question_id.' and answer '.$answer, Log::INFO, 'com_simplequiz');
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('correct');
@@ -174,8 +172,6 @@ class QuizModel extends ItemModel{
         $question_type = $question->params->question_type;
         if ($question_type === 'multiple_choice'){
             $possible_answers = $this->getPossibleAnswers($question->id);
-            //log all possible answers...
-            Log::add('possible answers: '.print_r($possible_answers, true), Log::INFO, 'com_simplequiz');
             $correct_answer = $question->correct;
             $correct_answer_text = $possible_answers[$correct_answer];
             return $correct_answer_text;

@@ -37,7 +37,6 @@ $model = new QuizModel();
 
 //get the questions (a list of objects)
 $questions = $model->getQuestions($quiz->id);
-Log::add('i found this many questions: ' . count($questions), Log::INFO, 'com_simplequiz');
 $questionBuilder = new QuestionBuilderHelper();
 
 $quizparams = $model->getQuizParams($quiz->id);
