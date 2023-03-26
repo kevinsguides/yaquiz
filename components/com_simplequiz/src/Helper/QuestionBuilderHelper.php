@@ -116,6 +116,9 @@ class QuestionBuilderHelper
         //get quiz params
         $quizParams = $this->getQuizParams($quiz_id);
 
+
+
+
         $html = '';
         $feedback = '';
 
@@ -124,9 +127,16 @@ class QuestionBuilderHelper
         if ($quizParams->quiz_showfeedback == 1) {
             //loop through results $results->question_feedback
             Log::add(print_r($results->questions, true), Log::INFO, 'simplequiz');
-            foreach ($results->questions as $question) {
 
-                $feedback .= $this->getQuestionFeedback($quiz_id, $question['question'], $question['iscorrect'], $question['useranswer']);
+            $questionnum = 0;
+
+            foreach ($results->questions as $question) {
+                
+                if($quizParams->quiz_question_numbering == 1){
+                    $questionnum ++;
+                }
+
+                $feedback .= $this->getQuestionFeedback($quiz_id, $question['question'], $question['iscorrect'], $question['useranswer'], $questionnum);
             }
 
         }
@@ -157,11 +167,19 @@ class QuestionBuilderHelper
         return $html;
     }
 
-    protected function getQuestionFeedback($quiz_id, $question, $iscorrect, $useranswer)
+    protected function getQuestionFeedback($quiz_id, $question, $iscorrect, $useranswer, $questionnum)
     {
         $quizParams = $this->getQuizParams($quiz_id);
         $feedback = '';
         $pointsFeedback = '';
+
+        if($questionnum != 0){
+            $questionnum = $questionnum . ') ';
+        }
+        else{
+            $questionnum = '';
+        }
+
         if ($quizParams->quiz_use_points === '1') {
             if ($iscorrect) {
                 $pointsFeedback = $question->params->points . ' / ' . $question->params->points . ' points';
@@ -172,7 +190,7 @@ class QuestionBuilderHelper
 
         if ($iscorrect) {
             $feedback .= '<div class="card m-1 mb-3">';
-            $feedback .= '<h3 class="card-header bg-success text-light"><i class="fas fa-check-circle"></i> ' . $question->question . '</h3><div class="card-body">';
+            $feedback .= '<h3 class="card-header bg-success text-light">'.$questionnum.'<i class="fas fa-check-circle float-end"></i> ' . $question->question . '</h3><div class="card-body">';
             $feedback .= $question->details;
             $feedback .= '<br/>';
             $feedback .= '<p>The answer was: ' . $question->correct_answer . '</p>';
@@ -186,7 +204,7 @@ class QuestionBuilderHelper
 
         } else {
             $feedback .= '<div class="card m-1 mb-3">';
-            $feedback .= '<h3 class="card-header bg-danger text-light"><i class="fas fa-times-circle"></i> ' . $question->question . '</h3>';
+            $feedback .= '<h3 class="card-header bg-danger text-light">'.$questionnum.'<i class="fas fa-times-circle float-end"></i> ' . $question->question . '</h3>';
             $feedback .= '<div class="card-body">' . $question->details;
             $feedback .= '<br/>';
             $feedback .= '<p>You answered: ' . $useranswer . '</p>';
