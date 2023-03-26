@@ -157,11 +157,26 @@ $quizlink = JUri::root().'index.php?option=com_simplequiz&view=quiz&id='.$item->
     <h4 class="text-white"><?php echo $question->question; ?></h4>
     </div>
         <div class="card-body"><a class="float-end" href="index.php?option=com_simplequiz&view=Question&layout=edit&qnid=<?php echo $question->id; ?>"><span class="icon-edit"></span></a>
-        <p><?php echo $question->details; ?></p>
+        <?php 
+        //fix image paths in question->details if they are relative
+        $question->details = str_replace('src="images', 'src="'.JUri::root().'images', $question->details);
+        ?>  
+        <?php echo $question->details; ?>
         </div>
         <div class="card-footer">
         <a class="btn btn-danger btn-sm" title="Remove Question From Quiz" href="index.php?option=com_simplequiz&task=simplequiz.removeQuestionFromQuiz&quiz_id=<?php echo $item->id; ?>&question_id=<?php echo $question->id; ?>"><span class="icon-delete"></span> Remove</a>
-    <span class="float-end"> Type: <?php echo ((json_decode($question->params)->question_type === 'multiple_choice')?'Multiple Choice':'');?> </span>
+    <span class="float-end"> Type: 
+
+    <?php
+    $question_type = json_decode($question->params)->question_type;
+    if($question_type === 'multiple_choice'){
+        echo 'Multiple Choice';
+    }
+    if($question_type === 'true_false'){
+        echo 'True/False';
+    }
+    ?>
+    </span>
 </div>
     </div>
 <?php endforeach; ?>
