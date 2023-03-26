@@ -51,7 +51,7 @@ $questionsModel = new \KevinsGuides\Component\SimpleQuiz\Administrator\Model\Que
 function getQuestionListBox($titleFilter = null, $categoryfilter = null){
     $db = Factory::getContainer()->get('DatabaseDriver');
     $query = $db->getQuery(true);
-    $query->select($db->quoteName(array('id', 'question')));
+    $query->select($db->quoteName(array('id', 'question', 'details')));
     $query->from($db->quoteName('#__simplequiz_questions'));
     if($titleFilter){
         Log::add('attempt filter by title '.$titleFilter, Log::INFO, 'com_simplequiz');
@@ -69,7 +69,9 @@ function getQuestionListBox($titleFilter = null, $categoryfilter = null){
 
     $list = '';
     foreach($results as $result){
-        $list .= '<option value="'.$result->id.'">'.$result->question.'</option>';
+        $truncated_details = substr($result->details, 0, 100);
+        $truncated_details = ' ('.$truncated_details.'...)';
+        $list .= '<option value="'.$result->id.'">[ID: '.$result->id.'] '.$result->question.'   ' . $truncated_details . '</option>';
     }
     $list = '<select name="question_ids[]" multiple class="form-select" size="8">'.$list.'</select>';
     return $list;
@@ -83,7 +85,7 @@ $questions = $model->getQuestionsInQuiz($item->id);
 $quizlink = JUri::root().'index.php?option=com_simplequiz&view=quiz&id='.$item->id;
 ?>
 
-
+<div class="container">
 <div class="card">
 <h1 class="card-header">Details: <?php echo $item->title; ?></h1>
 
@@ -144,7 +146,9 @@ $quizlink = JUri::root().'index.php?option=com_simplequiz&view=quiz&id='.$item->
     <h2 class="card-header bg-primary text-white">Questions In Quiz</h2>
     <div class="card-body">
 <p>Note, removing items from the quiz does not delete the question itself.</p>
+
 <?php foreach ($questions as $question): ?>
+
     <div class="card mb-2">
         <div class="card-header bg-dark text-white">
         
@@ -159,7 +163,9 @@ $quizlink = JUri::root().'index.php?option=com_simplequiz&view=quiz&id='.$item->
 </div>
     </div>
 <?php endforeach; ?>
+
 </div>
 </div>
 
+</div>
 
