@@ -29,9 +29,12 @@ class HtmlView extends BaseHtmlView
         $quizAccess = $this->item->access;
         $user = Factory::getUser();
         $userGroups = $user->getAuthorisedViewLevels();
+        Log::add('User groups: ' . print_r($userGroups, true), Log::INFO, 'com_simplequiz');
+        Log::add('Quiz access: ' . $quizAccess, Log::INFO, 'com_simplequiz');
         if(!in_array($quizAccess, $userGroups)){
             $app->enqueueMessage(Text::_('COM_SIMPLEQUIZ_VIEW_QUIZ_DENIED'), 'error');
-            $app->redirect('index.php');
+        
+            //$app->redirect('index.php');
         }
         
     

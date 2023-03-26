@@ -111,7 +111,7 @@ class QuizController extends BaseController{
 
         
         //echo $buildResults;
-        $this->setRedirect('index.php?option=com_simplequiz&view=quiz&layout=results');
+        $this->setRedirect('index.php?option=com_simplequiz&view=quiz&layout=results&id='.$quiz_id);
 
         //set the results state var
         $app->setUserState('com_simplequiz.results', $buildResults);
