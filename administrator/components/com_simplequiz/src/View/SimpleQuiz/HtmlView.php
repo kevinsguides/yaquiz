@@ -46,7 +46,6 @@ class HtmlView extends BaseHtmlView
         $cParams = ComponentHelper::getParams('com_simplequiz');
         if($cParams->get('load_mathjax')==='1'){
             $wa->registerAndUseScript('com_simplequiz.mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
-
         }
         
         //if view is default
