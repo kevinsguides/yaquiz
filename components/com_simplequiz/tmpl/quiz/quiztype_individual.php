@@ -16,6 +16,14 @@ else{
     $quiz = $this->get('Item');
 }
 
+$app = Factory::getApplication();
+$wa = $app->getDocument()->getWebAssetManager();
+//get config from component
+$globalParams = $app->getParams('com_simplequiz');
+if ($globalParams->get('load_mathjax') === '1') {
+    $wa->registerAndUseScript('com_simplequiz.mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
+}
+
 $model = new QuizModel();
 //the total number of questions in quiz from the model...
 $totalQuestions = $model->getTotalQuestions($quiz->id);
@@ -23,7 +31,7 @@ $quiz_params = $model->getQuizParams($quiz->id);
 
 //if current page is greater than total questions, redirect to last page
 if($currPage > $totalQuestions){
-    $app = Factory::getApplication();
+    
     $app->redirect('index.php?option=com_simplequiz&view=quiz&id='.$quiz->id.'&page='.$totalQuestions);
 }
 

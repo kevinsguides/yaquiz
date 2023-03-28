@@ -19,15 +19,21 @@ Currently, this is unstable. Do not use on production sites.
 * Basic form validation
 * Quiz access levels on front end
 * Some, but not all permissions are respected
+* Question ordering
+* Single page or multi page quizzes
 
 ## Todo
-* Change question ordering
+* record hits/submissions option
+* record grade statistics option
+* checkin system
+* better templating system in general - easier extensibility....
+* display grade statistics option
 * Other question types
     * hot spot
 * Clean/consistent interface
 * Fix Language Files
 * 1 question per page option
 * Additional styles
-* Record user results
+* Record user results and save to db permanently
 * Quiz statistics/review results
 * Quiz Certificates
