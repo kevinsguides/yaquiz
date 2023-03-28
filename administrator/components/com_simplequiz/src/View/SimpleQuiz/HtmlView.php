@@ -34,10 +34,6 @@ class HtmlView extends BaseHtmlView
             $id = 0;
         }
         
-
-        Log::add("i found this id: $id", Log::INFO, 'com_simplequiz');
-
-
         //get quiz from the model
         $model = $this->getModel();
         $app = Factory::getApplication();

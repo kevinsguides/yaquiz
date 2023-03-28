@@ -154,7 +154,7 @@ $quizlink = JUri::root().'index.php?option=com_simplequiz&view=quiz&id='.$item->
     <div class="card mb-2">
         <div class="card-header bg-dark text-white">
         
-    <h4 class="text-white"><?php echo $question->question; ?></h4>
+    <h4 class="text-white" id="qn<?php echo $question->id; ?>"><?php echo $question->question; ?></h4>
     </div>
         <div class="card-body"><a class="float-end" href="index.php?option=com_simplequiz&view=Question&layout=edit&qnid=<?php echo $question->id; ?>"><span class="icon-edit"></span></a>
         <?php 
@@ -162,6 +162,10 @@ $quizlink = JUri::root().'index.php?option=com_simplequiz&view=quiz&id='.$item->
         $question->details = str_replace('src="images', 'src="'.JUri::root().'images', $question->details);
         ?>  
         <?php echo $question->details; ?>
+        <p>Order: <?php echo $question->ordering; ?></p>
+        
+        <a href="index.php?option=com_simplequiz&task=SimpleQuiz.orderUp&quiz_id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-dark btn-sm">Order Up</a>  
+        <a href="index.php?option=com_simplequiz&task=SimpleQuiz.orderDown&quiz_id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-dark btn-sm">Order Down</a>
         </div>
         <div class="card-footer">
         <a class="btn btn-danger btn-sm" title="Remove Question From Quiz" href="index.php?option=com_simplequiz&task=simplequiz.removeQuestionFromQuiz&quiz_id=<?php echo $item->id; ?>&question_id=<?php echo $question->id; ?>"><span class="icon-delete"></span> Remove</a>

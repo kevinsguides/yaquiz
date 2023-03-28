@@ -229,15 +229,162 @@ class SimpleQuizModel extends AdminModel
         $query = $db->getQuery(true);
 
         //get the questions in this quiz
-        $query->select('q.id, q.question, q.details, q.answers, q.correct, q.published, q.params, q.catid');
+        $query->select('q.id, q.question, q.details, q.answers, q.correct, q.published, q.params, q.catid, qqm.ordering');
         $query->from('#__simplequiz_questions as q');
         $query->join('INNER', '#__simplequiz_question_quiz_map as qqm ON q.id = qqm.question_id');
         $query->where('qqm.quiz_id = ' . $quiz_id);
+        $query->order('qqm.ordering ASC');
         $db->setQuery($query);
         $questions = $db->loadObjectList();
 
-        return $questions;
+        //if the order is 0, set it to the highest order + 1
+        
+        foreach ($questions as $question) {
+            if ($question->ordering == 0) {
+                $highestOrder = $this->getHighestOrder($quiz_id);
+                $question->ordering = $highestOrder + 1;
+                $this->updateQuestionOrder($quiz_id, $question->id, $question->ordering);
+            }
+        }
 
+        return $questions;
+    }
+
+
+    //get the highest ordering number
+    public function getHighestOrder($quiz_id){
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+
+        //get the questions in this quiz
+        $query->select('MAX(qqm.ordering)');
+        $query->from('#__simplequiz_question_quiz_map as qqm');
+        $query->where('qqm.quiz_id = ' . $quiz_id);
+        $db->setQuery($query);
+        $highestOrder = $db->loadResult();
+
+        return $highestOrder;
+    }
+
+    public function updateQuestionOrder($quiz_id, $question_id, $newOrder)
+    {
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+
+        //update the question order
+        $query->update('#__simplequiz_question_quiz_map');
+        $query->set('ordering = ' . $newOrder);
+        $query->where('quiz_id = ' . $quiz_id);
+        $query->where('question_id = ' . $question_id);
+        $db->setQuery($query);
+        $db->execute();
+
+    }
+
+    public function moveQuestionOrderUp($quiz_id, $question_id){
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+
+        //get the current order of the question
+        $query->select('qqm.ordering');
+        $query->from('#__simplequiz_question_quiz_map as qqm');
+        $query->where('qqm.quiz_id = ' . $quiz_id);
+        $query->where('qqm.question_id = ' . $question_id);
+        $db->setQuery($query);
+        $currentOrder = $db->loadResult();
+
+        //if the current order is 1, return
+        if($currentOrder == 1){
+            return;
+        }
+
+        //get the question with the order one less than the current order
+        $query = $db->getQuery(true);
+        $query->select('qqm.question_id');
+        $query->from('#__simplequiz_question_quiz_map as qqm');
+        $query->where('qqm.quiz_id = ' . $quiz_id);
+        $query->where('qqm.ordering = ' . ($currentOrder - 1));
+        $db->setQuery($query);
+        $otherQuestionId = $db->loadResult();
+
+        //update the order of the current question
+        $query = $db->getQuery(true);
+        $query->update('#__simplequiz_question_quiz_map');
+        $query->set('ordering = ' . ($currentOrder - 1));
+        $query->where('quiz_id = ' . $quiz_id);
+        $query->where('question_id = ' . $question_id);
+        $db->setQuery($query);
+        $db->execute();
+
+        //update the order of the other question
+        $query = $db->getQuery(true);
+        $query->update('#__simplequiz_question_quiz_map');
+        $query->set('ordering = ' . ($currentOrder));
+        $query->where('quiz_id = ' . $quiz_id);
+        $query->where('question_id = ' . $otherQuestionId);
+        $db->setQuery($query);
+        $db->execute();
+
+        //return the new order number
+        return $currentOrder - 1;
+
+
+    }
+
+
+    public function moveQuestionOrderDown($quiz_id, $question_id){
+            
+            $db = Factory::getContainer()->get('DatabaseDriver');
+            $query = $db->getQuery(true);
+    
+            //get the current order of the question
+            $query->select('qqm.ordering');
+            $query->from('#__simplequiz_question_quiz_map as qqm');
+            $query->where('qqm.quiz_id = ' . $quiz_id);
+            $query->where('qqm.question_id = ' . $question_id);
+            $db->setQuery($query);
+            $currentOrder = $db->loadResult();
+    
+            //get the highest order number
+            $highestOrder = $this->getHighestOrder($quiz_id);
+    
+            //if the current order is the highest order, return
+            if($currentOrder == $highestOrder){
+                return;
+            }
+    
+            //get the question with the order one more than the current order
+            $query = $db->getQuery(true);
+            $query->select('qqm.question_id');
+            $query->from('#__simplequiz_question_quiz_map as qqm');
+            $query->where('qqm.quiz_id = ' . $quiz_id);
+            $query->where('qqm.ordering = ' . ($currentOrder + 1));
+            $db->setQuery($query);
+            $otherQuestionId = $db->loadResult();
+    
+            //update the order of the current question
+            $query = $db->getQuery(true);
+            $query->update('#__simplequiz_question_quiz_map');
+            $query->set('ordering = ' . ($currentOrder + 1));
+            $query->where('quiz_id = ' . $quiz_id);
+            $query->where('question_id = ' . $question_id);
+            $db->setQuery($query);
+            $db->execute();
+    
+            //update the order of the other question
+            $query = $db->getQuery(true);
+            $query->update('#__simplequiz_question_quiz_map');
+            $query->set('ordering = ' . ($currentOrder));
+            $query->where('quiz_id = ' . $quiz_id);
+            $query->where('question_id = ' . $otherQuestionId);
+            $db->setQuery($query);
+            $db->execute();
+    
+            //return the new order number
+            return $currentOrder + 1;
     }
 
     public function removeQuestionFromQuiz($quiz_id, $question_id)

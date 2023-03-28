@@ -74,29 +74,30 @@ $canDelete = $user->authorise('core.delete', 'com_simplequiz');
     <?php if($this->items): ?>
         <div class="row">
             <div class="col-6">
-                <h2>Quiz Title: </h2>
+                <h3>Quiz Title: </h3>
     </div>
-    <div class="col-2">
-        <h2>Category</h2>
+    <div class="col-3">
+        <h3>Category</h3>
     </div>
-    <div class="col-4">
-        <h2>Actions: </h2>
+    <div class="col-3">
+        <h3>Actions: </h3>
         </div>
     </div>
    
             <?php foreach($this->items as $item): ?>
                 <hr/>
                 <div class="row mb-2">
-                    <div class="col-6">
-                    <a href="index.php?option=com_simplequiz&view=simplequiz&id=<?php echo $item->id ?>"><h3><?php echo $item->title; ?></h3></a></div>
-                    <div class="col-2">
-                    <h3><?php echo ($quizModel->getCategoryName($item->catid)? $quizModel->getCategoryName($item->catid) : 'Uncategorized'); ?></h3>
-                    </div>
-                    <div class="col-4">
-                    <a class="btn btn-secondary" href="index.php?option=com_simplequiz&view=simplequiz&layout=edit&id=<?php echo $item->id ?>">Quiz Settings</a>
-                    <a class="btn btn-primary" href="index.php?option=com_simplequiz&view=simplequiz&id=<?php echo $item->id ?>">Select Questions</a>
+                    <div class="col-12 col-md-6">
+                    <a href="index.php?option=com_simplequiz&view=simplequiz&id=<?php echo $item->id ?>"><?php echo $item->title; ?> <span class="icon-edit"></span></a></div>
+                    <div class="col-12 col-md-3">
+                    <span><?php echo ($quizModel->getCategoryName($item->catid)? $quizModel->getCategoryName($item->catid) : 'Uncategorized'); ?></span>
+                  
+                  </div>
+                    <div class="col-12 col-md-3">
+                    <a class="btn btn-info btn-sm w-100 mb-1 text-start" href="index.php?option=com_simplequiz&view=simplequiz&layout=edit&id=<?php echo $item->id ?>"><span class="icon-options"></span> Quiz Settings</a>
+                    <a class="btn btn-success btn-sm w-100 mb-1 text-start" href="index.php?option=com_simplequiz&view=simplequiz&id=<?php echo $item->id ?>"><span class="icon-checkbox"></span> Select Questions</a>
                     <?php if($canDelete): ?>
-                      <a class="btn btn-danger" href="index.php?option=com_simplequiz&view=simplequiz&task=SimpleQuiz.remove&quizid=<?php echo $item->id ?>">Delete</a>
+                      <a class="btn btn-danger btn-sm mb-1 float-end" href="index.php?option=com_simplequiz&view=simplequiz&task=SimpleQuiz.remove&quizid=<?php echo $item->id ?>"><span class="icon-trash"></span> Delete</a>
                     <?php endif; ?>
                 </div>
                 </div>

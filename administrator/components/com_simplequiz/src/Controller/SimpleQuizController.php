@@ -137,6 +137,22 @@ class SimpleQuizController extends BaseController
         $this->setRedirect('index.php?option=com_simplequiz&view=simplequizzes');
     }
 
+    public function orderUp(){
+        $quiz_id = $this->input->get('quiz_id', '', 'raw');
+        $model = $this->getModel('SimpleQuiz');
+        $neworder = $model->moveQuestionOrderUp($quiz_id, $this->input->get('qnid', '', 'raw'));
+        //redirect to quiz
+        $this->setRedirect('index.php?option=com_simplequiz&view=SimpleQuiz&id=' . $this->input->get('quiz_id', '', 'raw') . '#qn' . $neworder );
+    }
+
+    public function orderDown(){
+        $quiz_id = $this->input->get('quiz_id', '', 'raw');
+        $model = $this->getModel('SimpleQuiz');
+        $neworder = $model->moveQuestionOrderDown($quiz_id, $this->input->get('qnid', '', 'raw'));
+        //redirect to quiz
+        $this->setRedirect('index.php?option=com_simplequiz&view=SimpleQuiz&id=' . $this->input->get('quiz_id', '', 'raw') . '#qn' . $neworder );
+    }
+
 
 
 

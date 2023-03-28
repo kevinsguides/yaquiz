@@ -24,7 +24,7 @@ class QuestionBuilderHelper
         $formatted_questionnum = '';
         if ($quiz_params->quiz_question_numbering == 1) {
             $this->questionnumber++;
-            $formatted_questionnum = '<span class="questionnumber">' . $this->questionnumber . ' )</span> ';
+            $formatted_questionnum = '<span class="questionnumber">' . $this->questionnumber . ')</span> ';
         } else {
             $this->questionnumber = '';
         }
@@ -34,7 +34,7 @@ class QuestionBuilderHelper
         }
         $html = '<div class="card"><h3 class="card-header">' . $itemMissing . $formatted_questionnum . $question->question . '</h3>';
 
-        $html .= '<div class="card-body">' . $question->details . '<hr/>';
+        $html .= '<div class="card-body">' . $question->details;
         //if question type is multiple_choice
         if ($questionType == 'multiple_choice') {
             $html .= $this->buildMChoice($question, $params);
