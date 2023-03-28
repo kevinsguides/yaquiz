@@ -91,11 +91,17 @@ class QuestionsModel extends AdminModel
 
     }
 
-    public function getPageCount(){
+    public function getPageCount($filter_categories = null, $filter_title = null){
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('COUNT(*)');
         $query->from('#__simplequiz_questions');
+        if($filter_title){
+            $query->where($db->quoteName('question') . ' LIKE ' . $db->quote('%'.$filter_title.'%'));
+        }
+        if($filter_categories){
+            $query->where($db->quoteName('catid') . ' = ' . $db->quote($filter_categories));
+        }
         $db->setQuery($query);
         $count = $db->loadResult();
         return ceil($count / 10);

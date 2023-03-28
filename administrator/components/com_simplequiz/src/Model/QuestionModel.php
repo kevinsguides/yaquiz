@@ -132,7 +132,10 @@ class QuestionModel extends AdminModel
             //get correct answer from data
             $answers = $data['answers'];
             //remove any blank answers ""
-            $answers = array_filter($answers, function($value) { return $value !== ''; });
+            //if not null
+            if(isset($answers)){
+                $answers = array_filter($answers, function($value) { return $value !== ''; });
+            }
             $data['answers'] = json_encode($answers);
 
         }
