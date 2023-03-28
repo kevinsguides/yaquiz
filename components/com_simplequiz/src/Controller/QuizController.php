@@ -43,12 +43,10 @@ class QuizController extends BaseController{
             return;
         }
 
-
-
         //grade the quiz by comparing the answers to the correct answers
         //get submitted answers
         $app = Factory::getApplication();
-        $input = $app->input;
+        $input = $app->getInput();
         $answers = $input->get('answers', array(), 'array');
         $quiz_id = $input->get('quiz_id', 0, 'int');
         $quiz = $this->getModel('Quiz')->getItem($quiz_id);

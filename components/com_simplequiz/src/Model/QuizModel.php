@@ -116,19 +116,9 @@ class QuizModel extends ItemModel{
         $db->setQuery($query);
         $question = $db->loadObject();
         $question->params = json_decode($question->params);
-        if($question->params->question_type === 'multiple_choice'){
-            $question->correct_answer= $this->getCorrectAnswerText($question);
-        }
-        else if($question->params->question_type === 'true_false'){
-            if($question->correct === '1'){
-                $tf = 'True';
-            }
-            else{
-                $tf = 'False';
-            }
 
-            $question->correct_answer= $tf;
-        }
+            $question->correct_answer= $this->getCorrectAnswerText($question);
+
 
         return $question;
     }
@@ -137,16 +127,17 @@ class QuizModel extends ItemModel{
     {
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
-        $query->select('correct');
+        $query->select('correct, answers');
         $query->from($db->quoteName('#__simplequiz_questions'));
         $query->where($db->quoteName('id') . ' = ' . $db->quote($question_id));
         $db->setQuery($query);
-        $correct_answer = $db->loadObject();
-        $correct_answer = $correct_answer->correct;
+        $question = $db->loadObject();
+        
 
         $params = $this->getQuestionParams($question_id);
         $type = $params->question_type;
         if ($type === 'multiple_choice') {
+            $correct_answer = $question->correct;
             $answer = (int)$answer;
             if ($answer == $correct_answer) {
                 return 1;
@@ -155,12 +146,36 @@ class QuizModel extends ItemModel{
             }
         }
         else if ($type ==='true_false'){
+            $correct_answer = $question->correct;
             $answer = (int)$answer;
             if ($answer == $correct_answer) {
                 return 1;
             } else {
                 return 0;
             }
+        }
+        else if ($type==='fill_blank'){
+            $possibleCorrectAnswers = json_decode($question->answers);
+            $caseSensitive = $params->case_sensitive;
+            if($caseSensitive){
+                if(in_array($answer, $possibleCorrectAnswers)){
+                    return 1;
+                }
+                else{
+                    return 0;
+                }
+            }
+            else{
+                $answer = strtolower($answer);
+                $possibleCorrectAnswers = array_map('strtolower', $possibleCorrectAnswers);
+                if(in_array($answer, $possibleCorrectAnswers)){
+                    return 1;
+                }
+                else{
+                    return 0;
+                }
+            }
+            
         }
         else{
             return 0;
@@ -192,17 +207,24 @@ class QuizModel extends ItemModel{
             $possible_answers = $this->getPossibleAnswers($question->id);
             $correct_answer = $question->correct;
             $correct_answer_text = $possible_answers[$correct_answer];
-            return $correct_answer_text;
+            return '"'. $correct_answer_text . '" was the correct answer.';
         }
         if ($question_type === 'true_false'){
             if($question->correct === '1'){
-                return 'True';
+                return 'The correct answer was True.';
             }
             else{
-                return 'False';
+                return 'The correct answer was False.';
             }
-
-
+        }
+        if ($question_type === 'fill_blank'){
+            $possible_answers = json_decode($question->answers);
+            $answerList = '';
+            foreach($possible_answers as $answer){
+                $answerList .= '<li>' . $answer . '</li>';
+            }
+            $answerList = '<ul>' . $answerList . '</ul>';
+            return 'Any of the following would be counted as correct: '. $answerList;
         }
 
         return null;
@@ -228,6 +250,9 @@ class QuizModel extends ItemModel{
             else{
                 return 'False';
             }
+        }
+        if ($question_type === 'fill_blank'){
+            return $useranswer;
         }
         return null;
     }

@@ -43,7 +43,7 @@ class QuestionModel extends AdminModel
     //form getter
     public function getForm($data = [], $loadData = true)
     {
-        Log::add('getform called in questionmodel', Log::INFO, 'com_simplequiz');
+
         $app = Factory::getApplication();
 
         // Get the form.
@@ -67,6 +67,7 @@ class QuestionModel extends AdminModel
                 $data->question_type = $params->question_type;
                 $data->randomize_mchoice = $params->randomize_mchoice;
                 $data->points = $params->points;
+                $data->case_sensitive = $params->case_sensitive;
 
                 //if question type is not multiple_choice
                 if ($data->question_type != 'multiple_choice') {
@@ -75,6 +76,18 @@ class QuestionModel extends AdminModel
                 }
             }
         }
+        else{
+
+            $data = new \stdClass();
+            $data->question_type = 'multiple_choice';
+            $data->randomize_mchoice = 0;
+            $data->points = 1;
+            $data->case_sensitive = 0;
+
+            
+        }
+
+
 
 
 
@@ -83,9 +96,6 @@ class QuestionModel extends AdminModel
 
         //populate details with details
         $form->bind($data);
-
-
-
         return $form;
     }
 
@@ -112,9 +122,19 @@ class QuestionModel extends AdminModel
         }
 
         if ($qtype == 'true_false') {
+
             //get correct answer from data
             $correct = $data['tfcorrect'];
             Log::add('tf correct answer is ' . $correct, Log::INFO, 'com_simplequiz');
+        }
+
+        if($qtype == 'fill_blank'){
+            //get correct answer from data
+            $answers = $data['answers'];
+            //remove any blank answers ""
+            $answers = array_filter($answers, function($value) { return $value !== ''; });
+            $data['answers'] = json_encode($answers);
+
         }
 
 
@@ -139,6 +159,7 @@ class QuestionModel extends AdminModel
         $params->question_type = $data['question_type'];
         $params->randomize_mchoice = $data['randomize_mchoice'];
         $params->points = $data['points'];
+        $params->case_sensitive = $data['case_sensitive'];
         $json = json_encode($params);
         Log::add('trynna save these params as json: ' . $json, Log::INFO, 'com_simplequiz ');
         return $json;

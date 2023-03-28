@@ -42,6 +42,9 @@ class QuestionBuilderHelper
         else if ($questionType == 'true_false'){
             $html .= $this->build_truefalse($question);
         }
+        else if ($questionType == 'fill_blank'){
+            $html .= $this->build_fill_blank($question);
+        }
         
         else {
             $html .= 'question type' . $questionType . ' not supported';
@@ -115,6 +118,25 @@ class QuestionBuilderHelper
         <label for="answers['.$question->question_id.']f">False</label><br/>
         ';
         $html .= '</div>';
+        return $html;
+    }
+
+    protected function build_fill_blank($question){
+
+        if (isset($question->defaultanswer)){
+            $defaultanswer = $question->defaultanswer;
+        }
+        else{
+            $defaultanswer = '';
+        }
+
+        $html = '';
+
+        $html .= '<input type="text" name="answers['.$question->question_id.']" value="'.$defaultanswer.'"/>';
+
+
+
+
         return $html;
     }
 
@@ -200,7 +222,7 @@ class QuestionBuilderHelper
             $feedback .= '<h3 class="card-header bg-success text-light">' . $questionnum . '<i class="fas fa-check-circle float-end"></i> ' . $question->question . '</h3><div class="card-body">';
             $feedback .= $question->details;
             $feedback .= '<br/>';
-            $feedback .= '<p>The answer was: ' . $question->correct_answer . '</p>';
+            $feedback .= $question->correct_answer;
             $feedback .= '</div>';
             if ($question->feedback_right != '' || $pointsFeedback != '') {
                 $feedback .= '<div class="card-footer">' . $question->feedback_right . ' <span class="float-end">' . $pointsFeedback . '</span></div>';
@@ -213,7 +235,7 @@ class QuestionBuilderHelper
             $feedback .= '<br/>';
             $feedback .= '<p>You answered: ' . $useranswer . '</p>';
             if($quizParams->quiz_feedback_showcorrect === '1'){
-                $feedback .= 'The correct answer was: '. $question->correct_answer;
+                $feedback .= $question->correct_answer;
             }
             $feedback .= '</div>';
             if ($question->feedback_wrong != '' || $pointsFeedback != '') {

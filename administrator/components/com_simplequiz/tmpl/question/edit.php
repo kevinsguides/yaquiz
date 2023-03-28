@@ -44,6 +44,14 @@ Log::add('question type is '.$question_type, Log::INFO, 'com_simplequiz');
 
 $correct_answer = $item->correct;
 
+if(isset($params->case_sensitive)){
+    $case_sensitive = $params->case_sensitive;
+}
+else{
+    $case_sensitive = 0;
+}
+
+
 //this form is the question.xml form
 // $form = $this->form;
 //get this form from model
@@ -110,8 +118,56 @@ function load_truefalse($correct_answer = 1){
 
 }
 
+
+// all answers are considered correct
+function load_fill_blank($answers, $case_sensitive = 0){
+
+    if ($answers == null){
+        $answers = array('answer'); //add blank answers
+    }
+
+    $html = '<div class="control-group">
+                <div class="control-label">
+                <h3>Case Sensitive</h3>
+                <p>Check if user must enter exactly the same text, with the same Upper and lower case characters.</p>
+                </div>
+                <div class="controls">
+                    <input type="checkbox" name="jform[case_sensitive]" value="1" '.($case_sensitive==1?'checked':'').'>
+                </div>
+            </div>
+                ';
+
+
+    $html .= '<div class="control-group">
+                <div class="control-label">
+                <h3>Answers</h3>
+                <p>Enter all possible answers for this question.  Anything the user enters which matches will be counted as correct.</p>
+                </div>
+                <div class="controls">
+                <div class="fill-blank-editor">
+                <ul id="fill-blank-answer-list">';
+    $i = 0;
+    foreach($answers as $answer){
+        $i++;
+        $html .= '<li data-ansid="'.$i.'" class="fill-blank-answer">';
+        $html .= '<button class="btn btn-danger fill-blank-delete-btn">Delete</button>';
+        $html .= '<input type="text" name="jform[answers][]" value="'.$answer.'">';
+        $html .= '</li>';
+    }
+    $html .= '</ul>';
+    $html .= '<button type="button" class="btn btn-success" id="fill-blank-add-btn">Add Answer</button>';
+    $html .= '</div>
+            </div>
+            </div>
+            ';
+    return $html;
+
+}
+
+
 ?>
 
+<div class="container">
 <h1>Question Editor</h1>
 
 <form id="adminForm" action="index.php?option=com_simplequiz&task=question.edit" method="post">
@@ -126,6 +182,9 @@ function load_truefalse($correct_answer = 1){
          if ($question_type == 'true_false'){
             echo load_truefalse($correct_answer);
          }
+         if ($question_type == 'fill_blank'){
+            echo load_fill_blank($answers, $case_sensitive);
+         }
     }
     else{
         echo '<p>You must save the question and lock its type before answer options can be used</p>';
@@ -137,12 +196,19 @@ function load_truefalse($correct_answer = 1){
     <?php JHtml::_('form.token'); ?>
 </form>
 
+
 <div style="display:none">
         <li id="mchoice-answer-template" class="mchoice-answer">
         <button class="btn btn-danger mchoice-delete-btn">Delete</button>
         <button class="btn btn-success mchoice-correct-btn">Correct</button>
             <input type="text" name="jform[answers][]" value="">
         </li>
+
+        <li id="fill-blank-answer-template" class="fill-blank-answer">
+        <button class="btn btn-danger fill-blank-delete-btn">Delete</button>
+            <input type="text" name="jform[answers][]" value="">
+        </li>
+
     </div>
 
 
@@ -153,4 +219,6 @@ function load_truefalse($correct_answer = 1){
   <div class="toast-body">
     <p id="simplequiz-toast-message"></p>
   </div>
+</div>
+
 </div>

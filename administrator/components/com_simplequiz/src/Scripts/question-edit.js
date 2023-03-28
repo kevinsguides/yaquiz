@@ -85,6 +85,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         
     }
 
+
     function countMchoiceAnswers(){
         let mchoiceAnswers = document.getElementsByClassName('mchoice-answer');
         console.log('i count ' + mchoiceAnswers.length + ' answers');
@@ -108,6 +109,67 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     function reindexMchoiceAnswers(){
         let answers = document.getElementsByClassName('mchoice-answer');
+        //re-index all the answers
+        for(let i = 0; i < answers.length-1; i++) {
+            answers[i].setAttribute('data-ansid', i);
+        }
+    }
+
+
+    if(questionType == 'fill_blank'){
+        const addBtn = document.getElementById('fill-blank-add-btn');
+        const answerTemplate = document.getElementById('fill-blank-answer-template');
+        const answerList = document.getElementById('fill-blank-answer-list');
+
+        addBtn.addEventListener('click', function() {
+        //max 20 answers
+            if(countFillBlankAnswers() == 20) {
+                toasty('Limit 20 possible answers', 3000);
+                return;
+            }
+
+            //add new answer li to the list
+            let answer = answerTemplate.cloneNode(true);
+            answer.removeAttribute('id');
+            answerList.appendChild(answer);
+            reindexFillBlankAnswers();
+
+        });
+
+        document.addEventListener('click', function(e) {
+
+            if(e.target && e.target.classList.contains('fill-blank-delete-btn')) {
+                e.preventDefault();
+                //dont let them delete the last answer
+                if(countFillBlankAnswers() == 1) {
+                    toasty('You must have at least one answer', 3000);
+                    return;
+                }
+
+                //get the answer id (the nearest data-ansid attribute)
+                let ansId = e.target.closest('.fill-blank-answer').getAttribute('data-ansid');
+
+                //remove the answer
+                e.target.closest('.fill-blank-answer').remove();
+
+                reindexFillBlankAnswers();
+
+                toasty('Answer deleted', 3000);
+
+            }
+        });
+        
+
+    }
+
+    function countFillBlankAnswers(){
+        let fillBlankAnswers = document.getElementsByClassName('fill-blank-answer');
+        console.log('i count ' + fillBlankAnswers.length + ' answers');
+        return fillBlankAnswers.length-1;
+    }
+
+    function reindexFillBlankAnswers(){
+        let answers = document.getElementsByClassName('fill-blank-answer');
         //re-index all the answers
         for(let i = 0; i < answers.length-1; i++) {
             answers[i].setAttribute('data-ansid', i);
