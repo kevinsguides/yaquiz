@@ -32,7 +32,7 @@ class HtmlView extends BaseHtmlView{
         //add component options
         $toolbar->appendButton('Link', 'options', 'Options', 'index.php?option=com_config&view=component&component=com_simplequiz');
         ToolbarHelper::title('Simple Quiz - Questions', 'list');
-        ToolbarHelper::custom('SimpleQuizzes.display', 'list', 'list', 'Quizzes', false);
+        ToolbarHelper::custom('SimpleQuizzes.display', 'list', 'list', 'Quiz Manager', false);
         ToolbarHelper::addNew('Questions.newQuestion');
 
         //display the view

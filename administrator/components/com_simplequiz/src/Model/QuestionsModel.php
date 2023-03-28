@@ -16,7 +16,7 @@ class QuestionsModel extends AdminModel
 {
 
     //get all the Items
-    public function getItems($filter_title = null, $filter_categories = null)
+    public function getItems($filter_title = null, $filter_categories = null, $page = 0)
     {
         //get the database driver
         $db = Factory::getContainer()->get('DatabaseDriver');
@@ -31,6 +31,7 @@ class QuestionsModel extends AdminModel
             Log::add('attempt filter by category '.$filter_categories, Log::INFO, 'com_simplequiz');
             $query->where($db->quoteName('catid') . ' = ' . $db->quote($filter_categories));
         }
+        $query->setLimit(10, $page * 10);
         $db->setQuery($query);
         $items = $db->loadObjectList();
         return $items;
@@ -88,6 +89,17 @@ class QuestionsModel extends AdminModel
         }
         return $form;
 
-
     }
+
+    public function getPageCount(){
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('COUNT(*)');
+        $query->from('#__simplequiz_questions');
+        $db->setQuery($query);
+        $count = $db->loadResult();
+        return ceil($count / 10);
+    }
+
+
 }

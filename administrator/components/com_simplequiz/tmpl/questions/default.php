@@ -26,6 +26,13 @@ if($_POST['filters']['filter_categories']){
     $filter_categories = $_POST['filters']['filter_categories'];
 }
 
+
+}
+
+
+$page = 0;
+if(isset($_GET['page'])){
+    $page = $_GET['page'];
 }
 
 
@@ -33,7 +40,10 @@ if($_POST['filters']['filter_categories']){
 
 //get items
 $model = $this->getModel('Questions');
-$items = $model->getItems($filter_title, $filter_categories);
+$items = $model->getItems($filter_title, $filter_categories, $page);
+
+$pagecount = $model->getPageCount();
+
 
 ?>
 
@@ -78,4 +88,23 @@ $items = $model->getItems($filter_title, $filter_categories);
     <?php endforeach; ?>
 <?php else: ?>
     <p>No questions found</p>
+<?php endif; ?>
+
+
+<?php if($pagecount > 1): ?>
+    <nav class="pagination__wrapper">
+    <div class="pagination pagination-toolbar">
+    <ul class="pagination ">
+        <?php if($page > 0): ?>
+        <li class="page-item"><a class="page-link" href="index.php?option=com_simplequiz&view=Questions&page=<?php echo $page - 1; ?>"><span class="icon-angle-left" aria-hidden="true"></span></a></li>
+        <?php endif; ?>
+    <?php for($i = 0; $i < $pagecount; $i++): ?>
+        <li class="page-item <?php echo ($page == $i )? 'active' : ''; ?>"><a class="page-link" href="index.php?option=com_simplequiz&view=Questions&page=<?php echo $i; ?>"><?php echo $i + 1; ?></a></li>
+    <?php endfor; ?>
+    <?php if($page < $pagecount - 1): ?>
+        <li class="page-item"><a class="page-link" href="index.php?option=com_simplequiz&view=Questions&page=<?php echo $page + 1; ?>"><span class="icon-angle-right" aria-hidden="true"></span></a></li>
+    <?php endif; ?>
+    </ul>
+    </div>
+    </nav>
 <?php endif; ?>

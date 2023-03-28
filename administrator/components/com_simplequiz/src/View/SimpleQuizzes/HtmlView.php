@@ -25,7 +25,7 @@ class HtmlView extends BaseHtmlView
         $toolbar->appendButton('Link', 'new', 'New Quiz', 'index.php?option=com_simplequiz&view=simplequiz&layout=edit');
         //add component options
         $toolbar->appendButton('Link', 'options', 'Options', 'index.php?option=com_config&view=component&component=com_simplequiz');
-        ToolbarHelper::custom('Questions.display', 'checkbox', 'checkbox', 'Questions', false);
+        ToolbarHelper::custom('Questions.display', 'checkbox', 'checkbox', 'Question Manager', false);
         return parent::display($tpl);
     }
 
