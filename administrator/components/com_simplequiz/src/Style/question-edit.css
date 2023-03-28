@@ -33,4 +33,19 @@
 #simplequiz-toast.show {
   display: block; }
 
+#fill-blank-answer-list {
+  padding: 0;
+  margin: 0;
+  list-style: none; }
+  #fill-blank-answer-list li {
+    margin-bottom: 5px;
+    padding: 3px;
+    background: white;
+    border: 1px solid #ccc; }
+    #fill-blank-answer-list li input {
+      width: 100%;
+      padding: 5px; }
+    #fill-blank-answer-list li button {
+      margin: 5px; }
+
 /*# sourceMappingURL=question-edit.css.map */

@@ -175,6 +175,9 @@ $quizlink = JUri::root().'index.php?option=com_simplequiz&view=quiz&id='.$item->
     if($question_type === 'true_false'){
         echo 'True/False';
     }
+    if ($question_type === 'fill_blank'){
+        echo 'Blank / Short Answer';
+    }
     ?>
     </span>
 </div>

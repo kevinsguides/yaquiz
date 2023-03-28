@@ -51,8 +51,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
             if(e.target && e.target.classList.contains('mchoice-delete-btn')) {
                 e.preventDefault();
                 //dont let them delete the last answer
-                if(countMchoiceAnswers() == 1) {
-                    toasty('You must have at least one answer', 3000);
+                if(countMchoiceAnswers() == 2) {
+                    toasty('You must have at least two possible answers', 3000);
                     return;
                 }
 

@@ -12,23 +12,22 @@ Currently, this is unstable. Do not use on production sites.
 ## What's Working...
 * Create Quizzes and Questions
 * Multiple Choice Questions
+* True/False Questions
+* Fill in blank / input text Questions
 * Question Points System
 * Basic Question Feedback System
+* Basic form validation
+* Quiz access levels on front end
+* Some, but not all permissions are respected
 
 ## Todo
-* Fix issue with results page not loading MathJax
-* Proper form validation
-* Proper checkin/out
 * Change question ordering
-* Respect quiz access levels
 * Other question types
-    * fill in blank
-    * true false
     * hot spot
 * Clean/consistent interface
 * Fix Language Files
 * 1 question per page option
-* Additional template styles
+* Additional styles
 * Record user results
 * Quiz statistics/review results
 * Quiz Certificates

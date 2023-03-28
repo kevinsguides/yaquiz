@@ -68,7 +68,7 @@ class QuizController extends BaseController{
 
 
             //save all answered info to their session
-            $session = Factory::getSession();
+            $session = $app->getSession();
             $session->set('sq_retryanswers', $answered);
             $this->setRedirect('index.php?option=com_simplequiz&view=quiz&id=' . $quiz_id.'&status=retry');
             return;

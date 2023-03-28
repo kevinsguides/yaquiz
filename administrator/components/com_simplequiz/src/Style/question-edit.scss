@@ -44,3 +44,22 @@
 #simplequiz-toast.show{
     display: block;
 }
+
+#fill-blank-answer-list{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    li{
+        margin-bottom: 5px;
+        padding: 3px;
+        background: white;
+        border: 1px solid #ccc;
+        input{
+            width: 100%;
+            padding: 5px;
+        }
+        button{
+            margin: 5px;
+        }
+    }
+}

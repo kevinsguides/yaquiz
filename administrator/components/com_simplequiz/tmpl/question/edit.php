@@ -36,6 +36,9 @@ $details = $item->details;
 $answers = $item->answers;
 //decode json answers
 $answers = json_decode($answers);
+
+
+
 $params = $item->params;
 //decode json params
 $params = json_decode($params);
@@ -58,6 +61,13 @@ else{
 $form = $this->getModel()->getForm($item, false);
 
 function load_mchoice_editor($answers, $correct_answer){
+
+    //if answers is null, set default values
+    if($answers == null){
+        $answers = array('Answer 1', 'Answer 2');
+        $correct = 0;
+    }
+
     $html = '';
     $html .= '<div class="mchoice-editor">';
     $html .= '<div class="mchoice-answers">';
@@ -150,7 +160,7 @@ function load_fill_blank($answers, $case_sensitive = 0){
     foreach($answers as $answer){
         $i++;
         $html .= '<li data-ansid="'.$i.'" class="fill-blank-answer">';
-        $html .= '<button class="btn btn-danger fill-blank-delete-btn">Delete</button>';
+        $html .= '<button class="btn btn-sm float-end btn-danger fill-blank-delete-btn">Delete</button>';
         $html .= '<input type="text" name="jform[answers][]" value="'.$answer.'">';
         $html .= '</li>';
     }
