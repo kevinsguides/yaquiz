@@ -78,9 +78,10 @@ else:
 
             <form action="index.php?option=com_simplequiz&task=quiz.submitquiz" method="post">
                 <input type="hidden" name="quiz_id" value="<?php echo $quiz->id; ?>" />
-
+                <?php $i = 0;?>
                 <?php foreach ($questions as $question): ?>
                     <?php
+                    $i++;
                     $actualid = $question->id - 1;
                     //check if $oldanswers is set
                     if ($oldanswers) {
@@ -94,6 +95,7 @@ else:
                             $question->defaultanswer = 'missing';
                         }
                     }
+                    $question->question_number = $i;
                     echo $questionBuilder->buildQuestion($question, $quizparams);
                     ?>
                 <br />

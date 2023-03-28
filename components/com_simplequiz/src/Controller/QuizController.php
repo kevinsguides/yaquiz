@@ -206,14 +206,29 @@ class QuizController extends BaseController{
     public function resetSession(){
         //delete sq_answers and sq_quiz_id from session
         $session = Factory::getApplication()->getSession();
-        $session->clear('sq_answers');
-        $session->clear('sq_quiz_id');
 
-        //cue message
-        $this->setMessage('Your quiz has been reset', 'warning');
+        if(isset($_GET['quiz_id'])){
+            $quiz_id = $_GET['quiz_id'];
+            $current_answers = $session->get('sq_answers', array());
+            if(array_key_exists($quiz_id, $current_answers)){
+                unset($current_answers[$quiz_id]);
+                $session->set('sq_answers', $current_answers);
+                $this->setMessage('Quiz data has been reset', 'warning');
+                $this->setRedirect('index.php?option=com_simplequiz&view=quiz&id='.$quiz_id.'&page=0');
+            }
+            else{
+                $this->setMessage('Quiz data has already been reset', 'warning');
+                $this->setRedirect('index.php');
+            }
+        }
+        else{
+            $session->clear('sq_answers');
+            $session->clear('sq_quiz_id');
+            $this->setMessage('All quiz data has been reset', 'warning');
+            $this->setRedirect('index.php');
+        }
 
-        //redirect to index
-        $this->setRedirect('index.php');
+
     }
 
 

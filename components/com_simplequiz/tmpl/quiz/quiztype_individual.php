@@ -36,7 +36,19 @@ JHtml::_('behavior.keepalive');
 <form action="index.php?option=com_simplequiz&task=quiz.loadNextPage" method="POST">
     <input type="hidden" name="quiz_id" value="<?php echo $quiz->id; ?>" />
     <input type="hidden" name="page" value="<?php echo $currPage; ?>" />
+
+    <?php if ($currPage == 0){
+    //check if the user already started this quiz
+    $session = Factory::getApplication()->getSession();
+    $answers = $session->get('sq_answers', array());
+    //check if an entry exists for this quiz
+    if(isset($answers[$quiz->id])){
+        echo '<div class="alert alert-warning">It looks like you\'ve already started this quiz.<br/> Your previous answers wil be loaded, unless you want to reset. 
+        <a class="btn btn-danger btn-sm float-end" href="index.php?option=com_simplequiz&task=quiz.resetSession&quiz_id='.$quiz->id.'">Reset</a></div>';
+    }
     
+} ?>
+
 <div class="card">
 <div class="card-header">
     <h1><?php echo $quiz->title; ?></h1>
@@ -56,6 +68,7 @@ JHtml::_('behavior.keepalive');
         Log::add('Previous answer found and sent to question : '.$previous_answer, Log::INFO, 'com_simplequiz');
         $question->defaultanswer = $previous_answer;
     }
+    $question->question_number = $currPage;
     echo $qbHelper->buildQuestion($question, $quiz_params);
     ?>
     <input type="hidden" name="question_id" value="<?php echo $question->id; ?>" />

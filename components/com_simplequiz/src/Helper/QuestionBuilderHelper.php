@@ -13,7 +13,6 @@ class QuestionBuilderHelper
     {
         $this->globalParams = Factory::getApplication()->getParams('com_simplequiz');
         $this->db = Factory::getContainer()->get('DatabaseDriver');
-        $this->questionnumber = 0;
     }
     public function buildQuestion($question, $quiz_params)
     {
@@ -23,8 +22,7 @@ class QuestionBuilderHelper
         $questionType = $params->question_type;
         $formatted_questionnum = '';
         if ($quiz_params->quiz_question_numbering == 1) {
-            $this->questionnumber++;
-            $formatted_questionnum = '<span class="questionnumber">' . $this->questionnumber . ')</span> ';
+            $formatted_questionnum = '<span class="questionnumber">' . $question->question_number . ')</span> ';
         } else {
             $this->questionnumber = '';
         }
