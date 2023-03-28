@@ -87,6 +87,7 @@ class QuizModel extends ItemModel{
         $query->from($db->quoteName('#__simplequiz_questions'));
         $query->join('INNER', $db->quoteName('#__simplequiz_question_quiz_map') . ' ON (' . $db->quoteName('#__simplequiz_questions.id') . ' = ' . $db->quoteName('#__simplequiz_question_quiz_map.question_id') . ')');
         $query->where($db->quoteName('#__simplequiz_question_quiz_map.quiz_id') . ' = ' . $db->quote($pk));
+        $query->order('ordering ASC');
         $db->setQuery($query);
         $questions = $db->loadObjectList();
         return $questions;
