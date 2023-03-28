@@ -18,7 +18,7 @@ class QuestionBuilderHelper
     public function buildQuestion($question, $quiz_params)
     {
         //get the question params
-        $params = json_decode($question->params);
+        $params = $question->params;
         //get question type
         $questionType = $params->question_type;
         $formatted_questionnum = '';
@@ -78,9 +78,9 @@ class QuestionBuilderHelper
         foreach ($answers as $answer) {
             $ans = '<div class="form-check">';
             //add radio button
-            $ans .= '<input class="form-check-input" type="radio" name="answers[' . $question->question_id . ']" id="question_' . $question->question_id . '_answer_' . $answeridx . '" value="' . $answeridx . '" '.($defaultanswer==$answeridx?'checked':'').'/>';
+            $ans .= '<input class="form-check-input" type="radio" name="answers[' . $question->id . ']" id="question_' . $question->id . '_answer_' . $answeridx . '" value="' . $answeridx . '" '.($defaultanswer==$answeridx?'checked':'').'/>';
             //add label
-            $ans .= '<label class="form-check-label mchoice btn btn-dark text-start" for="question_' . $question->question_id . '_answer_' . $answeridx . '">' . $answer . '</label>';
+            $ans .= '<label class="form-check-label mchoice btn btn-dark text-start" for="question_' . $question->id . '_answer_' . $answeridx . '">' . $answer . '</label>';
             $answeridx++;
             $ans .= '</div>';
             //add to array
@@ -110,12 +110,12 @@ class QuestionBuilderHelper
 
         $html = '
         <div class="form-check">
-        <input class="form-check-input" type="radio" name="answers['.$question->question_id.']" id="answers['.$question->question_id.']t" value="1" '.($defaultanswer==1?'checked':'').'/>
-        <label for="answers['.$question->question_id.']t">True</label><br/>'
+        <input class="form-check-input" type="radio" name="answers['.$question->id.']" id="answers['.$question->id.']t" value="1" '.($defaultanswer==1?'checked':'').'/>
+        <label for="answers['.$question->id.']t">True</label><br/>'
         ;
         $html .= '
-        <input class="form-check-input" type="radio" name="answers['.$question->question_id.']" id="answers['.$question->question_id.']f" value="0" '.($defaultanswer==0?'checked':'').'/>
-        <label for="answers['.$question->question_id.']f">False</label><br/>
+        <input class="form-check-input" type="radio" name="answers['.$question->id.']" id="answers['.$question->id.']f" value="0" '.($defaultanswer==0?'checked':'').'/>
+        <label for="answers['.$question->id.']f">False</label><br/>
         ';
         $html .= '</div>';
         return $html;
@@ -131,12 +131,7 @@ class QuestionBuilderHelper
         }
 
         $html = '';
-
-        $html .= '<input type="text" name="answers['.$question->question_id.']" value="'.$defaultanswer.'"/>';
-
-
-
-
+        $html .= '<input type="text" name="answers['.$question->id.']" value="'.$defaultanswer.'"/>';
         return $html;
     }
 
@@ -245,4 +240,25 @@ class QuestionBuilderHelper
         }
         return $feedback;
     }
+
+
+    /**
+     * Checks if the user already answered this question
+     * @param $quiz_id int
+     * @param $question_id int
+     * @return null if not answered, otherwise the answer
+     */
+    public function checkAnswerInSession($quiz_id, $question_id){
+        Log::add('Checking answer in session for quiz: ' . $quiz_id . ' question: ' . $question_id, Log::INFO, 'simplequiz');
+        $session = Factory::getApplication()->getSession();
+        $answers = $session->get('sq_answers');
+        if(isset($answers[$quiz_id][$question_id])){
+            Log::add('Answer found in session: ' . $answers[$quiz_id][$question_id], Log::INFO, 'simplequiz');
+            return $answers[$quiz_id][$question_id];
+        }else{
+            return null;
+        }
+
+    }
+
 }

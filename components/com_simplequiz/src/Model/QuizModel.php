@@ -90,6 +90,12 @@ class QuizModel extends ItemModel{
         $query->order('ordering ASC');
         $db->setQuery($query);
         $questions = $db->loadObjectList();
+        //decode params
+        foreach($questions as $question){
+            $question->params = json_decode($question->params);
+            $question->id = $question->question_id;
+        }
+
         return $questions;
     }
 
@@ -109,6 +115,8 @@ class QuizModel extends ItemModel{
 
     public function getQuestion($question_id)
     {
+
+        Log::add('attempt get question with id'.$question_id, Log::INFO, 'com_simplequiz');
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('*');
@@ -117,11 +125,21 @@ class QuizModel extends ItemModel{
         $db->setQuery($query);
         $question = $db->loadObject();
         $question->params = json_decode($question->params);
-
-            $question->correct_answer= $this->getCorrectAnswerText($question);
-
-
+        $question->correct_answer= $this->getCorrectAnswerText($question);
+        Log::add('attempt load question id '.$question->id, Log::INFO, 'com_simplequiz');
         return $question;
+    }
+
+    public function getQuestionFromQuizOrdering($quiz_id, $order){
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('question_id');
+        $query->from($db->quoteName('#__simplequiz_question_quiz_map'));
+        $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($quiz_id));
+        $query->where($db->quoteName('ordering') . ' = ' . $db->quote($order));
+        $db->setQuery($query);
+        $question_id = $db->loadResult();
+        return $this->getQuestion($question_id);
     }
 
     public function checkAnswer($question_id, $answer)

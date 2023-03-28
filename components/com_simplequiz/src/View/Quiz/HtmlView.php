@@ -33,6 +33,23 @@ class HtmlView extends BaseHtmlView
             $app->enqueueMessage(Text::_('COM_SIMPLEQUIZ_VIEW_QUIZ_DENIED'), 'error');
             $app->redirect('index.php');
         }
+
+        $quizparams = $model->getQuizParams($this->item->id);
+        //if we're not on the results layout
+
+        if ($this->getLayout() != 'results'){
+        //if quiz displaymode is default 
+        if($quizparams->quiz_displaymode === 'individual'){
+            $this->setLayout('quiztype_individual');
+            $this->currPage = $app->input->get('page', 0);
+        }
+        else{
+            $this->setLayout('default');
+        }
+        }
+
+
+
         
     
         parent::display($tpl);
