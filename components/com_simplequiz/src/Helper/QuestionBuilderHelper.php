@@ -1,8 +1,10 @@
 <?php
 namespace KevinsGuides\Component\SimpleQuiz\Site\Helper;
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 defined('_JEXEC') or die;
 class QuestionBuilderHelper
 {
@@ -32,7 +34,7 @@ class QuestionBuilderHelper
             $this->questionnumber = '';
         }
         $itemMissing = '';
-        if(isset($question->defaultanswer) && $question->defaultanswer === 'missing'){
+        if (isset($question->defaultanswer) && $question->defaultanswer === 'missing') {
             $itemMissing .= '<i class="text-danger fas fa-exclamation-triangle me-2" title="You forgot to answer this..."></i>';
         }
         $html = '<div class="card"><h3 class="card-header">' . $itemMissing . $formatted_questionnum . $question->question . '</h3>';
@@ -41,21 +43,17 @@ class QuestionBuilderHelper
         //if question type is multiple_choice
         if ($questionType == 'multiple_choice') {
             $html .= $this->buildMChoice($question, $params);
-        } 
-        else if ($questionType == 'true_false'){
+        } else if ($questionType == 'true_false') {
             $html .= $this->build_truefalse($question);
-        }
-        else if ($questionType == 'fill_blank'){
+        } else if ($questionType == 'fill_blank') {
             $html .= $this->build_fill_blank($question);
-        }
-        
-        else {
+        } else {
             $html .= 'question type' . $questionType . ' not supported';
         }
         $html .= '</div>';
         //if quiz uses points system
-        if($quiz_params->quiz_use_points == 1) {
-            $html .= '<div class="card-footer">This question is worth ' . $params->points . ' point'.($params->points > 1 ?  's' :  '').'</div>';
+        if ($quiz_params->quiz_use_points == 1) {
+            $html .= '<div class="card-footer">This question is worth ' . $params->points . ' point' . ($params->points > 1 ? 's' : '') . '</div>';
         }
 
         $html .= '</div>';
@@ -72,16 +70,15 @@ class QuestionBuilderHelper
         $answeridx = 0;
         $answerArr = array();
         //if we are retrying
-        if (isset($question->defaultanswer)){
+        if (isset($question->defaultanswer)) {
             $defaultanswer = $question->defaultanswer;
-        }
-        else{
+        } else {
             $defaultanswer = -1;
         }
         foreach ($answers as $answer) {
             $ans = '<div class="form-check">';
             //add radio button
-            $ans .= '<input class="form-check-input" type="radio" name="answers[' . $question->id . ']" id="question_' . $question->id . '_answer_' . $answeridx . '" value="' . $answeridx . '" '.($defaultanswer==$answeridx?'checked':'').'/>';
+            $ans .= '<input class="form-check-input" type="radio" name="answers[' . $question->id . ']" id="question_' . $question->id . '_answer_' . $answeridx . '" value="' . $answeridx . '" ' . ($defaultanswer == $answeridx ? 'checked' : '') . '/>';
             //add label
             $ans .= '<label class="form-check-label mchoice btn btn-dark text-start" for="question_' . $question->id . '_answer_' . $answeridx . '">' . $answer . '</label>';
             $answeridx++;
@@ -102,39 +99,39 @@ class QuestionBuilderHelper
     }
 
 
-    protected function build_truefalse($question){
+    protected function build_truefalse($question)
+    {
 
-        if (isset($question->defaultanswer)){
+        if (isset($question->defaultanswer)) {
             $defaultanswer = $question->defaultanswer;
-        }
-        else{
+        } else {
             $defaultanswer = -1;
         }
 
         $html = '
         <div class="form-check">
-        <input class="form-check-input" type="radio" name="answers['.$question->id.']" id="answers['.$question->id.']t" value="1" '.($defaultanswer==1?'checked':'').'/>
-        <label for="answers['.$question->id.']t">True</label><br/>'
+        <input class="form-check-input" type="radio" name="answers[' . $question->id . ']" id="answers[' . $question->id . ']t" value="1" ' . ($defaultanswer == 1 ? 'checked' : '') . '/>
+        <label for="answers[' . $question->id . ']t">True</label><br/>'
         ;
         $html .= '
-        <input class="form-check-input" type="radio" name="answers['.$question->id.']" id="answers['.$question->id.']f" value="0" '.($defaultanswer==0?'checked':'').'/>
-        <label for="answers['.$question->id.']f">False</label><br/>
+        <input class="form-check-input" type="radio" name="answers[' . $question->id . ']" id="answers[' . $question->id . ']f" value="0" ' . ($defaultanswer == 0 ? 'checked' : '') . '/>
+        <label for="answers[' . $question->id . ']f">False</label><br/>
         ';
         $html .= '</div>';
         return $html;
     }
 
-    protected function build_fill_blank($question){
+    protected function build_fill_blank($question)
+    {
 
-        if (isset($question->defaultanswer)){
+        if (isset($question->defaultanswer)) {
             $defaultanswer = $question->defaultanswer;
-        }
-        else{
+        } else {
             $defaultanswer = '';
         }
 
         $html = '';
-        $html .= '<input type="text" name="answers['.$question->id.']" value="'.$defaultanswer.'"/>';
+        $html .= '<input type="text" name="answers[' . $question->id . ']" value="' . $defaultanswer . '"/>';
         return $html;
     }
 
@@ -151,6 +148,15 @@ class QuestionBuilderHelper
         $quiz_params = json_decode($quiz_params->params);
         return $quiz_params;
     }
+
+
+    /*
+    * Called by the QuizController on form submit...
+    * @param $title - the quiz params
+    * @param $quiz_id - the quiz id
+    * @param $results - the results object
+    * @return $html - the html to display
+    */
     public function buildResultsArea($title, $quiz_id, $results)
     {
         //the default will be a simple x/x with percentage
@@ -161,7 +167,7 @@ class QuestionBuilderHelper
 
         //get the quiz template style from global params
 
-        $template = $this->globalParams->get('quiz_template_style', 'default');
+        $theme = $this->globalParams->get('theme', 'default');
 
         $html = '';
         $feedback = '';
@@ -177,33 +183,18 @@ class QuestionBuilderHelper
                 $feedback .= $this->getQuestionFeedback($quiz_id, $question['question'], $question['iscorrect'], $question['useranswer'], $questionnum);
             }
         }
-        $pointtext = 'questions right.';
-        if ($quizParams->quiz_use_points === '1') {
-            $pointtext = 'points.';
-        }
-        $html .= '<div class="card m-1 mb-3"><div class="card-body">';
-        $html .= '<h1><i class="fas fa-info-circle"></i> Results: ' . $title . '</h3><hr/>';
-        $html .= '<p>You got ' . $results->correct . ' out of ' . $results->total . ' ' . $pointtext . '</p>';
-        $html .= '<p>That is a ' . $resultPercent . '%</p>';
-        //progress bar display
-        $passColor = ($results->passfail === 'pass') ? 'bg-success' : 'bg-danger';
-        $html .= '<div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="' . $resultPercent . '" aria-valuemin="0" aria-valuemax="100">';
-        $html .= '<div class="progress-bar ' . $passColor . '" style="width: ' . $resultPercent . '%">' . $resultPercent . '%</div>  </div>';
-        $html .= '<br/>';
-        if ($results->passfail === 'pass') {
-            $html .= '<p class="p-3 bg-light text-success">' . $this->globalParams->get('lang_pass') . '</p>';
-        } else {
-            $html .= '<p class="p-3 bg-light text-danger">' . $this->globalParams->get('lang_fail') . '</p>';
-        }
-        $html .= '</div></div>';
+
+        //include the template for the result_summary.php template
+        $template = (JPATH_SITE . '/components/com_simplequiz/tmpl/quiz/' . $theme . '/result_summary.php');
+        include_once($template);
         $html .= $feedback;
         return $html;
     }
 
 
-    protected function loadTemplate($template, $file)
+    protected function loadTemplate($theme, $file)
     {
-        $template = file_get_contents(JPATH_SITE . '/components/com_simplequiz/tmpl/quiz/' . $template . '/' . $file . '.php');
+        $template = file_get_contents(JPATH_SITE . '/components/com_simplequiz/tmpl/quiz/' . $theme . '/' . $file . '.php');
         return $template;
     }
 
@@ -222,7 +213,7 @@ class QuestionBuilderHelper
         //replace [THE_CONTENT] with the question content
         $template = str_replace('[THE_CONTENT]', $question->details, $template);
 
-        
+
         //replace [THE_SCORE] with the question score
 
         $quizParams = $this->getQuizParams($quiz_id);
@@ -233,12 +224,11 @@ class QuestionBuilderHelper
                 $pointsFeedback = '0 / ' . $question->params->points . ' points';
             }
             $template = str_replace('[THE_SCORE]', $pointsFeedback, $template);
-        }
-        else{
+        } else {
             $template = str_replace('[THE_SCORE]', '', $template);
         }
 
-        
+
 
 
         //replace [THE_FEEDBACK] with question feedback
@@ -248,28 +238,25 @@ class QuestionBuilderHelper
 
         $feedback .= '<p><strong>Your answer:</strong> ' . $useranswer . '</p>';
 
-        if($question->feedback_right != '' || $question->feedback_wrong != '')
-        {
-            if($iscorrect){
+        if ($question->feedback_right != '' || $question->feedback_wrong != '') {
+            if ($iscorrect) {
                 $feedback .= $question->feedback_right;
-            }
-            else{
+            } else {
                 $feedback .= $question->feedback_wrong;
             }
             $feedback .= '<br/>';
         }
 
-        if($quizParams->quiz_feedback_showcorrect === '1'){
+        if ($quizParams->quiz_feedback_showcorrect === '1') {
             $feedback .= $question->correct_answer;
         }
 
         $template = str_replace('[THE_FEEDBACK]', $feedback, $template);
 
         //replace [ICON_CORRECT] with the correct or incorrect icon
-        if($iscorrect){
+        if ($iscorrect) {
             $icon = '<i class="fas fa-check-circle text-success"></i>';
-        }
-        else{
+        } else {
             $icon = '<i class="fas fa-times-circle text-danger"></i>';
         }
 
@@ -288,57 +275,6 @@ class QuestionBuilderHelper
 
         return $template;
 
-
-        
-
-/*
-        $quizParams = $this->getQuizParams($quiz_id);
-        $feedback = '';
-        $pointsFeedback = '';
-        if ($questionnum != 0) {
-            $questionnum = $questionnum . ') ';
-        } else {
-            $questionnum = '';
-        }
-        if ($quizParams->quiz_use_points === '1') {
-            if ($iscorrect) {
-                $pointsFeedback = $question->params->points . ' / ' . $question->params->points . ' points';
-            } else {
-                $pointsFeedback = '0 / ' . $question->params->points . ' points';
-            }
-        }
-
-
-
-        if ($iscorrect) {
-            $feedback .= '<div class="card m-1 mb-3">';
-            $feedback .= '<h3 class="card-header bg-success text-light">' . $questionnum . '<i class="fas fa-check-circle float-end"></i> ' . $question->question . '</h3><div class="card-body">';
-            $feedback .= $question->details;
-            $feedback .= '<br/>';
-            $feedback .= $question->correct_answer;
-            $feedback .= '</div>';
-            if ($question->feedback_right != '' || $pointsFeedback != '') {
-                $feedback .= '<div class="card-footer">' . $question->feedback_right . ' <span class="float-end">' . $pointsFeedback . '</span></div>';
-            }
-            $feedback .= '</div>';
-        } else {
-            $feedback .= '<div class="card m-1 mb-3">';
-            $feedback .= '<h3 class="card-header bg-danger text-light">' . $questionnum . '<i class="fas fa-times-circle float-end"></i> ' . $question->question . '</h3>';
-            $feedback .= '<div class="card-body">' . $question->details;
-            $feedback .= '<br/>';
-            $feedback .= '<p>You answered: ' . $useranswer . '</p>';
-            if($quizParams->quiz_feedback_showcorrect === '1'){
-                $feedback .= $question->correct_answer;
-            }
-            $feedback .= '</div>';
-            if ($question->feedback_wrong != '' || $pointsFeedback != '') {
-                $feedback .= '<div class="card-footer">' . $question->feedback_wrong . ' <span class="float-end">' . $pointsFeedback . '</span></div>';
-            }
-            $feedback .= '</div>';
-        }
-        return $feedback;
-        */
-        
     }
 
 
@@ -348,14 +284,15 @@ class QuestionBuilderHelper
      * @param $question_id int
      * @return null if not answered, otherwise the answer
      */
-    public function checkAnswerInSession($quiz_id, $question_id){
+    public function checkAnswerInSession($quiz_id, $question_id)
+    {
         Log::add('Checking answer in session for quiz: ' . $quiz_id . ' question: ' . $question_id, Log::INFO, 'simplequiz');
         $session = Factory::getApplication()->getSession();
         $answers = $session->get('sq_answers');
-        if(isset($answers[$quiz_id][$question_id])){
+        if (isset($answers[$quiz_id][$question_id])) {
             Log::add('Answer found in session: ' . $answers[$quiz_id][$question_id], Log::INFO, 'simplequiz');
             return $answers[$quiz_id][$question_id];
-        }else{
+        } else {
             return null;
         }
 
