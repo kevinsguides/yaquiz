@@ -1,11 +1,13 @@
 # Simple Quiz
 [KevinsGuides.com](https://kevinsguides.com)
 
+Component to be renamed because I found out another "Simple Quiz" extension exists already for Joomla 4... oops.
+
 This is a component for Joomla 4.
 
 It allows you to add quizzes to your website.
 
-Currently, this is unstable. Do not use on production sites.
+Currently, this is in pre-production. Would not recommend use on production sites.
 
 **Newer versions may not be backwards compatible with older test versions.**
 
@@ -38,3 +40,4 @@ Currently, this is unstable. Do not use on production sites.
 * Record user results and save to db permanently
 * Quiz statistics/review results
 * Quiz Certificates
+* Cachable Quizzes and JS only Quizzes with Instant Feedback
