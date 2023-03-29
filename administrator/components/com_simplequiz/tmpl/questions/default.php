@@ -57,8 +57,11 @@ $pagecount = $model->getPageCount($filter_categories, $filter_title);
 ?>
 
 <div class="card mb-2">
-    <h1 class="card-header">Questions Manager</h1>
+    <h1 class="card-header"><span class="icon-check"></span> Questions Manager</h1>
     <div class="card-body">
+    <p>On this page, you can create and modify existing questions. Questions are added to quizzes separately from the quiz manager.</p>
+    <p>A single question may exist on several quizzes. If you delete or modify a question, it will be deleted or changed across all quizzes to which it's used in.</p>
+
         <form id="adminForm" action="index.php?option=com_simplequiz&view=Questions" method="POST">
             <!-- load the form "filters" fieldset -->
             <?php echo $form->renderFieldset('filters'); ?>
@@ -70,10 +73,14 @@ $pagecount = $model->getPageCount($filter_categories, $filter_title);
 </div>
 <?php if ($items != null): ?>
     <?php foreach ($items as $item): ?>
+        <?php $params = json_decode($item->params); ?>
         <div class="card mb-2">
-            <h3 class="card-header bg-light">
+            <div class="card-header bg-light">
+            <span class="w-100">
                 <?php echo $item->question; ?>
-            </h3>
+            </span>
+            <span class="badge bg-primary float-end">ID: <?php echo $item->id; ?></span>
+            </div>
             <div class="card-body">
                 <?php
                 $details = $item->details;
@@ -86,13 +93,31 @@ $pagecount = $model->getPageCount($filter_categories, $filter_title);
                 //truncate the string
                 $details = substr($details, 0, 100);
                 //add ellipsis
-                $details .= '...';
+                if(strlen($details) > 100){
+                    $details .= '...';
+                }
                 echo $details;
-
+                if($details != ''){
+                    echo '<br/>';
+                }
                 ?>
-                <p>Category:
+                
+           
+                <span class="badge text-dark bg-light">Category:
                     <?php echo $sqhelper->getCategoryName($item->catid); ?>
-                </p>
+                </span>
+                <span class="badge text-dark bg-light">Type: 
+                    <?php if($params->question_type == 'multiple_choice'){
+                        echo 'Multiple Choice';    
+                    }
+                    if($params->question_type == 'fill_blank'){
+                        echo 'Short Answer';    
+                    }
+                    if($params->question_type == 'true_false'){
+                        echo 'True/False';    
+                    }
+                ?> </span>
+                <span class="badge text-dark bg-light">Points: <?php echo $params->points; ?></span>
             </div>
             <div class="card-footer">
                 <a class="btn-danger float-end btn btn-sm"
@@ -100,6 +125,7 @@ $pagecount = $model->getPageCount($filter_categories, $filter_title);
                         class="icon-delete"></span> Delete</a>
                 <a href="index.php?option=com_simplequiz&view=Question&layout=edit&qnid=<?php echo $item->id; ?>"><span
                         class="icon-edit"></span> Edit</a>
+                       
             </div>
         </div>
     <?php endforeach; ?>

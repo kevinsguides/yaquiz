@@ -50,12 +50,11 @@ class HtmlView extends BaseHtmlView
         //set this item to that quiz
             $this->item = $model->getQuiz($id);
             ToolbarHelper::custom('SimpleQuiz.redirectEdit', 'edit', 'edit', 'Quiz Settings', false);
-        
             //an external link with target blank
             ToolbarHelper::custom('SimpleQuiz.preview', 'link', 'preview', 'Preview', false);
+            ToolbarHelper::custom('Questions.display', 'checkbox', 'checkbox', 'Question Manager', false);
             return parent::display($tpl);
             
-
         }
 
         //if view is edit

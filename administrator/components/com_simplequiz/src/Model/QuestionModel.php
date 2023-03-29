@@ -3,6 +3,7 @@ namespace KevinsGuides\Component\SimpleQuiz\Administrator\Model;
 
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\MVC\Model\BaseModel;
+use KevinsGuides\Component\SimpleQuiz\Site\Model\QuizModel;
 
 defined('_JEXEC') or die;
 
@@ -220,17 +221,37 @@ class QuestionModel extends AdminModel
 
     public function deleteQuestion($pk)
     {
+        //find all quiz ids that this question is in
         $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('quiz_id');
+        $query->from('#__simplequiz_question_quiz_map');
+        $query->where('question_id = ' . $pk);
+        $db->setQuery($query);
+        $quiz_ids = $db->loadColumn();
+
+        //delete from questions
         $query = $db->getQuery(true);
         $query->delete('#__simplequiz_questions');
         $query->where('id = ' . $pk);
         $db->setQuery($query);
         $db->execute();
+
+        //delete from question_quiz_map
         $query = $db->getQuery(true);
         $query->delete('#__simplequiz_question_quiz_map');
         $query->where('question_id = ' . $pk);
         $db->setQuery($query);
         $db->execute();
+
+        //reorder existing quizzes
+        $quizModel = new SimpleQuizModel();
+        foreach ($quiz_ids as $quiz_id) {
+            $quizModel->reorderQns($quiz_id);
+        }
+
+
+
         return true;
     }
 
