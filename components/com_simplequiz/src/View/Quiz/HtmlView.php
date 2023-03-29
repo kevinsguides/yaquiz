@@ -19,12 +19,16 @@ class HtmlView extends BaseHtmlView
 
         $app = Factory::getApplication();
         $active = $app->getMenu()->getActive();
+        $globalParams = Factory::getApplication()->getParams('com_simplequiz');
+        $model = $this->getModel();
+       
 
         //get params from the menu item
         $this->params = $active->getParams();
         $this->quiz_id = $this->params->get('quiz_id');
-        $model = $this->getModel();
+        
         $this->item = $model->getItem($this->quiz_id);
+        $quizparams = $model->getQuizParams($this->item->id);
 
         $quizAccess = $this->item->access;
         $user = Factory::getUser();
@@ -34,7 +38,19 @@ class HtmlView extends BaseHtmlView
             $app->redirect('index.php');
         }
 
-        $quizparams = $model->getQuizParams($this->item->id);
+
+        $wam = $app->getDocument()->getWebAssetManager();
+        //load the style.css file for the template being used for this quiz, if it exists
+        //the file is in this component's tmpl folder
+
+        $styleFile =  'components/com_simplequiz/tmpl/quiz/' . $globalParams->get('theme','default') . '/style.css';
+        Log::add('style file: ' . $styleFile, Log::INFO, 'com_simplequiz');
+        if(file_exists($styleFile)){
+            Log::add('style file exists', Log::INFO, 'com_simplequiz');
+            $wam->registerAndUseStyle('com_simplequiz.quizstyle', $styleFile);
+        }
+
+
         //if we're not on the results layout
 
         if ($this->getLayout() != 'results'){

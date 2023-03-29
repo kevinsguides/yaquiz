@@ -25,6 +25,7 @@ Currently, this is unstable. Do not use on production sites.
 ## Todo
 * record hits/submissions option
 * record grade statistics option
+* cool circle results graph
 * checkin system
 * better templating system in general - easier extensibility....
 * display grade statistics option

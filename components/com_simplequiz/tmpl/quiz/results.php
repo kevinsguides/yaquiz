@@ -13,6 +13,9 @@ $app = Factory::getApplication();
 $wa = $app->getDocument()->getWebAssetManager();
 
 $results = $app->getUserState('com_simplequiz.results');
+
+
+
 //get config from component
 $globalParams = $app->getParams('com_simplequiz');
 if($globalParams->get('load_mathjax') === '1'){
@@ -20,6 +23,9 @@ if($globalParams->get('load_mathjax') === '1'){
 }
 
 $wa->useStyle('fontawesome');
+
+//get results from session
+
 
 
 
@@ -31,3 +37,7 @@ if(empty($results)){
 ?>
 
 <?php echo $results; ?>
+
+
+
+

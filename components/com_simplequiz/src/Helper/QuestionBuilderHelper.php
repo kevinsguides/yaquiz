@@ -14,6 +14,11 @@ class QuestionBuilderHelper
         $this->globalParams = Factory::getApplication()->getParams('com_simplequiz');
         $this->db = Factory::getContainer()->get('DatabaseDriver');
     }
+
+
+    /**
+     * @return string html for the question's form elements
+     */
     public function buildQuestion($question, $quiz_params)
     {
         //get the question params
@@ -154,6 +159,10 @@ class QuestionBuilderHelper
         //get quiz params
         $quizParams = $this->getQuizParams($quiz_id);
 
+        //get the quiz template style from global params
+
+        $template = $this->globalParams->get('quiz_template_style', 'default');
+
         $html = '';
         $feedback = '';
         //check if quiz_showfeedback is 1
@@ -190,8 +199,99 @@ class QuestionBuilderHelper
         $html .= $feedback;
         return $html;
     }
+
+
+    protected function loadTemplate($template, $file)
+    {
+        $template = file_get_contents(JPATH_SITE . '/components/com_simplequiz/tmpl/quiz/' . $template . '/' . $file . '.php');
+        return $template;
+    }
+
     protected function getQuestionFeedback($quiz_id, $question, $iscorrect, $useranswer, $questionnum)
     {
+
+        //get the quiz template style from global params
+        $style = $this->globalParams->get('theme', 'default');
+
+        //call the template file
+        $template = $this->loadTemplate($style, 'result_wrapper');
+
+        //replace [THE_TITLE] with the question title
+        $template = str_replace('[THE_QUESTION]', $question->question, $template);
+
+        //replace [THE_CONTENT] with the question content
+        $template = str_replace('[THE_CONTENT]', $question->details, $template);
+
+        
+        //replace [THE_SCORE] with the question score
+
+        $quizParams = $this->getQuizParams($quiz_id);
+        if ($quizParams->quiz_use_points === '1') {
+            if ($iscorrect) {
+                $pointsFeedback = $question->params->points . ' / ' . $question->params->points . ' points';
+            } else {
+                $pointsFeedback = '0 / ' . $question->params->points . ' points';
+            }
+            $template = str_replace('[THE_SCORE]', $pointsFeedback, $template);
+        }
+        else{
+            $template = str_replace('[THE_SCORE]', '', $template);
+        }
+
+        
+
+
+        //replace [THE_FEEDBACK] with question feedback
+
+
+        $feedback = '';
+
+        $feedback .= '<p><strong>Your answer:</strong> ' . $useranswer . '</p>';
+
+        if($question->feedback_right != '' || $question->feedback_wrong != '')
+        {
+            if($iscorrect){
+                $feedback .= $question->feedback_right;
+            }
+            else{
+                $feedback .= $question->feedback_wrong;
+            }
+            $feedback .= '<br/>';
+        }
+
+        if($quizParams->quiz_feedback_showcorrect === '1'){
+            $feedback .= $question->correct_answer;
+        }
+
+        $template = str_replace('[THE_FEEDBACK]', $feedback, $template);
+
+        //replace [ICON_CORRECT] with the correct or incorrect icon
+        if($iscorrect){
+            $icon = '<i class="fas fa-check-circle text-success"></i>';
+        }
+        else{
+            $icon = '<i class="fas fa-times-circle text-danger"></i>';
+        }
+
+        $template = str_replace('[ICON_CORRECT]', $icon, $template);
+
+        //check if question numbering is on and replace [THE_NUMBER]
+        if ($questionnum != 0) {
+            $questionnum = $questionnum . ') ';
+            $template = str_replace('[THE_NUMBER]', $questionnum, $template);
+        } else {
+            $questionnum = '';
+            $template = str_replace('[THE_NUMBER]', '', $template);
+        }
+
+
+
+        return $template;
+
+
+        
+
+/*
         $quizParams = $this->getQuizParams($quiz_id);
         $feedback = '';
         $pointsFeedback = '';
@@ -237,6 +337,8 @@ class QuestionBuilderHelper
             $feedback .= '</div>';
         }
         return $feedback;
+        */
+        
     }
 
 
