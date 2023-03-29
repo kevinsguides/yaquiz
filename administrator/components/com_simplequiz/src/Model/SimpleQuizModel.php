@@ -244,8 +244,15 @@ class SimpleQuizModel extends AdminModel
                 $highestOrder = $this->getHighestOrder($quiz_id);
                 $question->ordering = $highestOrder + 1;
                 $this->updateQuestionOrder($quiz_id, $question->id, $question->ordering);
+                //move to end of array
+                $key = array_search($question, $questions);
+                unset($questions[$key]);
+                $questions[] = $question;
+                
             }
         }
+
+
 
         return $questions;
     }
@@ -468,6 +475,33 @@ class SimpleQuizModel extends AdminModel
         $db->setQuery($query);
         $category = $db->loadResult();
         return $category;
+    }
+
+    //reorder the questions from 1 to n based on current order
+    public function reorderQns($pk){
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('qqm.question_id');
+        $query->from('#__simplequiz_question_quiz_map as qqm');
+        $query->where('qqm.quiz_id = ' . $pk);
+        $query->order('qqm.ordering');
+        $db->setQuery($query);
+        $qns = $db->loadColumn();
+
+        $i = 1;
+        foreach($qns as $qn){
+            $query = $db->getQuery(true);
+            $query->update('#__simplequiz_question_quiz_map');
+            $query->set('ordering = ' . $i);
+            $query->where('quiz_id = ' . $pk);
+            $query->where('question_id = ' . $qn);
+            $db->setQuery($query);
+            $db->execute();
+            $i++;
+        }
+
+
     }
 
 

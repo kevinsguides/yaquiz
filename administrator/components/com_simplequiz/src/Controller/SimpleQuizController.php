@@ -95,6 +95,8 @@ class SimpleQuizController extends BaseController
         $model->addQuestionsToQuiz($quizid, $questionids);
         //redirect to the view
         $this->setRedirect('index.php?option=com_simplequiz&view=simplequiz&id=' . $quizid);
+        //refresh
+        //$this->redirectEdit();
 
     }
 
@@ -106,6 +108,8 @@ class SimpleQuizController extends BaseController
         $model = $this->getModel('SimpleQuiz');
         //remove the question from the quiz
         $model->removeQuestionFromQuiz($quizid, $questionid);
+        //reorder
+        $model->reorderQns($quizid);
         //redirect to the view
         $this->setRedirect('index.php?option=com_simplequiz&view=simplequiz&id=' . $quizid);
     }
@@ -151,6 +155,15 @@ class SimpleQuizController extends BaseController
         $neworder = $model->moveQuestionOrderDown($quiz_id, $this->input->get('qnid', '', 'raw'));
         //redirect to quiz
         $this->setRedirect('index.php?option=com_simplequiz&view=SimpleQuiz&id=' . $this->input->get('quiz_id', '', 'raw') . '#qn' . $neworder );
+    }
+
+
+    public function reorderQns(){
+        $quiz_id = $this->input->get('quiz_id', '', 'raw');
+        $model = $this->getModel('SimpleQuiz');
+        $model->reorder($quiz_id);
+        //redirect to quiz
+        //$this->setRedirect('index.php?option=com_simplequiz&view=SimpleQuiz&id=' . $this->input->get('quiz_id', '', 'raw'));
     }
 
 
