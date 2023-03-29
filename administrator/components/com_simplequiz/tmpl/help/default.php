@@ -31,3 +31,12 @@ defined('_JEXEC') or die;
 <p>Once enabled, you must wrap your equations using backslash then parenthesis like so:</p>
 <pre>\(y=mx+b\)</pre>
 <p>You can try a tool like this <a href="https://latexeditor.lagrida.com/" target="_blank">Latex Editor</a> to help you format your equations.</p>
+
+<h3>Misc Tips</h3>
+<ul>
+    <li>Multi page quizzes may take longer to load overall than a single page quiz.</li>
+    <li>This extension is best suited to shorter quizzes with 20-30 questions or fewer. Anything longer than that may become difficult to manage and you might lose your visitors attention.</li>
+    <li>If you use images, avoid having the answer in the image's filename. For example, if the question is to figure out what country's flag is being shown, don't name the file "JapanFlag.png".</li>
+    <li>Avoid overly complex short-answer/fill-in-blank questions. Try limiting answers to simple 1-2 word responses (or a number).</li>
+    <li>Avoid trick questions. Don't include multiple very similar options that could be easily confused. Properly check your own grammar and make sure there aren't actually multiple possible correct answers. You don't want users failing your quizzes when they actually knew the material just because your semantics are confusing.</li>
+  </ul>

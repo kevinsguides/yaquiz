@@ -29,11 +29,13 @@ class HtmlView extends BaseHtmlView{
         $this->items = $model->getItems();
 
         $toolbar = Toolbar::getInstance('toolbar');
+        $toolbar->appendButton('Link', 'new', 'New Question', 'index.php?option=com_simplequiz&view=Question&layout=edit');
         //add component options
         $toolbar->appendButton('Link', 'options', 'Options', 'index.php?option=com_config&view=component&component=com_simplequiz');
+        $toolbar->appendButton('Link', 'folder', 'Categories', 'index.php?option=com_categories&extension=com_simplequiz');
         ToolbarHelper::title('Simple Quiz - Questions', 'list');
         ToolbarHelper::custom('SimpleQuizzes.display', 'list', 'list', 'Quiz Manager', false);
-        ToolbarHelper::addNew('Questions.newQuestion');
+        //ToolbarHelper::addNew('Questions.newQuestion');
 
         //display the view
         return parent::display($tpl);

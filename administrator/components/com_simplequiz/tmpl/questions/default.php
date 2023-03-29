@@ -77,7 +77,7 @@ $pagecount = $model->getPageCount($filter_categories, $filter_title);
         <div class="card mb-2">
             <div class="card-header bg-light">
             <span class="w-100">
-                <?php echo $item->question; ?>
+                <a  href="index.php?option=com_simplequiz&view=Question&layout=edit&qnid=<?php echo $item->id; ?>"><?php echo $item->question; ?></a>
             </span>
             <span class="badge bg-primary float-end">ID: <?php echo $item->id; ?></span>
             </div>
