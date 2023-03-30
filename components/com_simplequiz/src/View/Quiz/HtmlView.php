@@ -34,6 +34,9 @@ class HtmlView extends BaseHtmlView
             $app->enqueueMessage(Text::_('COM_SIMPLEQUIZ_VIEW_QUIZ_NOT_PUBLISHED'), 'error');
             $app->redirect('index.php');
         }
+        elseif ($this->item->published == 0 && ($app->getIdentity()->authorise('core.edit', 'com_simplequiz') == true)){
+            $app->enqueueMessage(Text::_('COM_SIMPLEQUIZ_VIEW_QUIZ_NOT_PUBLISHED_WARNING_EDITOR'), 'warning');
+        }
 
         $quizparams = $model->getQuizParams($this->item->id);
         $quizAccess = $this->item->access;
