@@ -47,6 +47,7 @@ Currently, this is in pre-production. Would not recommend use on production site
 ### What's Working...
 * core.delete affects quiz deletions
 * core.edit affects quiz editing
+* core.edit for questions
 
 ### Todo
 * the create perms for quizzes/qns

@@ -1,6 +1,7 @@
 <?php
 namespace KevinsGuides\Component\SimpleQuiz\Administrator\Controller;
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -24,6 +25,13 @@ class QuestionController extends BaseController
      */
     public function edit($cachable = false, $urlparams = array())
     {
+        $app = Factory::getApplication();
+        if($app->getIdentity()->authorise('core.edit', 'com_simplequiz') != true){
+            $app->enqueueMessage('You do not have permission to edit questions', 'error');
+            $app->redirect('index.php?option=com_simplequiz&view=simplequizzes');
+        }
+
+
         //get the model
         $model = $this->getModel('Question');
         //get the data from form POST

@@ -1,6 +1,7 @@
 <?php
 namespace KevinsGuides\Component\SimpleQuiz\Administrator\Model;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\MVC\Model\BaseModel;
 use KevinsGuides\Component\SimpleQuiz\Site\Model\QuizModel;
@@ -221,6 +222,16 @@ class QuestionModel extends AdminModel
 
     public function deleteQuestion($pk)
     {
+        $app = Factory::getApplication();
+        if($app->getIdentity()->authorise('core.delete', 'com_simplequiz') != true){
+            //cue message
+            $app->enqueueMessage('You don\'t have permission to delete questions.', 'error');
+            throw new \Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+        
+
+
+
         //find all quiz ids that this question is in
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
