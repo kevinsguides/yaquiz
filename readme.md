@@ -41,3 +41,15 @@ Currently, this is in pre-production. Would not recommend use on production site
 * Quiz statistics/review results
 * Quiz Certificates
 * Cachable Quizzes and JS only Quizzes with Instant Feedback
+
+
+## Access
+### What's Working...
+* core.delete affects quiz deletions
+* core.edit affects quiz editing
+
+### Todo
+* the create perms for quizzes/qns
+* the edit/delete perms for qns
+* edit state for quizzes
+* remove/ignore edit own

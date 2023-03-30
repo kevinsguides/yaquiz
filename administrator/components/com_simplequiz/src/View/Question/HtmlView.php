@@ -1,5 +1,6 @@
 <?php
 namespace KevinsGuides\Component\SimpleQuiz\Administrator\View\Question;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 defined ( '_JEXEC' ) or die;
@@ -11,6 +12,14 @@ class HtmlView extends BaseHtmlView{
 
     public function display($tpl = null)
     {
+        $app = Factory::getApplication();
+
+        //make sure user has edit perms
+        if($app->getIdentity()->authorise('core.edit', 'com_simplequiz') != true){
+            $app->enqueueMessage('You do not have permission to edit questions', 'error');
+            $app->redirect('index.php?option=com_simplequiz&view=simplequizzes');
+        }
+
   
         //get model
         $model = $this->getModel();
