@@ -66,6 +66,13 @@ class HtmlView extends BaseHtmlView
         //if view is edit
         if($this->getLayout() == 'edit')
         {
+            //check if user has permission to edit
+            if(Factory::getUser()->authorise('core.edit', 'com_simplequiz') != true){
+                $app->enqueueMessage('You do not have permission to edit this quiz', 'error');
+                $app->redirect('index.php?option=com_simplequiz&view=simplequizzes');
+            }
+
+
             //we need a toolbar
             $this->addEditToolbar();
 

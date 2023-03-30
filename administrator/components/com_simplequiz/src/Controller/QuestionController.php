@@ -17,7 +17,11 @@ class QuestionController extends BaseController
         //register task to save
         $this->registerTask('edit', 'edit');
     }
-    //the edit function
+    
+
+    /**
+     * Task asks model to save or update the question
+     */
     public function edit($cachable = false, $urlparams = array())
     {
         //get the model

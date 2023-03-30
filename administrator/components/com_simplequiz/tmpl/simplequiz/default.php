@@ -105,8 +105,9 @@ $quizlink = JUri::root().'index.php?option=com_simplequiz&view=quiz&id='.$item->
 </div>
 
 <div class="card mt-4">
-    <h2 class="card-header">Question Insertion</h2>
+    <h2 class="card-header bg-light">Question Insertion</h2>
     <div class="card-body">
+        <p>Use this form to add questions to this quiz.</p>
 <!-- filter by category -->
 <form id="adminForm" action="index.php?option=com_simplequiz&view=simplequiz&id=<?php echo $item->id; ?>" method="POST">
 <input type="hidden" name="task">
@@ -117,7 +118,7 @@ $quizlink = JUri::root().'index.php?option=com_simplequiz&view=quiz&id='.$item->
     <?php echo $this->form->renderFieldset('filters'); ?>
     <div class="control-group">
         <div class="control-label">
-            <label for="filterSubmit">Submit:</label>
+            <label for="filterSubmit">Filter Submit:</label>
 </div>
 <div class="controls">
     <button id="filterSubmit" type="submit" class="btn btn-primary btn-sm"><span class="icon-search"></span> Filter Available Questions</button>
