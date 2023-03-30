@@ -23,9 +23,11 @@ Currently, this is in pre-production. Would not recommend use on production site
 * Some, but not all permissions are respected
 * Question ordering
 * Single page or multi page quizzes
+* Basic access control (for create edit delete)
 
 ## Todo
 * record hits/submissions option
+* publish/unpub quizzes and change state permission
 * record grade statistics option
 * cool circle results graph
 * checkin system
@@ -41,16 +43,3 @@ Currently, this is in pre-production. Would not recommend use on production site
 * Quiz statistics/review results
 * Quiz Certificates
 * Cachable Quizzes and JS only Quizzes with Instant Feedback
-
-
-## Access
-### What's Working...
-* core.delete affects quiz deletions
-* core.edit affects quiz editing
-* core.edit for questions
-
-### Todo
-* the create perms for quizzes/qns
-* the edit/delete perms for qns
-* edit state for quizzes
-* remove/ignore edit own

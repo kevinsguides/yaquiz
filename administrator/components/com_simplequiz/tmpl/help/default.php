@@ -25,6 +25,11 @@ defined('_JEXEC') or die;
     <li>Finally, navigate to the "Details/Questions" page under each Quiz and add the respective questions to the quiz.</p>
     <li>You can add a link to the quiz using Joomla's menu manager, or link to it directly by copying the link from the preview.</p>
 </ol>
+<h3>Permission Config</h3>
+<p>This component respects edit and delete permissions set in the global component options.</p>
+<p>For example, if you don't want a user group to be able to delete a quiz or question, set the "Delete" permission to denied.</p>
+<p>The edit permission is extended to create as well. Users require edit permissions to edit/create any question or quiz.</p>
+<p>All other permissions are basically ignored, for now. You should probably just leave them as-is.</p>
 <h3>MathJax</h3>
 <p>To properly display math equations in the quiz, enable the MathJax setting under the global component options.</p>
 <p>This allows you to format equations properly with LaTeX.</p>

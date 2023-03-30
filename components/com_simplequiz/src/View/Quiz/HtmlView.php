@@ -28,8 +28,14 @@ class HtmlView extends BaseHtmlView
         $this->quiz_id = $this->params->get('quiz_id');
         
         $this->item = $model->getItem($this->quiz_id);
-        $quizparams = $model->getQuizParams($this->item->id);
 
+        //check if quiz is published
+        if($this->item->published == 0 && ($app->getIdentity()->authorise('core.edit', 'com_simplequiz') != true)){
+            $app->enqueueMessage(Text::_('COM_SIMPLEQUIZ_VIEW_QUIZ_NOT_PUBLISHED'), 'error');
+            $app->redirect('index.php');
+        }
+
+        $quizparams = $model->getQuizParams($this->item->id);
         $quizAccess = $this->item->access;
         $user = Factory::getUser();
         $userGroups = $user->getAuthorisedViewLevels();

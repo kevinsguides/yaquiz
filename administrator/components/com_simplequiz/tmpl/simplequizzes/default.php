@@ -88,7 +88,9 @@ $canDelete = $user->authorise('core.delete', 'com_simplequiz');
                 <hr/>
                 <div class="row mb-2">
                     <div class="col-12 col-md-6">
-                    <a href="index.php?option=com_simplequiz&view=simplequiz&id=<?php echo $item->id ?>"><?php echo $item->title; ?> <span class="icon-edit"></span></a></div>
+                    <a href="index.php?option=com_simplequiz&view=simplequiz&id=<?php echo $item->id ?>"><?php echo $item->title; ?> <span class="icon-edit"></span></a>
+                    <p><?php echo ($item->published == 1 ? 'Published' : 'Unpublished') ?></p>
+                  </div>
                     <div class="col-12 col-md-3">
                     <span><?php echo ($quizModel->getCategoryName($item->catid)? $quizModel->getCategoryName($item->catid) : 'Uncategorized'); ?></span>
                   

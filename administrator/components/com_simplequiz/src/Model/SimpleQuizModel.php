@@ -277,6 +277,7 @@ class SimpleQuizModel extends AdminModel
     public function updateQuestionOrder($quiz_id, $question_id, $newOrder)
     {
 
+
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
 
@@ -291,6 +292,13 @@ class SimpleQuizModel extends AdminModel
     }
 
     public function moveQuestionOrderUp($quiz_id, $question_id){
+
+                //user must have edit permissions to do this
+                $app = Factory::getApplication();
+                if($app->getIdentity()->authorise('core.edit', 'com_simplequiz') != true){
+                    $app->enqueueMessage('Edit permissions required to change question ordering', 'error');
+                    return;
+                }
 
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
@@ -343,7 +351,12 @@ class SimpleQuizModel extends AdminModel
 
 
     public function moveQuestionOrderDown($quiz_id, $question_id){
-            
+                    //user must have edit permissions to do this
+        $app = Factory::getApplication();
+        if($app->getIdentity()->authorise('core.edit', 'com_simplequiz') != true){
+            $app->enqueueMessage('Edit permissions required to change question ordering', 'error');
+            return;
+        }
             $db = Factory::getContainer()->get('DatabaseDriver');
             $query = $db->getQuery(true);
     
