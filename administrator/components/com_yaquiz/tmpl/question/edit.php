@@ -178,7 +178,7 @@ function load_fill_blank($answers, $case_sensitive = 0){
 ?>
 
 <div class="container">
-<h1>Question Editor</h1>
+<h1><?php echo Text::_('COM_YAQUIZ_QUESTION_EDITOR'); ?></h1>
 
 <form id="adminForm" action="index.php?option=com_yaquiz&task=question.edit" method="post">
 
@@ -197,8 +197,7 @@ function load_fill_blank($answers, $case_sensitive = 0){
          }
     }
     else{
-        echo '<p>You must save the question and lock its type before answer options can be used</p>';
-        echo '<p>Note that you cannot change the question type after saving!!!</p>';
+        echo Text::_('COM_YAQUIZ_SAVE_QUESTION_BEFORE_ANSWERS');
     }
     
  ?>
