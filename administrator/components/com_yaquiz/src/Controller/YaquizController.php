@@ -1,0 +1,172 @@
+<?php
+namespace KevinsGuides\Component\Yaquiz\Administrator\Controller;
+use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Form\FormFactoryInterface;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Component\Menus\Administrator\Controller\ItemController;
+use Joomla\Input\Input;
+use JSession;
+use JUri;
+
+defined('_JEXEC') or die;
+
+use Joomla\CMS\MVC\Controller\BaseController;
+
+class YaquizController extends BaseController
+
+{
+    public function __construct($config = [])
+    {
+        Log::add('YaquizController::__construct() called', Log::INFO, 'com_yaquiz');
+
+        //register delete task
+        //$this->registerTask('remove', 'remove');
+        parent::__construct($config);
+
+    }
+
+    public function save(){
+            
+            Log::add('YaquizController::save() called', Log::INFO, 'com_yaquiz');
+    
+            //get the model
+            $model = $this->getModel('Yaquiz');
+    
+            //get the data from form POST
+            $data = $this->input->post->get('jform', array(), 'array');
+            //check for token
+            if(!JSession::checkToken()){
+                Log::add('YaquizController::save() token failed', Log::INFO, 'com_yaquiz');
+                //cue error message
+                $this->setMessage('Token failed');
+                //redirect to the view
+                $this->setRedirect('index.php?option=com_yaquiz');
+                return;
+            }
+            //save the data
+            $newid = $model->save($data);
+            if($newid > 0){
+                Log::add('YaquizController::save() saved successfully', Log::INFO, 'com_yaquiz');
+                //cue success message
+                $this->setMessage('Quiz saved successfully');
+                //return to edit form
+                $this->setRedirect('index.php?option=com_yaquiz&view=yaquiz&layout=edit&id=' . $newid);
+            }
+    }
+
+    public function cancel($key = null){
+
+        $this->setRedirect('index.php?option=com_yaquiz&view=yaquiz&id=' . $_GET['id']);
+    }
+
+    public function saveclose(){
+        //call save
+        $this->save();
+        //redirect to the view
+        $this->setRedirect('index.php?option=com_yaquiz&view=yaquizzes');
+
+    }
+
+    public function add(){
+        Log::add('YaquizController::new() called', Log::INFO, 'com_yaquiz');
+        //redirect to the view
+        $this->setRedirect('index.php?option=com_yaquiz&view=yaquiz&layout=edit');
+    }
+
+    public function addQuestionsToQuiz(){
+        Log::add('attempt add questions to quiz', Log::INFO, 'com_yaquiz');
+        //get the model
+        $model = $this->getModel('Yaquiz');
+        //get the data from form POST
+        $quizid = $this->input->post->get('quiz_id', '', 'raw');
+        $questionids = $this->input->post->get('question_ids', array(), 'array');
+        //check for token
+        if(!JSession::checkToken()){
+            Log::add('YaquizController::save() token failed', Log::INFO, 'com_yaquiz');
+            //cue error message
+            $this->setMessage('Token failed');
+            //redirect to the view
+            $this->setRedirect('index.php?option=com_yaquiz');
+            return;
+        }
+
+        $model->addQuestionsToQuiz($quizid, $questionids);
+        //redirect to the view
+        $this->setRedirect('index.php?option=com_yaquiz&view=yaquiz&id=' . $quizid);
+        //refresh
+        //$this->redirectEdit();
+
+    }
+
+    public function removeQuestionFromQuiz(){
+        //get quiz_id and question_id from GET
+        $quizid = $this->input->get('quiz_id', '', 'raw');
+        $questionid = $this->input->get('question_id', '', 'raw');
+        //get the model
+        $model = $this->getModel('Yaquiz');
+        //remove the question from the quiz
+        $model->removeQuestionFromQuiz($quizid, $questionid);
+        //reorder
+        $model->reorderQns($quizid);
+        //redirect to the view
+        $this->setRedirect('index.php?option=com_yaquiz&view=yaquiz&id=' . $quizid);
+    }
+
+    public function redirectEdit(){
+        //redirect to edit view
+        $this->setRedirect('index.php?option=com_yaquiz&view=yaquiz&layout=edit&id=' . $this->input->get('id', '', 'raw'));
+    }
+
+    public function preview(){
+        //open a page in a new tab
+        //redirect to preview view
+        $this->setRedirect(JUri::root().'index.php?option=com_yaquiz&view=quiz&id=' . $this->input->get('id', '', 'raw'));
+    }
+
+    public function remove($pk = null){
+        //get the model
+        $model = $this->getModel('Yaquiz');
+
+        //get the data from form GET
+        $quizid = $this->input->get('quizid', '', 'raw');
+        Log::add('YaquizController::delete() called for quizid: ' . $quizid, Log::INFO, 'com_yaquiz');
+
+        if($model->delete($quizid)){
+            //message
+            $this->setMessage('Quiz deleted successfully');
+        }
+        //redirect to the view
+        $this->setRedirect('index.php?option=com_yaquiz&view=yaquizzes');
+    }
+
+    public function orderUp(){
+        $quiz_id = $this->input->get('quiz_id', '', 'raw');
+        $model = $this->getModel('Yaquiz');
+        $neworder = $model->moveQuestionOrderUp($quiz_id, $this->input->get('qnid', '', 'raw'));
+        //redirect to quiz
+        $this->setRedirect('index.php?option=com_yaquiz&view=Yaquiz&id=' . $this->input->get('quiz_id', '', 'raw') . '#qn' . $neworder );
+    }
+
+    public function orderDown(){
+        $quiz_id = $this->input->get('quiz_id', '', 'raw');
+        $model = $this->getModel('Yaquiz');
+        $neworder = $model->moveQuestionOrderDown($quiz_id, $this->input->get('qnid', '', 'raw'));
+        //redirect to quiz
+        $this->setRedirect('index.php?option=com_yaquiz&view=Yaquiz&id=' . $this->input->get('quiz_id', '', 'raw') . '#qn' . $neworder );
+    }
+
+
+    public function reorderQns(){
+        $quiz_id = $this->input->get('quiz_id', '', 'raw');
+        $model = $this->getModel('Yaquiz');
+        $model->reorder($quiz_id);
+        //redirect to quiz
+        //$this->setRedirect('index.php?option=com_yaquiz&view=Yaquiz&id=' . $this->input->get('quiz_id', '', 'raw'));
+    }
+
+
+
+
+}

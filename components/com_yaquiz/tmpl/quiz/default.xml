@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="Simple Quiz">
+        <message>Display a quiz.</message>
+    </layout>
+
+
+    <fields name="params">
+        <fieldset name="yaquiz">
+            <field name="menunote"
+                type="note"
+                label="COM_YAQUIZ_MENUNOTE_LABEL"
+                description="COM_YAQUIZ_MENUNOTE_DESC"
+                />
+            <field name="quiz_id" type="sql"
+                label="COM_YAQUIZ_QUIZ_ID_LABEL"
+                description="COM_YAQUIZ_QUIZ_ID_DESC"
+                default="0"
+                required="false"
+                query="SELECT id, title FROM #__com_yaquiz_quizzes"
+                key_field="id"
+                value_field="title"
+                >
+                <option value="0">Select a quiz</option>
+            </field>
+            <field name="quiz_id_manual" type="text"
+            label="COM_YAQUIZ_QUIZ_ID_MANUAL_LABEL"
+            description="COM_YAQUIZ_QUIZ_ID_MAUAL_DESC"
+            default=""
+            required="false"
+            showon="quiz_id:0"
+            />
+
+        </fieldset>
+    </fields>
+</metadata>

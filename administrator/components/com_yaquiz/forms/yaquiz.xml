@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="filters">
+        <field
+        name="filter_title"
+        type="text"
+        label="COM_YAQUIZ_QUIZZES_FILTER_TITLE_LABEL"
+        />
+        <field
+        name="filter_categories"
+        type="category"
+        extension="com_yaquiz"
+        label="COM_YAQUIZ_QUIZZES_FILTER_CATEGORIES_LABEL"
+        default="0"
+        >
+        <option value="0">Uncategorized (All)</option>
+        </field>
+
+
+
+    </fieldset>
+</form>

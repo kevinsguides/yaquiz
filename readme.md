@@ -28,6 +28,8 @@ Currently, this is in pre-production. Would not recommend use on production site
 ## Todo
 * record hits/submissions option
 * record grade statistics option
+* mass imports of questions
+* limit available qns selection to like 50 and show addtl message
 * cool circle results graph
 * checkin system
 * better templating system in general - easier extensibility....

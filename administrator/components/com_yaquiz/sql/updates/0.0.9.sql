@@ -1,0 +1,1 @@
+ALTER TABLE `kevin_yaquiz_questions` ADD `feedback_right` TEXT NULL AFTER `catid`, ADD `feedback_wrong` TEXT NULL AFTER `feedback_right`;

@@ -1,6 +1,6 @@
 <?php
 
-namespace KevinsGuides\Component\SimpleQuiz\Administrator\View\SimpleQuizzes;
+namespace KevinsGuides\Component\Yaquiz\Administrator\View\Yaquizzes;
 
 use Joomla\CMS\HTML\HTMLHelper;Use Joomla\CMS\Log\Log;
 use Joomla\CMS\Toolbar\Toolbar;
@@ -8,11 +8,11 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
 use JRoute;
 use JText;
-use KevinsGuides\Component\SimpleQuiz\Administrator\Model\SimpleQuizModel;
+use KevinsGuides\Component\Yaquiz\Administrator\Model\YaquizModel;
 
 
 
-$quizModel = new SimpleQuizModel();
+$quizModel = new YaquizModel();
 
 $model = $this->getModel();
 //get the items from model
@@ -36,15 +36,15 @@ else{
 
 //does user have core.delete access
 $user = \JFactory::getUser();
-$canDelete = $user->authorise('core.delete', 'com_simplequiz');
+$canDelete = $user->authorise('core.delete', 'com_yaquiz');
 
 
-$gConfig = \JComponentHelper::getParams('com_simplequiz');
+$gConfig = \JComponentHelper::getParams('com_yaquiz');
 
 
 
 ?>
-<form id="adminForm" action="index.php?option=com_simplequiz&view=SimpleQuizzes" method="post">
+<form id="adminForm" action="index.php?option=com_yaquiz&view=Yaquizzes" method="post">
 <div class="accordion" id="accordionFilters">
   <div class="accordion-item">
     <h2 class="accordion-header" id="hdgFilters">
@@ -54,13 +54,13 @@ $gConfig = \JComponentHelper::getParams('com_simplequiz');
     </h2>
     <div id="collapseFilters" class="accordion-collapse collapse <?php echo (isset($_POST['filters']) ? 'show' : '') ?>" aria-labelledby="hdgFilters" data-bs-parent="#accordionFilters">
       <div class="accordion-body">
-        <!-- render simplequizzes_filterset fieldset -->
+        <!-- render yaquizzes_filterset fieldset -->
         <?php echo $this->form->renderFieldset('filters'); ?>
 
     <input name="task" type="hidden">
     
     <button type="submit" class="btn btn-primary">Filter</button>
-    <a href="index.php?option=com_simplequiz&view=SimpleQuizzes" class="btn btn-dark">Reset</a>
+    <a href="index.php?option=com_yaquiz&view=Yaquizzes" class="btn btn-dark">Reset</a>
  </div>
     </div>
   </div>
@@ -85,7 +85,7 @@ $gConfig = \JComponentHelper::getParams('com_simplequiz');
                 <hr/>
                 <div class="row mb-2">
                     <div class="col-12 col-md-6">
-                    <a href="index.php?option=com_simplequiz&view=simplequiz&id=<?php echo $item->id ?>"><?php echo $item->title; ?> <span class="icon-edit"></span></a>
+                    <a href="index.php?option=com_yaquiz&view=yaquiz&id=<?php echo $item->id ?>"><?php echo $item->title; ?> <span class="icon-edit"></span></a>
                     <p><?php echo ($item->published == 1 ? 'Published' : 'Unpublished') ?></p>
                     <span class="badge bg-info text-white">ID: <?php echo $item->id ?></span>
                     <?php echo ($gConfig->get('record_hits')==='1' ? '<span class="badge bg-primary text-white">Hits: '. $item->hits .'</span>': '');?>
@@ -97,10 +97,10 @@ $gConfig = \JComponentHelper::getParams('com_simplequiz');
                   
                   </div>
                     <div class="col-12 col-md-3">
-                    <a class="btn btn-info btn-sm w-100 mb-1 text-start" href="index.php?option=com_simplequiz&view=simplequiz&layout=edit&id=<?php echo $item->id ?>"><span class="icon-options"></span> Quiz Settings</a>
-                    <a class="btn btn-success btn-sm w-100 mb-1 text-start" href="index.php?option=com_simplequiz&view=simplequiz&id=<?php echo $item->id ?>"><span class="icon-checkbox"></span> Select Questions</a>
+                    <a class="btn btn-info btn-sm w-100 mb-1 text-start" href="index.php?option=com_yaquiz&view=yaquiz&layout=edit&id=<?php echo $item->id ?>"><span class="icon-options"></span> Quiz Settings</a>
+                    <a class="btn btn-success btn-sm w-100 mb-1 text-start" href="index.php?option=com_yaquiz&view=yaquiz&id=<?php echo $item->id ?>"><span class="icon-checkbox"></span> Select Questions</a>
                     <?php if($canDelete): ?>
-                      <a class="btn btn-danger btn-sm mb-1 float-end" href="index.php?option=com_simplequiz&view=simplequiz&task=SimpleQuiz.remove&quizid=<?php echo $item->id ?>"><span class="icon-trash"></span> Delete</a>
+                      <a class="btn btn-danger btn-sm mb-1 float-end" href="index.php?option=com_yaquiz&view=yaquiz&task=Yaquiz.remove&quizid=<?php echo $item->id ?>"><span class="icon-trash"></span> Delete</a>
                     <?php endif; ?>
                 </div>
                 </div>

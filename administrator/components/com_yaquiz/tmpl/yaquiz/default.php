@@ -1,13 +1,13 @@
 <?php
 /**
- * @package     KevinsGuides.SimpleQuiz
+ * @package     KevinsGuides.Yaquiz
  * 
  * This template is for the default quiz view
  * It displays details about the quiz and allows you to add questions to it
  */
 
 
-namespace KevinsGuides\Component\SimpleQuiz\Administrator\View\SimpleQuiz;
+namespace KevinsGuides\Component\Yaquiz\Administrator\View\Yaquiz;
 use JFactory;
 use JHtml;
 use Joomla\CMS\Factory;
@@ -35,7 +35,7 @@ if(isset($_POST['filters']['filter_title'])){
 //if $_GET has categoryfilter
 if(isset($_POST['filters']['filter_categories'])){
     $categoryfilter = $_POST['filters']['filter_categories'];
-    Log::add('category filter is '.$categoryfilter, Log::INFO, 'com_simplequiz');
+    Log::add('category filter is '.$categoryfilter, Log::INFO, 'com_yaquiz');
 }
 
 //set form data
@@ -44,7 +44,7 @@ $this->form->setValue('filter_categories', null, $categoryfilter);
 
 
 //get the question categories
-$questionsModel = new \KevinsGuides\Component\SimpleQuiz\Administrator\Model\QuestionsModel();
+$questionsModel = new \KevinsGuides\Component\Yaquiz\Administrator\Model\QuestionsModel();
 
 
 //get a listbox of all questions in the database
@@ -52,13 +52,13 @@ function getQuestionListBox($titleFilter = null, $categoryfilter = null){
     $db = Factory::getContainer()->get('DatabaseDriver');
     $query = $db->getQuery(true);
     $query->select($db->quoteName(array('id', 'question', 'details')));
-    $query->from($db->quoteName('#__simplequiz_questions'));
+    $query->from($db->quoteName('#__com_yaquiz_questions'));
     if($titleFilter){
-        Log::add('attempt filter by title '.$titleFilter, Log::INFO, 'com_simplequiz');
+        Log::add('attempt filter by title '.$titleFilter, Log::INFO, 'com_yaquiz');
         $query->where($db->quoteName('question') . ' LIKE ' . $db->quote('%'.$titleFilter.'%'));
     }
     if($categoryfilter){
-        Log::add('attempt filter by category '.$categoryfilter, Log::INFO, 'com_simplequiz');
+        Log::add('attempt filter by category '.$categoryfilter, Log::INFO, 'com_yaquiz');
         $query->where($db->quoteName('catid') . ' = ' . $db->quote($categoryfilter));
     }
     $db->setQuery($query);
@@ -84,7 +84,7 @@ function getQuestionListBox($titleFilter = null, $categoryfilter = null){
 $model = $this->getModel();
 $questions = $model->getQuestionsInQuiz($item->id);
 
-$quizlink = JUri::root().'index.php?option=com_simplequiz&view=quiz&id='.$item->id;
+$quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
 ?>
 
 <div class="container">
@@ -109,10 +109,10 @@ $quizlink = JUri::root().'index.php?option=com_simplequiz&view=quiz&id='.$item->
     <div class="card-body">
         <p>Use this form to add questions to this quiz.</p>
 <!-- filter by category -->
-<form id="adminForm" action="index.php?option=com_simplequiz&view=simplequiz&id=<?php echo $item->id; ?>" method="POST">
+<form id="adminForm" action="index.php?option=com_yaquiz&view=yaquiz&id=<?php echo $item->id; ?>" method="POST">
 <input type="hidden" name="task">
-<input type="hidden" name="option" value="com_simplequiz">
-    <input type="hidden" name="view" value="simplequiz">
+<input type="hidden" name="option" value="com_yaquiz">
+    <input type="hidden" name="view" value="yaquiz">
     <input type="hidden" name="id" value="<?php echo $item->id; ?>">
     <!-- render filters fieldset -->
     <?php echo $this->form->renderFieldset('filters'); ?>
@@ -128,7 +128,7 @@ $quizlink = JUri::root().'index.php?option=com_simplequiz&view=quiz&id='.$item->
 <br/>
 <h4>Available Questions</h4>
 <span style="font-size: 0.8rem;">Hold CTRL/Command to add multiple at once</span>
-<form action="index.php?option=com_simplequiz&task=simplequiz.addQuestionsToQuiz" method="post">
+<form action="index.php?option=com_yaquiz&task=yaquiz.addQuestionsToQuiz" method="post">
     <input type="hidden" name="quiz_id" value="<?php echo $item->id; ?>">
     <!-- get the questions selectlist -->
     <?php echo getQuestionListBox($titleFilter, $categoryfilter); ?>
@@ -157,7 +157,7 @@ $quizlink = JUri::root().'index.php?option=com_simplequiz&view=quiz&id='.$item->
         
     <h4 class="text-white" id="qn<?php echo $question->id; ?>"><?php echo $question->question; ?></h4>
     </div>
-        <div class="card-body"><a class="float-end" href="index.php?option=com_simplequiz&view=Question&layout=edit&qnid=<?php echo $question->id; ?>"><span class="icon-edit"></span></a>
+        <div class="card-body"><a class="float-end" href="index.php?option=com_yaquiz&view=Question&layout=edit&qnid=<?php echo $question->id; ?>"><span class="icon-edit"></span></a>
         <?php 
         //fix image paths in question->details if they are relative
         $question->details = str_replace('src="images', 'src="'.JUri::root().'images', $question->details);
@@ -168,9 +168,9 @@ $quizlink = JUri::root().'index.php?option=com_simplequiz&view=quiz&id='.$item->
     </div>
         <div class="card-footer">
 
-        <a class="btn btn-danger btn-sm" title="Remove Question From Quiz" href="index.php?option=com_simplequiz&task=simplequiz.removeQuestionFromQuiz&quiz_id=<?php echo $item->id; ?>&question_id=<?php echo $question->id; ?>"><span class="icon-delete"></span> Remove</a>
-        <a href="index.php?option=com_simplequiz&task=SimpleQuiz.orderUp&quiz_id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-dark btn-sm me-1 float-end"><i class="far fa-caret-square-up"></i> Order Up</a>  
-        <a href="index.php?option=com_simplequiz&task=SimpleQuiz.orderDown&quiz_id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-dark btn-sm me-1 float-end"><i class="far fa-caret-square-down"></i> Order Down</a>
+        <a class="btn btn-danger btn-sm" title="Remove Question From Quiz" href="index.php?option=com_yaquiz&task=yaquiz.removeQuestionFromQuiz&quiz_id=<?php echo $item->id; ?>&question_id=<?php echo $question->id; ?>"><span class="icon-delete"></span> Remove</a>
+        <a href="index.php?option=com_yaquiz&task=Yaquiz.orderUp&quiz_id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-dark btn-sm me-1 float-end"><i class="far fa-caret-square-up"></i> Order Up</a>  
+        <a href="index.php?option=com_yaquiz&task=Yaquiz.orderDown&quiz_id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-dark btn-sm me-1 float-end"><i class="far fa-caret-square-down"></i> Order Down</a>
     
         <span class="float-end me-1"> Type: 
     <?php
