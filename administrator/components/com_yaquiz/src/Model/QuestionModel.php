@@ -70,6 +70,7 @@ class QuestionModel extends AdminModel
                 $data->randomize_mchoice = $params->randomize_mchoice;
                 $data->points = $params->points;
                 $data->case_sensitive = $params->case_sensitive;
+                $data->modified_by = $app->getIdentity()->id;
 
                 //if question type is not multiple_choice
                 if ($data->question_type != 'multiple_choice') {
@@ -85,6 +86,18 @@ class QuestionModel extends AdminModel
             $data->randomize_mchoice = 0;
             $data->points = 1;
             $data->case_sensitive = 0;
+            //set created_by to current user
+            $data->created_by = $app->getIdentity()->id;
+            //set created to current time
+            $data->created= date('Y-m-d H:i:s');
+            //set modified_by to current user
+            $data->modified_by = $app->getIdentity()->id;
+            //set modified to current time
+            $data->modified = date('Y-m-d H:i:s');
+            //set checked out to this users id
+            $data->checked_out = $app->getIdentity()->id;
+            //set checked_out_time to current time
+            $data->checked_out_time = date('Y-m-d H:i:s');
 
             
         }
@@ -173,6 +186,7 @@ class QuestionModel extends AdminModel
 
     public function update($data)
     {
+        $app = Factory::getApplication();
         Log::add('update function called', Log::INFO, 'com_yaquiz');
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
@@ -183,6 +197,8 @@ class QuestionModel extends AdminModel
         $query->set('answers = ' . $db->quote($data['answers']));
         $query->set('correct = ' . $db->quote($data['correct']));
         $query->set('catid = ' . $db->quote($data['catid']));
+        $query->set('modified_by = ' . $app->getIdentity()->id);
+        $query->set('modified = CURRENT_TIMESTAMP');
         $query->set('feedback_right = ' . $db->quote($data['feedback_right']));
         $query->set('feedback_wrong = ' . $db->quote($data['feedback_wrong']));
         $query->where('id = ' . $data['id']);
@@ -195,12 +211,15 @@ class QuestionModel extends AdminModel
     public function create($data)
     {
         Log::add('create function called', Log::INFO, 'com_yaquiz');
-
+        $app = Factory::getApplication();
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->insert('#__com_yaquiz_questions');
-        $query->columns('id, question, details, params, catid');
-        $query->values('null, ' . $db->quote($data['question']) . ', ' . $db->quote($data['details']) . ', ' . $db->quote($this->paramsToJson($data)) . ', ' . $db->quote($data['catid']));
+        $query->columns('id, question, details, params, catid, created_by, created, modified_by, modified, checked_out, checked_out_time');
+        $data['created_by'] = $app->getIdentity()->id;
+        $data['modified_by'] = $app->getIdentity()->id;
+        $data['checked_out'] = 0;
+        $query->values('null, ' . $db->quote($data['question']) . ', ' . $db->quote($data['details']) . ', ' . $db->quote($this->paramsToJson($data)) . ', ' . $db->quote($data['catid']) . ', ' . $db->quote($data['created_by']) . ', ' . $db->quote($data['created']) . ', ' . $db->quote($data['modified_by']) . ', ' . $db->quote($data['modified']) . ', ' . $db->quote($data['checked_out']) . ', ' . $db->quote($data['checked_out_time']));
         $db->setQuery($query);
         $db->execute();
         return true;
