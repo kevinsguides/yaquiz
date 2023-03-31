@@ -65,7 +65,16 @@ default="default"
 >
 <option value="default">Default (A Single Page Test)</option>
 <option value="individual">Individual (One Question Per Page)</option>
+<option value="jsquiz">JavaScript Quiz (Fully Cachable)</option>
 </field>
+
+<field
+name="jsquiz_note"
+type="note"
+label="COM_YAQUIZ_YAQUIZ_QUIZ_JSQUIZ_NOTE_LABEL"
+description="COM_YAQUIZ_YAQUIZ_QUIZ_JSQUIZ_NOTE_DESC"
+showon="quiz_displaymode:jsquiz"
+/>
 
 <field
 name="quiz_showfeedback"

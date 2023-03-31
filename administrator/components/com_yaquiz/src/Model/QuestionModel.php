@@ -215,11 +215,11 @@ class QuestionModel extends AdminModel
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->insert('#__com_yaquiz_questions');
-        $query->columns('id, question, details, params, catid, created_by, created, modified_by, modified, checked_out, checked_out_time');
+        $query->columns('id, question, details, params, catid, created_by, created, modified_by, modified');
         $data['created_by'] = $app->getIdentity()->id;
         $data['modified_by'] = $app->getIdentity()->id;
         $data['checked_out'] = 0;
-        $query->values('null, ' . $db->quote($data['question']) . ', ' . $db->quote($data['details']) . ', ' . $db->quote($this->paramsToJson($data)) . ', ' . $db->quote($data['catid']) . ', ' . $db->quote($data['created_by']) . ', ' . $db->quote($data['created']) . ', ' . $db->quote($data['modified_by']) . ', ' . $db->quote($data['modified']) . ', ' . $db->quote($data['checked_out']) . ', ' . $db->quote($data['checked_out_time']));
+        $query->values('null, ' . $db->quote($data['question']) . ', ' . $db->quote($data['details']) . ', ' . $db->quote($this->paramsToJson($data)) . ', ' . $db->quote($data['catid']) . ', ' . $db->quote($data['created_by']) . ', ' . $db->quote($data['created']) . ', ' . $db->quote($data['modified_by']) . ', ' . $db->quote($data['modified']));
         $db->setQuery($query);
         $db->execute();
         return true;

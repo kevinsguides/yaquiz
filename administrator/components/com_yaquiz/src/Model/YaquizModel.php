@@ -145,8 +145,11 @@ class YaquizModel extends AdminModel
     }
 
 
-    public function isCheckedOut($item)
+    public function isCheckedOut($item = null)
     {
+        if($item == null){
+            return false;
+        }
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('checked_out');
@@ -178,8 +181,8 @@ class YaquizModel extends AdminModel
         $data['created_by'] = $app->getIdentity()->id;
         $data['modified_by'] = $app->getIdentity()->id;
         $data['checked_out'] = 0;
-        $query->columns('title, description, published, created_by, created, modified_by, modified, checked_out, checked_out_time, params, access, hits, catid');
-        $query->values($db->quote($data['title']) . ', ' . $db->quote($data['description']) . ', ' . $db->quote($data['published']) . ', ' . $db->quote($data['created_by']) . ', ' . $db->quote($data['created']) . ', ' . $db->quote($data['modified_by']) . ', ' . $db->quote($data['modified']) . ', ' . $db->quote($data['checked_out']) . ', ' . $db->quote($data['checked_out_time']) . ', ' . $db->quote($this->dataToParams($data)) . ', ' . $db->quote($data['access']) . ', ' . $db->quote($data['hits']) . ', ' . $db->quote($data['catid']));
+        $query->columns('title, description, published, created_by, created, modified_by, modified, params, access, hits, catid');
+        $query->values($db->quote($data['title']) . ', ' . $db->quote($data['description']) . ', ' . $db->quote($data['published']) . ', ' . $db->quote($data['created_by']) . ', ' . $db->quote($data['created']) . ', ' . $db->quote($data['modified_by']) . ', ' . $db->quote($data['modified']) . ', ' . $db->quote($this->dataToParams($data)) . ', ' . $db->quote($data['access']) . ', ' . $db->quote($data['hits']) . ', ' . $db->quote($data['catid']));
         $db->setQuery($query);
         $db->execute();
         return $db->insertid();

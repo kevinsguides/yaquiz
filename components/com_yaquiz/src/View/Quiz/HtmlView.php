@@ -68,6 +68,9 @@ class HtmlView extends BaseHtmlView
             $this->setLayout('quiztype_individual');
             $this->currPage = $app->input->get('page', 0);
         }
+        elseif ($quizparams->quiz_displaymode === 'jsquiz'){
+            $this->setLayout('quiztype_jsquiz');
+        }
         else{
             $this->setLayout('default');
         }
