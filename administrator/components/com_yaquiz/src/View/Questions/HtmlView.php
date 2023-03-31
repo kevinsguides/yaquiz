@@ -33,7 +33,7 @@ class HtmlView extends BaseHtmlView{
         //add component options
         $toolbar->appendButton('Link', 'options', 'Options', 'index.php?option=com_config&view=component&component=com_yaquiz');
         $toolbar->appendButton('Link', 'folder', 'Categories', 'index.php?option=com_categories&extension=com_yaquiz');
-        ToolbarHelper::title('Simple Quiz - Questions', 'list');
+        ToolbarHelper::title('YAQuiz - Questions', 'list');
         ToolbarHelper::custom('Yaquizzes.display', 'list', 'list', 'Quiz Manager', false);
         //ToolbarHelper::addNew('Questions.newQuestion');
 

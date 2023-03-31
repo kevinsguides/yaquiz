@@ -90,6 +90,7 @@ $gConfig = \JComponentHelper::getParams('com_yaquiz');
                     <span class="badge bg-info text-white">ID: <?php echo $item->id ?></span>
                     <?php echo ($gConfig->get('record_hits')==='1' ? '<span class="badge bg-primary text-white">Hits: '. $item->hits .'</span>': '');?>
                     <?php echo ($gConfig->get('record_submissions')==='1' ? '<span class="badge bg-primary text-white">Submits: '. $item->submissions .'</span>': '');?>
+                    <?php echo ($item->checked_out == 0 ? '<span class="badge bg-success text-white">Checked In</span>' : '<span class="badge bg-warning text-white">Checked Out</span>') ?>
                                         
                   </div>
                     <div class="col-12 col-md-3">

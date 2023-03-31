@@ -42,7 +42,7 @@ class HtmlView extends BaseHtmlView{
         //set the form
         $this->form  = $model->getForm($this->item, false);
 
-        ToolbarHelper::title('Simple Quiz - Question Editor');
+        ToolbarHelper::title('YAQuiz - Question Editor');
         ToolbarHelper::apply('Question.edit');
         ToolbarHelper::save('Question.saveclose');
         ToolbarHelper::cancel('Question.cancel');

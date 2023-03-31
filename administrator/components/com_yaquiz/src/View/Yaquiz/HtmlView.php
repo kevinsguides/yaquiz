@@ -71,6 +71,14 @@ class HtmlView extends BaseHtmlView
                 $app->enqueueMessage('You do not have permission to edit this quiz', 'error');
                 $app->redirect('index.php?option=com_yaquiz&view=yaquizzes');
             }
+
+            //check if item is checked out
+            if($model->isCheckedOut($model->getQuiz($id))){
+                $app->enqueueMessage('This quiz is currently being edited by another user', 'error');
+                $app->redirect('index.php?option=com_yaquiz&view=yaquizzes');
+            }
+
+
             //we need a toolbar
             $this->addEditToolbar();
 
@@ -111,7 +119,7 @@ class HtmlView extends BaseHtmlView
 
 
         $toolbar = Toolbar::getInstance('toolbar');
-        $toolbar->appendButton('Link', 'cancel', 'Cancel', 'index.php?option=com_yaquiz&view=yaquizzes');
+        ToolbarHelper::cancel('Yaquiz.cancel');
         ToolbarHelper::save('Yaquiz.saveclose');
         ToolbarHelper::apply('Yaquiz.save');
     }

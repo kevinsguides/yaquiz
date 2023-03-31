@@ -6,11 +6,11 @@ defined('_JEXEC') or die;
 
 ?>
 
-<h1>Simple Quiz Help</h1>
+<h1>YAQuiz Help</h1>
 <br/>
 <a href="https://kevinsguides.com" target="_blank">By: KevinsGuides.com</a>
-<p>Hello, thank you for using Simple Quiz!</p>
-<p>Simple Quiz is a quiz component for Joomla. It's designed for creating quizzes and tests on your website.</p>
+<p>Hello, thank you for using YAQuiz!</p>
+<p>YAQuiz is a quiz component for Joomla. It's designed for creating quizzes and tests on your website.</p>
 <h3>Categories</h3>
 <p>Categories are used to help organize your quizzes <em>and</em> questions. Using them is optional.</p>
 <p>There is only 1 set of categories, so quizzes and questions share the same categories.</p>

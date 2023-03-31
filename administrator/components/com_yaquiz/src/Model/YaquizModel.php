@@ -43,12 +43,21 @@ class YaquizModel extends AdminModel
 
 
     //get the quiz form
+    // this is called by controller, and only happens when layout is edit
     public function getForm($data = new \stdClass, $loadData = true)
     {
-        Log::add('getform called in quizmodel', Log::INFO, 'com_yaquiz');
+
         $app = Factory::getApplication();
         $cParams = ComponentHelper::getParams('com_yaquiz');
+
+        //the default access level
         $access = $cParams->get('access', 1);
+
+        //make sure we have edit permissions
+        if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
+            $app->enqueueMessage('Edit permissions required to change question ordering', 'error');
+            return;
+        }
 
         //if layout is edit
         if ($app->input->get('layout') == 'edit') {
@@ -79,6 +88,8 @@ class YaquizModel extends AdminModel
                 $data->quiz_displaymode = 'default';
                 $data->access = $access;
             } else {
+                //log all the fields in data
+                Log::add('data: ' . print_r($data, true), Log::INFO, 'com_yaquiz');
                 $params = $this->getParams($data->id);
                 //get 'quiz_displaymode' from params
                 Log::add('params: ' . $params['quiz_displaymode'], Log::INFO, 'com_yaquiz');
@@ -88,13 +99,11 @@ class YaquizModel extends AdminModel
                 $data->quiz_question_numbering = $params['quiz_question_numbering'];
                 $data->quiz_use_points = $params['quiz_use_points'];
                 $data->passing_score = $params['passing_score'];
-
+                $this->checkout($data->id);
             }
 
 
 
-
-            //bind data to form
             $form->bind($data);
             return $form;
         } else {
@@ -123,11 +132,39 @@ class YaquizModel extends AdminModel
         if ($data['id'] == 0 || $data['id'] == null) {
 
             //call insert
+            $this->checkin($data['id']);
             return $this->insert($data);
         } else {
             //call update
+            $this->checkin($data['id']);
             return $this->update($data);
         }
+
+        //check item in
+        
+    }
+
+
+    public function isCheckedOut($item)
+    {
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('checked_out');
+        $query->from('#__com_yaquiz_quizzes');
+        $query->where('id = ' . $item->id);
+        $db->setQuery($query);
+        $checkedOut = $db->loadResult();
+        $userid = $this->getCurrentUser()->id;
+
+        if ($checkedOut == $userid) {
+            return false;
+        }
+
+        if ($checkedOut != 0) {
+            return true;
+        }
+
+        return false;
     }
 
     public function insert($data)
@@ -198,9 +235,7 @@ class YaquizModel extends AdminModel
                     //if it does, remove it from the questionids array
                     $key = array_search($existingQuestion, $questionids);
                     unset($questionids[$key]);
-
                 }
-
             }
         }
 
@@ -293,12 +328,12 @@ class YaquizModel extends AdminModel
 
     public function moveQuestionOrderUp($quiz_id, $question_id){
 
-                //user must have edit permissions to do this
-                $app = Factory::getApplication();
-                if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
-                    $app->enqueueMessage('Edit permissions required to change question ordering', 'error');
-                    return;
-                }
+        //user must have edit permissions to do this
+        $app = Factory::getApplication();
+        if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
+            $app->enqueueMessage('Edit permissions required to change question ordering', 'error');
+            return;
+        }
 
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);

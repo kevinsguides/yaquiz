@@ -1,6 +1,7 @@
 <?php
 namespace KevinsGuides\Component\Yaquiz\Administrator\Controller;
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Controller\FormController;
@@ -45,6 +46,10 @@ class YaquizController extends BaseController
                 $this->setRedirect('index.php?option=com_yaquiz');
                 return;
             }
+
+
+
+
             //save the data
             $newid = $model->save($data);
             if($newid > 0){
@@ -57,6 +62,16 @@ class YaquizController extends BaseController
     }
 
     public function cancel($key = null){
+
+        //if no id, redirect to quizzes
+        if(!isset($_GET['id']) || $_GET['id'] == 0){
+            $this->setRedirect('index.php?option=com_yaquiz&view=yaquizzes');
+            return;
+        }
+        
+        //check in
+        $model = $this->getModel('Yaquiz');
+        $model->checkin();
 
         $this->setRedirect('index.php?option=com_yaquiz&view=yaquiz&id=' . $_GET['id']);
     }
