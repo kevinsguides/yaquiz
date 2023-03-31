@@ -63,6 +63,12 @@ if ($quiz == null):
     </div>
     <?php
 else:
+
+        //record hits
+    if ($globalParams->get('record_hits') === '1') {
+        $model->countAsHit($quiz->id);
+    }
+
     ?>
     <div class="p-3">
         <div class="card">

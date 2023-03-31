@@ -421,6 +421,8 @@ class SimpleQuizModel extends AdminModel
 
     }
 
+
+
     public function getParams($qid)
     {
 

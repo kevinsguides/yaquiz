@@ -27,7 +27,6 @@ Currently, this is in pre-production. Would not recommend use on production site
 
 ## Todo
 * record hits/submissions option
-* publish/unpub quizzes and change state permission
 * record grade statistics option
 * cool circle results graph
 * checkin system
@@ -37,7 +36,6 @@ Currently, this is in pre-production. Would not recommend use on production site
     * hot spot
 * Clean/consistent interface
 * Fix Language Files
-* 1 question per page option
 * Additional styles
 * Record user results and save to db permanently
 * Quiz statistics/review results

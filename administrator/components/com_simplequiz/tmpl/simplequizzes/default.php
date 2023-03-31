@@ -39,9 +39,7 @@ $user = \JFactory::getUser();
 $canDelete = $user->authorise('core.delete', 'com_simplequiz');
 
 
-
-
-
+$gConfig = \JComponentHelper::getParams('com_simplequiz');
 
 
 
@@ -56,7 +54,6 @@ $canDelete = $user->authorise('core.delete', 'com_simplequiz');
     </h2>
     <div id="collapseFilters" class="accordion-collapse collapse <?php echo (isset($_POST['filters']) ? 'show' : '') ?>" aria-labelledby="hdgFilters" data-bs-parent="#accordionFilters">
       <div class="accordion-body">
-
         <!-- render simplequizzes_filterset fieldset -->
         <?php echo $this->form->renderFieldset('filters'); ?>
 
@@ -90,6 +87,9 @@ $canDelete = $user->authorise('core.delete', 'com_simplequiz');
                     <div class="col-12 col-md-6">
                     <a href="index.php?option=com_simplequiz&view=simplequiz&id=<?php echo $item->id ?>"><?php echo $item->title; ?> <span class="icon-edit"></span></a>
                     <p><?php echo ($item->published == 1 ? 'Published' : 'Unpublished') ?></p>
+                    <?php echo ($gConfig->get('record_hits')==='1' ? '<p>Hits: '. $item->hits .'</p>': '');?>
+                    <?php echo ($gConfig->get('record_submissions')==='1' ? '<p>Submits: '. $item->submissions .'</p>': '');?>
+                                        
                   </div>
                     <div class="col-12 col-md-3">
                     <span><?php echo ($quizModel->getCategoryName($item->catid)? $quizModel->getCategoryName($item->catid) : 'Uncategorized'); ?></span>

@@ -14,6 +14,26 @@
             >
             <option value="default">Default (Bootstrap Cards)</option>
         </field>
+        <field
+            name="record_hits"
+            type="radio"
+            label="COM_SIMPLEQUIZ_FIELD_RECORD_HITS_LABEL"
+            description="COM_SIMPLEQUIZ_FIELD_RECORD_HITS_DESC"
+            default="0"
+            >
+            <option value="1">JYES</option>
+            <option value="0">JNO</option>
+        </field>
+        <field
+            name="record_submissions"
+            type="radio"
+            label="COM_SIMPLEQUIZ_FIELD_RECORD_SUBMISSIONS_LABEL"
+            description="COM_SIMPLEQUIZ_FIELD_RECORD_SUBMISSIONS_DESC"
+            default="0"
+        >
+        <option value="1">JYES</option>
+        <option value="0">JNO</option>
+        </field>
 </fieldset>
 <fieldset
 name="globaloptions"

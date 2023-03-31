@@ -52,6 +52,10 @@ class QuizController extends BaseController{
         $quiz = $this->getModel('Quiz')->getItem($quiz_id);
         $model = new QuizModel();
         $quizParams = $model->getQuizParams($quiz_id);
+        $globalParams = $app->getParams('com_simplequiz');
+        if ($globalParams->get('record_submissions') === '1') {
+            $model->countAsSubmission($quiz_id);
+        }
 
         //if this is a single page quiz
         if($quizParams->quiz_displaymode === 'default'){

@@ -293,5 +293,38 @@ class QuizModel extends ItemModel{
         $total_questions = $db->loadResult();
         return $total_questions;
     }
+
+        /**
+     * Increment the hit count by 1 for a given quiz
+     * @pk - the quiz id
+     */
+    public function countAsHit($pk){
+            
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->update('#__simplequiz_quizzes');
+        $query->set('hits = hits + 1');
+        $query->where('id = ' . $pk);
+        $db->setQuery($query);
+        $db->execute();
+
+    }
+
+        /**
+     * Increment the submission count by 1 for a given quiz
+     * @pk - the quiz id
+     */
+    public function countAsSubmission($pk){
+                
+            $db = Factory::getContainer()->get('DatabaseDriver');
+            $query = $db->getQuery(true);
+            $query->update('#__simplequiz_quizzes');
+            $query->set('submissions = submissions + 1');
+            $query->where('id = ' . $pk);
+            $db->setQuery($query);
+            $db->execute();
+        
+    }
+
 }
 

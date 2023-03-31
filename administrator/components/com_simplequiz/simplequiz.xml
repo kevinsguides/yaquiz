@@ -5,7 +5,7 @@
     <author>KevinsGuides</author>
     <authorEmail>kevin@kevinsguides.com</authorEmail>
     <authorUrl>https://kevinsguides.com</authorUrl>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
     <description>Simple Quiz</description>
     <namespace path="src/">KevinsGuides\Component\SimpleQuiz</namespace>
 
@@ -13,7 +13,7 @@
 <!-- database stuff -->
 <install>
     <sql>
-        <file driver="mysql" charset="utf8" version="0.1.2">sql/install/install.sql</file>
+        <file driver="mysql" charset="utf8" version="0.1.3">sql/install/install.sql</file>
     </sql>
 </install>
 <update>
@@ -23,7 +23,7 @@
 </update>
 <uninstall>
     <sql>
-        <file driver="mysql" charset="utf8" version="0.1.2">sql/install/uninstall.sql</file>
+        <file driver="mysql" charset="utf8" version="0.1.3">sql/install/uninstall.sql</file>
     </sql>
 </uninstall>
 

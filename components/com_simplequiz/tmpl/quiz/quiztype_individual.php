@@ -35,6 +35,8 @@ if($currPage > $totalQuestions){
     $app->redirect('index.php?option=com_simplequiz&view=quiz&id='.$quiz->id.'&page='.$totalQuestions);
 }
 
+
+
 $qbHelper = new QuestionBuilderHelper();
 
 JHtml::_('behavior.keepalive');
@@ -53,6 +55,11 @@ JHtml::_('behavior.keepalive');
     if(isset($answers[$quiz->id])){
         echo '<div class="alert alert-warning">It looks like you\'ve already started this quiz.<br/> Your previous answers wil be loaded, unless you want to reset. 
         <a class="btn btn-danger btn-sm float-end" href="index.php?option=com_simplequiz&task=quiz.resetSession&quiz_id='.$quiz->id.'">Reset</a></div>';
+    }
+
+    //record hits
+    if ($globalParams->get('record_hits') === '1') {
+        $model->countAsHit($quiz->id);
     }
     
 } ?>

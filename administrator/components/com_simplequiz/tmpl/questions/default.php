@@ -61,16 +61,28 @@ $pagecount = $model->getPageCount($filter_categories, $filter_title);
     <div class="card-body">
     <p>On this page, you can create and modify existing questions. Questions are added to quizzes separately from the quiz manager.</p>
     <p>A single question may exist on several quizzes. If you delete or modify a question, it will be deleted or changed across all quizzes to which it's used in.</p>
-
-        <form id="adminForm" action="index.php?option=com_simplequiz&view=Questions" method="POST">
-            <!-- load the form "filters" fieldset -->
-            <?php echo $form->renderFieldset('filters'); ?>
-
-            <input name="task" type="hidden">
-            <input type="submit" value="Filter" class="btn btn-primary float-end">
-        </form>
     </div>
 </div>
+
+<form id="adminForm" action="index.php?option=com_simplequiz&view=Questions" method="POST" class="mb-2">
+    <div class="accordion" id="accordionFilters">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="hdgFilters">
+            <button class="accordion-button <?php echo (isset($_POST['filters']) ? '' : 'collapsed') ?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilters" aria-expanded="true" aria-controls="collapseFilters">
+                Filters...
+            </button>
+            </h2>
+            <div id="collapseFilters" class="accordion-collapse collapse <?php echo (isset($_POST['filters']) ? 'show' : '') ?>" aria-labelledby="hdgFilters" data-bs-parent="#accordionFilters">
+                <div class="accordion-body">
+                    <?php echo $form->renderFieldset('filters'); ?>
+                    <input name="task" type="hidden">
+                    <input type="submit" value="Filter" class="btn btn-primary">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
 <?php if ($items != null): ?>
     <?php foreach ($items as $item): ?>
         <?php $params = json_decode($item->params); ?>
