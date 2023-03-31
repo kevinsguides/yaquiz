@@ -148,7 +148,7 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
 <div class="card bg-light mt-4 shadow-sm">
     <h2 class="card-header bg-primary text-white">Questions In Quiz</h2>
     <div class="card-body">
-<p>Note, removing items from the quiz does not delete the question itself. Remember, if you edit a question the changes apple across all quizzes containing that particular question and not just this quiz.</p>
+<p>Note, removing items from the quiz does not delete the question itself. Remember, if you edit a question the changes apply across all quizzes containing that particular question and not just this quiz.</p>
 
 <?php foreach ($questions as $question): ?>
 

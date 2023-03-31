@@ -85,13 +85,14 @@ $gConfig = \JComponentHelper::getParams('com_yaquiz');
                 <hr/>
                 <div class="row mb-2">
                     <div class="col-12 col-md-6">
-                    <a href="index.php?option=com_yaquiz&view=yaquiz&id=<?php echo $item->id ?>"><?php echo $item->title; ?> <span class="icon-edit"></span></a>
-                    <p><?php echo ($item->published == 1 ? 'Published' : 'Unpublished') ?></p>
+                    <a href="index.php?option=com_yaquiz&view=yaquiz&id=<?php echo $item->id ?>"><?php echo $item->title; ?> (View Details/Questions)</a>
+                    <br/>
+                    <?php echo ($item->published == 1 ? '<span class="badge bg-success text-white"><i class="fas fa-check-circle"></i> Published</span>' : '<span class="badge bg-dark text-white"><i class="fas fa-times-circle"></i> Unpublished</span>') ?>
                     <span class="badge bg-info text-white">ID: <?php echo $item->id ?></span>
                     <?php echo ($gConfig->get('record_hits')==='1' ? '<span class="badge bg-primary text-white">Hits: '. $item->hits .'</span>': '');?>
                     <?php echo ($gConfig->get('record_submissions')==='1' ? '<span class="badge bg-primary text-white">Submits: '. $item->submissions .'</span>': '');?>
                     <?php echo ($item->checked_out == 0 ? '<span class="badge bg-success text-white">Checked In</span>' : '<span class="badge bg-warning text-white">Checked Out</span>') ?>
-                                        
+
                   </div>
                     <div class="col-12 col-md-3">
                     <span><?php echo ($quizModel->getCategoryName($item->catid)? $quizModel->getCategoryName($item->catid) : 'Uncategorized'); ?></span>

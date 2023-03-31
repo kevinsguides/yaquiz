@@ -24,16 +24,23 @@ Currently, this is in pre-production. Would not recommend use on production site
 * Question ordering
 * Single page or multi page quizzes
 * Basic access control (for create edit delete)
+* record hit and submission count of each quiz
+* checkins for quizzes are working
 
 ## Todo
-* record hits/submissions option
+
 * record grade statistics option
 * mass imports of questions
 * limit available qns selection to like 50 and show addtl message
 * cool circle results graph
-* checkin system
+* checkins for questions
 * better templating system in general - easier extensibility....
+  * base templates work but subfolders do not for overrides - see if require once can be made relative
 * display grade statistics option
+  * record average score, individual user scores, etc...
+* reset hit/sub count button
+* quiz by category - a quiz that automatically pulls all questions from a category
+* randomize from pool - ability to select a random # of questions from a category
 * Other question types
     * hot spot
 * Clean/consistent interface

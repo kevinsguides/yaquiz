@@ -52,7 +52,7 @@ class HtmlView extends BaseHtmlView
 
             $toolbar->appendButton('Link', 'backward', 'All Quizzes', 'index.php?option=com_yaquiz&view=yaquizzes');
 
-            $toolbar->appendButton('Link', 'options', 'Options', 'index.php?option=com_config&view=component&component=com_yaquiz');
+            $toolbar->appendButton('Link', 'options', 'GConfig', 'index.php?option=com_config&view=component&component=com_yaquiz');
             ToolbarHelper::custom('Yaquiz.redirectEdit', 'edit', 'edit', 'Quiz Settings', false);
             //an external link with target blank
             ToolbarHelper::custom('Yaquiz.preview', 'link', 'preview', 'Preview', false);
