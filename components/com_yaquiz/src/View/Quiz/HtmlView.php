@@ -21,13 +21,19 @@ class HtmlView extends BaseHtmlView
         $active = $app->getMenu()->getActive();
         $globalParams = Factory::getApplication()->getParams('com_yaquiz');
         $model = $this->getModel();
-       
+
+
 
         //get params from the menu item
         $this->params = $active->getParams();
         $this->quiz_id = $this->params->get('quiz_id');
         
         $this->item = $model->getItem($this->quiz_id);
+
+        //set the title
+        $this->document->setTitle($this->item->title);
+
+
 
         //check if quiz is published
         if($this->item->published == 0 && ($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true)){

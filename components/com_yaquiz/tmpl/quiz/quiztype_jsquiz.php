@@ -19,6 +19,13 @@ if ($globalParams->get('load_mathjax') === '1') {
     $wam->registerAndUseScript('com_yaquiz.mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
 }
 
+$theme = $globalParams->get('theme');
+$stylefile = '/components/com_yaquiz/tmpl/' . $theme . '/style.css';
+//if file exists
+if (file_exists(JPATH_ROOT . $stylefile)) {
+    $wam->registerAndUseStyle('com_yaquiz.quizstyle', $stylefile);
+}
+
 
 
 $qbHelper = new QuestionBuilderHelper();
@@ -45,8 +52,12 @@ if($quiz_params->quiz_use_points === "1"){
 ?>
 
 <input id="uses_point_system" type="hidden" value="<?php echo ($uses_point_system==true)?'true':'false';?>">
+<input id="quiz_showfeedback" type="hidden" value="<?php echo ($quiz_params->quiz_showfeedback==1)?'true':'false';?>">
+<input id="quiz_feedback_showcorrect" type="hidden" value="<?php echo ($quiz_params->quiz_feedback_showcorrect==1)?'true':'false';?>">
+<input id="passing_score" type="hidden" value="<?php echo $quiz_params->passing_score;?>">
+<div class="container p-2">
 
-<div class="card" data-jsquiz-page="0">
+<div id="jsquiz-intro" class="card" data-jsquiz-page="0">
     <div class="card-header">
         <h3>
             <?php echo $quiz->title; ?>
@@ -59,6 +70,17 @@ if($quiz_params->quiz_use_points === "1"){
     </div>
     <div class="card-footer">
         <a class="btn btn-primary" id="jsquiz-btn-start">Start Quiz</a>
+    </div>
+</div>
+
+
+<div class="card d-none mb-2" id="jsquiz-results">
+    <h3 class="card-header">Results</h3>
+    <div class="card-body">
+        <p>Your Score: <span id="jsquiz-score"></span></p>
+        <p id="jsquiz-passfail-feedback"></p>
+        <div id="jsquiz-feedback-passed" class="bg-light text-success  p-2 rounded d-none"><i class="fas fa-clipboard-check"></i> <?php echo $globalParams->get('lang_pass');?></div>
+        <div id="jsquiz-feedback-failed" class="bg-light text-danger p-2 rounded d-none"><i class="fas fa-sad-cry"></i> <?php echo $globalParams->get('lang_fail');?></div>
     </div>
 </div>
 
@@ -82,12 +104,19 @@ foreach ($questions as $question):
     }
 
 
+    $numbering = "";
+    if($quiz_params->quiz_question_numbering == "1"){
+        $numbering = $i . ". ";
+    }
+
+
+
 
     ?>
-    <div class="card jsquiz-questioncard" data-jsquiz-page="<?php echo $i; ?>" data-qtype="<?php echo $question->params->question_type;?>" data-pointvalue="<?php echo $points;?>">
+    <div class="card d-none jsquiz-questioncard mb-2" data-jsquiz-page="<?php echo $i; ?>" data-qtype="<?php echo $question->params->question_type;?>" data-pointvalue="<?php echo $points;?>" data-iscorrect="0">
         <div class="card-header">
             <h3>
-                <?php echo $question->question; ?>
+                <?php echo $numbering.$question->question; ?> <i class="fas fa-question-circle float-end"></i>
             </h3>
         </div>
         <div class="card-body">
@@ -129,26 +158,54 @@ foreach ($questions as $question):
                         <input class="d-none" type="radio" name="useranswer" id="answer<?php echo $i.'-F'; ?>" value="0">
                         <label class="form-check-label mchoice btn btn-dark text-start" for="answer<?php echo $i.'-F'; ?>">False</label>                        
                 <?php endif; ?>
+                    <?php if($quiz_params->quiz_showfeedback==1):?>
+                        <div class="jsquiz-question-feedback-correct d-none">
+                            <?php 
+                            //if there is any actual feedback to give
+                            if($question->feedback_right != ''){
+                                echo $question->feedback_right;
+                            }
+                            else{
+                                echo 'Correct!';
+                            }
+                            ?>
+                        </div>
+                        <div class="jsquiz-question-feedback-incorrect d-none">
+                            <?php
+                            //if there is any actual feedback to give
+                            if($question->feedback_wrong != ''){
+                                echo $question->feedback_wrong;
+                            }
+                            else{
+                                echo 'Incorrect.';
+                            }
+
+                            //if we are showing the correct answer
+                            if($quiz_params->quiz_feedback_showcorrect=='1'){
+                                echo '<br/>'.$model->getCorrectAnswerText($question);
+                            }
+                            ?>
+
+
+                            
+                        </div>
+                    <?php endif;?>
+
         </div>
         <div class="card-footer">
             <span class="float-end">Points: <?php echo $points; ?></span>                    
             <?php if($i > 1):?>
-                <a class="btn btn-primary" class="jsquiz-btn-prev">Previous</a>
+                <a class="btn btn-secondary jsquiz-btn-prev" >Previous</a>
             <?php endif; ?>
             <?php if($i == $questionCount): ?>
                 <a class="btn btn-primary" id="jsquiz-btn-finish">Finish</a>
             <?php else : ?>
-                <a class="btn btn-primary" class="jsquiz-btn-next">Next</a>
+                <a class="btn btn-primary jsquiz-btn-next">Next</a>
             <?php endif; ?>
             </div>
     </div>
 <?php endforeach; ?>
-<div class="card" id="jsquiz-results">
-    <h3 class="card-header">Results</h3>
-    <div class="card-body">
-        <p>Your Score: <span id="jsquiz-score"></span></p>
-        <p id="jsquiz-passfail-feedback"></p>
-    </div>
-</div>
 
 
+
+            </div>

@@ -65,7 +65,7 @@ default="default"
 >
 <option value="default">Default (A Single Page Test)</option>
 <option value="individual">Individual (One Question Per Page)</option>
-<option value="jsquiz">JavaScript Quiz (Fully Cachable)</option>
+<option value="jsquiz">JavaScript Quiz (fully cacheable)</option>
 </field>
 
 <field

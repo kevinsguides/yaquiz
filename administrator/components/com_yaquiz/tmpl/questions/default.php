@@ -60,7 +60,7 @@ $pagecount = $model->getPageCount($filter_categories, $filter_title);
     <h1 class="card-header"><span class="icon-check"></span> Questions Manager</h1>
     <div class="card-body">
     <p>On this page, you can create and modify existing questions. Questions are added to quizzes separately from the quiz manager.</p>
-    <p>A single question may exist on several quizzes. If you delete or modify a question, it will be deleted or changed across all quizzes to which it's used in.</p>
+    <p>A single question may exist in several quizzes. If you delete or modify a question, it will be deleted or changed across all quizzes it's used in.</p>
     </div>
 </div>
 

@@ -2,3 +2,19 @@
 Any styles placed here are loaded with this quiz on both the quiz and results pages.
 */
 
+.jsquiz-question-feedback-correct{
+    color: green;
+    background: #e0ffe0;
+    border: 1px solid green;
+    padding: 5px;
+    margin: 5px 0;
+
+}
+.jsquiz-question-feedback-incorrect{
+    color: red;
+    background: #ffe0e0;
+    border: 1px solid red;
+    padding: 5px;
+    margin: 5px 0;
+
+}
