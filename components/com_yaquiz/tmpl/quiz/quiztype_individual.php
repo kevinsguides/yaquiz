@@ -24,6 +24,7 @@ if ($globalParams->get('load_mathjax') === '1') {
     $wa->registerAndUseScript('com_yaquiz.mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
 }
 
+
 $model = new QuizModel();
 //the total number of questions in quiz from the model...
 $totalQuestions = $model->getTotalQuestions($quiz->id);
@@ -43,7 +44,7 @@ JHtml::_('behavior.keepalive');
 
 ?>
 
-<form action="index.php?option=com_yaquiz&task=quiz.loadNextPage" method="POST">
+<form action="<?php echo JURI::root(); ?>index.php?option=com_yaquiz&task=quiz.loadNextPage" method="POST">
     <input type="hidden" name="quiz_id" value="<?php echo $quiz->id; ?>" />
     <input type="hidden" name="page" value="<?php echo $currPage; ?>" />
 
@@ -92,7 +93,7 @@ JHtml::_('behavior.keepalive');
 </div>
 <div class="card-footer">
 <?php if ($currPage == 0):?>
-    <a href="index.php?option=com_yaquiz&view=quiz&id=<?php echo $quiz->id; ?>&page=<?php echo $currPage + 1; ?>" class="btn btn-primary">Start Quiz</a>
+    <a href="<?php echo JURI::root(); ?>index.php?option=com_yaquiz&view=quiz&id=<?php echo $quiz->id; ?>&page=<?php echo $currPage + 1; ?>" class="btn btn-primary">Start Quiz</a>
 <?php endif;?>
 <?php if ($currPage > 0 && $currPage <= $totalQuestions):?>
     <button type="submit" name="nextpage" value="-1" class="btn btn-primary">Previous</button>
@@ -112,6 +113,3 @@ JHtml::_('behavior.keepalive');
 </div>
 <?php echo JHtml::_('form.token'); ?>
 </form>
-
-
-<a href="index.php?option=com_yaquiz&task=quiz.resetSession">Reset Session</a>
