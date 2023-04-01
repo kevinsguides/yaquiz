@@ -77,13 +77,12 @@ class QuestionBuilderHelper
             $defaultanswer = -1;
         }
         foreach ($answers as $answer) {
-            $ans = '<div class="form-check">';
             //add radio button
-            $ans .= '<input class="form-check-input" type="radio" name="answers[' . $question->id . ']" id="question_' . $question->id . '_answer_' . $answeridx . '" value="' . $answeridx . '" ' . ($defaultanswer == $answeridx ? 'checked' : '') . '/>';
+            $ans = '<input class="d-none" type="radio" name="answers[' . $question->id . ']" id="question_' . $question->id . '_answer_' . $answeridx . '" value="' . $answeridx . '" ' . ($defaultanswer == $answeridx ? 'checked' : '') . '/>';
             //add label
-            $ans .= '<label class="form-check-label mchoice btn btn-dark text-start" for="question_' . $question->id . '_answer_' . $answeridx . '">' . $answer . '</label>';
+            $ans .= '<label class="form-check-label mchoice btn btn-dark text-start mt-1" for="question_' . $question->id . '_answer_' . $answeridx . '">' . $answer . '</label>';
             $answeridx++;
-            $ans .= '</div>';
+
             //add to array
             $answerArr[] = $ans;
         }
@@ -110,15 +109,13 @@ class QuestionBuilderHelper
         }
 
         $html = '
-        <div class="form-check">
-        <input class="form-check-input" type="radio" name="answers[' . $question->id . ']" id="answers[' . $question->id . ']t" value="1" ' . ($defaultanswer == 1 ? 'checked' : '') . '/>
-        <label for="answers[' . $question->id . ']t">True</label><br/>'
+        <input class="d-none" type="radio" name="answers[' . $question->id . ']" id="answers[' . $question->id . ']t" value="1" ' . ($defaultanswer == 1 ? 'checked' : '') . '/>
+        <label class="btn btn-success w-100 text-center truefalse-t" for="answers[' . $question->id . ']t">True</label><br/>'
         ;
         $html .= '
-        <input class="form-check-input" type="radio" name="answers[' . $question->id . ']" id="answers[' . $question->id . ']f" value="0" ' . ($defaultanswer == 0 ? 'checked' : '') . '/>
-        <label for="answers[' . $question->id . ']f">False</label><br/>
+        <input class="d-none" type="radio" name="answers[' . $question->id . ']" id="answers[' . $question->id . ']f" value="0" ' . ($defaultanswer == 0 ? 'checked' : '') . '/>
+        <label class="btn btn-danger w-100 text-center truefalse-f" for="answers[' . $question->id . ']f">False</label><br/>
         ';
-        $html .= '</div>';
         return $html;
     }
 
@@ -187,7 +184,6 @@ class QuestionBuilderHelper
 
         //include the template for the result_summary.php template
         $template = (JPATH_SITE . '/components/com_yaquiz/tmpl/quiz/' . $theme . '/result_summary.php');
-        echo($template);
         include($template);
         $html .= $feedback;
         return $html;

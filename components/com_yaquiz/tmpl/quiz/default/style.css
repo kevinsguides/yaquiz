@@ -18,3 +18,23 @@ Any styles placed here are loaded with this quiz on both the quiz and results pa
     margin: 5px 0;
 
 }
+
+
+label.mchoice {
+    width: 100%; }
+  
+input:checked + label.mchoice {
+background-color: black;
+color: white; }
+
+
+input:checked + label.truefalse-t {
+    background-color: #062200;
+    color: white;
+}
+
+input:checked + label.truefalse-f {
+    background-color: #220000;
+    color: white;
+}
+  
