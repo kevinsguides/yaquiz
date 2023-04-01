@@ -12,7 +12,7 @@ use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
 $app = Factory::getApplication();
 $wam = $app->getDocument()->getWebAssetManager();
 $wam->registerAndUseScript('com_yaquiz.jsquiz', 'components/com_yaquiz/js/jsquiz.js', [], ['defer' => true]);
-$wam->registerAndUseStyle('com_yaquiz.quiz', '/components/com_yaquiz/src/Style/quiz.css');
+$wam->registerAndUseStyle('com_yaquiz.quiz', 'components/com_yaquiz/src/Style/quiz.css');
 $globalParams = $app->getParams('com_yaquiz');
 
 if ($globalParams->get('load_mathjax') === '1') {
