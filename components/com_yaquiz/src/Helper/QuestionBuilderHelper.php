@@ -15,6 +15,7 @@ class QuestionBuilderHelper
     {
         $this->globalParams = Factory::getApplication()->getParams('com_yaquiz');
         $this->db = Factory::getContainer()->get('DatabaseDriver');
+        $this->theme = $this->globalParams->get('theme');
     }
 
 
@@ -34,30 +35,30 @@ class QuestionBuilderHelper
             $this->questionnumber = '';
         }
         $itemMissing = '';
-        if (isset($question->defaultanswer) && $question->defaultanswer === 'missing') {
-            $itemMissing .= '<i class="text-danger fas fa-exclamation-triangle me-2" title="You forgot to answer this..."></i>';
-        }
-        $html = '<div class="card"><h3 class="card-header">' . $itemMissing . $formatted_questionnum . $question->question . '</h3>';
 
-        $html .= '<div class="card-body">' . $question->details;
+        $html = '';
+        
+        $question_wrapper_header = (JPATH_SITE . '/components/com_yaquiz/tmpl/quiz/' . $this->theme . '/question_wrapper_header.php');
+        $question_wrapper_footer = (JPATH_SITE . '/components/com_yaquiz/tmpl/quiz/' . $this->theme . '/question_wrapper_footer.php');
+        include($question_wrapper_header);
+
+
+
         //if question type is multiple_choice
         if ($questionType == 'multiple_choice') {
-            $html .= $this->buildMChoice($question, $params);
+            echo $this->buildMChoice($question, $params);
         } else if ($questionType == 'true_false') {
-            $html .= $this->build_truefalse($question);
+            echo $this->build_truefalse($question);
         } else if ($questionType == 'fill_blank') {
-            $html .= $this->build_fill_blank($question);
+            echo $this->build_fill_blank($question);
         } else {
-            $html .= 'question type' . $questionType . ' not supported';
-        }
-        $html .= '</div>';
-        //if quiz uses points system
-        if ($quiz_params->quiz_use_points == 1) {
-            $html .= '<div class="card-footer">This question is worth ' . $params->points . ' point' . ($params->points > 1 ? 's' : '') . '</div>';
+            echo 'question type' . $questionType . ' not supported';
         }
 
-        $html .= '</div>';
-        return $html;
+        include($question_wrapper_footer);
+
+        return '';
+        //return $html;
     }
     protected function buildMChoice($question, $params)
     {

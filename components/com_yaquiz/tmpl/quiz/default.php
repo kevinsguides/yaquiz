@@ -62,6 +62,12 @@ $questionBuilder = new QuestionBuilderHelper();
 
 $quizparams = $model->getQuizParams($quiz->id);
 
+//record hits
+if ($globalParams->get('record_hits') === '1') {
+    $model->countAsHit($quiz->id);
+}
+
+
 //if the quiz is null, show error
 if ($quiz == null):
     ?>
@@ -74,22 +80,13 @@ if ($quiz == null):
     <?php
 else:
 
-        //record hits
-    if ($globalParams->get('record_hits') === '1') {
-        $model->countAsHit($quiz->id);
-    }
+    
+    $template_intro = (JPATH_SITE . '/components/com_yaquiz/tmpl/quiz/' . $theme . '/singlepage_intro.php');
+    
 
     ?>
-    <div class="p-3">
-        <div class="card">
-            <h2 class="card-header">
-                <?php echo $quiz->title; ?>
-            </h2>
-            <div class="card-body">
-                <?php echo $quiz->description; ?>
-            </div>
-        </div>
-        <br />
+    <?php include($template_intro); ?>
+    
         <?php if ($quizparams->quiz_displaymode == 'default'): ?>
 
             <form action="index.php?option=com_yaquiz&task=quiz.submitquiz" method="post">
@@ -123,7 +120,7 @@ else:
 
         <?php endif; ?>
 
-    </div>
+
     <?php
 endif;
 ?>
