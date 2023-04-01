@@ -15,8 +15,12 @@ $wam->registerAndUseScript('com_yaquiz.jsquiz', 'components/com_yaquiz/js/jsquiz
 $wam->registerAndUseStyle('com_yaquiz.quiz', 'components/com_yaquiz/src/Style/quiz.css');
 $globalParams = $app->getParams('com_yaquiz');
 
-if ($globalParams->get('load_mathjax') === '1') {
+if ($globalParams->get('get_mathjax') === '1') {
     $wam->registerAndUseScript('com_yaquiz.mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
+}
+if ($globalParams->get('get_mathjax') === '2') {
+    Log::add('Loading local mathjax', Log::INFO, 'com_yaquiz');
+    $wam->registerAndUseScript('com_yaquiz.mathjaxlocal', 'components/com_yaquiz/js/mathjax/es5/tex-svg.js', [], ['defer' => true]);
 }
 
 $theme = $globalParams->get('theme');

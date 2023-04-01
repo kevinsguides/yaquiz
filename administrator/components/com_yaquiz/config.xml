@@ -65,13 +65,14 @@ default="0"
 </field>
 
 <field
-name="load_mathjax"
-type="radio"
+name="get_mathjax"
+type="list"
 label="COM_YAQUIZ_FIELD_LOAD_MATHJAX_LABEL"
 description="COM_YAQUIZ_FIELD_LOAD_MATHJAX_DESC"
 default="0"
 >
-<option value="1">JYES</option>
+<option value="2">Yes - From Local</option>
+<option value="1">Yes - From Remote CDN (jsdelivr)</option>
 <option value="0">JNO</option>
 </field>
 

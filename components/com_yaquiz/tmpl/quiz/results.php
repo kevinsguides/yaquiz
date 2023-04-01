@@ -10,7 +10,7 @@ $item = $this->get('Item');
 
 //get userstate results
 $app = Factory::getApplication();
-$wa = $app->getDocument()->getWebAssetManager();
+$wam = $app->getDocument()->getWebAssetManager();
 
 $results = $app->getUserState('com_yaquiz.results');
 
@@ -18,11 +18,22 @@ $results = $app->getUserState('com_yaquiz.results');
 
 //get config from component
 $globalParams = $app->getParams('com_yaquiz');
-if($globalParams->get('load_mathjax') === '1'){
-    $wa->registerAndUseScript('com_yaquiz.mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
+if ($globalParams->get('get_mathjax') === '1') {
+    $wam->registerAndUseScript('com_yaquiz.mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
+}
+if ($globalParams->get('get_mathjax') === '2') {
+    $wam->registerAndUseScript('com_yaquiz.mathjaxlocal', 'components/com_yaquiz/js/mathjax/es5/tex-svg.js', [], ['defer' => true]);
 }
 
-$wa->useStyle('fontawesome');
+$theme = $globalParams->get('theme');
+$stylefile = '/components/com_yaquiz/tmpl/' . $theme . '/style.css';
+//if file exists
+if (file_exists(JPATH_ROOT . $stylefile)) {
+    $wam->registerAndUseStyle('com_yaquiz.quizstyle', $stylefile);
+}
+
+
+$wam->useStyle('fontawesome');
 
 //get results from session
 
