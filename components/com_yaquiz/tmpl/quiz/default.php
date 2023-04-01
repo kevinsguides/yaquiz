@@ -21,7 +21,7 @@ $wam->registerAndUseStyle('com_yaquiz.quiz', $style);
 //get config from component
 $globalParams = $app->getParams('com_yaquiz');
 if ($globalParams->get('get_mathjax') === '1') {
-    $wam->registerAndUseScript('com_yaquiz.mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
+    $wam->registerAndUseScript('com_yaquiz.mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js', [], ['defer' => true]);
 }
 if ($globalParams->get('get_mathjax') === '2') {
     Log::add('Loading local mathjax', Log::INFO, 'com_yaquiz');
@@ -86,7 +86,7 @@ else:
 
     ?>
     <?php include($template_intro); ?>
-    
+
         <?php if ($quizparams->quiz_displaymode == 'default'): ?>
 
             <form action="index.php?option=com_yaquiz&task=quiz.submitquiz" method="post">

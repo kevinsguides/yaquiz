@@ -187,6 +187,7 @@ class QuestionBuilderHelper
 
         //include the template for the result_summary.php template
         $template = (JPATH_SITE . '/components/com_yaquiz/tmpl/quiz/' . $theme . '/result_summary.php');
+        echo($template);
         include($template);
         $html .= $feedback;
         return $html;

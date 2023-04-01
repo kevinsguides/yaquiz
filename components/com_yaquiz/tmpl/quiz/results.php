@@ -19,7 +19,7 @@ $results = $app->getUserState('com_yaquiz.results');
 //get config from component
 $globalParams = $app->getParams('com_yaquiz');
 if ($globalParams->get('get_mathjax') === '1') {
-    $wam->registerAndUseScript('com_yaquiz.mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
+    $wam->registerAndUseScript('com_yaquiz.mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js', [], ['defer' => true]);
 }
 if ($globalParams->get('get_mathjax') === '2') {
     $wam->registerAndUseScript('com_yaquiz.mathjaxlocal', 'components/com_yaquiz/js/mathjax/es5/tex-svg.js', [], ['defer' => true]);
@@ -34,10 +34,6 @@ if (file_exists(JPATH_ROOT . $stylefile)) {
 
 
 $wam->useStyle('fontawesome');
-
-//get results from session
-
-
 
 
 //if results are empty
