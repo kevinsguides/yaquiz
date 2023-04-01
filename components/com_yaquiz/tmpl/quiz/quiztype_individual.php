@@ -32,7 +32,6 @@ $quiz_params = $model->getQuizParams($quiz->id);
 
 //if current page is greater than total questions, redirect to last page
 if($currPage > $totalQuestions){
-    
     $app->redirect('index.php?option=com_yaquiz&view=quiz&id='.$quiz->id.'&page='.$totalQuestions);
 }
 
@@ -49,15 +48,6 @@ JHtml::_('behavior.keepalive');
     <input type="hidden" name="page" value="<?php echo $currPage; ?>" />
 
     <?php if ($currPage == 0){
-    //check if the user already started this quiz
-    $session = Factory::getApplication()->getSession();
-    $answers = $session->get('sq_answers', array());
-    //check if an entry exists for this quiz
-    if(isset($answers[$quiz->id])){
-        echo '<div class="alert alert-warning">It looks like you\'ve already started this quiz.<br/> Your previous answers wil be loaded, unless you want to reset. 
-        <a class="btn btn-danger btn-sm float-end" href="index.php?option=com_yaquiz&task=quiz.resetSession&quiz_id='.$quiz->id.'">Reset</a></div>';
-    }
-
     //record hits
     if ($globalParams->get('record_hits') === '1') {
         $model->countAsHit($quiz->id);

@@ -30,6 +30,7 @@ class QuizController extends BaseController{
         $this->registerTask('submitquiz', 'submitquiz');
         $this->registerTask('loadnextpage', 'loadnextpage');
 
+
     }
 
     public function submitquiz()
@@ -67,6 +68,7 @@ class QuizController extends BaseController{
             $session = $app->getSession();
             $answers = $session->get('sq_answers', array());
             $answers = $answers[$quiz_id];
+            
         }
 
         
@@ -140,6 +142,17 @@ class QuizController extends BaseController{
         $quiz = $model->getItem($quiz_id);
         $title = $quiz->title;
         $buildResults = $qbhelper->buildResultsArea($title, $quiz_id, $results);
+        
+
+            //check if the user already started this quiz
+        $session = Factory::getApplication()->getSession();
+        $answers = $session->get('sq_answers', array());
+    //check if an entry exists for this quiz
+        if(isset($answers[$quiz_id])){
+            $session->clear('sq_answers');
+            $session->clear('sq_quiz_id');
+        }
+
         //echo $buildResults;
         $this->setRedirect('index.php?option=com_yaquiz&view=quiz&layout=results&id='.$quiz_id);
 
