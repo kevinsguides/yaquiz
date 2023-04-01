@@ -156,7 +156,8 @@ foreach ($questions as $question):
                         <input class="d-none" type="radio" name="useranswer" id="answer<?php echo $i.'-T'; ?>" value="1">
                         <label class="form-check-label mchoice btn btn-dark text-start" for="answer<?php echo $i.'-T'; ?>">True</label>
                         <input class="d-none" type="radio" name="useranswer" id="answer<?php echo $i.'-F'; ?>" value="0">
-                        <label class="form-check-label mchoice btn btn-dark text-start" for="answer<?php echo $i.'-F'; ?>">False</label>                        
+                        <label class="form-check-label mchoice btn btn-dark text-start" for="answer<?php echo $i.'-F'; ?>">False</label>  
+                    </form>                      
                 <?php endif; ?>
                     <?php if($quiz_params->quiz_showfeedback==1):?>
                         <div class="jsquiz-question-feedback-correct d-none">

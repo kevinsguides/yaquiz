@@ -1,6 +1,5 @@
-console.log('jsquiz.js loaded');
-
-
+//document must be fully loaded
+document.addEventListener('DOMContentLoaded', function () {
 //get every .jsquiz-questioncard
 var questionCards = document.getElementsByClassName('jsquiz-questioncard');
 
@@ -13,7 +12,6 @@ var btnFinish = document.getElementById('jsquiz-btn-finish');
 
 //submit quiz and grade it
 btnFinish.addEventListener('click', function() {
-    console.log('i find...');
 
     let score = 0;
     let totalPossibleScore = 0;
@@ -106,11 +104,6 @@ btnFinish.addEventListener('click', function() {
         showAllFeedback();
     }
 
-
-
-    console.log('score is: ' + score + ' out of ' + totalPossibleScore);
-
-
 });
 
 
@@ -199,3 +192,9 @@ for (var i = 0; i < btnPrev.length; i++) {
         nextPage.classList.remove('d-none');
     });
 }
+  }, false);
+
+
+    
+
+
