@@ -34,12 +34,41 @@
         <option value="1">JYES</option>
         <option value="0">JNO</option>
         </field>
+
+        <field
+        name="get_mathjax"
+        type="list"
+        label="COM_YAQUIZ_FIELD_LOAD_MATHJAX_LABEL"
+        description="COM_YAQUIZ_FIELD_LOAD_MATHJAX_DESC"
+        default="0"
+        >
+        <option value="2">Yes - From Local</option>
+        <option value="1">Yes - From Remote CDN (jsdelivr)</option>
+        <option value="0">JNO</option>
+        </field>
+
+        <field
+        name="respect_jcache"
+        type="radio"
+        label="COM_YAQUIZ_RESPECT_CACHE_LABEL"
+        description="COM_YAQUIZ_RESPECT_CACHE_DESC"
+        default="1"
+        >
+        <option value="1">JYES</option>
+        <option value="0">JNO</option>
+        </field>
+
+
         <field
             name="credit_note"
             type="note"
             label="Extension By Kevin Olson"
             description="COM_YAQUIZ_XML_DESCRIPTION"
         />
+
+
+
+
 </fieldset>
 <fieldset
 name="globaloptions"
@@ -70,17 +99,6 @@ default="0"
 <option value="0">JNO</option>
 </field>
 
-<field
-name="get_mathjax"
-type="list"
-label="COM_YAQUIZ_FIELD_LOAD_MATHJAX_LABEL"
-description="COM_YAQUIZ_FIELD_LOAD_MATHJAX_DESC"
-default="0"
->
-<option value="2">Yes - From Local</option>
-<option value="1">Yes - From Remote CDN (jsdelivr)</option>
-<option value="0">JNO</option>
-</field>
 
 </fieldset>
 

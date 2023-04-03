@@ -25,20 +25,18 @@ class DisplayController extends BaseController{
         $cachable = false;
         $layout = $this->input->get('layout');
         $pagenum = $this->input->get('page');
-        
-        //if the layout is not results, and there is no page number, then we are on the first page of a quiz and it's cachable
-        if($layout != 'results' && $pagenum == null){
-            $cachable = true;
-            Log::add('i think this should be cachable', Log::INFO, 'com_yaquiz');
-        }
-
-
-
-        
-        //register tasks
         $app = Factory::getApplication();
+        
+        //get config from component
+        $gConfig = $app->getParams('com_yaquiz');
+        if ($gConfig->get('respect_jcache',"1") == "1") {
+            //if the layout is not results, and there is no page number, then we are on the first page of a quiz and it's cachable
+            if($layout != 'results' && $pagenum == null){
+                $cachable = true;
+            }
+        }   
+
         $wam = $app->getDocument()->getWebAssetManager();
-        //ask for fontawesome
         $wam->useStyle('fontawesome');
 
 
