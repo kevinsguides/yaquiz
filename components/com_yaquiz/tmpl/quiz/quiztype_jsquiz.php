@@ -23,7 +23,7 @@ if ($globalParams->get('get_mathjax') === '2') {
     $wam->registerAndUseScript('com_yaquiz.mathjaxlocal', 'components/com_yaquiz/js/mathjax/es5/tex-svg.js', [], ['defer' => true]);
 }
 
-$theme = $globalParams->get('theme');
+$theme = $globalParams->get('theme','default');
 $stylefile = '/components/com_yaquiz/tmpl/' . $theme . '/style.css';
 //if file exists
 if (file_exists(JPATH_ROOT . $stylefile)) {
