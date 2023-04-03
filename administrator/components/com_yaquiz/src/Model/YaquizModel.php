@@ -90,8 +90,6 @@ class YaquizModel extends AdminModel
                 $data->quiz_displaymode = 'default';
                 $data->access = $access;
             } else {
-                //log all the fields in data
-                Log::add('data: ' . print_r($data, true), Log::INFO, 'com_yaquiz');
                 $params = $this->getParams($data->id);
                 //get 'quiz_displaymode' from params
                 Log::add('params: ' . $params['quiz_displaymode'], Log::INFO, 'com_yaquiz');
@@ -101,6 +99,7 @@ class YaquizModel extends AdminModel
                 $data->quiz_question_numbering = $params['quiz_question_numbering'];
                 $data->quiz_use_points = $params['quiz_use_points'];
                 $data->passing_score = $params['passing_score'];
+                $data->quiz_record_results = $params['quiz_record_results'];
                 $this->checkout($data->id);
             }
 
@@ -536,6 +535,7 @@ class YaquizModel extends AdminModel
         $params['quiz_question_numbering'] = $data['quiz_question_numbering'];
         $params['quiz_use_points'] = $data['quiz_use_points'];
         $params['passing_score'] = $data['passing_score'];
+        $params['quiz_record_results'] = $data['quiz_record_results'];
         //encode
         $params = json_encode($params);
         return $params;
