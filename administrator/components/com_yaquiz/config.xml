@@ -75,29 +75,40 @@ name="globaloptions"
 label="COM_YAQUIZ_GLOBAL_OPTIONS_LABEL">
 
 
-<field
-name="noteglobal"
-type="note"
-label="COM_YAQUIZ_GLOBAL_OPTIONS_LABEL"
-description="COM_YAQUIZ_GLOBAL_OPTIONS_DESC"
-/>
-<field
-name="access"
-type="accesslevel"
-label="COM_YAQUIZ_FIELD_QUIZACCESSLEVEL_LABEL"
-description="COM_YAQUIZ_FIELD_QUIZACCESSLEVEL_DESC"
-default="1"
-/>
-<field
-name="randomize_mchoice"
-type="radio"
-label="COM_YAQUIZ_FIELD_RANDOMIZE_MCHOICE_LABEL"
-description="COM_YAQUIZ_FIELD_RANDOMIZE_MCHOICE_DESC"
-default="0"
->
-<option value="1">JYES</option>
-<option value="0">JNO</option>
-</field>
+    <field
+    name="noteglobal"
+    type="note"
+    label="COM_YAQUIZ_GLOBAL_OPTIONS_LABEL"
+    description="COM_YAQUIZ_GLOBAL_OPTIONS_DESC"
+    />
+    <field
+    name="access"
+    type="accesslevel"
+    label="COM_YAQUIZ_FIELD_QUIZACCESSLEVEL_LABEL"
+    description="COM_YAQUIZ_FIELD_QUIZACCESSLEVEL_DESC"
+    default="1"
+    />
+    <field
+    name="randomize_mchoice"
+    type="radio"
+    label="COM_YAQUIZ_FIELD_RANDOMIZE_MCHOICE_LABEL"
+    description="COM_YAQUIZ_FIELD_RANDOMIZE_MCHOICE_DESC"
+    default="0"
+    >
+    <option value="1">JYES</option>
+    <option value="0">JNO</option>
+    </field>
+
+    <field 
+    name="shortans_ignore_trailing"
+    type="radio"
+    label="COM_YAQUIZ_FIELD_SHORTANS_IGNORE_TRAILING_LABEL"
+    description="COM_YAQUIZ_FIELD_SHORTANS_IGNORE_TRAILING_DESC"
+    default="1"
+    >
+    <option value="1">JYES</option>
+    <option value="0">JNO</option>
+    </field>
 
 
 </fieldset>

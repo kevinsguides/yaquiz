@@ -13,17 +13,17 @@ $app = Factory::getApplication();
 $wam = $app->getDocument()->getWebAssetManager();
 $wam->registerAndUseScript('com_yaquiz.jsquiz', 'components/com_yaquiz/js/jsquiz.js', [], ['defer' => true]);
 $wam->registerAndUseStyle('com_yaquiz.quiz', 'components/com_yaquiz/src/Style/quiz.css');
-$globalParams = $app->getParams('com_yaquiz');
+$gConfig = $app->getParams('com_yaquiz');
 
-if ($globalParams->get('get_mathjax') === '1') {
+if ($gConfig->get('get_mathjax') === '1') {
     $wam->registerAndUseScript('com_yaquiz.mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js', [], ['defer' => true]);
 }
-if ($globalParams->get('get_mathjax') === '2') {
+if ($gConfig->get('get_mathjax') === '2') {
     Log::add('Loading local mathjax', Log::INFO, 'com_yaquiz');
     $wam->registerAndUseScript('com_yaquiz.mathjaxlocal', 'components/com_yaquiz/js/mathjax/es5/tex-svg.js', [], ['defer' => true]);
 }
 
-$theme = $globalParams->get('theme','default');
+$theme = $gConfig->get('theme','default');
 $stylefile = '/components/com_yaquiz/tmpl/' . $theme . '/style.css';
 //if file exists
 if (file_exists(JPATH_ROOT . $stylefile)) {
@@ -59,6 +59,7 @@ if($quiz_params->quiz_use_points === "1"){
 <input id="quiz_showfeedback" type="hidden" value="<?php echo ($quiz_params->quiz_showfeedback==1)?'true':'false';?>">
 <input id="quiz_feedback_showcorrect" type="hidden" value="<?php echo ($quiz_params->quiz_feedback_showcorrect==1)?'true':'false';?>">
 <input id="passing_score" type="hidden" value="<?php echo $quiz_params->passing_score;?>">
+<input type="hidden" id="shortans_ignore_trailing" value="<?php echo $gConfig->get('shortans_ignore_trailing','1'); ?>" />
 <div class="container p-2">
 
 <div id="jsquiz-intro" class="card" data-jsquiz-page="0">
@@ -83,8 +84,8 @@ if($quiz_params->quiz_use_points === "1"){
     <div class="card-body">
         <p>Your Score: <span id="jsquiz-score"></span></p>
         <p id="jsquiz-passfail-feedback"></p>
-        <div id="jsquiz-feedback-passed" class="bg-light text-success  p-2 rounded d-none"><i class="fas fa-clipboard-check"></i> <?php echo $globalParams->get('lang_pass');?></div>
-        <div id="jsquiz-feedback-failed" class="bg-light text-danger p-2 rounded d-none"><i class="fas fa-sad-cry"></i> <?php echo $globalParams->get('lang_fail');?></div>
+        <div id="jsquiz-feedback-passed" class="bg-light text-success  p-2 rounded d-none"><i class="fas fa-clipboard-check"></i> <?php echo $gConfig->get('lang_pass');?></div>
+        <div id="jsquiz-feedback-failed" class="bg-light text-danger p-2 rounded d-none"><i class="fas fa-sad-cry"></i> <?php echo $gConfig->get('lang_fail');?></div>
     </div>
 </div>
 

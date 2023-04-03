@@ -1,6 +1,7 @@
 <?php
 /**
  * renders individual pages for each question with help of questionbuilder class
+ * a better name for this would have been multi_page but that's what we're stuck with
 */
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
@@ -22,16 +23,16 @@ else{
 $app = Factory::getApplication();
 $wam = $app->getDocument()->getWebAssetManager();
 //get config from component
-$globalParams = $app->getParams('com_yaquiz');
-if ($globalParams->get('get_mathjax') === '1') {
+$gConfig = $app->getParams('com_yaquiz');
+if ($gConfig->get('get_mathjax') === '1') {
     $wam->registerAndUseScript('com_yaquiz.mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js', [], ['defer' => true]);
 }
-if ($globalParams->get('get_mathjax') === '2') {
+if ($gConfig->get('get_mathjax') === '2') {
     Log::add('Loading local mathjax', Log::INFO, 'com_yaquiz');
     $wam->registerAndUseScript('com_yaquiz.mathjaxlocal', 'components/com_yaquiz/js/mathjax/es5/tex-svg.js', [], ['defer' => true]);
 }
 
-$theme = $globalParams->get('theme','default');
+$theme = $gConfig->get('theme','default');
 $stylefile = '/components/com_yaquiz/tmpl/' . $theme . '/style.css';
 //if file exists
 if (file_exists(JPATH_ROOT . $stylefile)) {
@@ -61,9 +62,10 @@ JHtml::_('behavior.keepalive');
     <input type="hidden" name="quiz_id" value="<?php echo $quiz->id; ?>" />
     <input type="hidden" name="page" value="<?php echo $currPage; ?>" />
 
+
     <?php if ($currPage == 0){
         //record hits
-        if ($globalParams->get('record_hits') === '1') {
+        if ($gConfig->get('record_hits') === '1') {
             $model->countAsHit($quiz->id);
         }
     } 

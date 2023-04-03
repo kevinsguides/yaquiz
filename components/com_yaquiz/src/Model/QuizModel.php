@@ -142,8 +142,16 @@ class QuizModel extends ItemModel{
         return $this->getQuestion($question_id);
     }
 
+    /**
+     * @param $question_id int the id of the question
+     * @param $answer string the (form value) answer submitted by the user
+     */
     public function checkAnswer($question_id, $answer)
     {
+
+        $app = Factory::getApplication();
+        $gConfig = $app->getParams('com_yaquiz');
+
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('correct, answers');
@@ -176,6 +184,12 @@ class QuizModel extends ItemModel{
         else if ($type==='fill_blank'){
             $possibleCorrectAnswers = json_decode($question->answers);
             $caseSensitive = $params->case_sensitive;
+            $ignore_trailing = $gConfig->get('shortans_ignore_trailing', "1");
+            if($ignore_trailing){
+                $answer = rtrim($answer);
+            }
+
+
             if($caseSensitive){
                 if(in_array($answer, $possibleCorrectAnswers)){
                     return 1;

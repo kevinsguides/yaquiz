@@ -2,9 +2,7 @@
 <form>
 
 <fieldset name="question" addfieldprefix="Joomla\Component\Yaquiz\Administrator\Field">
-
-
-
+    
 <field
     name="id"
     type="text"
@@ -34,8 +32,6 @@ label="COM_YAQUIZ_QUESTION_QUESTION_LABEL"
 description="COM_YAQUIZ_QUESTION_QUESTION_DESC"
 required="true"
 />
-
-
 
 <field
 name="details"

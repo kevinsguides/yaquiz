@@ -38,9 +38,6 @@ class DisplayController extends BaseController{
 
         $wam = $app->getDocument()->getWebAssetManager();
         $wam->useStyle('fontawesome');
-
-
-
         parent::display($cachable, $urlparams);
 
         

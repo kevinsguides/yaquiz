@@ -5,6 +5,7 @@ var questionCards = document.getElementsByClassName('jsquiz-questioncard');
 
 let quiz_showfeedback = document.getElementById('quiz_showfeedback').value;
 let quiz_feedback_showcorrect = document.getElementById('quiz_feedback_showcorrect').value;
+let shortans_ignore_trailing = document.getElementById('shortans_ignore_trailing').value;
 
 
 //listen for click on jsquiz-btn-finish
@@ -47,8 +48,13 @@ btnFinish.addEventListener('click', function() {
             //parse json
             let correctAnswersArray = JSON.parse(correctAnswers);
             let caseSense = form.getAttribute('data-casesense');
-
             let selectedAns = form.querySelector('input[name="useranswer"]').value;
+
+            if(shortans_ignore_trailing == '1'){
+                selectedAns = selectedAns.trim();
+            }
+
+
 
             //for each possible correct answer...
             for (var j = 0; j < correctAnswersArray.length; j++) {
