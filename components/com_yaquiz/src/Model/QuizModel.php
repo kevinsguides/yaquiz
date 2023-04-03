@@ -340,5 +340,65 @@ class QuizModel extends ItemModel{
         
     }
 
+
+    public function saveGeneralResults($quiz_id, $scorepercentage, $passfail){
+        $app = Factory::getApplication();
+
+        //see if $quiz_id exists in __com_yaquiz_results_general
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('quiz_id');
+        $query->from($db->quoteName('#__com_yaquiz_results_general'));
+        $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($quiz_id));
+        $db->setQuery($query);
+        $result = $db->loadResult();
+
+        if($result){
+            //get the existing total_average_score and submissions
+            $query = $db->getQuery(true);
+            $query->select('total_average_score, submissions');
+            $query->from($db->quoteName('#__com_yaquiz_results_general'));
+            $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($quiz_id));
+            $db->setQuery($query);
+            $results = $db->loadObject();
+            $total_average_score = $results->total_average_score;
+            $submissions = $results->submissions;
+
+            $weighted_total_avg = ($total_average_score * $submissions) + $scorepercentage;
+            $new_total_avg = $weighted_total_avg / ($submissions + 1);
+
+            //update record
+            $query = $db->getQuery(true);
+            $query->update($db->quoteName('#__com_yaquiz_results_general'));
+            $query->set($db->quoteName('submissions') . ' = ' . $db->quoteName('submissions') . ' + 1');
+            if($passfail === 'pass'){
+                $query->set($db->quoteName('total_times_passed') . ' = ' . $db->quoteName('total_times_passed') . ' + 1');
+            }
+            $query->set($db->quoteName('total_average_score') . ' = ' . $db->quote($new_total_avg));
+            $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($quiz_id));
+            $db->setQuery($query);
+            $db->execute();
+        }
+        else{
+            $query = $db->getQuery(true);
+            $query->insert($db->quoteName('#__com_yaquiz_results_general'));
+            $query->columns(array($db->quoteName('quiz_id'), $db->quoteName('submissions'), $db->quoteName('total_average_score'), $db->quoteName('total_times_passed')));
+            if($passfail == 'pass'){
+                $query->values($db->quote($quiz_id) . ', 1, ' . $db->quote($scorepercentage) . ', 1');
+            }
+            else{
+                $query->values($db->quote($quiz_id) . ', 1, ' . $db->quote($scorepercentage) . ', 0');
+            }
+            $db->setQuery($query);
+            $db->execute();
+        }
+
+
+
+
+
+
+    }
+
 }
 

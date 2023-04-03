@@ -74,12 +74,12 @@ type="list"
 label="COM_YAQUIZ_YAQUIZ_QUIZ_RECORD_RESULTS_LABEL"
 description="COM_YAQUIZ_YAQUIZ_QUIZ_RECORD_RESULTS_DESC"
 required="true"
-default="global">
-<option value="global">Use Global</option>
-<option value="none">0 - Don't Save Any Results</option>
-<option value="general">1 - Save General Results</option>
-<option value="user">2 - Save Individual User Scores</option>
-<option value="everything">3- Save EVERYTHING Including Responses/Feedback</option>"
+default="-1">
+<option value="-1">Use Global</option>
+<option value="0">0 - Don't Save Any Results</option>
+<option value="1">1 - Save General Results</option>
+<option value="2">2 - Save Individual User Scores</option>
+<option value="3">3 - Save EVERYTHING Including Responses/Feedback</option>"
 </field>
 
 <field

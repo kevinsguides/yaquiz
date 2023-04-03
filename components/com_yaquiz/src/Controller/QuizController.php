@@ -128,6 +128,17 @@ class QuizController extends BaseController{
             $passfail = 'fail';
         }
 
+        //save general results
+        $quiz_record_results = (int)$quizParams->quiz_record_results;
+        if($quiz_record_results == -1){
+            $quiz_record_results = (int)$globalParams->get('quiz_record_results', 0);
+        }
+        if($quiz_record_results >= 1){
+            $model->saveGeneralResults($quiz_id, $scorepercentage, $passfail);
+        }
+
+
+
         $qbhelper = new QuestionBuilderHelper();
         
         //create a blank results object
