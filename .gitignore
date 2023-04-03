@@ -25,6 +25,8 @@ administrator/components/com_yaquiz/vendor/**
 
 
 !.gitignore
+!readme.md
+
 
 
 
