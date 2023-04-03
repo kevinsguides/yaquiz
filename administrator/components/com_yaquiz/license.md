@@ -2,7 +2,11 @@
 ### Original Work by Kevin Olson
 [Kevin's Guides](https://kevinsguides.com)
 
-## License is GPL 3.0
+## Vendor Software...
+* PHPSpreadsheet - Licensed MIT
+
+
+## YAQuiz License is GPL 3.0
 
 GNU General Public License
 ==========================

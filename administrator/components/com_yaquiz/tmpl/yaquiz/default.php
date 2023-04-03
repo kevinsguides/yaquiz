@@ -49,6 +49,7 @@ $questionsModel = new \KevinsGuides\Component\Yaquiz\Administrator\Model\Questio
 
 //get a listbox of all questions in the database
 function getQuestionListBox($titleFilter = null, $categoryfilter = null){
+
     $db = Factory::getContainer()->get('DatabaseDriver');
     $query = $db->getQuery(true);
     $query->select($db->quoteName(array('id', 'question', 'details')));
@@ -61,12 +62,13 @@ function getQuestionListBox($titleFilter = null, $categoryfilter = null){
         Log::add('attempt filter by category '.$categoryfilter, Log::INFO, 'com_yaquiz');
         $query->where($db->quoteName('catid') . ' = ' . $db->quote($categoryfilter));
     }
+    $query->order('id DESC');
+    //limit 50
+    $query->setLimit(50);
     $db->setQuery($query);
     $results = $db->loadObjectList();
     $options = array();
     //make multi select list
-
-
     $list = '';
     foreach($results as $result){
         $truncated_details = substr($result->details, 0, 100);
@@ -76,6 +78,11 @@ function getQuestionListBox($titleFilter = null, $categoryfilter = null){
         $list .= '<option value="'.$result->id.'">[ID: '.$result->id.'] '.$result->question.'   ' . $truncated_details . '</option>';
     }
     $list = '<select name="question_ids[]" multiple class="form-select" size="8">'.$list.'</select>';
+    //count number of results
+    $count = count($results);
+    if($count == 50){
+        $list = '<div class="p-2 rounded bg-info text-white mb-2">Note: Only the 50 latest questions will appear in this list at once. Consider using the filters above.</div>'.$list;
+    }
     return $list;
     
 }
@@ -144,19 +151,23 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
 
 
 
-
+<form method="POST">
 <div class="card bg-light mt-4 shadow-sm">
     <h2 class="card-header bg-primary text-white">Questions In Quiz</h2>
     <div class="card-body">
 <p>Note, removing items from the quiz does not delete the question itself. Remember, if you edit a question the changes apply across all quizzes containing that particular question and not just this quiz.</p>
 
+<?php if (count($questions) == 0): ?>
+    <p class="fs-2">No questions in this quiz yet.</p>
+    <?php endif; ?>
+
 <?php foreach ($questions as $question): ?>
 
     <div class="card mb-2">
         <div class="card-header bg-dark text-white">
-        
-    <h4 class="text-white" id="qn<?php echo $question->id; ?>"><?php echo $question->question; ?></h4>
-    </div>
+            <span class="text-white w-100" id="qn<?php echo $question->id; ?>"><?php echo $question->question; ?></span>
+            <input class="float-end form-check-input" type="checkbox" name="selectedQuestions[]" value="<?php echo $question->id;?>"></input>
+        </div>
         <div class="card-body"><a class="float-end" href="index.php?option=com_yaquiz&view=Question&layout=edit&qnid=<?php echo $question->id; ?>"><span class="icon-edit"></span></a>
         <?php 
         //fix image paths in question->details if they are relative
@@ -193,6 +204,29 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
 
 </div>
 </div>
+<br/>
+<div class="card">
+    <h2 class="card-header bg-danger text-white">Batch Ops...</h2>
+    <div class="card-body bg-white">
+        <p>Note: The following actions affect the entire quiz. Be careful...</p>
+        <input type="hidden" name="quiz_id" value="<?php echo $item->id; ?>">
+        <input type="hidden" name="task" value="Yaquiz.executeBatchOps">
+        <label for="batch_op">With selected questions...</label>
+        <select name="batch_op" class="form-select">
+            <option value="0">Select Operation</option>
+            <option value="remove">Remove Selected Questions From Quiz</option>
+        </select>
+        <input type="submit" class="btn btn-info btn-sm" value="Execute Batch Operation">
 
+    </div>
+    <div class="card-footer">
+            <span class="w-100 d-block">Misc Ops</span>
+            <a href="index.php?option=com_yaquiz&task=Yaquiz.removeAllQuestionsFromQuiz&quiz_id=<?php echo $item->id; ?>" class="btn btn-danger btn-sm"><span class="icon-delete"></span> Remove All Questions</a>
+
+</div>
+</div>
+
+
+</form>
 </div>
 

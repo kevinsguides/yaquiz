@@ -1,9 +1,11 @@
 <?php
 namespace KevinsGuides\Component\Yaquiz\Administrator\Model;
 
+use Exception;
 use JFactory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactory;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -445,17 +447,38 @@ class YaquizModel extends AdminModel
             return $currentOrder + 1;
     }
 
+    /**
+     * Removes question(s) from a quiz
+     * @param $quiz_id int the quiz id
+     * @param $question_id int|array the question id or array of question ids
+     */
     public function removeQuestionFromQuiz($quiz_id, $question_id)
     {
 
-        $db = Factory::getContainer()->get('DatabaseDriver');
-        $query = $db->getQuery(true);
-        //delete the question from the quiz
-        $query->delete('#__com_yaquiz_question_quiz_map');
-        $query->where('quiz_id = ' . $quiz_id);
-        $query->where('question_id = ' . $question_id);
-        $db->setQuery($query);
-        $db->execute();
+        //user needs core.edit permissions
+        $app = Factory::getApplication();
+        if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
+            $app->enqueueMessage('Edit permissions required to remove questions from quiz', 'error');
+            return;
+        }
+
+        if(is_array($question_id)){
+            foreach($question_id as $id){
+                $this->removeQuestionFromQuiz($quiz_id, $id);
+            }
+            return;
+        }
+        else{
+            $db = Factory::getContainer()->get('DatabaseDriver');
+            $query = $db->getQuery(true);
+            //delete the question from the quiz
+            $query->delete('#__com_yaquiz_question_quiz_map');
+            $query->where('quiz_id = ' . $quiz_id);
+            $query->where('question_id = ' . $question_id);
+            $db->setQuery($query);
+            $db->execute();
+        }
+
 
     }
 
@@ -553,8 +576,26 @@ class YaquizModel extends AdminModel
             $db->execute();
             $i++;
         }
+    }
+
+    public function removeAllQuestionsFromQuiz($pk){
+
+        Log::add('removeAllQuestionsFromQuiz called with pk '. $pk, Log::INFO, 'com_yaquiz');
+        //user needs core.edit permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.edit', 'com_yaquiz')) {
+            throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
+        }
 
 
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        //delete the question from the quiz
+        $query->delete('#__com_yaquiz_question_quiz_map');
+        $query->where('quiz_id = ' . $pk);
+        $db->setQuery($query);
+        $db->execute();
+        return true;
     }
 
 

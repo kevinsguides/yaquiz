@@ -34,7 +34,10 @@ class HtmlView extends BaseHtmlView{
         //if we're on the default layout, add the toolbar
         if ($this->getLayout() === 'default') {
             $toolbar->appendButton('Link', 'new', 'New Question', 'index.php?option=com_yaquiz&view=Question&layout=edit');
-            $toolbar->appendButton('Link', 'file', 'Import Excel Spreadsheet', 'index.php?option=com_yaquiz&view=Questions&layout=insertmulti');
+            if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') == true){
+                $toolbar->appendButton('Link', 'file', 'Import Excel Spreadsheet', 'index.php?option=com_yaquiz&view=Questions&layout=insertmulti');
+            }
+           
         }
         if ($this->getLayout() === 'insertmulti') {
             $toolbar->appendButton('Link', 'backward', 'Question Manager', 'index.php?option=com_yaquiz&view=Questions&layout=default');

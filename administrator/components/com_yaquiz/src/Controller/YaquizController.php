@@ -181,7 +181,40 @@ class YaquizController extends BaseController
         //$this->setRedirect('index.php?option=com_yaquiz&view=Yaquiz&id=' . $this->input->get('quiz_id', '', 'raw'));
     }
 
+    public function removeAllQuestionsFromQuiz($pk = null){
+        //get the model
+        $model = $this->getModel('Yaquiz');
+
+        //get the data from form GET
+        $quizid = $_GET['quiz_id'];
+        Log::add('YaquizController::delete() called for quizid: ' . $quizid, Log::INFO, 'com_yaquiz');
+
+        if($model->removeAllQuestionsFromQuiz($quizid)){
+            //message
+            $this->setMessage('Questions removed from quiz');
+        }
+        //redirect to the view
+        $this->setRedirect('index.php?option=com_yaquiz&view=yaquiz&id=' . $quizid);
+    }
 
 
+    //do something with multiple questions
+    public function executeBatchOps(){
+
+        if(isset($_POST['batch_op']) && $_POST['batch_op'] == 'remove'){
+            //
+            echo('you wanna delete stuff i think');
+            $questionIds = $_POST['selectedQuestions'];
+            $quiz_id = $_POST['quiz_id'];
+            $model = $this->getModel('Yaquiz');
+            $model->removeQuestionFromQuiz($quiz_id, $questionIds);
+            $model->reorderQns($quiz_id);
+            $this->setMessage('Questions removed from quiz');
+            $this->setRedirect('index.php?option=com_yaquiz&view=yaquiz&id=' . $quiz_id);
+        }else{
+            $this->setMessage('No batch operation selected','error');
+            $this->setRedirect('index.php?option=com_yaquiz&view=yaquiz&id=' . $_POST['quiz_id']);
+        }
+    }
 
 }
