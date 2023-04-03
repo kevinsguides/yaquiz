@@ -23,6 +23,18 @@ class ExcelHelper{
         $spreadsheet = $reader->load($file);
         $worksheet = $spreadsheet->getActiveSheet();
         $rows = $worksheet->toArray();
+
+        if(count($rows) < 2){
+            return false;
+        }
+        if(count($rows[0]) != 6){
+            return false;
+        }
+        //if too many rows
+        if(count($rows) > 100){
+            return false;
+        }
+
         //loop through all rows after the first
         $questions = array();
         $i = 0;
@@ -33,7 +45,7 @@ class ExcelHelper{
                 $question['details'] = $row[1];
                 $question['type'] = $row[2];
                 $question['answers'] = $row[3];
-                $question['answers'] = explode(',', $question['answers']);
+                $question['answers'] = explode('|', $question['answers']);
                 $question['correct'] = $row[4];
                 $question['pointvalue'] = $row[5];
                 $questions[] = $question;

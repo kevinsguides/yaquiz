@@ -55,6 +55,9 @@ class QuestionsController extends BaseController
     }
 
 
+    /**Copies the excel file to the temporary excelfiles directory
+     * and then loads the questions into a table for user review
+     */
     public function startInsertMulti(){
 
         $app = Factory::getApplication();
@@ -65,10 +68,22 @@ class QuestionsController extends BaseController
         $filename = $filesystem->makeSafe($file['name']);
         $src = $file['tmp_name'];
         $dest=  JPATH_COMPONENT . '/excelfiles/' . $filename;
+        //make sure filename ends with the .xlsx extension
+        if(substr($filename, -5) !== '.xlsx'){
+            $app->enqueueMessage('Error: File must be an Excel 2007+ file (.xlsx)');
+            $this->setRedirect('index.php?option=com_yaquiz&view=Questions&layout=insertmulti');
+            return;
+        }
+
         $filesystem->upload($src, $dest);
 
         $excelHelper = new \KevinsGuides\Component\Yaquiz\Administrator\Helper\ExcelHelper();
         $questions = $excelHelper->loadQuestions($dest);
+        if($questions === false){
+            $app->enqueueMessage('Error: File could not be loaded. Please review the rules for the Excel file.');
+            $this->setRedirect('index.php?option=com_yaquiz&view=Questions&layout=insertmulti');
+            return;
+        }
         $table_html = $excelHelper->getQuestionsPreview($questions);
 
         //save the preview table to user session
@@ -122,7 +137,7 @@ class QuestionsController extends BaseController
         //delete the excel file
         $filesystem = new \Joomla\CMS\Filesystem\File();
         $filesystem->delete($filename);
-        
+
 
         $app->enqueueMessage('Questions inserted');
         $this->setRedirect('index.php?option=com_yaquiz&view=Questions');

@@ -144,6 +144,58 @@ class QuestionsModel extends AdminModel
                 $db->setQuery($query);
                 $db->execute();
             }
+            if($question['type'] == 'tf'){
+                $query = $db->getQuery(true);
+                $query->insert('#__com_yaquiz_questions');
+                $query->columns('id, question, params, published, created_by, modified_by, details, answers, correct, catid');
+                $id = 'null';
+                $questiontitle = $db->quote($question['question']);
+                $params = [];
+                    $params['question_type'] = 'true_false';
+                    $params['randomize_mchoice'] = 0;
+                    $params['case_sensitive'] = null;
+                    $params['points'] = $question['pointvalue'];
+                $dbparams = $db->quote(json_encode($params));
+                $published = $db->quote(1);
+                $created_by = $db->quote($userid);
+                $modified_by = $db->quote($userid);
+                $details = $db->quote($question['details']);
+                $answers = $db->quote(json_encode($question['answers']));
+                if($question['correct'] == 't' || $question['correct'] == 'true'){
+                    $correct = $db->quote(1);
+                }
+                    
+                else{
+                      $correct = $db->quote(0);
+                }
+                  
+                
+                $query->values("$id, $questiontitle, $dbparams, $published, $created_by, $modified_by, $details, $answers, $correct, $catid");
+                $db->setQuery($query);
+                $db->execute();
+            }
+            if($question['type'] == 'shortans'){
+                $query = $db->getQuery(true);
+                $query->insert('#__com_yaquiz_questions');
+                $query->columns('id, question, params, published, created_by, modified_by, details, answers, correct, catid');
+                $id = 'null';
+                $questiontitle = $db->quote($question['question']);
+                $params = [];
+                    $params['question_type'] = 'fill_blank';
+                    $params['randomize_mchoice'] = 0;
+                    $params['case_sensitive'] = 0;
+                    $params['points'] = $question['pointvalue'];
+                $dbparams = $db->quote(json_encode($params));
+                $published = $db->quote(1);
+                $created_by = $db->quote($userid);
+                $modified_by = $db->quote($userid);
+                $details = $db->quote($question['details']);
+                $answers = $db->quote(json_encode($question['answers']));
+                $correct =  $db->quote(" ");
+                $query->values("$id, $questiontitle, $dbparams, $published, $created_by, $modified_by, $details, $answers, $correct, $catid");
+                $db->setQuery($query);
+                $db->execute();
+            }
 
 
 
