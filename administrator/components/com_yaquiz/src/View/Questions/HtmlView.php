@@ -28,9 +28,17 @@ class HtmlView extends BaseHtmlView{
         //get all questions
         $this->items = $model->getItems();
 
+
+
         $toolbar = Toolbar::getInstance('toolbar');
-        $toolbar->appendButton('Link', 'new', 'New Question', 'index.php?option=com_yaquiz&view=Question&layout=edit');
-        $toolbar->appendButton('Link', 'file', 'Insert From Excel', 'index.php?option=com_yaquiz&view=Questions&layout=insertmulti');
+        //if we're on the default layout, add the toolbar
+        if ($this->getLayout() === 'default') {
+            $toolbar->appendButton('Link', 'new', 'New Question', 'index.php?option=com_yaquiz&view=Question&layout=edit');
+            $toolbar->appendButton('Link', 'file', 'Import Excel Spreadsheet', 'index.php?option=com_yaquiz&view=Questions&layout=insertmulti');
+        }
+        if ($this->getLayout() === 'insertmulti') {
+            $toolbar->appendButton('Link', 'backward', 'Question Manager', 'index.php?option=com_yaquiz&view=Questions&layout=default');
+        }
         //add component options
         $toolbar->appendButton('Link', 'options', 'GConfig', 'index.php?option=com_config&view=component&component=com_yaquiz');
         $toolbar->appendButton('Link', 'folder', 'Categories', 'index.php?option=com_categories&extension=com_yaquiz');

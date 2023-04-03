@@ -34,6 +34,12 @@
         <option value="1">JYES</option>
         <option value="0">JNO</option>
         </field>
+        <field
+            name="credit_note"
+            type="note"
+            label="Extension By Kevin Olson"
+            description="COM_YAQUIZ_XML_DESCRIPTION"
+        />
 </fieldset>
 <fieldset
 name="globaloptions"
