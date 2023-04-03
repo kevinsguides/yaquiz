@@ -4,7 +4,7 @@
 		<description>YAQuiz</description>
 		<element>com_yaquiz</element>
 		<type>component</type>
-		<version>0.3.15</version>
+		<version>1.0.0</version>
 		<changelogurl>https://kevinsguides.com</changelogurl>
 		<downloads>
 			<downloadurl type="full" format="zip">https://github.com/kevinsguides/yaquiz/releases/download/v0.3.15/com_yaqqy-000315.zip</downloadurl>
