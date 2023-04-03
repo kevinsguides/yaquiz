@@ -1,0 +1,8 @@
+label.mchoice {
+  width: 100%; }
+
+input:checked + label.mchoice {
+  background-color: black;
+  color: white; }
+
+/*# sourceMappingURL=quiz.css.map */

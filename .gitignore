@@ -1,0 +1,30 @@
+#ignore everything
+*
+*/
+
+#dont ignore components/com_simplequiz
+!components/
+components/com_yaquiz
+!components/com_yaquiz
+!components/com_yaquiz/**
+
+
+#dont ignore administrator/components/com_simplequiz
+!administrator/
+administrator/components/com_yaquiz
+!administrator/components/com_yaquiz
+!administrator/components/com_yaquiz/**
+administrator/components/com_yaquiz/vendor
+administrator/components/com_yaquiz/vendor/**
+
+
+
+
+
+
+
+
+!.gitignore
+
+
+
