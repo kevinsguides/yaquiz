@@ -1,6 +1,7 @@
 <?php 
 namespace KevinsGuides\Component\Yaquiz\Administrator\Controller;
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -26,6 +27,7 @@ class QuestionsController extends BaseController
 
         $this->registerTask('deleteQuestion', 'deleteQuestion');
         $this->registerTask('display', 'display');
+        $this->registerTask('insertMultiSaveAll', 'insertMultiSaveAll');
 
     }
 
@@ -50,6 +52,82 @@ class QuestionsController extends BaseController
 
     public function newQuestion(){
         $this->setRedirect('index.php?option=com_yaquiz&view=Question&layout=edit');
+    }
+
+
+    public function startInsertMulti(){
+
+        $app = Factory::getApplication();
+
+        $file = $this->input->files->get('excelfile');
+        //use joomla filesystem to check if file is valid
+        $filesystem = new \Joomla\CMS\Filesystem\File();
+        $filename = $filesystem->makeSafe($file['name']);
+        $src = $file['tmp_name'];
+        $dest=  JPATH_COMPONENT . '/excelfiles/' . $filename;
+        $filesystem->upload($src, $dest);
+
+        $excelHelper = new \KevinsGuides\Component\Yaquiz\Administrator\Helper\ExcelHelper();
+        $questions = $excelHelper->loadQuestions($dest);
+        $table_html = $excelHelper->getQuestionsPreview($questions);
+
+        //save the preview table to user session
+        $session = $app->getSession();
+        $session->set('questions_preview', $table_html);
+        //set the category id in session
+        $session->set('insertmulti_catid', $this->input->get('catid', '0'));
+        //the filename
+        $session->set('insertmulti_filename', $dest);
+
+        $this->setRedirect('index.php?option=com_yaquiz&view=Questions&layout=insertmulti_review');
+    }
+
+    public function insertMultiCancel(){
+        //clear the session values
+        $app = Factory::getApplication();
+        $session = $app->getSession();
+        $session->clear('questions_preview');
+        $session->clear('insertmulti_catid');
+        $session->clear('insertmulti_filename');
+        $app->enqueueMessage('Insert Multi Cancelled');
+        $this->setRedirect('index.php?option=com_yaquiz&view=Questions');
+    }
+
+    public function insertMultiSaveAll(){
+        //get the preview info from session and display
+        $app = Factory::getApplication();
+        $session = $app->getSession();
+
+        //get the catid from post
+        $catid = $session->get('insertmulti_catid');
+
+        $filename = $session->get('insertmulti_filename');
+
+
+        Log::add('attempt load file: ' . $filename, Log::INFO, 'com_yaquiz');
+
+        //load the questions from the file
+        $excelHelper = new \KevinsGuides\Component\Yaquiz\Administrator\Helper\ExcelHelper();
+        $questions = $excelHelper->loadQuestions($filename);
+
+        //insert the questions into the database
+        $model = $this->getModel('Questions');
+        $model->insertMultiQuestions($questions, $catid);
+
+        //clear the session values
+        $session->clear('questions_preview');
+        $session->clear('insertmulti_catid');
+        $session->clear('insertmulti_filename');
+
+        //delete the excel file
+        $filesystem = new \Joomla\CMS\Filesystem\File();
+        $filesystem->delete($filename);
+        
+
+        $app->enqueueMessage('Questions inserted');
+        $this->setRedirect('index.php?option=com_yaquiz&view=Questions');
+
+
     }
 
 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+
+    <fieldset name="insertmulti" addfieldprefix="Joomla\Component\Yaquiz\Administrator\Field">
+
+        <field
+            name="catid"
+            type="category"
+            extension="com_yaquiz"
+            class="inputbox"
+            default="0"
+            label="Category"
+            description="The category we are inserting into."
+            required="true"
+        >
+            <option value="0">Uncategorized</option>
+        </field>
+
+        <field name="excelfile" type="file" label="Upload XLSX"
+            description="Choose XLSX file" size="10"
+            accept="application/vnd.openxmlformats-" />
+
+    </fieldset>
+</form>

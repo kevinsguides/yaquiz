@@ -30,6 +30,7 @@ class HtmlView extends BaseHtmlView{
 
         $toolbar = Toolbar::getInstance('toolbar');
         $toolbar->appendButton('Link', 'new', 'New Question', 'index.php?option=com_yaquiz&view=Question&layout=edit');
+        $toolbar->appendButton('Link', 'file', 'Insert From Excel', 'index.php?option=com_yaquiz&view=Questions&layout=insertmulti');
         //add component options
         $toolbar->appendButton('Link', 'options', 'GConfig', 'index.php?option=com_config&view=component&component=com_yaquiz');
         $toolbar->appendButton('Link', 'folder', 'Categories', 'index.php?option=com_categories&extension=com_yaquiz');

@@ -8,6 +8,8 @@
     <version>0.3.02</version>
     <description>YAQuiz</description>
     <namespace path="src/">KevinsGuides\Component\Yaquiz</namespace>
+    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+    <scriptfile>script.php</scriptfile>
 
 
 <!-- database stuff -->

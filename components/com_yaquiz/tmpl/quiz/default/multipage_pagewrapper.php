@@ -6,7 +6,7 @@ defined ( '_JEXEC' ) or die ();
 <div class="card-header">
     <h1><?php echo $quiz->title; ?></h1>
 </div>
-<div class="p-1 bg-light">
+<div class="p-1">
 
 <?php if ($currPage == 0){
     echo $quiz->description;
