@@ -12,8 +12,7 @@
 <tag>stable</tag>
 </tags>
 <targetplatform name="joomla" version="((4\.(2|3))|(5\.(0|1|2|3|4|5|6|7|8|9)))"/>
-<sha256>7185cbc2fa2f211d976548603f8abe9487b71079b884fb6eb098690cc1f4bd5e</sha256>
 <client>site</client>
-<php_minimum>8.1</php_minimum>
+<php_minimum>7.1</php_minimum>
 </update>
 </updates>
