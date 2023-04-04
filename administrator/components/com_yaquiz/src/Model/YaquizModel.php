@@ -100,6 +100,8 @@ class YaquizModel extends AdminModel
                 $data->quiz_use_points = $params['quiz_use_points'];
                 $data->passing_score = $params['passing_score'];
                 $data->quiz_record_results = $params['quiz_record_results'];
+                $data->quiz_record_guest_results = $params['quiz_record_guest_results'];
+                $data->quiz_show_general_stats = $params['quiz_show_general_stats'];
                 $this->checkout($data->id);
             }
 
@@ -536,6 +538,8 @@ class YaquizModel extends AdminModel
         $params['quiz_use_points'] = $data['quiz_use_points'];
         $params['passing_score'] = $data['passing_score'];
         $params['quiz_record_results'] = $data['quiz_record_results'];
+        $params['quiz_record_guest_results'] = $data['quiz_record_guest_results'];
+        $params['quiz_show_general_stats'] = $data['quiz_show_general_stats'];
         //encode
         $params = json_encode($params);
         return $params;

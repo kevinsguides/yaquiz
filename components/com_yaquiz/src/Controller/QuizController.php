@@ -130,11 +130,18 @@ class QuizController extends BaseController{
 
         //save general results
         $quiz_record_results = (int)$quizParams->quiz_record_results;
+        $quiz_record_guest_results = (int)$quizParams->quiz_record_guest_results;
+
         if($quiz_record_results == -1){
             $quiz_record_results = (int)$globalParams->get('quiz_record_results', 0);
         }
+        if($quiz_record_guest_results == -1){
+            $quiz_record_guest_results = (int)$globalParams->get('quiz_record_guest_results', 0);
+        }
         if($quiz_record_results >= 1){
-            $model->saveGeneralResults($quiz_id, $scorepercentage, $passfail);
+            if($quiz_record_guest_results == 1 || $app->getIdentity()->guest == 0){
+                $model->saveGeneralResults($quiz_id, $scorepercentage, $passfail);
+            }
         }
 
 

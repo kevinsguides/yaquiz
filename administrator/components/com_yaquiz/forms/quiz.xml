@@ -79,16 +79,40 @@ default="-1">
 <option value="0">0 - Don't Save Any Results</option>
 <option value="1">1 - Save General Results</option>
 <option value="2">2 - Save Individual User Scores</option>
-<option value="3">3 - Save EVERYTHING Including Responses/Feedback</option>"
+<option value="3">3 - Save EVERYTHING Including User Responses/Feedback</option>"
 </field>
 
 <field
 name="note_results"
 type="note"
-showon="quiz_record_results:everything"
+showon="quiz_record_results:3"
 label="WARNING: If You Save Everything..."
 description="In addition to saving scores, this saves every user response to every question, and the feedback they got for that question. This may be a lot of data depending on how many users you have."
 />
+
+<field
+name="quiz_record_guest_results"
+type="list"
+label="COM_YAQUIZ_RECORD_GUEST_RESULTS_LABEL"
+description="COM_YAQUIZ_RECORD_GUEST_RESULTS_DESC"
+default="-1"
+>
+<option value="-1">Use Global</option>
+<option value="1">JYES</option>
+<option value="0">JNO</option>
+</field>
+
+<field
+name="quiz_show_general_stats"
+type="list"
+label="COM_YAQUIZ_SHOW_GENSTAT_LABEL"
+description="COM_YAQUIZ_SHOW_GENSTAT_DESC"
+default="-1"
+>
+<option value="-1">Use Global</option>
+<option value="1">JYES</option>
+<option value="0">JNO</option>
+</field>
 
 <field
 name="jsquiz_note"

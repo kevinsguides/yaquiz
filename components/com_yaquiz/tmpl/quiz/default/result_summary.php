@@ -26,6 +26,18 @@ $html .= '<div class="card">
                 $html .= '<p class="p-3 bg-light text-danger">' . $this->globalParams->get('lang_fail') . '</p>';
             }
 
+            //see if we're showing general stats
+            if($gen_stats){
+                $html .= '<h4>General Stats</h4>';
+                $html .= '<p>There have been ' . $gen_stats->submissions . ' recorded attempts at this quiz.</p>';
+                $html .= '<p>The average score is ' . $gen_stats->total_average_score . '%</p>';
+                $percentWhoPassed = $gen_stats->total_times_passed / $gen_stats->submissions * 100;
+                //to 1 decimal
+                $percentWhoPassed = round($percentWhoPassed, 1);
+                $html .= '<p>' . $percentWhoPassed . '% of tests passed.</p>';
+            }
+
+
 $html .= '</div></div><br/>';
 ?>
     

@@ -157,6 +157,9 @@ class QuestionBuilderHelper
     */
     public function buildResultsArea($title, $quiz_id, $results)
     {
+        $app = Factory::getApplication();
+        $gConfig = $this->globalParams;
+
         //the default will be a simple x/x with percentage
         //trim to 2 decimal places
         $resultPercent = round((($results->correct / $results->total) * 100), 0);
@@ -164,7 +167,6 @@ class QuestionBuilderHelper
         $quizParams = $this->getQuizParams($quiz_id);
 
         //get the quiz template style from global params
-
         $theme = $this->globalParams->get('theme', 'default');
 
         $html = '';
@@ -180,6 +182,18 @@ class QuestionBuilderHelper
                 }
                 $feedback .= $this->getQuestionFeedback($quiz_id, $question['question'], $question['iscorrect'], $question['useranswer'], $questionnum);
             }
+
+        }
+
+        //see if we are showing general stats about this quiz
+        if($quizParams->quiz_show_general_stats == '-1'){
+            $quizParams->quiz_show_general_stats = $gConfig->get('quiz_show_general_stats');
+        }
+        if($quizParams->quiz_show_general_stats == '1'){
+            $gen_stats = $this->getGeneralQuizStats($quiz_id);
+        }
+        else{
+            $gen_stats = null;
         }
 
         //include the template for the result_summary.php template
@@ -199,6 +213,17 @@ class QuestionBuilderHelper
         return $html;
 
 
+    }
+
+    protected function getGeneralQuizStats($quiz_id){
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('*');
+        $query->from($db->quoteName('#__com_yaquiz_results_general'));
+        $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($quiz_id));
+        $db->setQuery($query);
+        $results = $db->loadObjectList()[0];
+        return $results;
     }
 
 
