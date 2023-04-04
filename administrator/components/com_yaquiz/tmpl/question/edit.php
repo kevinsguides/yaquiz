@@ -80,9 +80,9 @@ function load_mchoice_editor($answers, $correct_answer){
             $correct = 'correct';
         }
         $html .= '<li data-ansid="'.$i.'" class="mchoice-answer '.$correct.'">';
-        $html .= '<button class="btn btn-danger mchoice-delete-btn">Delete</button>';
-        $html .= '<button class="btn btn-success mchoice-correct-btn">Correct</button>';
-        $html .= '<input type="text" name="jform[answers][]" value="'.$answer.'">';
+        $html .= '<button class="btn btn-danger mchoice-delete-btn btn-sm float-end">Delete</button>';
+        $html .= '<button class="btn btn-success mchoice-correct-btn btn-sm"><i class="far fa-check-square"></i> Mark Correct</button>';
+        $html .= '<input class="mt-1" type="text" name="jform[answers][]" value="'.$answer.'">';
         $html .= '</li>';
         $i++;
     }
@@ -204,12 +204,15 @@ function load_fill_blank($answers, $case_sensitive = 0){
 <input name="task" type="hidden">
     <?php JHtml::_('form.token'); ?>
 </form>
-
+<br/>
+<div class="text-center">
+------<span class="p-1 text-white rounded " style="background: #505a5e;" >Don't forget to save!</span>------
+</div>
 
 <div style="display:none">
         <li id="mchoice-answer-template" class="mchoice-answer">
-        <button class="btn btn-danger mchoice-delete-btn">Delete</button>
-        <button class="btn btn-success mchoice-correct-btn">Correct</button>
+        <button class="btn btn-danger mchoice-delete-btn btn-sm float-end">Delete</button>
+        <button class="btn btn-success mchoice-correct-btn btn-sm"><i class="far fa-check-square"></i> Mark Correct</button>
             <input type="text" name="jform[answers][]" value="">
         </li>
 
