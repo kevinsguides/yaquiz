@@ -56,3 +56,16 @@ You just need a site running Joomla 4 with a template that uses Bootstrap 5 (mos
 * Record user results and save to db permanently
 * Quiz statistics/review results
 * Quiz Certificates
+
+
+
+### Basic Build Instructions
+You can build from source by creating a component install package manually.
+1. Create new directory.
+2. Create "admin" and "site" directories
+3. Copy contents of components/com_yaquiz into site
+4. Copy contents of administrator/components/com_yaquiz into admin
+5. Move yaquiz.xml file from admin to root of new directory
+6. Zip everything and install as normal
+
+If you want excel function to work you need to run composer install/update commands and ensure all dependencies are in components admin/vendor folder
