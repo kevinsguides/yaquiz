@@ -23,6 +23,7 @@ $latestversion = $updatemanifest->update->version;
 <br/>
 <a href="https://kevinsguides.com" target="_blank" class="btn btn-lg btn-primary"><?PHP echo Text::_('COM_YAQUIZ_BY_KG'); ?></a>
 <a href="https://kevinsguides.com/guides/webdev/joomla4/free-extensions/yaq" target="_blank" class="btn btn-info btn-lg">Official Docs</a>
+<a href="https://github.com/kevinsguides/yaquiz/releases" target="_blank" class="btn btn-dark btn-lg">Release Downloads</a>
 <hr/>
 <?php echo Text::_('COM_YAQUIZ_HELP_INTRO'); ?>
 <hr/>
