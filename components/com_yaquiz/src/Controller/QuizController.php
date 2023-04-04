@@ -183,16 +183,17 @@ class QuizController extends BaseController{
         Log::add('YaquizController::loadnextpage()', Log::INFO, 'com_yaquiz');
         $app = Factory::getApplication();
         $input = $app->getInput();
-        $quiz_id = $_POST['quiz_id'];
-        $page = $_POST['page'];
-        $nextpage = $_POST['nextpage'];
+        $quiz_id = $input->get('quiz_id', 0, 'int');
+        $page = $input->get('page', 0, 'int');
+        $nextpage = $input->get('nextpage', 0, 'int, string');
         if($nextpage == '-1' || $nextpage == 1){
             $page+= $nextpage;
         }
 
         
         if(isset($_POST['answers'])){
-            $answers = $_POST['answers'];
+            //$answers = $_POST['answers'];
+            $answers = $input->get('answers', array(), 'array');
             $this->savePageAnswers($quiz_id, $answers);
         }
 
