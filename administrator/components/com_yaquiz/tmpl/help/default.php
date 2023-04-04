@@ -5,9 +5,21 @@ use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
+//get current version from xml
+$manifest = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/com_yaquiz/yaquiz.xml');
+$version = $manifest->version;
+
+//get xml from manifest server
+$updateserver = $manifest->updateservers->server;
+$updatemanifest = simplexml_load_file($updateserver);
+$latestversion = $updatemanifest->update->version;
+
+
 ?>
 
 <h1><?PHP echo Text::_('COM_YAQUIZ_HELP'); ?></h1>
+<h3><?PHP echo Text::_('COM_YAQUIZ_VERSION'); ?>: <?php echo $version; ?></h3>
+<h3><?PHP echo Text::_('COM_YAQUIZ_LATEST_VERSION'); ?>: <?php echo $latestversion; ?></h3>
 <br/>
 <a href="https://kevinsguides.com" target="_blank" class="btn btn-lg btn-primary"><?PHP echo Text::_('COM_YAQUIZ_BY_KG'); ?></a>
 <a href="https://kevinsguides.com/guides/webdev/joomla4/free-extensions/yaq" target="_blank" class="btn btn-info btn-lg">Official Docs</a>

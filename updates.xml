@@ -2,7 +2,7 @@
   <update>
   <name>YAQuiz</name>
   <description>Installation for Joomla 4.x</description>
-  <version>0.3.30</version>
+  <version>0.3.40</version>
   <downloads>
   <downloadurl type="full" format="zip">
     https://github.com/kevinsguides/yaquiz/releases/download/v0.3.40/com_yaquiz-0.3.40.zip
