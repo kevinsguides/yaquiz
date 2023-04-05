@@ -45,6 +45,7 @@ You just need a site running Joomla 4 with a template that uses Bootstrap 5 (mos
 * Pagination for quizzes in the backend, and for user results page in front end
   * filters for user results
   * expire/auto remove results after x days
+  * maybe show all quizzes the user has taken on first page, then their results for each quiz on a separate page, rather than all results for all quiz on one page
 * a cool dashboard for quiz results and such
 * checkins for questions
 * reset hit/sub count button
