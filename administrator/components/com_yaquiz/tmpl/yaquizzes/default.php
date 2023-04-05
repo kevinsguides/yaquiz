@@ -2,6 +2,7 @@
 
 namespace KevinsGuides\Component\Yaquiz\Administrator\View\Yaquizzes;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;Use Joomla\CMS\Log\Log;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -17,22 +18,29 @@ $quizModel = new YaquizModel();
 $model = $this->getModel();
 //get the items from model
 
+$app = Factory::getApplication();
+$input = $app->input;
+$page = $input->get('page', 0);
+$limit = $input->get('limit', 10);
+
 //get this form
 $this->form = $this->get('Form');
 
 if(isset($_POST['filters'])){
   $filter_title = $_POST['filters']['filter_title'];
   $filter_categories = $_POST['filters']['filter_categories'];
-  $this->items = $model->getItems($filter_title, $filter_categories);
   //if $filter_title or $filter_categories are set, then we need to set the form values
-  if($filter_title || $filter_categories){
-    $this->form->setValue('filter_title', null, $filter_title);
-    $this->form->setValue('filter_categories', null, $filter_categories);
-  }
+
 }
 else{
-  $this->items = $this->get('Items');
+  $filter_title = $input->get('filter_title', null);
+  $filter_categories = $input->get('filter_categories', null);
 }
+
+$this->form->setValue('filter_title', null, $filter_title);
+$this->form->setValue('filter_categories', null, $filter_categories);
+
+$this->items = $model->getItems($filter_title, $filter_categories, $page, $limit);
 
 //does user have core.delete access
 $user = \JFactory::getUser();
@@ -41,7 +49,7 @@ $canDelete = $user->authorise('core.delete', 'com_yaquiz');
 
 $gConfig = \JComponentHelper::getParams('com_yaquiz');
 
-
+Log::add('attempt load page ' . $page, Log::INFO, 'com_yaquiz');
 
 ?>
 <form id="adminForm" action="index.php?option=com_yaquiz&view=Yaquizzes" method="post">
@@ -116,3 +124,39 @@ $gConfig = \JComponentHelper::getParams('com_yaquiz');
 
 
 </form>
+
+<?php
+//custom bootstrap pagination...
+$pagecount = $model->getTotalPages($limit, $filter_title, $filter_categories);
+
+
+?>
+
+
+<?php if ($pagecount > 1): ?>
+    <nav class="pagination__wrapper">
+        <div class="pagination pagination-toolbar">
+            <ul class="pagination ">
+
+                <?php if ($page > 0): ?>
+                    <li class="page-item"><a class="page-link"
+                            href="index.php?option=com_yaquiz&view=Yaquizzes&page=<?php echo $page - 1; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>"><span
+                                class="icon-angle-left" aria-hidden="true"></span></a>
+                    </li>
+                <?php endif; ?>
+
+                <?php for ($i = 0; $i < $pagecount; $i++): ?>
+                    <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>">
+                      <a class="page-link" href="index.php?option=com_yaquiz&view=Yaquizzes&page=<?php echo $i; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>"><?php echo $i + 1; ?></a>
+                    </li>
+                
+                            <?php endfor; ?>
+                <?php if ($page < $pagecount - 1): ?>
+                    <li class="page-item"><a class="page-link"
+                            href="index.php?option=com_yaquiz&view=Yaquizzes&page=<?php echo $page + 1; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>"><span
+                                class="icon-angle-right" aria-hidden="true"></span></a></li>
+                <?php endif; ?>
+            </ul>
+        </div>
+    </nav>
+<?php endif; ?>
