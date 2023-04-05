@@ -11,6 +11,9 @@ $dbresults = $model->getIndividualResult();
 $quizModel = new QuizModel();
 $quizTitle = $quizModel->getItem($dbresults->quiz_id)->title;
 
+$app = \Joomla\CMS\Factory::getApplication();
+$user = $app->getIdentity();
+
 $qbHelper = new QuestionBuilderHelper();
 
 if($dbresults->passed == 1){
@@ -42,17 +45,24 @@ foreach($results->questions as $question){
 
 $results->questions = $resultsquestions;
 
-Log::add('$resultsquestions  look like this from singleresult: ' . print_r($resultsquestions, true), Log::INFO, 'com_yaquiz');
-
-
 $results->passfail = $passfail;
 
 
 $final_feedback = $qbHelper->buildResultsArea($dbresults->quiz_id, $results);
 
+$format_submitted_date = date('F j, Y, g:i a', strtotime($dbresults->submitted));
+
 ?>
 
-<h1><?php echo $quizTitle; ?></h1>
-<h2>Your Results</h2>
+<div class="card mb-2">
+<span class="card-header fs-2">Result History: <?php echo $quizTitle; ?></span>
+<div class="card-body">
+<p>Saved results for <?php echo $user->name; ?></p>
+<p>Originally Submitted: <?php echo $format_submitted_date; ?></p>
+</div>
+<div class="card-footer">
+    <a href="index.php?option=com_yaquiz&view=user" class="btn btn-primary btn-sm"><i class="fas fa-arrow-circle-left"></i> Return</a>
+</div>
+</div>
 <?php echo $final_feedback; ?>
 

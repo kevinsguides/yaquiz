@@ -602,5 +602,34 @@ class YaquizModel extends AdminModel
         return true;
     }
 
+    public function delete(&$pks){
+            
+            //user needs core.delete permission
+            $user = Factory::getApplication()->getIdentity();
+            if (!$user->authorise('core.delete', 'com_yaquiz')) {
+                throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
+            }
+    
+            //remove all questions from quiz
+            $this->removeAllQuestionsFromQuiz($pks);
+
+            //remove all references to this quiz id from __com_yaquiz_results_general and __com_yaquiz_results
+            $db = Factory::getContainer()->get('DatabaseDriver');
+            $query = $db->getQuery(true);
+            $query->delete('#__com_yaquiz_results_general');
+            $query->where('quiz_id = ' . $pks);
+            $db->setQuery($query);
+            $db->execute();
+            $db = Factory::getContainer()->get('DatabaseDriver');
+            $query = $db->getQuery(true);
+            $query->delete('#__com_yaquiz_results');
+            $query->where('quiz_id = ' . $pks);
+            $db->setQuery($query);
+            $db->execute();
+    
+            //delete quiz
+            return parent::delete($pks);
+    }
+
 
 }

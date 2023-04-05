@@ -160,10 +160,12 @@ class QuizController extends BaseController
         if ($quiz_record_results >= 2) {
             //user must be logged in
             if (!$app->getIdentity()->guest) {
-                $model->saveIndividualResults($results);
+                $model->saveIndividualResults($results, $quiz_record_results);
             }
 
         }
+
+        Log::add('value of $quiz_record_results: ' . $quiz_record_results, Log::INFO, 'com_yaquiz');
 
         //set quiz title state var
         $quiz = $model->getItem($quiz_id);

@@ -5,7 +5,7 @@
     <author>KevinsGuides</author>
     <authorEmail>kevin@kevinsguides.com</authorEmail>
     <authorUrl>https://kevinsguides.com</authorUrl>
-    <version>0.3.40</version>
+    <version>0.3.50</version>
     <description>COM_YAQUIZ_XML_DESCRIPTION</description>
     <namespace path="src/">KevinsGuides\Component\Yaquiz</namespace>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
@@ -15,7 +15,7 @@
 <!-- database stuff -->
 <install>
     <sql>
-        <file driver="mysql" charset="utf8" version="0.3.40">sql/install/install.sql</file>
+        <file driver="mysql" charset="utf8" version="0.3.50">sql/install/install.sql</file>
     </sql>
 </install>
 <update>
@@ -25,7 +25,7 @@
 </update>
 <uninstall>
     <sql>
-        <file driver="mysql" charset="utf8" version="0.3.40">sql/install/uninstall.sql</file>
+        <file driver="mysql" charset="utf8" version="0.3.50">sql/install/uninstall.sql</file>
     </sql>
 </uninstall>
 

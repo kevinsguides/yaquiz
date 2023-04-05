@@ -274,6 +274,8 @@ class QuestionModel extends AdminModel
         $db->setQuery($query);
         $db->execute();
 
+
+
         //reorder existing quizzes
         $quizModel = new YaquizModel();
         foreach ($quiz_ids as $quiz_id) {

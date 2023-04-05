@@ -403,7 +403,7 @@ class QuizModel extends ItemModel{
      * Save the results of an individual quiz attempt
      * @results - the results object
      */
-    public function saveIndividualResults($results){
+    public function saveIndividualResults($results, $quiz_record_results){
 
         $userid = Factory::getApplication()->getIdentity()->id;
         if($results->passfail == 'fail'){
@@ -416,8 +416,7 @@ class QuizModel extends ItemModel{
         //trim to 1 decimal place
         $results->score = round($score, 1);
 
-        $quizParams = $this->getQuizParams($results->quiz_id);
-        if($quizParams->quiz_record_results == 3){
+        if($quiz_record_results == 3){
             $results->full_results = json_encode($results->questions);
         }
         else{
