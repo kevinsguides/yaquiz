@@ -1,5 +1,6 @@
 <?php
 namespace KevinsGuides\Component\Yaquiz\Site\Model;
+defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -7,9 +8,6 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Model\BaseModel;
 use Joomla\CMS\MVC\Model\FormModel;
 use Joomla\CMS\MVC\Model\ItemModel;
-
-defined('_JEXEC') or die;
-
 
 class QuizModel extends ItemModel{
 
@@ -396,6 +394,59 @@ class QuizModel extends ItemModel{
 
 
 
+
+
+    }
+
+
+    /**
+     * Save the results of an individual quiz attempt
+     * @results - the results object
+     */
+    public function saveIndividualResults($results){
+
+        $userid = Factory::getApplication()->getIdentity()->id;
+        if($results->passfail == 'fail'){
+            $results->passed = 0;
+        }
+        else{
+            $results->passed = 1;
+        }
+        $score = $results->correct / $results->total * 100;
+        //trim to 1 decimal place
+        $results->score = round($score, 1);
+
+        $quizParams = $this->getQuizParams($results->quiz_id);
+        if($quizParams->quiz_record_results == 3){
+            $results->full_results = json_encode($results->questions);
+        }
+        else{
+            $results->full_results = '';
+        }
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->insert($db->quoteName('#__com_yaquiz_results'));
+        $query->columns(array(
+            $db->quoteName('quiz_id'),
+            $db->quoteName('user_id'), 
+            $db->quoteName('score'), 
+            $db->quoteName('points'), 
+            $db->quoteName('total_points'), 
+            $db->quoteName('passed'),
+            $db->quoteName('full_results')));
+        $query->values(
+            $db->quote($results->quiz_id) . ', ' 
+            . $db->quote($userid) . ', ' 
+            . $db->quote($results->score) . ', ' 
+            . $db->quote($results->correct) . ', ' 
+            . $db->quote($results->total) . ', ' 
+            . $db->quote($results->passed) . ', '
+            . $db->quote($results->full_results)
+        );
+
+        $db->setQuery($query);
+        $db->execute();
 
 
     }
