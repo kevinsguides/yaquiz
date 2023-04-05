@@ -52,6 +52,26 @@ $final_feedback = $qbHelper->buildResultsArea($dbresults->quiz_id, $results);
 
 $format_submitted_date = date('F j, Y, g:i a', strtotime($dbresults->submitted));
 
+$attempt_count = $quizModel->getAttemptCount($dbresults->quiz_id, $user->id);
+
+$max_attempts = $quizModel->getQuizParams($dbresults->quiz_id)->max_attempts;
+
+$remaining_attempts = $max_attempts - $attempt_count;
+
+if($max_attempts == 0){
+    $remaining_attempts = "You may take this quiz as many times as you like.";
+}
+else if($remaining_attempts == 0){
+    $remaining_attempts = '<span class="bg-danger text-white p-1 rounded">You have reached the maximum number of attempts for this quiz.</span>';
+}
+else if($remaining_attempts == 1){
+    $remaining_attempts = "You have 1 attempt remaining.";
+}
+else {
+    $remaining_attempts = "You have " . $remaining_attempts . " attempts remaining.";
+}
+
+
 ?>
 
 <div class="card mb-2">
@@ -59,6 +79,8 @@ $format_submitted_date = date('F j, Y, g:i a', strtotime($dbresults->submitted))
 <div class="card-body">
 <p>Saved results for <?php echo $user->name; ?></p>
 <p>Originally Submitted: <?php echo $format_submitted_date; ?></p>
+<p>You have attempted this quiz <?php echo $attempt_count; ?> time(s).</p>
+<p><?php echo $remaining_attempts; ?></p>
 </div>
 <div class="card-footer">
     <a href="index.php?option=com_yaquiz&view=user" class="btn btn-primary btn-sm"><i class="fas fa-arrow-circle-left"></i> Return</a>

@@ -58,6 +58,7 @@ class QuizController extends BaseController
         $model = new QuizModel();
         $quizParams = $model->getQuizParams($quiz_id);
         $globalParams = $app->getParams('com_yaquiz');
+
         if ($globalParams->get('record_submissions') === '1') {
             $model->countAsSubmission($quiz_id);
         }

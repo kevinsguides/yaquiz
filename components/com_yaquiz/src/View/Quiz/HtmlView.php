@@ -27,8 +27,19 @@ class HtmlView extends BaseHtmlView
         //get params from the menu item
         $this->params = $active->getParams();
         $this->quiz_id = $this->params->get('quiz_id');
-        
+        //if quiz_id is not set, try to get it from the request
+        if(!$this->quiz_id){
+            $this->quiz_id = $app->input->get('id', 0);
+        }
         $this->item = $model->getItem($this->quiz_id);
+
+
+
+        //check reachedMaxAttempts
+        if($model->reachedMaxAttempts($this->quiz_id)){
+            $app->enqueueMessage(Text::_('COM_YAQUIZ_VIEW_QUIZ_REACHED_MAX_ATTEMPTS'), 'error');
+            $app->redirect('index.php');
+        }
 
         //set the title
         $this->document->setTitle($this->item->title);

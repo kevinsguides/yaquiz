@@ -55,6 +55,16 @@ description="JFIELD_ACCESS_DESC"
 default="0"
 />
 
+<field
+name="max_attempts"
+type="number"
+label="COM_YAQUIZ_YAQUIZ_MAX_ATTEMPTS_LABEL"
+description="COM_YAQUIZ_YAQUIZ_MAX_ATTEMPTS_DESC"
+required="true"
+default="0"
+/>
+
+
 
 <field
 name="quiz_displaymode"

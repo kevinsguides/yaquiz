@@ -102,6 +102,7 @@ class YaquizModel extends AdminModel
                 $data->quiz_record_results = $params['quiz_record_results'];
                 $data->quiz_record_guest_results = $params['quiz_record_guest_results'];
                 $data->quiz_show_general_stats = $params['quiz_show_general_stats'];
+                $data->max_attempts = $params['max_attempts'];
                 $this->checkout($data->id);
             }
 
@@ -540,6 +541,7 @@ class YaquizModel extends AdminModel
         $params['quiz_record_results'] = $data['quiz_record_results'];
         $params['quiz_record_guest_results'] = $data['quiz_record_guest_results'];
         $params['quiz_show_general_stats'] = $data['quiz_show_general_stats'];
+        $params['max_attempts'] = $data['max_attempts'];
         //encode
         $params = json_encode($params);
         return $params;

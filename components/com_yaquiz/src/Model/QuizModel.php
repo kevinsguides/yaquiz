@@ -48,8 +48,6 @@ class QuizModel extends ItemModel{
 
     public function getQuizParams($pk = null){
         
-
-
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('params');
@@ -447,7 +445,99 @@ class QuizModel extends ItemModel{
         $db->setQuery($query);
         $db->execute();
 
+        //check for a record in __com_yaquiz_user_quiz_map linking this user to this quiz
+        $query = $db->getQuery(true);
+        $query->select('user_id');
+        $query->from($db->quoteName('#__com_yaquiz_user_quiz_map'));
+        $query->where($db->quoteName('user_id') . ' = ' . $db->quote($userid));
+        $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($results->quiz_id));
+        $db->setQuery($query);
+        $result = $db->loadResult();
 
+        if($result){
+            //update record
+            $query = $db->getQuery(true);
+            $query->update($db->quoteName('#__com_yaquiz_user_quiz_map'));
+            $query->set($db->quoteName('attempt_count') . ' = ' . $db->quoteName('attempt_count') . ' + 1');
+            $query->where($db->quoteName('user_id') . ' = ' . $db->quote($userid));
+            $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($results->quiz_id));
+            $db->setQuery($query);
+            $db->execute();
+        }
+        else{
+            //insert record
+            $query = $db->getQuery(true);
+            $query->insert($db->quoteName('#__com_yaquiz_user_quiz_map'));
+            $query->columns(array($db->quoteName('user_id'), $db->quoteName('quiz_id'), $db->quoteName('attempt_count')));
+            $query->values($db->quote($userid) . ', ' . $db->quote($results->quiz_id) . ', 1');
+            $db->setQuery($query);
+            $db->execute();
+        }
+
+
+    }
+
+    /**
+     * Check if the user has reached the maximum number of attempts for this quiz
+     * @quiz_id - the id of the quiz
+     * @return - true if the user has reached the maximum number of attempts, false otherwise
+     */
+    public function reachedMaxAttempts($quiz_id){
+
+        Log::add('id of quiz: ' . $quiz_id, Log::INFO, 'com_yaquiz');
+        $max_attempts = (int)$this->getQuizParams($quiz_id)->max_attempts;
+        Log::add('max_attempts: ' . $max_attempts, Log::INFO, 'com_yaquiz');
+        if($max_attempts == 0){
+            return false;
+        }
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $user = Factory::getApplication()->getIdentity();
+        $userid = $user->id;
+
+        //if they're a guest...
+        if($user->guest){
+            return false;
+        }
+
+        $query = $db->getQuery(true);
+        $query->select('attempt_count');
+        $query->from($db->quoteName('#__com_yaquiz_user_quiz_map'));
+        $query->where($db->quoteName('user_id') . ' = ' . $db->quote($userid));
+        $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($quiz_id));
+        $db->setQuery($query);
+        $attempt_count = $db->loadResult();
+
+        if(!$attempt_count){
+            return false;
+        }
+        if($attempt_count >= $max_attempts){
+            Log::add('attempt count is ' . $attempt_count . ' and max attempts is ' . $max_attempts . ' so max reached', Log::INFO, 'com_yaquiz');
+            return true;
+        }
+        return false;
+
+    }
+
+
+    public function getAttemptCount($quiz_id, $userid){
+            
+
+            $db = Factory::getContainer()->get('DatabaseDriver');
+    
+            $query = $db->getQuery(true);
+            $query->select('attempt_count');
+            $query->from($db->quoteName('#__com_yaquiz_user_quiz_map'));
+            $query->where($db->quoteName('user_id') . ' = ' . $db->quote($userid));
+            $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($quiz_id));
+            $db->setQuery($query);
+            $attempt_count = $db->loadResult();
+    
+            if(!$attempt_count){
+                return 0;
+            }
+            return $attempt_count;
+    
     }
 
 }

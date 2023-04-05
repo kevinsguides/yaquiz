@@ -31,18 +31,17 @@ You just need a site running Joomla 4 with a template that uses Bootstrap 5 (mos
 * checkins for quizzes are working
 * javascript quiz mode
 * cache first page of quizzes (or entire quiz for js quizzes)
+* Able to save general and individual quiz results for every user
+* Display general stats about a quiz, like # of subs and average score
+* Import questions from Excel spreadsheet 
+* Basic templating system for all front end pages
 
 ## Todo
 
-* record grade statistics option
-* mass imports of questions
-* limit available qns selection to like 50 and show addtl message
-* cool circle results graph
+* Limit number of attempts option
+* New permission for viewing other users results
+* cool circle results graph or something else
 * checkins for questions
-* better templating system in general - easier extensibility....
-  * base templates work but subfolders do not for overrides - see if require once can be made relative
-* display grade statistics option
-  * record average score, individual user scores, etc...
 * reset hit/sub count button
 * quiz by category - a quiz that automatically pulls all questions from a category
 * randomize from pool - ability to select a random # of questions from a category
@@ -53,8 +52,7 @@ You just need a site running Joomla 4 with a template that uses Bootstrap 5 (mos
 * Clean/consistent interface
 * Fix Language Files (~70 done)
 * Additional styles
-* Record user results and save to db permanently
-* Quiz statistics/review results
+
 * Quiz Certificates
 
 
