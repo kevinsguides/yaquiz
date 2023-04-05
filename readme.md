@@ -35,12 +35,17 @@ You just need a site running Joomla 4 with a template that uses Bootstrap 5 (mos
 * Display general stats about a quiz, like # of subs and average score
 * Import questions from Excel spreadsheet 
 * Basic templating system for all front end pages
+* You can set a limit on the number of quiz attempts for logged in users.
 
 ## Todo
 
-* Limit number of attempts option
+
 * New permission for viewing other users results
-* cool circle results graph or something else
+* Page to view users results in backend
+* Pagination for quizzes in the backend, and for user results page in front end
+  * filters for user results
+  * expire/auto remove results after x days
+* a cool dashboard for quiz results and such
 * checkins for questions
 * reset hit/sub count button
 * quiz by category - a quiz that automatically pulls all questions from a category
