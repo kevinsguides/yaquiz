@@ -8,11 +8,20 @@ defined('_JEXEC') or die;
 
 $model = $this->getModel();
 $quizModel = new QuizModel();
+
+
+
+
 $results = $model->getUserResults();
 
 ?>
 
 <h1>Your Results</h1>
+
+<?php //if there are no results to display
+if (count($results) == 0) : ?>
+    <p>You have not taken any quizzes, or the administrator has disabled result saving.</p>
+<?php else: ?>
 
 <table class="table table-striped table-hover">
     <thead>
@@ -40,7 +49,7 @@ $results = $model->getUserResults();
 
             $resultsLink = 'Not Available';
             if($result->full_results != ''){
-                $resultsLink = '<a href="meh">View Results</a>';
+                $resultsLink = '<a href="index.php?option=com_yaquiz&view=user&layout=singleresult&resultid='.$result->id.'">View Results</a>';
             }
             
             ?>
@@ -54,5 +63,5 @@ $results = $model->getUserResults();
         <?php endforeach; ?>
     </tbody>
 </table>
-
+<?php endif; ?>
 

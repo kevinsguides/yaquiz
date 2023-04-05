@@ -150,19 +150,18 @@ class QuestionBuilderHelper
 
     /*
     * Called by the QuizController on form submit...
-    * @param $title - the quiz params
     * @param $quiz_id - the quiz id
     * @param $results - the results object
     * @return $html - the html to display
     */
-    public function buildResultsArea($title, $quiz_id, $results)
+    public function buildResultsArea($quiz_id, $results)
     {
         $app = Factory::getApplication();
         $gConfig = $this->globalParams;
 
         //the default will be a simple x/x with percentage
         //trim to 2 decimal places
-        $resultPercent = round((($results->correct / $results->total) * 100), 0);
+        $resultPercent = round((((int)$results->correct / (int)$results->total) * 100), 0);
         //get quiz params
         $quizParams = $this->getQuizParams($quiz_id);
 
@@ -174,8 +173,9 @@ class QuestionBuilderHelper
         //check if quiz_showfeedback is 1
         if ($quizParams->quiz_showfeedback == 1) {
             //loop through results $results->question_feedback
-            Log::add(print_r($results->questions, true), Log::INFO, 'yaquiz');
+            Log::add('from qbhelper looks like this'.print_r($results->questions, true), Log::INFO, 'yaquiz');
             $questionnum = 0;
+            
             foreach ($results->questions as $question) {
                 if ($quizParams->quiz_question_numbering == 1) {
                     $questionnum++;

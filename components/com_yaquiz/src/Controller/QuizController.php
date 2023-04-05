@@ -168,7 +168,7 @@ class QuizController extends BaseController
         //set quiz title state var
         $quiz = $model->getItem($quiz_id);
         $title = $quiz->title;
-        $buildResults = $qbhelper->buildResultsArea($title, $quiz_id, $results);
+        $buildResults = $qbhelper->buildResultsArea($quiz_id, $results);
 
 
         //check if the user already started this quiz
