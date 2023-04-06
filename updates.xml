@@ -1,15 +1,29 @@
 <updates>
   <update>
-  <name>YAQuiz</name>
-  <description>Installation for Joomla 4.x</description>
-  <version>0.3.50</version>
-  <downloads>
-  <downloadurl type="full" format="zip">https://github.com/kevinsguides/yaquiz/releases/download/v0.3.50/com_yaquiz-0.3.50.zip</downloadurl>
-  </downloads>
-  <targetplatform name="joomla" version="4.[0123456789]"/>
-  <php_minimum>7.4</php_minimum>
-  <element>com_yaquiz</element>
-  <type>component</type>
+    <name>YAQuiz</name>
+    <description>Installation for Joomla 4.x</description>
+    <version>0.3.51</version>
+    <downloads>
+      <downloadurl type="full" format="zip">
+        https://github.com/kevinsguides/yaquiz/releases/download/v0.3.51/com_yaquiz-0.3.51.zip</downloadurl>
+    </downloads>
+    <targetplatform name="joomla" version="4.[0123456789]" />
+    <php_minimum>7.4</php_minimum>
+    <element>com_yaquiz</element>
+    <type>component</type>
+  </update>
+  <update>
+    <name>YAQuiz</name>
+    <description>Installation for Joomla 4.x</description>
+    <version>0.3.50</version>
+    <downloads>
+      <downloadurl type="full" format="zip">
+        https://github.com/kevinsguides/yaquiz/releases/download/v0.3.50/com_yaquiz-0.3.50.zip</downloadurl>
+    </downloads>
+    <targetplatform name="joomla" version="4.[0123456789]" />
+    <php_minimum>7.4</php_minimum>
+    <element>com_yaquiz</element>
+    <type>component</type>
   </update>
 
   <update>
@@ -17,25 +31,27 @@
     <description>Installation for Joomla 4.x</description>
     <version>0.3.40</version>
     <downloads>
-    <downloadurl type="full" format="zip">https://github.com/kevinsguides/yaquiz/releases/download/v0.3.40/com_yaquiz-0.3.40.zip</downloadurl>
+      <downloadurl type="full" format="zip">
+        https://github.com/kevinsguides/yaquiz/releases/download/v0.3.40/com_yaquiz-0.3.40.zip</downloadurl>
     </downloads>
-   <targetplatform name="joomla" version="4.[0123456789]"/>
+    <targetplatform name="joomla" version="4.[0123456789]" />
     <php_minimum>7.4</php_minimum>
     <element>com_yaquiz</element>
     <type>component</type>
-    </update>
+  </update>
 
   <update>
     <name>YAQuiz</name>
     <description>Installation for Joomla 4.x</description>
     <version>0.3.20</version>
     <downloads>
-    <downloadurl type="full" format="zip">https://github.com/kevinsguides/yaquiz/releases/download/v0.3.20/com_yaquiz-0.3.20.zip</downloadurl>
+      <downloadurl type="full" format="zip">
+        https://github.com/kevinsguides/yaquiz/releases/download/v0.3.20/com_yaquiz-0.3.20.zip</downloadurl>
     </downloads>
-    <targetplatform name="joomla" version="4.[0123456789]"/>
+    <targetplatform name="joomla" version="4.[0123456789]" />
     <php_minimum>7.4</php_minimum>
     <element>com_yaquiz</element>
     <type>component</type>
-    </update>
+  </update>
 
 </updates>
