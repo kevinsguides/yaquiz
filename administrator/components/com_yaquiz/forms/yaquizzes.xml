@@ -13,7 +13,19 @@
         label="COM_YAQUIZ_QUIZZES_FILTER_CATEGORIES_LABEL"
         default="0"
         >
-        <option value="0">Uncategorized</option>
+        <option value="0">Uncategorized + All</option>
         </field>
+        <field 
+        name="filter_limit"
+        type="list"
+        label="COM_YAQUIZ_QUIZZES_FILTER_LIMIT_LABEL"
+        default="10"
+        >
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        </field>
+        
     </fieldset>
 </form>

@@ -21,26 +21,29 @@ $model = $this->getModel();
 $app = Factory::getApplication();
 $input = $app->input;
 $page = $input->get('page', 0);
-$limit = $input->get('limit', 10);
 
 //get this form
 $this->form = $this->get('Form');
 
-if(isset($_POST['filters'])){
-  $filter_title = $_POST['filters']['filter_title'];
-  $filter_categories = $_POST['filters']['filter_categories'];
-  //if $filter_title or $filter_categories are set, then we need to set the form values
-
+//get the filters
+$filters = $input->get('filters', '', 'array');
+if($filters) {
+    $filter_title = $filters['filter_title'];
+    $filter_categories = $filters['filter_categories'];
+    $filter_limit = $filters['filter_limit'];
+} else {
+    $filter_title = $input->get('filter_title', '','string');
+    $filter_categories = $input->get('catid', '0','int');
+    $filter_limit = $input->get('filter_limit', '10','int');
 }
-else{
-  $filter_title = $input->get('filter_title', null);
-  $filter_categories = $input->get('filter_categories', null);
-}
 
+
+
+Log::add('attempt set filter tiltle ' . $filter_title, Log::INFO, 'com_yaquiz');
 $this->form->setValue('filter_title', null, $filter_title);
 $this->form->setValue('filter_categories', null, $filter_categories);
-
-$this->items = $model->getItems($filter_title, $filter_categories, $page, $limit);
+$this->form->setValue('filter_limit', null, $filter_limit);
+$this->items = $model->getItems($filter_title, $filter_categories, $page, $filter_limit);
 
 //does user have core.delete access
 $user = \JFactory::getUser();
@@ -51,7 +54,22 @@ $gConfig = \JComponentHelper::getParams('com_yaquiz');
 
 Log::add('attempt load page ' . $page, Log::INFO, 'com_yaquiz');
 
+//if we have filters, expand the filters accordion
+$filterset = $input->get('filters', '', 'array');
+if($filterset) {
+    $filterset = 'show';
+} 
+else if($input->get('filter_title', '','string') != '' || $input->get('catid', '0','int') != 0|| $input->get('filter_limit', '10','int') != 10) {
+    $filterset = 'show';
+}
+else {
+    $filterset = '';
+}
+
+
 ?>
+
+<div class="container card card-body">
 <form id="adminForm" action="index.php?option=com_yaquiz&view=Yaquizzes" method="post">
 <div class="accordion" id="accordionFilters">
   <div class="accordion-item">
@@ -60,7 +78,7 @@ Log::add('attempt load page ' . $page, Log::INFO, 'com_yaquiz');
         Filters...
       </button>
     </h2>
-    <div id="collapseFilters" class="accordion-collapse collapse <?php echo (isset($_POST['filters']) ? 'show' : '') ?>" aria-labelledby="hdgFilters" data-bs-parent="#accordionFilters">
+    <div id="collapseFilters" class="accordion-collapse collapse <?php echo $filterset; ?>" aria-labelledby="hdgFilters" data-bs-parent="#accordionFilters">
       <div class="accordion-body">
         <!-- render yaquizzes_filterset fieldset -->
         <?php echo $this->form->renderFieldset('filters'); ?>
@@ -127,7 +145,7 @@ Log::add('attempt load page ' . $page, Log::INFO, 'com_yaquiz');
 
 <?php
 //custom bootstrap pagination...
-$pagecount = $model->getTotalPages($limit, $filter_title, $filter_categories);
+$pagecount = $model->getTotalPages($filter_limit, $filter_title, $filter_categories);
 
 
 ?>
@@ -140,23 +158,25 @@ $pagecount = $model->getTotalPages($limit, $filter_title, $filter_categories);
 
                 <?php if ($page > 0): ?>
                     <li class="page-item"><a class="page-link"
-                            href="index.php?option=com_yaquiz&view=Yaquizzes&page=<?php echo $page - 1; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>"><span
+                            href="index.php?option=com_yaquiz&view=Yaquizzes&page=<?php echo $page - 1; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>&filter_limit=<?php echo $filter_limit; ?>"><span
                                 class="icon-angle-left" aria-hidden="true"></span></a>
                     </li>
                 <?php endif; ?>
 
                 <?php for ($i = 0; $i < $pagecount; $i++): ?>
                     <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>">
-                      <a class="page-link" href="index.php?option=com_yaquiz&view=Yaquizzes&page=<?php echo $i; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>"><?php echo $i + 1; ?></a>
+                      <a class="page-link" href="index.php?option=com_yaquiz&view=Yaquizzes&page=<?php echo $i; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>&filter_limit=<?php echo $filter_limit; ?>"><?php echo $i + 1; ?></a>
                     </li>
                 
                             <?php endfor; ?>
                 <?php if ($page < $pagecount - 1): ?>
                     <li class="page-item"><a class="page-link"
-                            href="index.php?option=com_yaquiz&view=Yaquizzes&page=<?php echo $page + 1; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>"><span
+                            href="index.php?option=com_yaquiz&view=Yaquizzes&page=<?php echo $page + 1; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>&filter_limit=<?php echo $filter_limit; ?>"><span
                                 class="icon-angle-right" aria-hidden="true"></span></a></li>
                 <?php endif; ?>
             </ul>
         </div>
     </nav>
 <?php endif; ?>
+
+                </div>
