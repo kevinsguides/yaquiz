@@ -10,7 +10,7 @@
     <targetplatform name="joomla" version="4.[0123456789]" />
     <php_minimum>7.4</php_minimum>
     <element>com_yaquiz</element>
-    <type>component</type>
+    <type>package</type>
   </update>
   <update>
     <name>YAQuiz</name>
