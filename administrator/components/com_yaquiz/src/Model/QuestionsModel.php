@@ -16,7 +16,7 @@ class QuestionsModel extends AdminModel
 {
 
     //get all the Items
-    public function getItems($filter_title = null, $filter_categories = null, $page = 0)
+    public function getItems($filter_title = null, $filter_categories = null, $page = 0, $filter_limit = 10)
     {
         //get the database driver
         $db = Factory::getContainer()->get('DatabaseDriver');
@@ -31,7 +31,10 @@ class QuestionsModel extends AdminModel
             Log::add('attempt filter by category '.$filter_categories, Log::INFO, 'com_yaquiz');
             $query->where($db->quoteName('catid') . ' = ' . $db->quote($filter_categories));
         }
-        $query->setLimit(10, $page * 10);
+        if($filter_limit == null){
+            $filter_limit = 10;
+        }
+        $query->setLimit($filter_limit, ($page)*$filter_limit);
         $db->setQuery($query);
         $items = $db->loadObjectList();
         return $items;
@@ -97,7 +100,7 @@ class QuestionsModel extends AdminModel
 
     }
 
-    public function getPageCount($filter_categories = null, $filter_title = null){
+    public function getPageCount($filter_categories = null, $filter_title = null, $filter_limit = 10){
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('COUNT(*)');
@@ -108,9 +111,13 @@ class QuestionsModel extends AdminModel
         if($filter_categories){
             $query->where($db->quoteName('catid') . ' = ' . $db->quote($filter_categories));
         }
+        if($filter_limit == null){
+            $filter_limit = 10;
+        }
+
         $db->setQuery($query);
         $count = $db->loadResult();
-        return ceil($count / 10);
+        return ceil($count / $filter_limit);
     }
 
     public function insertMultiQuestions($questions, $catid){

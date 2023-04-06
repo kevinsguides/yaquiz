@@ -16,6 +16,7 @@ $sqhelper = new YaquizHelper();
 $form = $this->form;
 $filter_title = null;
 $filter_categories = null;
+$filter_limit = null;
 //check if filters exist in POST
 if (isset($_POST['filters'])) {
     //check filters
@@ -27,12 +28,13 @@ if (isset($_POST['filters'])) {
         $form->setValue('filter_categories', null, $_POST['filters']['filter_categories']);
         $filter_categories = $_POST['filters']['filter_categories'];
     }
+    if ($_POST['filters']['filter_limit']) {
+        $form->setValue('filter_limit', null, $_POST['filters']['filter_limit']);
+        $filter_limit = $_POST['filters']['filter_limit'];
+    }
 }
 
-if (isset($_GET['catid'])) {
-    $form->setValue('filter_categories', null, $_GET['catid']);
-    $filter_categories = $_GET['catid'];
-}
+
 
 
 $page = 0;
@@ -44,18 +46,33 @@ if (isset($_GET['filter_title'])){
     $form->setValue('filter_title', null, $_GET['filter_title']);
     $filter_title = $_GET['filter_title'];
 }
+if (isset($_GET['catid'])) {
+    $form->setValue('filter_categories', null, $_GET['catid']);
+    $filter_categories = $_GET['catid'];
+}
+if (isset($_GET['filter_limit'])){
+    $form->setValue('filter_limit', null, $_GET['filter_limit']);
+    $filter_limit = $_GET['filter_limit'];
+}
+
+
 
 
 
 
 //get items
 $model = $this->getModel('Questions');
-$items = $model->getItems($filter_title, $filter_categories, $page);
+$items = $model->getItems($filter_title, $filter_categories, $page, $filter_limit);
+$pagecount = $model->getPageCount($filter_categories, $filter_title, $filter_limit);
 
-$pagecount = $model->getPageCount($filter_categories, $filter_title);
+//see if we need to show accordion
+$showAccordion = false;
+if ($filter_title || $filter_categories || $filter_limit) {
+    $showAccordion = true;
+}
 
 ?>
-
+<div class="container">
 <div class="card mb-2">
     <h1 class="card-header"><span class="icon-check"></span> Questions Manager</h1>
     <div class="card-body">
@@ -68,11 +85,11 @@ $pagecount = $model->getPageCount($filter_categories, $filter_title);
     <div class="accordion" id="accordionFilters">
         <div class="accordion-item">
             <h2 class="accordion-header" id="hdgFilters">
-            <button class="accordion-button <?php echo (isset($_POST['filters']) ? '' : 'collapsed') ?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilters" aria-expanded="true" aria-controls="collapseFilters">
+            <button class="accordion-button <?php echo (($showAccordion) ? '' : 'collapsed'); ?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilters" aria-expanded="true" aria-controls="collapseFilters">
                 Filters...
             </button>
             </h2>
-            <div id="collapseFilters" class="accordion-collapse collapse <?php echo (isset($_POST['filters']) ? 'show' : '') ?>" aria-labelledby="hdgFilters" data-bs-parent="#accordionFilters">
+            <div id="collapseFilters" class="accordion-collapse collapse <?php echo ($showAccordion ? 'show' : '') ?>" aria-labelledby="hdgFilters" data-bs-parent="#accordionFilters">
                 <div class="accordion-body">
                     <?php echo $form->renderFieldset('filters'); ?>
                     <input name="task" type="hidden">
@@ -148,23 +165,50 @@ $pagecount = $model->getPageCount($filter_categories, $filter_title);
 
 <?php if ($pagecount > 1): ?>
     <nav class="pagination__wrapper">
+        <span class="float-end">Page <?php echo $page + 1; ?> of <?php echo $pagecount; ?></span>
         <div class="pagination pagination-toolbar">
-            <ul class="pagination ">
+            <ul class="pagination m-0">
                 <?php if ($page > 0): ?>
                     <li class="page-item"><a class="page-link"
-                            href="index.php?option=com_yaquiz&view=Questions&page=<?php echo $page - 1; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>"><span
+                            href="index.php?option=com_yaquiz&view=Questions&page=<?php echo $page - 1; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>&filter_limit=<?php echo $filter_limit;?>"><span
                                 class="icon-angle-left" aria-hidden="true"></span></a></li>
                 <?php endif; ?>
-                <?php for ($i = 0; $i < $pagecount; $i++): ?>
-                    <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>"><a class="page-link"
-                            href="index.php?option=com_yaquiz&view=Questions&page=<?php echo $i; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>"><?php echo $i + 1; ?></a></li>
-                <?php endfor; ?>
+                <?php if ($pagecount <= 10 ) : ?>
+                    <?php for ($i = 0; $i < $pagecount; $i++): ?>
+                        <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>"><a class="page-link"
+                                href="index.php?option=com_yaquiz&view=Questions&page=<?php echo $i; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>&filter_limit=<?php echo $filter_limit;?>"><?php echo $i + 1; ?></a></li>
+                    <?php endfor; ?>
+                <?php else: ?>
+                    <?php if ($page < 5): ?>
+                        <?php for ($i = 0; $i < 10; $i++): ?>
+                            <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>"><a class="page-link"
+                                    href="index.php?option=com_yaquiz&view=Questions&page=<?php echo $i; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>&filter_limit=<?php echo $filter_limit;?>"><?php echo $i + 1; ?></a></li>
+                        <?php endfor; ?>
+                    <?php elseif ($page > $pagecount - 5): ?>
+                        <?php for ($i = $pagecount - 10; $i < $pagecount; $i++): ?>
+                            <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>"><a class="page-link"
+                                    href="index.php?option=com_yaquiz&view=Questions&page=<?php echo $i; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>&filter_limit=<?php echo $filter_limit;?>"><?php echo $i + 1; ?></a></li>
+                        <?php endfor; ?>
+                    <?php else: ?>
+                        <?php for ($i = $page - 5; $i < $page + 5; $i++): ?>
+                            <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>"><a class="page-link"
+                                    href="index.php?option=com_yaquiz&view=Questions&page=<?php echo $i; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>&filter_limit=<?php echo $filter_limit;?>"><?php echo $i + 1; ?></a></li>
+                        <?php endfor; ?>
+                    <?php endif; ?>
+                <?php endif; ?>
+
                 <?php if ($page < $pagecount - 1): ?>
                     <li class="page-item"><a class="page-link"
-                            href="index.php?option=com_yaquiz&view=Questions&page=<?php echo $page + 1; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>"><span
+                            href="index.php?option=com_yaquiz&view=Questions&page=<?php echo $page + 1; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>&filter_limit=<?php echo $filter_limit;?>"><span
                                 class="icon-angle-right" aria-hidden="true"></span></a></li>
                 <?php endif; ?>
+                <?php if ($pagecount > 10): ?>
+                    <li class="page-item"><a class="page-link"
+                            href="index.php?option=com_yaquiz&view=Questions&page=<?php echo $pagecount - 1; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>&filter_limit=<?php echo $filter_limit;?>"><span class="icon-last"></span></a></li>
+                <?php endif; ?>
+
             </ul>
         </div>
     </nav>
 <?php endif; ?>
+</div>

@@ -204,7 +204,7 @@ $pagecount = $model->getTotalPages($filter_limit, $filter_title, $filter_categor
             </ul>
         </div>
     </nav>
-    <?php if ($pagecount > 10): ?>
+    <?php if ($pagecount > 20): ?>
       <p>You have a lot of pages, consider filtering your results.</p>
     <?php endif; ?>
                 </div>
