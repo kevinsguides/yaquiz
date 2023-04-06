@@ -69,7 +69,10 @@ else {
 
 ?>
 
-<div class="container card card-body">
+<div class="container">
+<div class="card">
+  <h1 class="card-header">Quizzes</h1>
+  <div class="card-body">
 <form id="adminForm" action="index.php?option=com_yaquiz&view=Yaquizzes" method="post">
 <div class="accordion" id="accordionFilters">
   <div class="accordion-item">
@@ -148,13 +151,15 @@ else {
 $pagecount = $model->getTotalPages($filter_limit, $filter_title, $filter_categories);
 
 
+
 ?>
-
-
+</div>
+<div class="card-footer">
 <?php if ($pagecount > 1): ?>
     <nav class="pagination__wrapper">
+    <span class="float-end">Page <?php echo $page + 1; ?> of <?php echo $pagecount; ?></span>
         <div class="pagination pagination-toolbar">
-            <ul class="pagination ">
+            <ul class="pagination m-0">
 
                 <?php if ($page > 0): ?>
                     <li class="page-item"><a class="page-link"
@@ -162,13 +167,35 @@ $pagecount = $model->getTotalPages($filter_limit, $filter_title, $filter_categor
                                 class="icon-angle-left" aria-hidden="true"></span></a>
                     </li>
                 <?php endif; ?>
-
+                <?php if($pagecount <= 10) :?>
                 <?php for ($i = 0; $i < $pagecount; $i++): ?>
                     <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>">
                       <a class="page-link" href="index.php?option=com_yaquiz&view=Yaquizzes&page=<?php echo $i; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>&filter_limit=<?php echo $filter_limit; ?>"><?php echo $i + 1; ?></a>
                     </li>
                 
-                            <?php endfor; ?>
+                <?php endfor; ?>
+                <?php else : ?>
+                <?php if($page < 5) : ?>
+                <?php for ($i = 0; $i < 10; $i++): ?>
+                    <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>">
+                      <a class="page-link" href="index.php?option=com_yaquiz&view=Yaquizzes&page=<?php echo $i; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>&filter_limit=<?php echo $filter_limit; ?>"><?php echo $i + 1; ?></a>
+                    </li>
+                <?php endfor; ?>
+                <?php elseif($page >= 5 && $page < $pagecount - 5) : ?>
+                <?php for ($i = $page - 5; $i < $page + 5; $i++): ?>
+                    <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>">
+                      <a class="page-link" href="index.php?option=com_yaquiz&view=Yaquizzes&page=<?php echo $i; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>&filter_limit=<?php echo $filter_limit; ?>"><?php echo $i + 1; ?></a>
+                    </li>
+                <?php endfor; ?>
+                <?php else : ?>
+                <?php for ($i = $pagecount - 10; $i < $pagecount; $i++): ?>
+                    <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>">
+                      <a class="page-link" href="index.php?option=com_yaquiz&view=Yaquizzes&page=<?php echo $i; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>&filter_limit=<?php echo $filter_limit; ?>"><?php echo $i + 1; ?></a>
+                    </li>
+                <?php endfor; ?>
+                <?php endif;?>
+                <?php endif; ?>
+
                 <?php if ($page < $pagecount - 1): ?>
                     <li class="page-item"><a class="page-link"
                             href="index.php?option=com_yaquiz&view=Yaquizzes&page=<?php echo $page + 1; ?>&catid=<?php echo $filter_categories; ?>&filter_title=<?php echo $filter_title; ?>&filter_limit=<?php echo $filter_limit; ?>"><span
@@ -177,6 +204,11 @@ $pagecount = $model->getTotalPages($filter_limit, $filter_title, $filter_categor
             </ul>
         </div>
     </nav>
+    <?php if ($pagecount > 10): ?>
+      <p>You have a lot of pages, consider filtering your results.</p>
+    <?php endif; ?>
+                </div>
+                </div>
 <?php endif; ?>
 
                 </div>
