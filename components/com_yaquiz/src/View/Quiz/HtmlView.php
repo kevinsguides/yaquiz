@@ -44,6 +44,11 @@ class HtmlView extends BaseHtmlView
         //set the title
         $this->document->setTitle($this->item->title);
 
+        //check if quiz exists
+        if(!$this->item){
+            $app->enqueueMessage(Text::_('COM_YAQUIZ_VIEW_QUIZ_NOT_FOUND'), 'error');
+            $app->redirect('index.php');
+        }
 
 
         //check if quiz is published

@@ -50,6 +50,23 @@ class YaquizzesModel extends AdminModel
         return ceil($total/$limit);
     }
 
+    /** get general stats for an individual quiz */
+    public function getGeneralStats($pk = null){
+        if (!$pk) {
+            return null;
+        }
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('*');
+        $query->from('#__com_yaquiz_results_general');
+        $query->where('quiz_id = '.$pk);
+        $db->setQuery($query);
+        $stats = $db->loadObject();
+
+        return $stats;
+
+    }
+
 
 
     public function getName(){

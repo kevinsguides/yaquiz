@@ -121,7 +121,15 @@ else {
                     <?php echo ($gConfig->get('record_hits')==='1' ? '<span class="badge bg-primary text-white">Hits: '. $item->hits .'</span>': '');?>
                     <?php echo ($gConfig->get('record_submissions')==='1' ? '<span class="badge bg-primary text-white">Submits: '. $item->submissions .'</span>': '');?>
                     <?php echo ($item->checked_out == 0 ? '<span class="badge bg-success text-white">Checked In</span>' : '<span class="badge bg-warning text-white">Checked Out</span>') ?>
+                    <?php 
+                    $stats = $model->getGeneralStats($item->id);
+                    if($stats) :?>
+                    <br/>
+                    <span class="badge bg-primary text-white">Average Score: <?php echo $stats->total_average_score; ?>%</span>
+                    <span class="badge bg-primary text-white">Total Submissions: <?php echo $stats->submissions; ?> attempts</span>
+                    <span class="badge bg-primary text-white">Times Passed: <?php echo $stats->total_times_passed; ?> times</span>
 
+                    <?php endif; ?>
                   </div>
                     <div class="col-12 col-md-3">
                     <span><?php echo ($quizModel->getCategoryName($item->catid)? $quizModel->getCategoryName($item->catid) : 'Uncategorized'); ?></span>
