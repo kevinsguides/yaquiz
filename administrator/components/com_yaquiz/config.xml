@@ -110,43 +110,77 @@ label="COM_YAQUIZ_GLOBAL_OPTIONS_LABEL">
     <option value="0">JNO</option>
     </field>
 
-    <field
-    name="quiz_record_results"
-    type="list"
-    label="COM_YAQUIZ_YAQUIZ_QUIZ_RECORD_RESULTS_LABEL"
-    description="COM_YAQUIZ_YAQUIZ_QUIZ_RECORD_RESULTS_DESC"
-    required="true"
-    default="0">
-    <option value="0">0 - Don't Save Any Results</option>
-    <option value="1">1 - Save General Results</option>
-    <option value="2">2 - Save Individual User Scores</option>
-    <option value="3">3 - Save EVERYTHING Including Responses/Feedback</option>
-    </field>
-
-    <field
-    name="quiz_record_guest_results"
-    type="radio"
-    label="COM_YAQUIZ_RECORD_GUEST_RESULTS_LABEL"
-    description="COM_YAQUIZ_RECORD_GUEST_RESULTS_DESC"
-    default="0"
-    >
-    <option value="1">JYES</option>
-    <option value="0">JNO</option>
-    </field>
 
 
-    <field
-    name="quiz_show_general_stats"
-    type="radio"
-    label="COM_YAQUIZ_SHOW_GENSTAT_LABEL"
-    description="COM_YAQUIZ_SHOW_GENSTAT_DESC"
-    default="0"
-    >
-    <option value="1">JYES</option>
-    <option value="0">JNO</option>
-    </field>
 
 
+
+</fieldset>
+
+<fieldset
+name="results"
+>
+<field
+name="quiz_record_results"
+type="list"
+label="COM_YAQUIZ_YAQUIZ_QUIZ_RECORD_RESULTS_LABEL"
+description="COM_YAQUIZ_YAQUIZ_QUIZ_RECORD_RESULTS_DESC"
+required="true"
+default="0">
+<option value="0">0 - Don't Save Any Results</option>
+<option value="1">1 - Save General Results</option>
+<option value="2">2 - Save Individual User Scores</option>
+<option value="3">3 - Save EVERYTHING Including Responses/Feedback</option>
+</field>
+
+<field
+name="quiz_record_guest_results"
+type="radio"
+label="COM_YAQUIZ_RECORD_GUEST_RESULTS_LABEL"
+description="COM_YAQUIZ_RECORD_GUEST_RESULTS_DESC"
+default="0"
+>
+<option value="1">JYES</option>
+<option value="0">JNO</option>
+</field>
+
+
+<field
+name="quiz_show_general_stats"
+type="radio"
+label="COM_YAQUIZ_SHOW_GENSTAT_LABEL"
+description="COM_YAQUIZ_SHOW_GENSTAT_DESC"
+default="0"
+>
+<option value="1">JYES</option>
+<option value="0">JNO</option>
+</field>
+
+<field
+name="user_results_page_enabled"
+type="radio"
+label="COM_YAQUIZ_USER_RESULTS_PAGE_ENABLED_LABEL"
+description="COM_YAQUIZ_USER_RESULTS_PAGE_ENABLED_DESC"
+default="1"
+>
+<option value="1">JYES</option>
+<option value="0">JNO</option>
+</field>
+
+<field
+name="user_results_per_page"
+type="list"
+label="COM_YAQUIZ_USER_RESULTS_PER_PAGE_LABEL"
+description="COM_YAQUIZ_USER_RESULTS_PER_PAGE_DESC"
+default="10"
+>
+<option value="5">5</option>
+<option value="10">10</option>
+<option value="15">15</option>
+<option value="20">20</option>
+<option value="25">25</option>
+<option value="50">50</option>
+</field>
 
 
 </fieldset>

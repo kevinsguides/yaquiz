@@ -25,6 +25,13 @@ class HtmlView extends BaseHtmlView
             $app->redirect('index.php?option=com_users&view=login');
         }
 
+        //user_results_page_enabled must be enabled
+        $globalParams = Factory::getApplication()->getParams('com_yaquiz');
+        if($globalParams->get('user_results_page_enabled',"1")=="0"){
+            $app->enqueueMessage(Text::_('COM_YAQUIZ_USER_RESULTS_PAGE_DISABLED'), 'error');
+            $app->redirect('index.php');
+        }
+
         parent::display($tpl);
 
     }
