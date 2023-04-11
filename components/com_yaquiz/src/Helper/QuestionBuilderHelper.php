@@ -20,7 +20,7 @@ class QuestionBuilderHelper
     {
         $this->globalParams = Factory::getApplication()->getParams('com_yaquiz');
         $this->db = Factory::getContainer()->get('DatabaseDriver');
-        $this->theme = $this->globalParams->get('theme');
+        $this->theme = $this->globalParams->get('theme','default');
     }
 
 
