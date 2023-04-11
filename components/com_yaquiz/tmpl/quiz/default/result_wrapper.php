@@ -1,4 +1,9 @@
 <?php
+/*
+ * @copyright   (C) 2023 KevinsGuides.com
+ * @license     GNU General Public License version 2 or later;
+*/
+
 //wraps a single question's result area
 defined ( '_JEXEC' ) or die;
 

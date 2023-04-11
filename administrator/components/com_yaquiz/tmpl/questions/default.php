@@ -1,4 +1,10 @@
 <?php
+/*
+ * @copyright   (C) 2023 KevinsGuides.com
+ * @license     GNU General Public License version 2 or later;
+*/
+
+
 namespace KevinsGuides\Component\Yaquiz\Administrator\View\Questions;
 
 use Joomla\CMS\Log\Log;

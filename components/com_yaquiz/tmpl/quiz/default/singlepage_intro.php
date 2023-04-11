@@ -1,4 +1,9 @@
 <?php
+/*
+ * @copyright   (C) 2023 KevinsGuides.com
+ * @license     GNU General Public License version 2 or later;
+*/
+
 defined ( '_JEXEC' ) or die ();
 //this is the introductory card for the quiz which displays the details and title
 //it appears above the questions on a single page quiz

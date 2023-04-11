@@ -1,4 +1,9 @@
 <?php
+/*
+ * @copyright   (C) 2023 KevinsGuides.com
+ * @license     GNU General Public License version 2 or later;
+*/
+
 /**
  * renders individual pages for each question with help of questionbuilder class
  * a better name for this would have been multi_page but that's what we're stuck with
