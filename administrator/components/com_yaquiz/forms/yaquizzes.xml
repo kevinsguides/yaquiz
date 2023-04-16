@@ -6,15 +6,16 @@
         type="text"
         label="COM_YAQUIZ_QUIZZES_FILTER_TITLE_LABEL"
         />
-        <field
-        name="filter_categories"
-        type="category"
-        extension="com_yaquiz"
-        label="COM_YAQUIZ_QUIZZES_FILTER_CATEGORIES_LABEL"
-        default="0"
-        >
+		<field
+			name="filter_categories"
+			type="categoryedit"
+			label="JCATEGORY"
+			addfieldprefix="Joomla\Component\Categories\Administrator\Field"
+			default=""
+		>
         <option value="0">Uncategorized + All</option>
         </field>
+        
         <field 
         name="filter_limit"
         type="list"
