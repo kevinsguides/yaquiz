@@ -73,7 +73,7 @@
 
 
     <updateservers>
-		<server type="component" priority="1" name="yaquiz">https://raw.githubusercontent.com/kevinsguides/yaquiz/master/updates.xml</server>
+		<server type="extension" priority="1" name="yaquiz">https://raw.githubusercontent.com/kevinsguides/yaquiz/master/updates.xml</server>
     </updateservers>
 
     </extension>
