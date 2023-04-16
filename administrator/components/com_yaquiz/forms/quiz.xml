@@ -18,13 +18,10 @@ required="true"
 />
 <field
 name="catid"
-type="category"
-extension="com_yaquiz"
-class="inputbox"
+type="categoryedit"
+label="JCATEGORY"
+addfieldprefix="Joomla\Component\Categories\Administrator\Field"
 default="0"
-label="COM_YAQUIZ_QUESTION_CATID_LABEL"
-description="COM_YAQUIZ_QUIZ_CATID_DESC"
-required="true"
 >
 <option value="0">Uncategorized</option>
 </field>
