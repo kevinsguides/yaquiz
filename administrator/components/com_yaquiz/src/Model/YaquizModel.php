@@ -54,7 +54,7 @@ class YaquizModel extends AdminModel
 
     //get the quiz form
     // this is called by controller, and only happens when layout is edit
-    public function getForm($data = new \stdClass, $loadData = true)
+    public function getForm($data = [], $loadData = true)
     {
 
         $app = Factory::getApplication();
