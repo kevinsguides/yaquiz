@@ -33,7 +33,6 @@
     <language tag="en-GB">admin/language/en-GB/com_yaquiz.ini</language>
     <language tag="en-GB">admin/language/en-GB/com_yaquiz.sys.ini</language>
     <language tag="en-GB">site/language/en-GB/com_yaquiz.ini</language>
-    <language tag="en-GB">site/language/en-GB/com_yaquiz.sys.ini</language>
 </languages>
     
 <files folder="site">
