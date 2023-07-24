@@ -14,6 +14,8 @@ use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Input\Input;
 use JSession;
+//use language
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 use Joomla\CMS\MVC\Controller\BaseController;
@@ -84,7 +86,7 @@ class QuizController extends BaseController
 
         //make sure they answered all the questions...
         if (count($answers) < $model->getTotalQuestions($quiz_id)) {
-            $this->setMessage('You did not answer all the questions', 'warning');
+            $this->setMessage(\JText::_('COM_YAQ_HAS_UNANSWERED_QUESTIONS'), 'warning');
 
             //foreach question, save its answer and id to an array
             $answered = array();
@@ -268,16 +270,16 @@ class QuizController extends BaseController
             if (array_key_exists($quiz_id, $current_answers)) {
                 unset($current_answers[$quiz_id]);
                 $session->set('sq_answers', $current_answers);
-                $this->setMessage('Quiz data has been reset', 'warning');
+                $this->setMessage(\JText::_('COM_YAQ_QUIZ_RESET'), 'warning');
                 $this->setRedirect('index.php?option=com_yaquiz&view=quiz&id=' . $quiz_id . '&page=0');
             } else {
-                $this->setMessage('Quiz data has already been reset', 'warning');
+                $this->setMessage(\JText::_('COM_YAQ_QUIZ_RESET_ALREADY'), 'warning');
                 $this->setRedirect('index.php');
             }
         } else {
             $session->clear('sq_answers');
             $session->clear('sq_quiz_id');
-            $this->setMessage('All quiz data has been reset', 'warning');
+            $this->setMessage(\JText::_('COM_YAQ_QUIZ_RESET'), 'warning');
             $this->setRedirect('index.php');
         }
     }

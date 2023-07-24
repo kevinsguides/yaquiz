@@ -5,6 +5,8 @@
 */
 
 defined ( '_JEXEC' ) or die ();
+use Joomla\CMS\Language\Text;
+
 ?>
 
 <div class="card">
@@ -33,21 +35,23 @@ defined ( '_JEXEC' ) or die ();
 </div>
 <div class="card-footer">
 <?php if ($currPage == 0):?>
-    <a href="<?php echo JURI::root(); ?>index.php?option=com_yaquiz&view=quiz&id=<?php echo $quiz->id; ?>&page=<?php echo $currPage + 1; ?>" class="btn btn-primary">Start Quiz</a>
+    <a href="<?php echo JURI::root(); ?>index.php?option=com_yaquiz&view=quiz&id=<?php echo $quiz->id; ?>&page=<?php echo $currPage + 1; ?>" class="btn btn-primary"><?php echo Text::_('COM_YAQ_START_QUIZ');?></a>
 <?php endif;?>
 <?php if ($currPage > 0 && $currPage <= $totalQuestions):?>
-    <button type="submit" name="nextpage" value="-1" class="btn btn-primary">Previous</button>
+    <button type="submit" name="nextpage" value="-1" class="btn btn-primary"><?php echo Text::_('COM_YAQ_PREV');?></button>
 <?php endif;?>
 
 <?php if($currPage > 0 && $currPage < $totalQuestions):?>
 
-    <button type="submit" name="nextpage" value="1" class="btn btn-primary">Next</button>
+    <button type="submit" name="nextpage" value="1" class="btn btn-primary"><?php echo Text::_('COM_YAQ_NEXT');?></button>
    
 <?php endif;?>
 
 <?php if ($currPage == $totalQuestions):?>
-    <button type="submit" name="nextpage" value="results" class="btn btn-primary">Finish</button>
+    <button type="submit" name="nextpage" value="results" class="btn btn-primary"><?php echo Text::_('COM_YAQ_FINISH');?></button>
 <?php endif;?>
-<span class="float-end">Page: <?php echo $currPage + 1; ?> of <?php echo $totalQuestions + 1; ?></span>
+<span class="float-end">
+    <?php echo Text::sprintf('COM_YAQ_PAGEOF', $currPage + 1, $totalQuestions + 1); ?>
+</span>
 </div>
 </div>

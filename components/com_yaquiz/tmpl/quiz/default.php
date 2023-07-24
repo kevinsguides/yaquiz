@@ -79,8 +79,8 @@ if ($quiz == null):
     ?>
     <div class="card m-3">
         <div class="card-body">
-            <h1>Quiz not found</h1>
-            <p>Sorry, the quiz you are looking for could not be found.</p>
+            <h1><?php echo \JText::_('COM_YAQ_NOTFOUND') ?></h1>
+            <p><?php echo \JText::_('COM_YAQ_NOTFOUND_MORE') ?></p>
         </div>
     </div>
     <?php
@@ -121,7 +121,7 @@ else:
                 <?php endforeach; ?>
 
                 <?php echo JHtml::_('form.token'); ?>
-                <button type="submit" class="btn btn-success btn-lg">Submit Quiz</button>
+                <button type="submit" class="btn btn-success btn-lg"><?php echo \JText::_('COM_YAQ_SUBMITQUIZ') ?></button>
             </form>
 
         <?php endif; ?>

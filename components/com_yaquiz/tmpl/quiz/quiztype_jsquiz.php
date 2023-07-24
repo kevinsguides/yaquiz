@@ -79,13 +79,13 @@ if($quiz_params->quiz_use_points === "1"){
 
     </div>
     <div class="card-footer">
-        <a class="btn btn-primary" id="jsquiz-btn-start">Start Quiz</a>
+        <a class="btn btn-primary" id="jsquiz-btn-start"><?php echo \JText::_('COM_YAQ_START_QUIZ');?></a>
     </div>
 </div>
 
 
 <div class="card d-none mb-2" id="jsquiz-results">
-    <h3 class="card-header">Results</h3>
+    <h3 class="card-header"><?php echo \JText::_('COM_YAQ_RESULTS');?></h3>
     <div class="card-body">
         <p>Your Score: <span id="jsquiz-score"></span></p>
         <p id="jsquiz-passfail-feedback"></p>
@@ -164,9 +164,9 @@ foreach ($questions as $question):
                 <?php if($question->params->question_type == 'true_false'):?>
                     <form data-correctans="<?php echo $question->correct;?>">
                         <input class="d-none" type="radio" name="useranswer" id="answer<?php echo $i.'-T'; ?>" value="1">
-                        <label class="form-check-label mchoice btn btn-dark text-start" for="answer<?php echo $i.'-T'; ?>">True</label>
+                        <label class="form-check-label mchoice btn btn-dark text-start" for="answer<?php echo $i.'-T'; ?>"><?php echo \JText::_('COM_YAQ_TRUE');?></label>
                         <input class="d-none" type="radio" name="useranswer" id="answer<?php echo $i.'-F'; ?>" value="0">
-                        <label class="form-check-label mchoice btn btn-dark text-start" for="answer<?php echo $i.'-F'; ?>">False</label>  
+                        <label class="form-check-label mchoice btn btn-dark text-start" for="answer<?php echo $i.'-F'; ?>"><?php echo \JText::_('COM_YAQ_FALSE');?></label>  
                     </form>                      
                 <?php endif; ?>
                     <?php if($quiz_params->quiz_showfeedback==1):?>
@@ -177,7 +177,7 @@ foreach ($questions as $question):
                                 echo $question->feedback_right;
                             }
                             else{
-                                echo 'Correct!';
+                                echo \JText::_('COM_YAQ_CORRECTANS');
                             }
                             ?>
                         </div>
@@ -188,7 +188,7 @@ foreach ($questions as $question):
                                 echo $question->feedback_wrong;
                             }
                             else{
-                                echo 'Incorrect.';
+                                echo \JText::_('COM_YAQ_INCORRECTANS');
                             }
 
                             //if we are showing the correct answer
@@ -206,12 +206,12 @@ foreach ($questions as $question):
         <div class="card-footer">
             <span class="float-end">Points: <?php echo $points; ?></span>                    
             <?php if($i > 1):?>
-                <a class="btn btn-secondary jsquiz-btn-prev" >Previous</a>
+                <a class="btn btn-secondary jsquiz-btn-prev" ><?php  echo \JText::_('COM_YAQ_PREV');?></a>
             <?php endif; ?>
             <?php if($i == $questionCount): ?>
-                <a class="btn btn-primary" id="jsquiz-btn-finish">Finish</a>
+                <a class="btn btn-primary" id="jsquiz-btn-finish"><?php  echo \JText::_('COM_YAQ_FINISH');?></a>
             <?php else : ?>
-                <a class="btn btn-primary jsquiz-btn-next">Next</a>
+                <a class="btn btn-primary jsquiz-btn-next"><?php  echo \JText::_('COM_YAQ_NEXT');?></a>
             <?php endif; ?>
             </div>
     </div>

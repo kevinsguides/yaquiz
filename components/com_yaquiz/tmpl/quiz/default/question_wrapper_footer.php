@@ -6,11 +6,24 @@
 
 
 defined ( '_JEXEC' ) or die ();
+use Joomla\CMS\Language\Text;
 
 
 ?>
 
 
 </div>
-<div class="card-footer">This question is worth <?php echo $params->points;?> point<?php echo ($params->points > 1 ? 's' : '');?></div>
+<div class="card-footer">
+    <?php
+    if($params->points > 1){
+        echo Text::sprintf('COM_YAQ_POINTSWORTH', $params->points);
+    }
+    else{
+        echo Text::_('COM_YAQ_POINTWORTH');
+    }
+    
+    
+    ?>
+
+</div>
 </div>

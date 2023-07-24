@@ -5,6 +5,7 @@
 */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Language\Text;
 
 //echo everything after this
 $pointtext = 'questions right.';
@@ -14,10 +15,10 @@ if ($quizParams->quiz_use_points === '1') {
 
 
 $html .= '<div class="card">
-            <h3 class="card-header">Quiz Results</h3>
+            <h3 class="card-header">'.Text::_('COM_YAQ_QUIZ_RESULTS').'</h3>
             <div class="card-body">
-            <p>You got ' . $results->correct . ' out of ' . $results->total . ' ' . $pointtext . '</p>
-            <p>That is a ' . $resultPercent . '%</p>';
+            <p>'.Text::sprintf('COM_YAQ_NUMCORRECTOFTOTAL', $results->correct, $results->total).'</p>
+            <p>'.Text::sprintf('COM_YAQ_PERCENTOFCORRECT', $resultPercent).'</p>';
 
             //progress bar display
             $passColor = ($results->passfail === 'pass') ? 'bg-success' : 'bg-danger';
@@ -33,13 +34,13 @@ $html .= '<div class="card">
 
             //see if we're showing general stats
             if($gen_stats){
-                $html .= '<h4>General Stats</h4>';
-                $html .= '<p>There have been ' . $gen_stats->submissions . ' recorded attempts at this quiz.</p>';
-                $html .= '<p>The average score is ' . $gen_stats->total_average_score . '%</p>';
+                $html .= '<h4>'.Text::_('COM_YAQ_QSTATS').'</h4>';
+                $html .= '<p>'.Text::sprintf('COM_YAQ_ATTEMPTCOUNT', $gen_stats->submissions).'</p>';
+                $html .= '<p>'.Text::sprintf('COM_YAQ_AVGSCORE', $gen_stats->total_average_score).'</p>';
                 $percentWhoPassed = $gen_stats->total_times_passed / $gen_stats->submissions * 100;
                 //to 1 decimal
                 $percentWhoPassed = round($percentWhoPassed, 1);
-                $html .= '<p>' . $percentWhoPassed . '% of tests passed.</p>';
+                $html .= '<p>'.Text::sprintf('COM_YAQ_PERCENTPASS', $percentWhoPassed).'</p>';
             }
 
 
