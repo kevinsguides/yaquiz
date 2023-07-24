@@ -11,7 +11,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use KevinsGuides\Component\Yaquiz\Site\Helper\QuestionBuilderHelper;
 use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
-
+use Joomla\CMS\Language\Text;
 
 
 $app = Factory::getApplication();
@@ -79,15 +79,15 @@ if($quiz_params->quiz_use_points === "1"){
 
     </div>
     <div class="card-footer">
-        <a class="btn btn-primary" id="jsquiz-btn-start"><?php echo \JText::_('COM_YAQ_START_QUIZ');?></a>
+        <a class="btn btn-primary" id="jsquiz-btn-start"><?php echo Text::_('COM_YAQ_START_QUIZ');?></a>
     </div>
 </div>
 
 
 <div class="card d-none mb-2" id="jsquiz-results">
-    <h3 class="card-header"><?php echo \JText::_('COM_YAQ_RESULTS');?></h3>
+    <h3 class="card-header"><?php echo Text::_('COM_YAQ_RESULTS');?></h3>
     <div class="card-body">
-        <p>Your Score: <span id="jsquiz-score"></span></p>
+        <p><?php echo Text::_('COM_YAQ_JSQ_YOURSCORE');?><span id="jsquiz-score"></span></p>
         <p id="jsquiz-passfail-feedback"></p>
         <div id="jsquiz-feedback-passed" class="bg-light text-success  p-2 rounded d-none"><i class="fas fa-clipboard-check"></i> <?php echo $gConfig->get('lang_pass');?></div>
         <div id="jsquiz-feedback-failed" class="bg-light text-danger p-2 rounded d-none"><i class="fas fa-sad-cry"></i> <?php echo $gConfig->get('lang_fail');?></div>
@@ -177,7 +177,7 @@ foreach ($questions as $question):
                                 echo $question->feedback_right;
                             }
                             else{
-                                echo \JText::_('COM_YAQ_CORRECTANS');
+                                echo Text::_('COM_YAQ_CORRECTANS');
                             }
                             ?>
                         </div>
@@ -188,7 +188,7 @@ foreach ($questions as $question):
                                 echo $question->feedback_wrong;
                             }
                             else{
-                                echo \JText::_('COM_YAQ_INCORRECTANS');
+                                echo Text::_('COM_YAQ_INCORRECTANS');
                             }
 
                             //if we are showing the correct answer
@@ -206,12 +206,12 @@ foreach ($questions as $question):
         <div class="card-footer">
             <span class="float-end">Points: <?php echo $points; ?></span>                    
             <?php if($i > 1):?>
-                <a class="btn btn-secondary jsquiz-btn-prev" ><?php  echo \JText::_('COM_YAQ_PREV');?></a>
+                <a class="btn btn-secondary jsquiz-btn-prev" ><?php  echo Text::_('COM_YAQ_PREV');?></a>
             <?php endif; ?>
             <?php if($i == $questionCount): ?>
-                <a class="btn btn-primary" id="jsquiz-btn-finish"><?php  echo \JText::_('COM_YAQ_FINISH');?></a>
+                <a class="btn btn-primary" id="jsquiz-btn-finish"><?php  echo Text::_('COM_YAQ_FINISH');?></a>
             <?php else : ?>
-                <a class="btn btn-primary jsquiz-btn-next"><?php  echo \JText::_('COM_YAQ_NEXT');?></a>
+                <a class="btn btn-primary jsquiz-btn-next"><?php  echo Text::_('COM_YAQ_NEXT');?></a>
             <?php endif; ?>
             </div>
     </div>

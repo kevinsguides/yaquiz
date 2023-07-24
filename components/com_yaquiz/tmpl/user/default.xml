@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-    <layout title="YAQuiz - User Results">
-        <message>Display the summary page for the users results.</message>
+    <layout title="COM_YAQ_MENU_USERRESULTS">
+        <message>COM_YAQ_MENU_USERRESULTSDESC</message>
     </layout>
 
 </metadata>

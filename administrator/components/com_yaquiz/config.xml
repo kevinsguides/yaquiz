@@ -12,7 +12,7 @@
             description="COM_YAQUIZ_FIELD_THEME_DESC"
             default="default"
             >
-            <option value="default">Default (Bootstrap Cards)</option>
+            <option value="default">COM_YAQUIZ_STYLEDEFAULT</option>
         </field>
         <field
             name="record_hits"
@@ -42,8 +42,8 @@
         description="COM_YAQUIZ_FIELD_LOAD_MATHJAX_DESC"
         default="0"
         >
-        <option value="2">Yes - From Local</option>
-        <option value="1">Yes - From Remote CDN (jsdelivr)</option>
+        <option value="2">COM_YAQUIZ_MJFROMLOCAL</option>
+        <option value="1">COM_YAQUIZ_MJFROMCDN</option>
         <option value="0">JNO</option>
         </field>
 
@@ -127,10 +127,10 @@ label="COM_YAQUIZ_YAQUIZ_QUIZ_RECORD_RESULTS_LABEL"
 description="COM_YAQUIZ_YAQUIZ_QUIZ_RECORD_RESULTS_DESC"
 required="true"
 default="0">
-<option value="0">0 - Don't Save Any Results</option>
-<option value="1">1 - Save General Results</option>
-<option value="2">2 - Save Individual User Scores</option>
-<option value="3">3 - Save EVERYTHING Including Responses/Feedback</option>
+<option value="0">COM_YAQUIZ_RECLEVEL0</option>
+<option value="1">COM_YAQUIZ_RECLEVEL1</option>
+<option value="2">COM_YAQUIZ_RECLEVEL2</option>
+<option value="3">COM_YAQUIZ_RECLEVEL3</option>
 </field>
 
 <field
@@ -193,14 +193,14 @@ name="lang_pass"
 type="textarea"
 label="COM_YAQUIZ_FIELD_LANG_PASS_LABEL"
 description="COM_YAQUIZ_FIELD_LANG_PASS_DESC"
-default="You have passed this quiz!"
+default="COM_YAQUIZ_DEFAULT_PASSMESSAGE"
 />
 <field
 name="lang_fail"
 type="textarea"
 label="COM_YAQUIZ_FIELD_LANG_FAIL_LABEL"
 description="COM_YAQUIZ_FIELD_LANG_FAIL_DESC"
-default="Unfortunately, you haven't passed this quiz."
+default="COM_YAQUIZ_DEFAULT_FAILMESSAGE"
 />
 </fieldset>
 
