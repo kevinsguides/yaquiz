@@ -6,6 +6,7 @@
 
 //wraps a single question's result area
 defined ( '_JEXEC' ) or die;
+use Joomla\CMS\Language\Text;
 
 
 //check points
@@ -13,15 +14,15 @@ $quizParams = $this->getQuizParams($quiz_id);
 $pointsFeedback = '';
 if ($quizParams->quiz_use_points === '1') {
     if ($iscorrect) {
-        $pointsFeedback = $question->params->points . ' / ' . $question->params->points . ' points';
+        $pointsFeedback = $question->params->points . ' / ' . $question->params->points . ' ' . Text::_('COM_YAQ_POINTS');
     } else {
-        $pointsFeedback = '0 / ' . $question->params->points . ' points';
+        $pointsFeedback = '0 / ' . $question->params->points . ' ' . Text::_('COM_YAQ_POINTS');
     }
 }
 
 $feedback = '';
 
-$feedback .= '<p><strong>Your answer:</strong> ' . $useranswer . '</p>';
+$feedback .= '<p><strong>'.Text::_('COM_YAQ_YOURANSWER').'</strong> ' . $useranswer . '</p>';
 
 if ($question->feedback_right != '' || $question->feedback_wrong != '') {
     if ($iscorrect) {
