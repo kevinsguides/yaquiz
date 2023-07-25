@@ -43,6 +43,10 @@ $stylefile = '/components/com_yaquiz/tmpl/' . $theme . '/style.css';
 if (file_exists(JPATH_ROOT . $stylefile)) {
     $wam->registerAndUseStyle('com_yaquiz.quizstyle', $stylefile);
 }
+else{
+$style = 'components/com_yaquiz/src/Style/quiz.css';
+$wam->registerAndUseStyle('com_yaquiz.quiz', $style);
+}
 
 
 $model = new QuizModel();
