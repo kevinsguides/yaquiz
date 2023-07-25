@@ -142,17 +142,17 @@ else {
                   
                   </div>
                     <div class="col-12 col-md-3">
-                    <a class="btn btn-info btn-sm w-100 mb-1 text-start" href="index.php?option=com_yaquiz&view=yaquiz&layout=edit&id=<?php echo $item->id ?>"><span class="icon-options"></span> Quiz Settings</a>
-                    <a class="btn btn-success btn-sm w-100 mb-1 text-start" href="index.php?option=com_yaquiz&view=yaquiz&id=<?php echo $item->id ?>"><span class="icon-checkbox"></span> Select Questions</a>
+                    <a class="btn btn-info btn-sm w-100 mb-1 text-start" href="index.php?option=com_yaquiz&view=yaquiz&layout=edit&id=<?php echo $item->id ?>"><span class="icon-options"></span> <?php echo Text::_('COM_YAQUIZ_QUIZSETTINGS');?></a>
+                    <a class="btn btn-success btn-sm w-100 mb-1 text-start" href="index.php?option=com_yaquiz&view=yaquiz&id=<?php echo $item->id ?>"><span class="icon-checkbox"></span> <?php echo Text::_('COM_YAQUIZ_SELECTQNS');?></a>
                     <?php if($canDelete): ?>
-                      <a class="btn btn-danger btn-sm mb-1 float-end" href="index.php?option=com_yaquiz&view=yaquiz&task=Yaquiz.remove&quizid=<?php echo $item->id ?>"><span class="icon-trash"></span> Delete</a>
+                      <a class="btn btn-danger btn-sm mb-1 float-end" href="index.php?option=com_yaquiz&view=yaquiz&task=Yaquiz.remove&quizid=<?php echo $item->id ?>"><span class="icon-trash"></span> <?php echo Text::_('COM_YAQUIZ_DELETE');?></a>
                     <?php endif; ?>
                 </div>
                 </div>
             <?php endforeach; ?>
 
     <?php else: ?>
-        <p>No quizzes found</p>
+        <p><?php echo Text::_('COM_YAQUIZ_NOQUIZZES');?></p>
     <?php endif; ?>
 
 </div>
@@ -171,7 +171,8 @@ $pagecount = $model->getTotalPages($filter_limit, $filter_title, $filter_categor
 <div class="card-footer">
 <?php if ($pagecount > 1): ?>
     <nav class="pagination__wrapper">
-    <span class="float-end">Page <?php echo $page + 1; ?> of <?php echo $pagecount; ?></span>
+      
+    <span class="float-end"><?php echo Text::sprintf('COM_YAQUIZ_PAGINATION', ($page+1), $pagecount);?></span>
         <div class="pagination pagination-toolbar">
             <ul class="pagination m-0">
 
@@ -219,7 +220,7 @@ $pagecount = $model->getTotalPages($filter_limit, $filter_title, $filter_categor
         </div>
     </nav>
     <?php if ($pagecount > 20): ?>
-      <p>You have a lot of pages, consider filtering your results.</p>
+      <p><?php echo Text::_('COM_YAQUIZ_TOOMANYPAGES');?></p>
     <?php endif; ?>
                 </div>
                 </div>

@@ -13,7 +13,7 @@
 			addfieldprefix="Joomla\Component\Categories\Administrator\Field"
 			default=""
 		>
-        <option value="0">Uncategorized + All</option>
+        <option value="0">COM_YAQUIZ_FILTER_UNCATEGORIZED_ALL</option>
         </field>
 
 

@@ -28,14 +28,15 @@ class HtmlView extends BaseHtmlView
 
 
         $toolbar = Toolbar::getInstance('toolbar');
-        $toolbar->appendButton('Link', 'new', 'New Quiz', 'index.php?option=com_yaquiz&view=yaquiz&layout=edit');
+        $toolbar->appendButton('Link', 'new', 'COM_YAQUIZ_NEWQUIZ', 'index.php?option=com_yaquiz&view=yaquiz&layout=edit');
         //add component options
-        $toolbar->appendButton('Link', 'options', 'GConfig', 'index.php?option=com_config&view=component&component=com_yaquiz');
+        $toolbar->appendButton('Link', 'options', 'COM_YAQUIZ_COMPSETTINGS', 'index.php?option=com_config&view=component&component=com_yaquiz');
         //link to com_categories
-        $toolbar->appendButton('Link', 'folder', 'Categories', 'index.php?option=com_categories&extension=com_yaquiz');
-        ToolbarHelper::custom('Questions.display', 'checkbox', 'checkbox', 'Question Manager', false);
+        $toolbar->appendButton('Link', 'folder', 'JCATEGORIES', 'index.php?option=com_categories&extension=com_yaquiz');
+        ToolbarHelper::custom('Questions.display', 'checkbox', 'checkbox', 'COM_YAQUIZ_QUESTION_MGR', false);
 
-
+        ToolbarHelper::title(Text::_('COM_YAQUIZ_PAGETITLE_QUIZLIST'), 'yaquiz');
+           
 
 
         return parent::display($tpl);

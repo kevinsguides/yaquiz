@@ -20,6 +20,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\Registry\Registry;
 use JUri;
+use Joomla\CMS\Language\Text;
 //this the template to display 1 quiz info
 
 defined('_JEXEC') or die;
@@ -102,7 +103,7 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
 
 <div class="container">
 <div class="card">
-<h1 class="card-header">Details: <?php echo $item->title; ?></h1>
+<h1 class="card-header"><?php echo Text::_('COM_YAQUIZ_DETAILS');?>: <?php echo $item->title; ?></h1>
 
 
 
@@ -110,17 +111,17 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
     <p><?php echo $item->description; ?></p>
 </div>
 <div class="card-footer">
-    <p>Quiz ID: <?php echo $item->id; ?></p>
-    <p>Raw Quiz Link: <a href="<?php echo $quizlink; ?>" target="_blank"><?php echo $quizlink; ?></a>
+    <p><?php echo Text::_('COM_YAQUIZ_QUIZ_ID');?>: <?php echo $item->id; ?></p>
+    <p><?php echo Text::_('COM_YAQUIZ_RAWQUIZLINK');?>: <a href="<?php echo $quizlink; ?>" target="_blank"><?php echo $quizlink; ?></a>
 </p>
     </pre>
 </div>
 </div>
 
 <div class="card mt-4">
-    <h2 class="card-header bg-light">Question Insertion</h2>
+    <h2 class="card-header bg-light"><?php echo Text::_('COM_YAQUIZ_QN_INSERTION');?></h2>
     <div class="card-body">
-        <p>Use this form to add questions to this quiz.</p>
+        <p><?php echo Text::_('COM_YAQUIZ_QN_INSERTION_DESC');?></p>
 <!-- filter by category -->
 <form id="adminForm" action="index.php?option=com_yaquiz&view=yaquiz&id=<?php echo $item->id; ?>" method="POST">
 <input type="hidden" name="task">
@@ -134,19 +135,19 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
             <label for="filterSubmit">Filter Submit:</label>
 </div>
 <div class="controls">
-    <button id="filterSubmit" type="submit" class="btn btn-primary btn-sm"><span class="icon-search"></span> Filter Available Questions</button>
+    <button id="filterSubmit" type="submit" class="btn btn-primary btn-sm"><span class="icon-search"></span> <?php echo Text::_('COM_YAQUIZ_FILTER_AVAILABLE_QUESTIONS');?></button>
 </div>
 </div>
 </form>
 <br/>
-<h4>Available Questions</h4>
-<span style="font-size: 0.8rem;">Hold CTRL/Command to add multiple at once</span>
+<h4><?php echo Text::_('COM_YAQUIZ_AVAILABLE_QUESTIONS');?></h4>
+<span style="font-size: 0.8rem;"><?php echo Text::_('COM_YAQUIZ_AVAILABLE_QUESTIONS_DESC');?></span>
 <form action="index.php?option=com_yaquiz&task=yaquiz.addQuestionsToQuiz" method="post">
     <input type="hidden" name="quiz_id" value="<?php echo $item->id; ?>">
     <!-- get the questions selectlist -->
     <?php echo getQuestionListBox($titleFilter, $categoryfilter); ?>
     <?php echo JHtml::_('form.token'); ?>
-    <button type="submit" class="btn btn-primary">Add Question(s)</button>
+    <button type="submit" class="btn btn-primary"><?php echo Text::_('COM_YAQUIZ_ADD_QUESTIONS');?></button>
 </form>
 
 
@@ -159,12 +160,11 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
 
 <form method="POST">
 <div class="card bg-light mt-4 shadow-sm">
-    <h2 class="card-header bg-primary text-white">Questions In Quiz</h2>
+    <h2 class="card-header bg-primary text-white"><?php echo Text::_('COM_YAQUIZ_QNS_IN_QUIZ');?></h2>
     <div class="card-body">
-<p>Note, removing items from the quiz does not delete the question itself. Remember, if you edit a question the changes apply across all quizzes containing that particular question and not just this quiz.</p>
-
+<p><?php echo Text::_('COM_YAQUIZ_QNS_IN_QUIZ_NOTE');?></p>
 <?php if (count($questions) == 0): ?>
-    <p class="fs-2">No questions in this quiz yet.</p>
+    <p class="fs-2"><?php echo Text::_('COM_YAQUIZ_NOQUESTIONSYET');?></p>
     <?php endif; ?>
 
 <?php foreach ($questions as $question): ?>
@@ -180,26 +180,26 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
         $question->details = str_replace('src="images', 'src="'.JUri::root().'images', $question->details);
         ?>  
         <?php echo $question->details; ?>
-        <p>Order: <?php echo $question->ordering; ?></p>
+        <p><?php echo Text::_('COM_YAQUIZ_ORDER');?>: <?php echo $question->ordering; ?></p>
         
     </div>
         <div class="card-footer">
 
-        <a class="btn btn-danger btn-sm" title="Remove Question From Quiz" href="index.php?option=com_yaquiz&task=yaquiz.removeQuestionFromQuiz&quiz_id=<?php echo $item->id; ?>&question_id=<?php echo $question->id; ?>"><span class="icon-delete"></span> Remove</a>
-        <a href="index.php?option=com_yaquiz&task=Yaquiz.orderUp&quiz_id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-dark btn-sm me-1 float-end"><i class="far fa-caret-square-up"></i> Order Up</a>  
-        <a href="index.php?option=com_yaquiz&task=Yaquiz.orderDown&quiz_id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-dark btn-sm me-1 float-end"><i class="far fa-caret-square-down"></i> Order Down</a>
+        <a class="btn btn-danger btn-sm" title="<?php echo Text::_('COM_YAQUIZ_REMOVE_TITLE');?>" href="index.php?option=com_yaquiz&task=yaquiz.removeQuestionFromQuiz&quiz_id=<?php echo $item->id; ?>&question_id=<?php echo $question->id; ?>"><span class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_REMOVE');?></a>
+        <a href="index.php?option=com_yaquiz&task=Yaquiz.orderUp&quiz_id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-dark btn-sm me-1 float-end"><i class="far fa-caret-square-up"></i> <?php echo Text::_('COM_YAQUIZ_ORDERUP');?></a>  
+        <a href="index.php?option=com_yaquiz&task=Yaquiz.orderDown&quiz_id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-dark btn-sm me-1 float-end"><i class="far fa-caret-square-down"></i> <?php echo Text::_('COM_YAQUIZ_ORDERDOWN');?></a>
     
-        <span class="float-end me-1"> Type: 
+        <span class="float-end me-1"> <?php echo Text::_('COM_YAQUIZ_TYPE');?>: 
     <?php
     $question_type = json_decode($question->params)->question_type;
     if($question_type === 'multiple_choice'){
-        echo 'Multiple Choice';
+        echo Text::_('COM_YAQUIZ_QUESTION_TYPE_MULTIPLECHOICE');
     }
     if($question_type === 'true_false'){
-        echo 'True/False';
+        echo Text::_('COM_YAQUIZ_QUESTION_TYPE_TRUEFALSE');
     }
     if ($question_type === 'fill_blank'){
-        echo 'Blank / Short Answer';
+        echo Text::_('COM_YAQUIZ_QUESTION_TYPE_FILLBLANK');
     }
     ?>
     </span>
@@ -212,22 +212,22 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
 </div>
 <br/>
 <div class="card">
-    <h2 class="card-header bg-danger text-white">Batch Ops...</h2>
+    <h2 class="card-header bg-danger text-white"><?php echo Text::_('COM_YAQUIZ_BATCHOPS');?></h2>
     <div class="card-body bg-white">
-        <p>Note: The following actions affect the entire quiz. Be careful...</p>
+        <p><?php echo Text::_('COM_YAQUIZ_BATCHOPS_DESC');?></p>
         <input type="hidden" name="quiz_id" value="<?php echo $item->id; ?>">
         <input type="hidden" name="task" value="Yaquiz.executeBatchOps">
-        <label for="batch_op">With selected questions...</label>
+        <label for="batch_op"><?php echo Text::_('COM_YAQUIZ_BATCHOPS_WITHSELECTED');?></label>
         <select name="batch_op" class="form-select">
-            <option value="0">Select Operation</option>
-            <option value="remove">Remove Selected Questions From Quiz</option>
+            <option value="0"><?php echo Text::_('COM_YAQUIZ_BATCHOPS_SELECTOP');?></option>
+            <option value="remove"><?php echo Text::_('COM_YAQUIZ_BATCHOPS_REMOVESELECTED');?></option>
         </select>
-        <input type="submit" class="btn btn-info btn-sm" value="Execute Batch Operation">
+        <input type="submit" class="btn btn-info btn-sm" value="<?php echo Text::_('COM_YAQUIZ_BATCHOPS_EXECUTE');?>">
 
     </div>
     <div class="card-footer">
-            <span class="w-100 d-block">Misc Ops</span>
-            <a href="index.php?option=com_yaquiz&task=Yaquiz.removeAllQuestionsFromQuiz&quiz_id=<?php echo $item->id; ?>" class="btn btn-danger btn-sm"><span class="icon-delete"></span> Remove All Questions</a>
+            <span class="w-100 d-block"><?php echo Text::_('COM_YAQUIZ_MISCOPS');?></span>
+            <a href="index.php?option=com_yaquiz&task=Yaquiz.removeAllQuestionsFromQuiz&quiz_id=<?php echo $item->id; ?>" class="btn btn-danger btn-sm"><span class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_REMOVEALLQNS');?></a>
 
 </div>
 </div>

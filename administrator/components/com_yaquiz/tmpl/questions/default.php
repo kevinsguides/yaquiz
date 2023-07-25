@@ -13,6 +13,7 @@ use KevinsGuides\Component\Yaquiz\Administrator\Helper\YaquizHelper;
 //this the template to display 1 quiz info
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Language\Text;
 
 
 
@@ -80,10 +81,10 @@ if ($filter_title || $filter_categories || $filter_limit) {
 ?>
 <div class="container">
 <div class="card mb-2">
-    <h1 class="card-header"><span class="icon-check"></span> Questions Manager</h1>
+    <h1 class="card-header"><span class="icon-check"></span> <?php echo Text::_('COM_YAQUIZ_QUESTION_MGR');?></h1>
     <div class="card-body">
-    <p>On this page, you can create and modify existing questions. Questions are added to quizzes separately from the quiz manager.</p>
-    <p>A single question may exist in several quizzes. If you delete or modify a question, it will be deleted or changed across all quizzes it's used in.</p>
+    <p><?php echo Text::_('COM_YAQUIZ_QUESTION_MGR_DESC1');?></p>
+    <p><?php echo Text::_('COM_YAQUIZ_QUESTION_MGR_DESC2');?></p>
     </div>
 </div>
 
@@ -92,7 +93,7 @@ if ($filter_title || $filter_categories || $filter_limit) {
         <div class="accordion-item">
             <h2 class="accordion-header" id="hdgFilters">
             <button class="accordion-button <?php echo (($showAccordion) ? '' : 'collapsed'); ?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilters" aria-expanded="true" aria-controls="collapseFilters">
-                Filters...
+            <?php echo Text::_('COM_YAQUIZ_FILTERS');?>
             </button>
             </h2>
             <div id="collapseFilters" class="accordion-collapse collapse <?php echo ($showAccordion ? 'show' : '') ?>" aria-labelledby="hdgFilters" data-bs-parent="#accordionFilters">
@@ -138,28 +139,28 @@ if ($filter_title || $filter_categories || $filter_limit) {
                 ?>
                 
            
-                <span class="badge text-dark bg-light">Category:
+                <span class="badge text-dark bg-light"><?php echo Text::_('COM_YAQUIZ_CATEGORY');?>:
                     <?php echo $sqhelper->getCategoryName($item->catid); ?>
                 </span>
-                <span class="badge text-dark bg-light">Type: 
+                <span class="badge text-dark bg-light"><?php echo Text::_('COM_YAQUIZ_TYPE');?>: 
                     <?php if($params->question_type == 'multiple_choice'){
-                        echo 'Multiple Choice';    
+                        echo Text::_('COM_YAQUIZ_QUESTION_TYPE_MULTIPLECHOICE');    
                     }
                     if($params->question_type == 'fill_blank'){
-                        echo 'Short Answer';    
+                        echo Text::_('COM_YAQUIZ_QUESTION_TYPE_FILLBLANK');  
                     }
                     if($params->question_type == 'true_false'){
-                        echo 'True/False';    
+                        echo Text::_('COM_YAQUIZ_QUESTION_TYPE_TRUEFALSE');  
                     }
                 ?> </span>
-                <span class="badge text-dark bg-light">Points: <?php echo $params->points; ?></span>
+                <span class="badge text-dark bg-light"><?php echo Text::_('COM_YAQUIZ_QUESTION_POINTS_LABEL');?>: <?php echo $params->points; ?></span>
             </div>
             <div class="card-footer">
                 <a class="btn-danger float-end btn btn-sm"
                     href="index.php?option=com_yaquiz&task=questions.deleteQuestion&delete=<?php echo $item->id; ?>"><span
-                        class="icon-delete"></span> Delete</a>
+                        class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_DELETE');?></a>
                 <a href="index.php?option=com_yaquiz&view=Question&layout=edit&qnid=<?php echo $item->id; ?>"><span
-                        class="icon-edit"></span> Edit</a>
+                        class="icon-edit"></span> <?php echo Text::_('COM_YAQUIZ_EDIT');?></a>
                        
             </div>
         </div>

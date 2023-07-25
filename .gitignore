@@ -9,13 +9,6 @@ components/com_yaquiz
 !components/com_yaquiz/**
 
 
-!language/
-language/en-GB
-!language/en-GB
-language/en-GB/**
-!language/en-GB/com_yaquiz.ini
-
-
 #dont ignore administrator/components/com_simplequiz
 !administrator/
 administrator/components/com_yaquiz

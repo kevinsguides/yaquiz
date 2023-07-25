@@ -9,11 +9,11 @@
             extension="com_yaquiz"
             class="inputbox"
             default="0"
-            label="Category"
-            description="The category we are inserting into."
+            label="COM_YAQUIZ_CATEGORY"
+            description="COM_YAQUIZ_CATEGORY_DESC"
             required="true"
         >
-            <option value="0">Uncategorized</option>
+            <option value="0">COM_YAQUIZ_UNCATEGORIZED</option>
         </field>
 
         <field name="excelfile" type="file" label="Upload XLSX"

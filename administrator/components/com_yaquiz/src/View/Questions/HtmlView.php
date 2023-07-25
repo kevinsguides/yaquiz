@@ -11,6 +11,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
 defined ( '_JEXEC' ) or die;
 
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -39,20 +40,20 @@ class HtmlView extends BaseHtmlView{
         $toolbar = Toolbar::getInstance('toolbar');
         //if we're on the default layout, add the toolbar
         if ($this->getLayout() === 'default') {
-            $toolbar->appendButton('Link', 'new', 'New Question', 'index.php?option=com_yaquiz&view=Question&layout=edit');
+            $toolbar->appendButton('Link', 'new', 'COM_YAQUIZ_NEWQUESTION', 'index.php?option=com_yaquiz&view=Question&layout=edit');
             if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') == true){
-                $toolbar->appendButton('Link', 'file', 'Import Excel Spreadsheet', 'index.php?option=com_yaquiz&view=Questions&layout=insertmulti');
+                $toolbar->appendButton('Link', 'file', 'COM_YAQUIZ_IMPORTEXCEL', 'index.php?option=com_yaquiz&view=Questions&layout=insertmulti');
             }
            
         }
         if ($this->getLayout() === 'insertmulti') {
-            $toolbar->appendButton('Link', 'backward', 'Question Manager', 'index.php?option=com_yaquiz&view=Questions&layout=default');
+            $toolbar->appendButton('Link', 'backward', 'COM_YAQUIZ_QUESTION_MGR', 'index.php?option=com_yaquiz&view=Questions&layout=default');
         }
         //add component options
-        $toolbar->appendButton('Link', 'options', 'GConfig', 'index.php?option=com_config&view=component&component=com_yaquiz');
-        $toolbar->appendButton('Link', 'folder', 'Categories', 'index.php?option=com_categories&extension=com_yaquiz');
-        ToolbarHelper::title('YAQuiz - Questions', 'list');
-        ToolbarHelper::custom('Yaquizzes.display', 'list', 'list', 'Quiz Manager', false);
+        $toolbar->appendButton('Link', 'options', 'COM_YAQUIZ_COMPSETTINGS', 'index.php?option=com_config&view=component&component=com_yaquiz');
+        $toolbar->appendButton('Link', 'folder', 'JCATEGORIES', 'index.php?option=com_categories&extension=com_yaquiz');
+        ToolbarHelper::title(Text::_('COM_YAQUIZ_PAGETITLE_QUESTIONS'), 'list');
+        ToolbarHelper::custom('Yaquizzes.display', 'list', 'list', 'COM_YAQUIZ_QUIZMANAGER', false);
         //ToolbarHelper::addNew('Questions.newQuestion');
 
         //display the view

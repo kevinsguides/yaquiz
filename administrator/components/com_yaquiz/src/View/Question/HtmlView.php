@@ -9,6 +9,7 @@ namespace KevinsGuides\Component\Yaquiz\Administrator\View\Question;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
 defined ( '_JEXEC' ) or die;
 
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -22,7 +23,7 @@ class HtmlView extends BaseHtmlView{
 
         //make sure user has edit perms
         if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
-            $app->enqueueMessage('You do not have permission to edit questions', 'error');
+            $app->enqueueMessage(Text::_('COM_YAQUIZ_PERM_NOEDITQUESTIONS'), 'error');
             $app->redirect('index.php?option=com_yaquiz&view=yaquizzes');
         }
 
@@ -48,7 +49,7 @@ class HtmlView extends BaseHtmlView{
         //set the form
         $this->form  = $model->getForm($this->item, false);
 
-        ToolbarHelper::title('YAQuiz - Question Editor');
+        ToolbarHelper::title(Text::_('COM_YAQUIZ_PAGETITLE_QUESTIONEDITOR'));
         ToolbarHelper::apply('Question.edit');
         ToolbarHelper::save('Question.saveclose');
         ToolbarHelper::cancel('Question.cancel');

@@ -10,11 +10,13 @@ namespace KevinsGuides\Component\Yaquiz\Administrator\View\Help;
 
 defined('_JEXEC') or die;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
 class HtmlView extends BaseHtmlView
 {
     public function display($tpl = null)
     {
+        ToolbarHelper::title(Text::_('COM_YAQUIZ_PAGETITLE_HELP'));
         return parent::display($tpl);
     }
 }

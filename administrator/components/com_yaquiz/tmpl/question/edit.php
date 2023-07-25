@@ -77,7 +77,7 @@ function load_mchoice_editor($answers, $correct_answer){
     $html = '';
     $html .= '<div class="mchoice-editor">';
     $html .= '<div class="mchoice-answers">';
-    $html .= '<h3>Answers</h3>';
+    $html .= '<h3>'.Text::_('COM_YAQUIZ_ANSWERS').'</h3>';
     $html .= '<ul id="mchoice-answer-list">';
     $i = 0;
     foreach($answers as $answer){
@@ -86,8 +86,8 @@ function load_mchoice_editor($answers, $correct_answer){
             $correct = 'correct';
         }
         $html .= '<li data-ansid="'.$i.'" class="mchoice-answer '.$correct.'">';
-        $html .= '<button class="btn btn-danger mchoice-delete-btn btn-sm float-end">Delete</button>';
-        $html .= '<button class="btn btn-success mchoice-correct-btn btn-sm"><i class="far fa-check-square"></i> Mark Correct</button>';
+        $html .= '<button class="btn btn-danger mchoice-delete-btn btn-sm float-end">'.Text::_('COM_YAQUIZ_DELETE').'</button>';
+        $html .= '<button class="btn btn-success mchoice-correct-btn btn-sm"><i class="far fa-check-square"></i> '.Text::_('COM_YAQUIZ_MARK_CORRECT').'</button>';
         $html .= '<input class="mt-1" type="text" name="jform[answers][]" value="'.$answer.'">';
         $html .= '</li>';
         $i++;
@@ -95,7 +95,7 @@ function load_mchoice_editor($answers, $correct_answer){
     $html .= '</ul>';
     $html .= '</div>';
     $html .= '<div class="mchoice-add-answer">';
-    $html .= '<button type="button" class="btn btn-success" id="mchoice-add-btn">Add Answer</button>';
+    $html .= '<button type="button" class="btn btn-success" id="mchoice-add-btn">'.Text::_('COM_YAQUIZ_ADDANSWER').'</button>';
     $html .= '</div>';
     $html .= '</div>';
     return $html;
@@ -113,13 +113,13 @@ function load_truefalse($correct_answer = 1){
                 <div class="form-check">
                 <input class="form-check-input" type="radio" name="jform[correct]" id="radioTF1" value="1" '.($correct_answer==1?'checked':'').'>
                     <label class="form-check-label" for="radioTF1">
-                    True
+                    '.Text::_('COM_YAQUIZ_TRUE').'
                     </label>
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="jform[correct]" id="radioTF2" value="0" '.($correct_answer==0?'checked':'').'>
                 <label class="form-check-label" for="radioTF2">
-                False
+                '.Text::_('COM_YAQUIZ_FALSE').'
                 </label>
             </div>
             </div>
@@ -144,8 +144,8 @@ function load_fill_blank($answers, $case_sensitive = 0){
 
     $html = '<div class="control-group">
                 <div class="control-label">
-                <h3>Case Sensitive</h3>
-                <p>Check if user must enter exactly the same text, with the same Upper and lower case characters.</p>
+                <h3>'.Text::_('COM_YAQUIZ_CASESENSITIVE').'</h3>
+                <p>'.Text::_('COM_YAQUIZ_CASESENSITIVE_DESC').'</p>
                 </div>
                 <div class="controls">
                     <input type="checkbox" name="jform[case_sensitive]" value="1" '.($case_sensitive==1?'checked':'').'>
@@ -156,8 +156,8 @@ function load_fill_blank($answers, $case_sensitive = 0){
 
     $html .= '<div class="control-group">
                 <div class="control-label">
-                <h3>Answers</h3>
-                <p>Enter all possible answers for this question.  Anything the user enters which matches will be counted as correct.</p>
+                <h3>'.Text::_('COM_YAQUIZ_ANSWERS').'</h3>
+                <p>'.Text::_('COM_YAQUIZ_ENTER_TEXT_ANSWERS_DESC').'</p>
                 </div>
                 <div class="controls">
                 <div class="fill-blank-editor">
@@ -166,12 +166,12 @@ function load_fill_blank($answers, $case_sensitive = 0){
     foreach($answers as $answer){
         $i++;
         $html .= '<li data-ansid="'.$i.'" class="fill-blank-answer">';
-        $html .= '<button class="btn btn-sm float-end btn-danger fill-blank-delete-btn">Delete</button>';
+        $html .= '<button class="btn btn-sm float-end btn-danger fill-blank-delete-btn">'.Text::_('COM_YAQUIZ_DELETE').'</button>';
         $html .= '<input type="text" name="jform[answers][]" value="'.$answer.'">';
         $html .= '</li>';
     }
     $html .= '</ul>';
-    $html .= '<button type="button" class="btn btn-success" id="fill-blank-add-btn">Add Answer</button>';
+    $html .= '<button type="button" class="btn btn-success" id="fill-blank-add-btn">'.Text::_('COM_YAQUIZ_ADDANSWER').'</button>';
     $html .= '</div>
             </div>
             </div>
@@ -212,18 +212,18 @@ function load_fill_blank($answers, $case_sensitive = 0){
 </form>
 <br/>
 <div class="text-center">
-------<span class="p-1 text-white rounded " style="background: #505a5e;" >Don't forget to save!</span>------
+------<span class="p-1 text-white rounded " style="background: #505a5e;" ><?PHP echo Text::_('COM_YAQUIZ_DONTFORGETSAVE') ;?></span>------
 </div>
 
 <div style="display:none">
         <li id="mchoice-answer-template" class="mchoice-answer">
-        <button class="btn btn-danger mchoice-delete-btn btn-sm float-end">Delete</button>
-        <button class="btn btn-success mchoice-correct-btn btn-sm"><i class="far fa-check-square"></i> Mark Correct</button>
+        <button class="btn btn-danger mchoice-delete-btn btn-sm float-end"><?php echo Text::_('COM_YAQUIZ_DELETE');?></button>
+        <button class="btn btn-success mchoice-correct-btn btn-sm"><i class="far fa-check-square"></i> <?php echo Text::_('COM_YAQUIZ_MARK_CORRECT');?></button>
             <input type="text" name="jform[answers][]" value="">
         </li>
 
         <li id="fill-blank-answer-template" class="fill-blank-answer">
-        <button class="btn btn-danger fill-blank-delete-btn">Delete</button>
+        <button class="btn btn-danger fill-blank-delete-btn"><?php echo Text::_('COM_YAQUIZ_DELETE');?></button>
             <input type="text" name="jform[answers][]" value="">
         </li>
 
