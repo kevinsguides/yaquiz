@@ -1,7 +1,1 @@
-{
-"version": 3,
-"mappings": "AAAA,aAAa;EACT,KAAK,EAAE,IAAI;;AAIf,6BAA2B;EACvB,gBAAgB,EAAE,KAAK;EACvB,KAAK,EAAE,KAAK",
-"sources": ["quiz.scss"],
-"names": [],
-"file": "quiz.css"
-}
+{"version":3,"sourceRoot":"","sources":["quiz.scss"],"names":[],"mappings":";AAAA;EACI;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAIJ;EAGI;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAIJ;EACI;EACA;;;AAIJ;EACI;EACA;EACA;EACA;EACA;EAEA;EACA","file":"quiz.css"}

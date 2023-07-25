@@ -86,7 +86,7 @@ class QuestionBuilderHelper
             //add radio button
             $ans = '<input class="d-none" type="radio" name="answers[' . $question->id . ']" id="question_' . $question->id . '_answer_' . $answeridx . '" value="' . $answeridx . '" ' . ($defaultanswer == $answeridx ? 'checked' : '') . '/>';
             //add label
-            $ans .= '<label class="form-check-label mchoice btn btn-dark text-start mt-1" for="question_' . $question->id . '_answer_' . $answeridx . '">' . $answer . '</label>';
+            $ans .= '<label class="form-check-label mchoice text-start mt-1" for="question_' . $question->id . '_answer_' . $answeridx . '">' . $answer . '</label>';
             $answeridx++;
 
             //add to array
@@ -116,11 +116,11 @@ class QuestionBuilderHelper
 
         $html = '
         <input class="d-none" type="radio" name="answers[' . $question->id . ']" id="answers[' . $question->id . ']t" value="1" ' . ($defaultanswer == 1 ? 'checked' : '') . '/>
-        <label class="btn btn-success w-100 text-center truefalse-t" for="answers[' . $question->id . ']t">'.Text::_('COM_YAQ_TRUE').'</label><br/>'
+        <label class="form-check-label mchoice text-start mt-1" for="answers[' . $question->id . ']t">'.Text::_('COM_YAQ_TRUE').'</label><br/>'
         ;
         $html .= '
         <input class="d-none" type="radio" name="answers[' . $question->id . ']" id="answers[' . $question->id . ']f" value="0" ' . ($defaultanswer == 0 ? 'checked' : '') . '/>
-        <label class="btn btn-danger w-100 text-center truefalse-f" for="answers[' . $question->id . ']f">'.Text::_('COM_YAQ_FALSE').'</label><br/>
+        <label class="form-check-label mchoice text-start mt-1" for="answers[' . $question->id . ']f">'.Text::_('COM_YAQ_FALSE').'</label><br/>
         ';
         return $html;
     }

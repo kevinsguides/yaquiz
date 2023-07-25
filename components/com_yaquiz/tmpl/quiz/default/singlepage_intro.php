@@ -14,9 +14,11 @@ defined ( '_JEXEC' ) or die ();
     <h2 class="card-header">
         <?php echo $quiz->title; ?>
     </h2>
+    <?php if($quiz->description): ?>
     <div class="card-body">
         <?php echo $quiz->description; ?>
     </div>
+    <?php endif; ?>
 </div>
 
 <br />

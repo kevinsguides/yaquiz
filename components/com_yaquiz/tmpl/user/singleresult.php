@@ -8,6 +8,7 @@ namespace KevinsGuides\Component\Yaquiz\Site\View\User;
 use Joomla\CMS\Log\Log;
 use KevinsGuides\Component\Yaquiz\Site\Helper\QuestionBuilderHelper;
 use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -64,31 +65,31 @@ $max_attempts = $quizModel->getQuizParams($dbresults->quiz_id)->max_attempts;
 $remaining_attempts = $max_attempts - $attempt_count;
 
 if($max_attempts == 0){
-    $remaining_attempts = "You may take this quiz as many times as you like.";
+    $remaining_attempts = Text::_('COM_YAQ_UNLIMITED_ATTEMPTS');
 }
 else if($remaining_attempts == 0){
-    $remaining_attempts = '<span class="bg-danger text-white p-1 rounded">You have reached the maximum number of attempts for this quiz.</span>';
+    $remaining_attempts = '<span class="bg-danger text-white p-1 rounded">'.Text::_('COM_YAQ_MAX_ATTEMPTS_REACHED').'</span>';
 }
 else if($remaining_attempts == 1){
-    $remaining_attempts = "You have 1 attempt remaining.";
+    $remaining_attempts = Text::_('COM_YAQ_1ATTEMPT_LEFT');
 }
 else {
-    $remaining_attempts = "You have " . $remaining_attempts . " attempts remaining.";
+    $remaining_attempts = Text::sprintf('COM_YAQ_ATTEMPTS_REMAINING', $remaining_attempts);
 }
 
 
 ?>
 
 <div class="card mb-2">
-<span class="card-header fs-2">Result History: <?php echo $quizTitle; ?></span>
+<span class="card-header fs-2"><?php echo (Text::_('COM_YAQ_QUIZ_RESULT_HISTORY').$quizTitle); ?></span>
 <div class="card-body">
-<p>Saved results for <?php echo $user->name; ?></p>
-<p>Originally Submitted: <?php echo $format_submitted_date; ?></p>
-<p>You have attempted this quiz <?php echo $attempt_count; ?> time(s).</p>
+    <p><?php echo Text::sprintf('COM_YAQ_QUIZ_SAVED_RESULT_FOR_USERNAME', $user->name); ?></p>
+<p><?php echo (Text::_('COM_YAQ_ORIGINAL_SUBMIT').$format_submitted_date); ?></p>
+<p><?php echo Text::sprintf('COM_YAQ_ATTEMPT_COUNT', $attempt_count); ?></p>
 <p><?php echo $remaining_attempts; ?></p>
 </div>
 <div class="card-footer">
-    <a href="index.php?option=com_yaquiz&view=user" class="btn btn-primary btn-sm"><i class="fas fa-arrow-circle-left"></i> Return</a>
+    <a href="index.php?option=com_yaquiz&view=user" class="btn btn-primary btn-sm"><i class="fas fa-arrow-circle-left"></i> <?php echo Text::_('COM_YAQ_RETURN');?></a>
 </div>
 </div>
 <?php echo $final_feedback; ?>
