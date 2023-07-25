@@ -55,7 +55,7 @@ if (count($results) == 0) : ?>
 
             $resultsLink = Text::_('COM_YAQ_UNAVAILABLE');
             if($result->full_results != ''){
-                $resultsLink = '<a href="index.php?option=com_yaquiz&view=user&layout=singleresult&resultid='.$result->id.'">View Results</a>';
+                $resultsLink = '<a href="index.php?option=com_yaquiz&view=user&layout=singleresult&resultid='.$result->id.'">'.Text::_('COM_YAQ_VIEW_RESULTS').'</a>';
             }
             
             ?>
