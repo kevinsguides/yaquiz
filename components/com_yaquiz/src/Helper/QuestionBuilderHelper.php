@@ -9,6 +9,7 @@ namespace KevinsGuides\Component\Yaquiz\Site\Helper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 class QuestionBuilderHelper
@@ -115,11 +116,11 @@ class QuestionBuilderHelper
 
         $html = '
         <input class="d-none" type="radio" name="answers[' . $question->id . ']" id="answers[' . $question->id . ']t" value="1" ' . ($defaultanswer == 1 ? 'checked' : '') . '/>
-        <label class="btn btn-success w-100 text-center truefalse-t" for="answers[' . $question->id . ']t">True</label><br/>'
+        <label class="btn btn-success w-100 text-center truefalse-t" for="answers[' . $question->id . ']t">'.Text::_('COM_YAQ_TRUE').'</label><br/>'
         ;
         $html .= '
         <input class="d-none" type="radio" name="answers[' . $question->id . ']" id="answers[' . $question->id . ']f" value="0" ' . ($defaultanswer == 0 ? 'checked' : '') . '/>
-        <label class="btn btn-danger w-100 text-center truefalse-f" for="answers[' . $question->id . ']f">False</label><br/>
+        <label class="btn btn-danger w-100 text-center truefalse-f" for="answers[' . $question->id . ']f">'.Text::_('COM_YAQ_FALSE').'</label><br/>
         ';
         return $html;
     }

@@ -9,6 +9,7 @@ use Joomla\CMS\Log\Log;
 defined ('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseModel;
+use Joomla\CMS\Language\Text;
 
 
 class UserModel extends BaseModel
@@ -72,7 +73,7 @@ class UserModel extends BaseModel
         //the result->user_id must be the same as the current user
         $user = Factory::getApplication()->getIdentity();
         if($result->user_id != $user->id){
-            $app->enqueueMessage('You do not have permission to view this result.', 'error');
+            $app->enqueueMessage(Text::_('COM_YAQUIZ_VIEW_QUIZ_RESULT_DENIED'), 'error');
             return false;
         }
 

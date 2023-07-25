@@ -13,6 +13,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Model\BaseModel;
 use Joomla\CMS\MVC\Model\FormModel;
 use Joomla\CMS\MVC\Model\ItemModel;
+use Joomla\CMS\Language\Text;
 
 class QuizModel extends ItemModel{
 
@@ -241,14 +242,14 @@ class QuizModel extends ItemModel{
             $possible_answers = $this->getPossibleAnswers($question->id);
             $correct_answer = $question->correct;
             $correct_answer_text = $possible_answers[$correct_answer];
-            return '"'. $correct_answer_text . '" was the correct answer.';
+            return Text::sprintf('COM_YAQ_S_WAS_THE_CORRECT_ANS', $correct_answer_text);
         }
         if ($question_type === 'true_false'){
             if($question->correct === '1'){
-                return 'The correct answer was True.';
+                return Text::_('COM_YAQ_TF_CORRECT_ANS_WAS_TRUE');
             }
             else{
-                return 'The correct answer was False.';
+                return Text::_('COM_YAQ_TF_CORRECT_ANS_WAS_FALSE');
             }
         }
         if ($question_type === 'fill_blank'){
@@ -258,7 +259,7 @@ class QuizModel extends ItemModel{
                 $answerList .= '<li>' . $answer . '</li>';
             }
             $answerList = '<ul>' . $answerList . '</ul>';
-            return 'Any of the following would be counted as correct: '. $answerList;
+            return Text::_('COM_YAQ_FILLBLANK_ANYCORRECT').$answerList;
         }
 
         return null;
