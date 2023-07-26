@@ -68,6 +68,18 @@ elseif($app->getUserState('com_yaquiz.yaquiz.filter_categories')){
     $filters->filter_categories = $app->getUserState('com_yaquiz.yaquiz.filter_categories');
 }
 
+//view mode for questions can be full or compact
+$viewModeFull = $app->getUserState('com_yaquiz.yaquiz.viewcompact', true);
+
+if(isset($_GET['setviewcompact'])){
+    $app->setUserState('com_yaquiz.yaquiz.viewcompact', true);
+    $viewModeFull = false;
+}
+if(isset($_GET['setviewfull'])){
+    $app->setUserState('com_yaquiz.yaquiz.viewcompact', false);
+    $viewModeFull = true;
+}
+
 
 
 //set form data
@@ -191,7 +203,12 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
 <?php if (count($questions) == 0): ?>
     <p class="fs-2"><?php echo Text::_('COM_YAQUIZ_NOQUESTIONSYET');?></p>
     <?php endif; ?>
-
+    <?php if ($viewModeFull) :?>
+        <a href="index.php?option=com_yaquiz&view=yaquiz&id=<?php echo $item->id; ?>&setviewcompact=1" class="btn btn-info btn-sm"><span class="icon-eye"></span> <?php echo Text::_('COM_YAQUIZ_VIEWCOMPACT');?></a>
+    <?php else : ?>
+        <a href="index.php?option=com_yaquiz&view=yaquiz&id=<?php echo $item->id; ?>&setviewfull=1" class="btn btn-info btn-sm"><span class="icon-eye"></span> <?php echo Text::_('COM_YAQUIZ_VIEWFULL');?></a>
+    <?php endif;  ?>
+    <hr/>
 <?php foreach ($questions as $question): ?>
 
     <div class="card mb-2 questionpreview text-dark">
@@ -200,7 +217,10 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
             <span class="w-100" id="qn<?php echo $question->id; ?>"><?php echo $question->question; ?></span>
             <input class="float-end form-check-input" type="checkbox" name="selectedQuestions[]" value="<?php echo $question->id;?>"></input>
         </div>
-        <div class="questiondetails bg-light p-1"><a class="float-end" href="index.php?option=com_yaquiz&view=Question&layout=edit&qnid=<?php echo $question->id; ?>"><span class="icon-edit"></span></a>
+
+        <?php if ($viewModeFull) : ?>
+        <div class="questiondetails bg-light p-1">
+        
         <?php 
         //fix image paths in question->details if they are relative
         $question->details = str_replace('src="images', 'src="'.JUri::root().'images', $question->details);
@@ -210,8 +230,11 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
         </div>
         
         
-    </div>
+        
+    </div><?php endif;?>
         <div class="card-footer bg-light">
+        <a class="btn btn-danger btn-sm" title="<?php echo Text::_('COM_YAQUIZ_REMOVE_TITLE');?>" href="index.php?option=com_yaquiz&task=yaquiz.removeQuestionFromQuiz&quiz_id=<?php echo $item->id; ?>&question_id=<?php echo $question->id; ?>"><span class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_REMOVE');?></a>
+        
         <span class="badge bg-secondary"><?php echo Text::_('COM_YAQUIZ_ORDER');?>: <?php echo $question->ordering; ?></span>
         <span class="badge bg-secondary"> <?php echo Text::_('COM_YAQUIZ_TYPE');?>: 
 
@@ -229,13 +252,14 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
     ?>
     </span>
 
-    <span class="badge bg-secondary">Category: <?php echo QuestionModel::getCategoryName($question->id); ?></span>
+    <span class="badge bg-secondary"><?php echo Text::_('COM_YAQUIZ_CATEGORY').': '.QuestionModel::getCategoryName($question->id); ?></span>
 
 
-        <hr/>
-        <a class="btn btn-danger btn-sm" title="<?php echo Text::_('COM_YAQUIZ_REMOVE_TITLE');?>" href="index.php?option=com_yaquiz&task=yaquiz.removeQuestionFromQuiz&quiz_id=<?php echo $item->id; ?>&question_id=<?php echo $question->id; ?>"><span class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_REMOVE');?></a>
+
         <a href="index.php?option=com_yaquiz&task=Yaquiz.orderUp&quiz_id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-primary btn-sm me-1 float-end"><i class="far fa-caret-square-up"></i> <?php echo Text::_('COM_YAQUIZ_ORDERUP');?></a>  
         <a href="index.php?option=com_yaquiz&task=Yaquiz.orderDown&quiz_id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-primary btn-sm me-1 float-end"><i class="far fa-caret-square-down"></i> <?php echo Text::_('COM_YAQUIZ_ORDERDOWN');?></a>
+
+        <a class="btn btn-primary btn-sm me-1 float-end" title="<?php echo Text::_('COM_YAQUIZ_QUESTION_EDITOR');?>" href="index.php?option=com_yaquiz&view=Question&layout=edit&qnid=<?php echo $question->id; ?>"><span class="icon-edit"></span></a>
     
         
 
