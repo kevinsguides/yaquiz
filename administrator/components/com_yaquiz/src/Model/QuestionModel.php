@@ -293,6 +293,27 @@ class QuestionModel extends AdminModel
         return true;
     }
 
+    public static function getCategoryName($question_id = 0){
+        if ($question_id == 0) {
+            return 'Uncategorized';
+        }
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('title');
+        $query->from('#__categories');
+        $query->join('INNER', '#__com_yaquiz_questions ON #__categories.id = #__com_yaquiz_questions.catid');
+        $query->where('#__com_yaquiz_questions.id = ' . $question_id);
+        $db->setQuery($query);
+        $category_name = $db->loadResult();
+        if($category_name == null){
+            return 'Uncategorized';
+        }
+
+        return $category_name;
+
+
+    }
+
 
 
 }

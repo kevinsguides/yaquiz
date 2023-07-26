@@ -20,6 +20,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use JUri;
 use Joomla\CMS\Language\Text;
+use KevinsGuides\Component\Yaquiz\Administrator\Model\QuestionModel;
 //this the template to display 1 quiz info
 
 defined('_JEXEC') or die;
@@ -183,7 +184,7 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
 
 
 <form method="POST">
-<div class="card bg-light mt-4 shadow-sm">
+<div class="card bg-primary text-white mt-4 shadow-sm">
     <h2 class="card-header bg-primary text-white"><?php echo Text::_('COM_YAQUIZ_QNS_IN_QUIZ');?></h2>
     <div class="card-body">
 <p><?php echo Text::_('COM_YAQUIZ_QNS_IN_QUIZ_NOTE');?></p>
@@ -193,27 +194,27 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
 
 <?php foreach ($questions as $question): ?>
 
-    <div class="card mb-2 questionpreview">
-        <div class="card-header bg-dark text-white">
-            <span class="text-white w-100" id="qn<?php echo $question->id; ?>"><?php echo $question->question; ?></span>
+    <div class="card mb-2 questionpreview text-dark">
+        <div class="card-header bg-light">
+        <span class="icon-question questionicon bg-light"> </span>
+            <span class="w-100" id="qn<?php echo $question->id; ?>"><?php echo $question->question; ?></span>
             <input class="float-end form-check-input" type="checkbox" name="selectedQuestions[]" value="<?php echo $question->id;?>"></input>
         </div>
-        <div class="card-body"><a class="float-end" href="index.php?option=com_yaquiz&view=Question&layout=edit&qnid=<?php echo $question->id; ?>"><span class="icon-edit"></span></a>
+        <div class="questiondetails bg-light p-1"><a class="float-end" href="index.php?option=com_yaquiz&view=Question&layout=edit&qnid=<?php echo $question->id; ?>"><span class="icon-edit"></span></a>
         <?php 
         //fix image paths in question->details if they are relative
         $question->details = str_replace('src="images', 'src="'.JUri::root().'images', $question->details);
         ?>  
+        <div class="p-1 bg-white">
         <?php echo $question->details; ?>
-        <p><?php echo Text::_('COM_YAQUIZ_ORDER');?>: <?php echo $question->ordering; ?></p>
+        </div>
+        
         
     </div>
-        <div class="card-footer">
+        <div class="card-footer bg-light">
+        <span class="badge bg-secondary"><?php echo Text::_('COM_YAQUIZ_ORDER');?>: <?php echo $question->ordering; ?></span>
+        <span class="badge bg-secondary"> <?php echo Text::_('COM_YAQUIZ_TYPE');?>: 
 
-        <a class="btn btn-danger btn-sm" title="<?php echo Text::_('COM_YAQUIZ_REMOVE_TITLE');?>" href="index.php?option=com_yaquiz&task=yaquiz.removeQuestionFromQuiz&quiz_id=<?php echo $item->id; ?>&question_id=<?php echo $question->id; ?>"><span class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_REMOVE');?></a>
-        <a href="index.php?option=com_yaquiz&task=Yaquiz.orderUp&quiz_id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-dark btn-sm me-1 float-end"><i class="far fa-caret-square-up"></i> <?php echo Text::_('COM_YAQUIZ_ORDERUP');?></a>  
-        <a href="index.php?option=com_yaquiz&task=Yaquiz.orderDown&quiz_id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-dark btn-sm me-1 float-end"><i class="far fa-caret-square-down"></i> <?php echo Text::_('COM_YAQUIZ_ORDERDOWN');?></a>
-    
-        <span class="float-end me-1"> <?php echo Text::_('COM_YAQUIZ_TYPE');?>: 
     <?php
     $question_type = json_decode($question->params)->question_type;
     if($question_type === 'multiple_choice'){
@@ -228,6 +229,16 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
     ?>
     </span>
 
+    <span class="badge bg-secondary">Category: <?php echo QuestionModel::getCategoryName($question->id); ?></span>
+
+
+        <hr/>
+        <a class="btn btn-danger btn-sm" title="<?php echo Text::_('COM_YAQUIZ_REMOVE_TITLE');?>" href="index.php?option=com_yaquiz&task=yaquiz.removeQuestionFromQuiz&quiz_id=<?php echo $item->id; ?>&question_id=<?php echo $question->id; ?>"><span class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_REMOVE');?></a>
+        <a href="index.php?option=com_yaquiz&task=Yaquiz.orderUp&quiz_id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-primary btn-sm me-1 float-end"><i class="far fa-caret-square-up"></i> <?php echo Text::_('COM_YAQUIZ_ORDERUP');?></a>  
+        <a href="index.php?option=com_yaquiz&task=Yaquiz.orderDown&quiz_id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-primary btn-sm me-1 float-end"><i class="far fa-caret-square-down"></i> <?php echo Text::_('COM_YAQUIZ_ORDERDOWN');?></a>
+    
+        
+
 </div>
     </div>
 <?php endforeach; ?>
@@ -237,7 +248,7 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
 <br/>
 <div class="card">
     <h2 class="card-header bg-danger text-white"><?php echo Text::_('COM_YAQUIZ_BATCHOPS');?></h2>
-    <div class="card-body bg-white">
+    <div class="card-body">
         <p><?php echo Text::_('COM_YAQUIZ_BATCHOPS_DESC');?></p>
         <input type="hidden" name="quiz_id" value="<?php echo $item->id; ?>">
         <input type="hidden" name="task" value="Yaquiz.executeBatchOps">
@@ -289,8 +300,19 @@ deleteQuizBtns.forEach((btn) => {
 
 
 <style>
-.questionpreview .card-body{
+.questionpreview .questiondetails{
     max-height: 300px;
-    overflow-y: scroll;
+    overflow-y: auto;
+}
+.questionicon{
+    padding: 0.5rem;
+    border-radius: 50%;
+    position: absolute;
+    left: -10px;
+    top: 0;
+}
+
+.questionpreview .card-header{
+    padding-left: 1.5rem;
 }
 </style>
