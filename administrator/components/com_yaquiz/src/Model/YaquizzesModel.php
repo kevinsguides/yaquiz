@@ -95,4 +95,23 @@ class YaquizzesModel extends AdminModel
         return $form;
 
 	}
+
+    public function getQuizParams($pk = null){
+        if (!$pk) {
+            return null;
+        }
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('params');
+        $query->from('#__com_yaquiz_quizzes');
+        $query->where('id = '.$pk);
+        $db->setQuery($query);
+        $params = $db->loadResult();
+
+        //decode
+        $params = json_decode($params);
+        return $params;
+
+    }
+
 }

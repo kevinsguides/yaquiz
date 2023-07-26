@@ -105,6 +105,16 @@ class HtmlView extends BaseHtmlView
             }
         }
 
+        //if view is results
+        if($this->getLayout() == 'results'){
+            //get the quiz
+            $this->item = $model->getQuiz($id);
+            $title = Text::_('COM_YAQUIZ_YAQUIZRESULTS');
+            ToolbarHelper::title($title, 'yaquiz');
+            ToolbarHelper::back('COM_YAQUIZ_QUIZOVERVIEW', 'index.php?option=com_yaquiz&view=yaquiz&id='.$id);
+            return parent::display($tpl);
+        }
+
 
 
     }

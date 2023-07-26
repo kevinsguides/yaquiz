@@ -118,6 +118,9 @@ else {
     </div>
    
             <?php foreach($this->items as $item): ?>
+              <?php 
+                $thisQuizParams = $item->params;
+                $thisQuizParams = json_decode($thisQuizParams);?>
                 <hr/>
                 <div class="row mb-2">
                     <div class="col-12 col-md-6">
@@ -135,8 +138,8 @@ else {
                     <span class="badge bg-primary text-white">Average Score: <?php echo $stats->total_average_score; ?>%</span>
                     <span class="badge bg-primary text-white">Total Submissions: <?php echo $stats->submissions; ?> attempts</span>
                     <span class="badge bg-primary text-white">Times Passed: <?php echo $stats->total_times_passed; ?> times</span>
-
                     <?php endif; ?>
+                    
                   </div>
                     <div class="col-12 col-md-3">
                     <span><?php echo ($quizModel->getCategoryName($item->catid)? $quizModel->getCategoryName($item->catid) : 'Uncategorized'); ?></span>
@@ -145,9 +148,14 @@ else {
                     <div class="col-12 col-md-3">
                     <a class="btn btn-info btn-sm w-100 mb-1 text-start" href="index.php?option=com_yaquiz&view=yaquiz&layout=edit&id=<?php echo $item->id ?>"><span class="icon-options"></span> <?php echo Text::_('COM_YAQUIZ_QUIZSETTINGS');?></a>
                     <a class="btn btn-success btn-sm w-100 mb-1 text-start" href="index.php?option=com_yaquiz&view=yaquiz&id=<?php echo $item->id ?>"><span class="icon-checkbox"></span> <?php echo Text::_('COM_YAQUIZ_SELECTQNS');?></a>
+                    <?php //if recording is set to 2 or 3
+                    if($thisQuizParams->quiz_record_results >= 2):?>
+                    <a href="index.php?option=com_yaquiz&view=yaquiz&layout=results&id=<?php echo $item->id; ?>" class="btn btn-info btn-sm w-100 mb-1">View All Attempts/Results</a>
+                    <?php endif;?>
                     <?php if($canDelete): ?>
                       <a class="btn btn-danger btn-sm mb-1 float-end" href="index.php?option=com_yaquiz&view=yaquiz&task=Yaquiz.remove&quizid=<?php echo $item->id ?>"><span class="icon-trash"></span> <?php echo Text::_('COM_YAQUIZ_DELETE');?></a>
                     <?php endif; ?>
+                    
                 </div>
                 </div>
             <?php endforeach; ?>

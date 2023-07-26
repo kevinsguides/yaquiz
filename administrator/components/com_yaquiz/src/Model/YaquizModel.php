@@ -641,5 +641,26 @@ class YaquizModel extends AdminModel
             return parent::delete($pks);
     }
 
+    /**
+     * Get all quiz results that were saved to db
+     * @param $pk int the quiz id
+     * @return array the results
+     */
+    public function getAllSavedResults($pk = 0){
+        if($pk == 0){
+            return;
+        }
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('*');
+        $query->from('#__com_yaquiz_results');
+        $query->where('quiz_id = ' . $pk);
+        $db->setQuery($query);
+        $results = $db->loadObjectList();
+        return $results;
+
+    }
+
 
 }
