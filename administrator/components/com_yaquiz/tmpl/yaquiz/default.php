@@ -25,6 +25,18 @@ use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
+
+$app = Factory::getApplication();
+
+//permissions
+$user = $app->getIdentity();
+$canEdit = $user->authorise('core.edit', 'com_yaquiz');
+
+if(!$canEdit){
+    $app->enqueueMessage("You do not have permission to edit quizzes.", "error");
+    return;
+}
+
 //get the quiz
 
 $item = $this->item;
@@ -227,7 +239,7 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
     </div>
     <div class="card-footer">
             <span class="w-100 d-block"><?php echo Text::_('COM_YAQUIZ_MISCOPS');?></span>
-            <a href="index.php?option=com_yaquiz&task=Yaquiz.removeAllQuestionsFromQuiz&quiz_id=<?php echo $item->id; ?>" class="btn btn-danger btn-sm"><span class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_REMOVEALLQNS');?></a>
+            <a href="index.php?option=com_yaquiz&task=Yaquiz.removeAllQuestionsFromQuiz&quiz_id=<?php echo $item->id; ?>" class="btn btn-danger btn-sm deleteAllQuestionsBtn"><span class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_REMOVEALLQNS');?></a>
 
 </div>
 </div>
@@ -235,4 +247,31 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
 
 </form>
 </div>
+
+
+
+<script>
+const deleteQuizBtns = document.querySelectorAll('.deleteAllQuestionsBtn');
+//add click listeners
+
+deleteQuizBtns.forEach((btn) => {
+
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        //show confirm
+        const confirm = window.confirm('<?php echo Text::_('COM_YAQUIZ_REMOVEALLQNS_CONFIRM'); ?>');
+        if (confirm) {
+            //go to href from btn
+            let goto = btn.getAttribute('href');
+            window.location.href = goto;
+            
+        }
+
+        
+    });
+
+});
+
+
+</script>
 
