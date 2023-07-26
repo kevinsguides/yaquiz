@@ -69,14 +69,15 @@ elseif($app->getUserState('com_yaquiz.yaquiz.filter_categories')){
 }
 
 //view mode for questions can be full or compact
-$viewModeFull = $app->getUserState('com_yaquiz.yaquiz.viewcompact', true);
+$viewModeFull = $app->getUserState('com_yaquiz.yaquiz.viewfull', true);
+
 
 if(isset($_GET['setviewcompact'])){
-    $app->setUserState('com_yaquiz.yaquiz.viewcompact', true);
+    $app->setUserState('com_yaquiz.yaquiz.viewfull', false);
     $viewModeFull = false;
 }
 if(isset($_GET['setviewfull'])){
-    $app->setUserState('com_yaquiz.yaquiz.viewcompact', false);
+    $app->setUserState('com_yaquiz.yaquiz.viewfull', true);
     $viewModeFull = true;
 }
 
