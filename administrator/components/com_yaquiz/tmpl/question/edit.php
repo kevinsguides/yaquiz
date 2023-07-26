@@ -189,7 +189,14 @@ function load_fill_blank($answers, $case_sensitive = 0){
 <form id="adminForm" action="index.php?option=com_yaquiz&task=question.edit" method="post">
 
     <!-- load the question fieldset -->
-    <?php echo $form->renderFieldset('question'); ?>
+    <?php 
+        //check if filter_categories from 
+        $filterCategory = $app->getUserState('com_yaquiz.questions.filter_categories', null);
+        if($filterCategory != null){
+            $form->setFieldAttribute('catid', 'default', $filterCategory);
+        }
+        echo $form->renderFieldset('question'); 
+    ?>
     <?php if ($item->id != '' && $item->id != 0){
 
          if ($question_type == 'multiple_choice'){

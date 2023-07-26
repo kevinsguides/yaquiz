@@ -7,14 +7,17 @@
 
 namespace KevinsGuides\Component\Yaquiz\Administrator\View\Questions;
 
-use Joomla\CMS\Log\Log;
-use KevinsGuides\Component\Yaquiz\Administrator\Helper\YaquizHelper;
+
+
 
 //this the template to display 1 quiz info
 
 defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
-
+use Joomla\CMS\Log\Log;
+use KevinsGuides\Component\Yaquiz\Administrator\Helper\YaquizHelper;
+use Joomla\CMS\Factory;
+$app = Factory::getApplication();
 
 
 $sqhelper = new YaquizHelper();
@@ -34,12 +37,15 @@ if (isset($_POST['filters'])) {
     if (isset($_POST['filters']['filter_categories'])) {
         $form->setValue('filter_categories', null, $_POST['filters']['filter_categories']);
         $filter_categories = $_POST['filters']['filter_categories'];
+        $app->setUserState('com_yaquiz.questions.filter_categories', $filter_categories);
     }
     if ($_POST['filters']['filter_limit']) {
         $form->setValue('filter_limit', null, $_POST['filters']['filter_limit']);
         $filter_limit = $_POST['filters']['filter_limit'];
     }
 }
+
+$filter_categories = $app->getUserState('com_yaquiz.questions.filter_categories', null);
 
 
 
@@ -49,19 +55,8 @@ if (isset($_GET['page'])) {
     $page = $_GET['page'];
 }
 
-if (isset($_GET['filter_title'])){
-    $form->setValue('filter_title', null, $_GET['filter_title']);
-    $filter_title = $_GET['filter_title'];
-}
-if (isset($_GET['catid'])) {
-    $form->setValue('filter_categories', null, $_GET['catid']);
-    $filter_categories = $_GET['catid'];
-}
-if (isset($_GET['filter_limit'])){
-    $form->setValue('filter_limit', null, $_GET['filter_limit']);
-    $filter_limit = $_GET['filter_limit'];
-}
 
+echo 'try to filder catid: ' . $filter_categories . '<br/>';
 
 
 
@@ -98,6 +93,9 @@ if ($filter_title || $filter_categories || $filter_limit) {
             </h2>
             <div id="collapseFilters" class="accordion-collapse collapse <?php echo ($showAccordion ? 'show' : '') ?>" aria-labelledby="hdgFilters" data-bs-parent="#accordionFilters">
                 <div class="accordion-body">
+                    <?php //set filter_categories of form to $filter_categories
+                    $form->setValue('filter_categories', null, $filter_categories);
+                    ?>
                     <?php echo $form->renderFieldset('filters'); ?>
                     <input name="task" type="hidden">
                     <input type="submit" value="Filter" class="btn btn-primary">

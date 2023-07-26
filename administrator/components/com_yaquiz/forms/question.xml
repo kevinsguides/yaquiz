@@ -107,6 +107,8 @@ label="JGLOBAL_FIELD_CREATED_LABEL"
 class="readonly"
 readonly="true"
 filter="user_utc"
+format="%Y-%m-%d %H:%M:%S"
+filterformat="Y-m-d H:i:s"
 />
 <field
 name="created_by"
@@ -122,6 +124,8 @@ label="JGLOBAL_FIELD_MODIFIED_LABEL"
 class="readonly"
 readonly="true"
 filter="user_utc"
+format="%Y-%m-%d %H:%M:%S"
+filterformat="Y-m-d H:i:s"
 />
 <field
 name="modified_by"
