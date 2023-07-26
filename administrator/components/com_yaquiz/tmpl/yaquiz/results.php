@@ -11,6 +11,7 @@ namespace KevinsGuides\Component\Yaquiz\Administrator\View\Yaquiz;
 defined ( '_JEXEC' ) or die;
 use KevinsGuides\Component\Yaquiz\Administrator\Model\YaquizModel;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 $app = Factory::getApplication();
 
@@ -49,11 +50,12 @@ $result_count = count($results);
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Username/ID</th>
+            <th>RID</th>
+            <th>Username [UID]</th>
             <th>Pass/Fail</th>
             <th>Score</th>
             <th>Submitted On</th>
-            <th>Actions</th>
+            <th>More Details</th>
         </tr>
     </thead>
     <tbody>
@@ -66,6 +68,9 @@ $result_count = count($results);
             ?>
 
         <tr>
+            <td>
+                <?php echo $result->id; ?>
+            </td>
             <td>
                 <?php echo $username; ?>
                 [<?php echo $userid; ?>]
@@ -82,11 +87,19 @@ $result_count = count($results);
             ?></td>
             <td><?php echo $result->score; ?></td>
             <td><?php echo $result->submitted; ?></td>
-            <!-- <a href="index.php?option=com_yaquiz&view=yaquiz&layout=results&quiz_id=<?php //echo $quiz_id; ?>&result_id=<?php //echo $result->id; ?>">View</a> -->
-            <td>Coming soon...</td>
+            <td>
+                <?php 
+                
+                    if($result->full_results){
+                        echo ('<a href="index.php?option=com_yaquiz&view=yaquiz&layout=detailresults&id='.$quiz_id.'&result_id='.$result->id.'">View</a>');
+                    }
+                    else{
+                        echo "N/A";
+                    }
+                ?>
+                
+            </td>
         </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
-
-<p>Note: Viewing individual detailed results about each question users picked does not work yet.</p>

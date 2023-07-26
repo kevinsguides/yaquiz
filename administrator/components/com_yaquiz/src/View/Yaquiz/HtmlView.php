@@ -122,6 +122,14 @@ class HtmlView extends BaseHtmlView
             return parent::display($tpl);
         }
 
+        //go to results page for an individual user/attempt results
+        if($this->getLayout() == 'detailresults'){
+            $title = Text::_('COM_YAQUIZ_YAQUIZDETAILRESULTS');
+            ToolbarHelper::title($title, 'yaquiz');
+            ToolbarHelper::back('COM_YAQUIZ_BACKTOALLRESULTS', 'index.php?option=com_yaquiz&view=yaquiz&layout=results&id='.$id);
+            return parent::display($tpl);
+        }
+
 
 
     }

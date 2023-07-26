@@ -662,5 +662,22 @@ class YaquizModel extends AdminModel
 
     }
 
+    public function getIndividualAttemptResult($pk = 0, $attempt_id = 0){
+        if ($pk == 0 || $attempt_id == 0) {
+            return;
+        }
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('*');
+        $query->from('#__com_yaquiz_results');
+        $query->where('quiz_id = ' . $pk);
+        $query->where('id = ' . $attempt_id);
+        $db->setQuery($query);
+        $result = $db->loadObject();
+        return $result;
+
+    }
+
 
 }
