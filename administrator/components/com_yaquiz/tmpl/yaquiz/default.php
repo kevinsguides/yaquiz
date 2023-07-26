@@ -18,7 +18,6 @@ use JFactory;
 use JHtml;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
-use Joomla\Registry\Registry;
 use JUri;
 use Joomla\CMS\Language\Text;
 //this the template to display 1 quiz info
@@ -40,26 +39,39 @@ if(!$canEdit){
 //get the quiz
 
 $item = $this->item;
-$titleFilter = null;
-$categoryfilter = null;
+
+$filters = new \stdClass();
+$filters->filter_title = null;
+$filters->filter_categories = null;
 
 //get this form
 $this->form = $this->get('Form');
 
-//if $_GET has a filter, use it
+//filter stuff
+
+//see if a new filter was set
 if(isset($_POST['filters']['filter_title'])){
-    $titleFilter = $_POST['filters']['filter_title'];
+    $filters->filter_title = $_POST['filters']['filter_title'];
+    $app->setUserState('com_yaquiz.yaquiz.filter_title', $filters->filter_title);
+}
+elseif($app->getUserState('com_yaquiz.yaquiz.filter_title')){
+    $filters->filter_title = $app->getUserState('com_yaquiz.yaquiz.filter_title');
 }
 
-//if $_GET has categoryfilter
 if(isset($_POST['filters']['filter_categories'])){
-    $categoryfilter = $_POST['filters']['filter_categories'];
-    Log::add('category filter is '.$categoryfilter, Log::INFO, 'com_yaquiz');
+    $filters->filter_categories = $_POST['filters']['filter_categories'];
+    Log::add('category filter is '.$filters->filter_categories, Log::INFO, 'com_yaquiz');
+    $app->setUserState('com_yaquiz.yaquiz.filter_categories', $filters->filter_categories);
 }
+elseif($app->getUserState('com_yaquiz.yaquiz.filter_categories')){
+    $filters->filter_categories = $app->getUserState('com_yaquiz.yaquiz.filter_categories');
+}
+
+
 
 //set form data
-$this->form->setValue('filter_title', null, $titleFilter);
-$this->form->setValue('filter_categories', null, $categoryfilter);
+$this->form->setValue('filter_title', null, $filters->filter_title);
+$this->form->setValue('filter_categories', null, $filters->filter_categories);
 
 
 //get the question categories
@@ -115,7 +127,7 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
 
 <div class="container">
 <div class="card">
-<h1 class="card-header"><?php echo Text::_('COM_YAQUIZ_DETAILS');?>: <?php echo $item->title; ?></h1>
+<h1 class="card-header bg-light"><?php echo Text::_('COM_YAQUIZ_DETAILS');?>: <?php echo $item->title; ?></h1>
 
 
 
@@ -157,7 +169,7 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
 <form action="index.php?option=com_yaquiz&task=yaquiz.addQuestionsToQuiz" method="post">
     <input type="hidden" name="quiz_id" value="<?php echo $item->id; ?>">
     <!-- get the questions selectlist -->
-    <?php echo getQuestionListBox($titleFilter, $categoryfilter); ?>
+    <?php echo getQuestionListBox($filters->filter_title, $filters->filter_categories); ?>
     <?php echo JHtml::_('form.token'); ?>
     <button type="submit" class="btn btn-primary"><?php echo Text::_('COM_YAQUIZ_ADD_QUESTIONS');?></button>
 </form>
