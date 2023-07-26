@@ -74,21 +74,24 @@ $results = $model->getAllSavedResults($quiz_id, $filters, $page, $yaqresultlimit
 
 ?>
 
-<h1>Quiz Results: </h1>
-<?php echo $result_count; ?> saved user results found for this quiz.<br><br>
+<h1><?php   
+    $quiz = $model->getQuiz($quiz_id);
+    echo Text::_('COM_YAQUIZ_YAQUIZRESULTS').': '.$quiz->title; ?>
+</h1>
+<?php echo Text::sprintf('COM_YAQUIZ_RESULTCOUNT',$result_count); ?><br><br>
 
 <!-- filter by username field -->
 <div class="card card-body" style="max-width: 400px;">
 <form action="index.php?option=com_yaquiz&view=yaquiz&layout=results&id=<?php echo $quiz_id; ?>" method="post">
     <div class="form-group">
-        <label for="username">Filter by Username:</label>
+        <label for="username"><?PHP echo Text::_('COM_YAQUIZ_FILTERUSERNAME');?></label>
         <input type="text" class="form-control" id="filterusername" name="filterusername" placeholder="Enter username">
     </div>
     <?php if(isset($_POST['filterusername']) && strlen($_POST['filterusername'] > 0) ) :?>
-        <span>Current Filter: <?php echo $_POST['filterusername']; ?></span>
+        <span><?php echo Text::_('COM_YAQUIZ_CURRENTFILTERS').$_POST['filterusername']; ?></span>
         <br/>
     <?php endif;?>
-    <button type="submit" class="btn btn-primary">Filter</button>
+    <button type="submit" class="btn btn-primary"><?PHP echo Text::_('COM_YAQUIZ_FILTER');?></button>
 </form>
 </div>
 <br/>
@@ -96,12 +99,12 @@ $results = $model->getAllSavedResults($quiz_id, $filters, $page, $yaqresultlimit
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>RID</th>
-            <th>Username [UID]</th>
-            <th>Pass/Fail</th>
-            <th>Score</th>
-            <th>Submitted On</th>
-            <th>More Details</th>
+            <th><?PHP echo Text::_('COM_YAQUIZ_RESULTIDLBL');?></th>
+            <th><?PHP echo Text::_('COM_YAQUIZ_USERNAMEWITHIDLBL');?></th>
+            <th><?PHP echo Text::_('COM_YAQUIZ_PASSFAIL');?></th>
+            <th><?PHP echo Text::_('COM_YAQUIZ_SCORE');?></th>
+            <th><?PHP echo Text::_('COM_YAQUIZ_SUBMITTEDON');?></th>
+            <th><?PHP echo Text::_('COM_YAQUIZ_MOREDETAILS');?></th>
         </tr>
     </thead>
     <tbody>
@@ -124,10 +127,10 @@ $results = $model->getAllSavedResults($quiz_id, $filters, $page, $yaqresultlimit
             </td>
             <td><?php 
                 if($result->passed == 1){
-                    echo "Passed";
+                    echo Text::_('COM_YAQUIZ_PASSED');
                 }
                 else{
-                    echo "Failed";
+                    echo Text::_('COM_YAQUIZ_FAILED');
                 }
             
             ?></td>
@@ -137,10 +140,10 @@ $results = $model->getAllSavedResults($quiz_id, $filters, $page, $yaqresultlimit
                 <?php 
                 
                     if($result->full_results){
-                        echo ('<a href="index.php?option=com_yaquiz&view=yaquiz&layout=detailresults&id='.$quiz_id.'&result_id='.$result->id.'">View</a>');
+                        echo ('<a href="index.php?option=com_yaquiz&view=yaquiz&layout=detailresults&id='.$quiz_id.'&result_id='.$result->id.'">'.Text::_('COM_YAQUIZ_VIEW').'</a>');
                     }
                     else{
-                        echo "N/A";
+                        echo Text::_('COM_YAQUIZ_NOTAVAILABLE');
                     }
                 ?>
                 
@@ -152,7 +155,7 @@ $results = $model->getAllSavedResults($quiz_id, $filters, $page, $yaqresultlimit
 
 
 <?php if ($pagecount > 1):?>
-    <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation">
         <ul class="pagination">
             <?php for($i = 1; $i <= $pagecount; $i++): ?>
                 <li class="page-item <?php if($i == $page){echo "active";} ?>"><a class="page-link" href="index.php?option=com_yaquiz&view=yaquiz&layout=results&id=<?php echo $quiz_id; ?>&page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
@@ -162,9 +165,9 @@ $results = $model->getAllSavedResults($quiz_id, $filters, $page, $yaqresultlimit
 <?php endif; ?>
 
 <!-- page limit selector -->
-<form action="index.php?option=com_yaquiz&view=yaquiz&layout=results&id=<?php echo $quiz_id; ?>&page=<?php echo $page; ?>" method="post">
+<form style="max-width: 200px;" action="index.php?option=com_yaquiz&view=yaquiz&layout=results&id=<?php echo $quiz_id; ?>&page=<?php echo $page; ?>" method="post">
     <div class="form-group">
-        <label for="yaqresultlimit">Results Per Page:</label>
+        <label for="yaqresultlimit"><?PHP echo Text::_('COM_YAQUIZ_RESULTSPERPAGE');?></label>
         <select class="form-control" id="yaqresultlimit" name="yaqresultlimit">
             <option value="5" <?php if($yaqresultlimit == 5){echo "selected";} ?>>5</option>
             <option value="10" <?php if($yaqresultlimit == 10){echo "selected";} ?>>10</option>
@@ -173,5 +176,5 @@ $results = $model->getAllSavedResults($quiz_id, $filters, $page, $yaqresultlimit
             <option value="100" <?php if($yaqresultlimit == 100){echo "selected";} ?>>100</option>
         </select>
     </div>
-    <button type="submit" class="btn btn-primary">Update</button>
+    <button type="submit" class="btn btn-primary"><?PHP echo Text::_('COM_YAQUIZ_UPDATE');?></button>
 </form>
