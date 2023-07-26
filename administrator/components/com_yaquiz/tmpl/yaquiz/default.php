@@ -94,8 +94,8 @@ function getQuestionListBox($titleFilter = null, $categoryfilter = null){
         $query->where($db->quoteName('catid') . ' = ' . $db->quote($categoryfilter));
     }
     $query->order('id DESC');
-    //limit 50
-    $query->setLimit(50);
+    //limit 100
+    $query->setLimit(100);
     $db->setQuery($query);
     $results = $db->loadObjectList();
     $options = array();
@@ -111,8 +111,8 @@ function getQuestionListBox($titleFilter = null, $categoryfilter = null){
     $list = '<select name="question_ids[]" multiple class="form-select" size="8">'.$list.'</select>';
     //count number of results
     $count = count($results);
-    if($count == 50){
-        $list = '<div class="p-2 rounded bg-info text-white mb-2">Note: Only the 50 latest questions will appear in this list at once. Consider using the filters above.</div>'.$list;
+    if($count == 100){
+        $list = '<div class="p-2 rounded bg-info text-white mb-2">'.Text::_('COM_YAQUIZ_100QNLIMIT').'</div>'.$list;
     }
     return $list;
     
@@ -171,7 +171,7 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
     <!-- get the questions selectlist -->
     <?php echo getQuestionListBox($filters->filter_title, $filters->filter_categories); ?>
     <?php echo JHtml::_('form.token'); ?>
-    <button type="submit" class="btn btn-primary"><?php echo Text::_('COM_YAQUIZ_ADD_QUESTIONS');?></button>
+    <button type="submit" class="btn btn-success mt-2"><?php echo Text::_('COM_YAQUIZ_ADD_QUESTIONS');?></button>
 </form>
 
 
