@@ -14,7 +14,16 @@ use Joomla\CMS\Factory;
 
 $app = Factory::getApplication();
 
+//permissions
+$user = $app->getIdentity();
+$canViewResults = $user->authorise('yaquiz.viewresults', 'com_yaquiz');
+
 $quiz_id = 0;
+
+if(!$canViewResults){
+    $app->enqueueMessage("You do not have permission to view quiz results.", "error");
+    return;
+}
 
 if(isset($_GET['id'])){
     $quiz_id = $_GET['id'];

@@ -52,9 +52,10 @@ $this->form->setValue('filter_categories', null, $filter_categories);
 $this->form->setValue('filter_limit', null, $filter_limit);
 $this->items = $model->getItems($filter_title, $filter_categories, $page, $filter_limit);
 
-//does user have core.delete access
+//check for user permissions
 $user = Factory::getApplication()->getIdentity();
 $canDelete = $user->authorise('core.delete', 'com_yaquiz');
+$canViewResults = $user->authorise('yaquiz.viewresults', 'com_yaquiz');
 
 
 $gConfig = ComponentHelper::getParams('com_yaquiz');
@@ -149,11 +150,11 @@ else {
                     <a class="btn btn-info btn-sm w-100 mb-1 text-start" href="index.php?option=com_yaquiz&view=yaquiz&layout=edit&id=<?php echo $item->id ?>"><span class="icon-options"></span> <?php echo Text::_('COM_YAQUIZ_QUIZSETTINGS');?></a>
                     <a class="btn btn-success btn-sm w-100 mb-1 text-start" href="index.php?option=com_yaquiz&view=yaquiz&id=<?php echo $item->id ?>"><span class="icon-checkbox"></span> <?php echo Text::_('COM_YAQUIZ_SELECTQNS');?></a>
                     <?php //if recording is set to 2 or 3
-                    if($thisQuizParams->quiz_record_results >= 2):?>
+                    if($thisQuizParams->quiz_record_results >= 2 && $canViewResults):?>
                     <a href="index.php?option=com_yaquiz&view=yaquiz&layout=results&id=<?php echo $item->id; ?>" class="btn btn-info btn-sm w-100 mb-1">View All Attempts/Results</a>
                     <?php endif;?>
                     <?php if($canDelete): ?>
-                      <a class="btn btn-danger btn-sm mb-1 float-end" href="index.php?option=com_yaquiz&view=yaquiz&task=Yaquiz.remove&quizid=<?php echo $item->id ?>"><span class="icon-trash"></span> <?php echo Text::_('COM_YAQUIZ_DELETE');?></a>
+                      <a class="btn btn-danger btn-sm mb-1 float-end deleteQuizBtn" href="index.php?option=com_yaquiz&view=yaquiz&task=Yaquiz.remove&quizid=<?php echo $item->id ?>"><span class="icon-trash"></span> <?php echo Text::_('COM_YAQUIZ_DELETE');?></a>
                     <?php endif; ?>
                     
                 </div>
@@ -235,4 +236,31 @@ $pagecount = $model->getTotalPages($filter_limit, $filter_title, $filter_categor
                 </div>
 <?php endif; ?>
 
-                </div>
+</div>
+
+<?php if($canDelete):?>
+<script>
+const deleteQuizBtns = document.querySelectorAll('.deleteQuizBtn');
+//add click listeners
+
+deleteQuizBtns.forEach((btn) => {
+
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        //show confirm
+        const confirm = window.confirm('<?php echo Text::_('COM_YAQUIZ_DELETEQUIZ_CONFIRM'); ?>');
+        if (confirm) {
+            //go to href from btn
+            let goto = btn.getAttribute('href');
+            window.location.href = goto;
+            
+        }
+
+        
+    });
+
+});
+
+
+</script>
+<?php endif;?>

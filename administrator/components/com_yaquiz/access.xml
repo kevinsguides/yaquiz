@@ -9,6 +9,7 @@
 		<action name="core.delete" title="JACTION_DELETE" />
 		<action name="core.edit" title="JACTION_EDIT" />
 		<action name="core.edit.state" title="JACTION_EDITSTATE" />
+		<action name="yaquiz.viewresults" title="COM_YAQUIZ_ACCESS_VIEWRESULTS" description="COM_YAQUIZ_ACCESS_VIEWRESULTS_DESC"/>
 
 	</section>
 	<section name="category">
