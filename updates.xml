@@ -1,13 +1,13 @@
 <updates>
   <update>
-    <name>YAQuiz 0.3.73</name>
+    <name>YaQuiz 0.3.40</name>
     <description></description>
     <element>com_yaquiz</element>
     <type>component</type>
-    <version>0.3.73</version>
+    <version>0.3.40</version>
     <infourl title="YAQuiz Docs">https://kevinsguides.com/guides/webdev/joomla4/free-extensions/yaq</infourl>
     <downloads>
-      <downloadurl type="full" format="zip">https://github.com/kevinsguides/yaquiz/releases/download/v0.3.73/com_yaquiz_0.3.73.zip</downloadurl>
+      <downloadurl type="full" format="zip">https://github.com/kevinsguides/yaquiz/releases/download/v0.4.00/com_yaquiz_0.4.00.zip</downloadurl>
     </downloads>
     <tags>
       <tag>stable</tag>
