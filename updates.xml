@@ -2,7 +2,7 @@
   <update>
     <name>YaQuiz 0.4.00</name>
     <description></description>
-    <element>yaquiz</element>
+    <element>com_yaquiz</element>
     <type>component</type>
     <version>0.4.00</version>
     <infourl title="YAQuiz Docs">https://kevinsguides.com/guides/webdev/joomla4/free-extensions/yaq</infourl>
