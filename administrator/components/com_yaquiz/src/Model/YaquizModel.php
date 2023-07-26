@@ -646,7 +646,7 @@ class YaquizModel extends AdminModel
      * @param $pk int the quiz id
      * @return array the results
      */
-    public function getAllSavedResults($pk = 0){
+    public function getAllSavedResults($pk = 0, $filters = null, $page = 1, $limit = 5){
         if($pk == 0){
             return;
         }
@@ -655,10 +655,47 @@ class YaquizModel extends AdminModel
         $query = $db->getQuery(true);
         $query->select('*');
         $query->from('#__com_yaquiz_results');
+        
+        if($filters != null){
+            if(isset($filters['filterusername'])){
+                //we need to find any matching user ids in #__users
+                $query->join('INNER', '#__users as u ON u.id = #__com_yaquiz_results.user_id');
+                $query->where('u.username LIKE "%' . $filters['filterusername'] . '%"');
+
+            }
+        }
         $query->where('quiz_id = ' . $pk);
-        $db->setQuery($query);
+        $db->setQuery($query, ($page - 1) * $limit, $limit);
         $results = $db->loadObjectList();
         return $results;
+
+    }
+
+
+    public function countTotalSavedResults($pk = 0, $filters = null){
+
+        if($pk == 0){
+            return;
+        }
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('COUNT(*)');
+        $query->from('#__com_yaquiz_results');
+        if($filters != null){
+            if(isset($filters['filterusername'])){
+                //we need to find any matching user ids in #__users
+                $query->join('INNER', '#__users as u ON u.id = #__com_yaquiz_results.user_id');
+                $query->where('u.username LIKE "%' . $filters['filterusername'] . '%"');
+
+            }
+        }
+        $query->where('quiz_id = ' . $pk);
+        $db->setQuery($query);
+        $count = $db->loadResult();
+        return $count;
+
+
 
     }
 

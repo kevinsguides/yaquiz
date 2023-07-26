@@ -35,17 +35,63 @@ if($quiz_id == 0){
     return;
 }
 
+$filters = null;
+$page = 1;
+$yaqresultlimit = 25;
+
+if(isset($_POST['filterusername'])){
+    $filters = array(
+        'filterusername' => $_POST['filterusername']
+    );
+}
+if(isset($_GET['page'])){
+    $page = $_GET['page'];
+}
+if(isset($_POST['yaqresultlimit'])){
+    $yaqresultlimit = $_POST['yaqresultlimit'];
+    $_SESSION['yaqresultlimit'] = $yaqresultlimit;
+}else{
+    if(isset($_SESSION['yaqresultlimit'])){
+        $yaqresultlimit = $_SESSION['yaqresultlimit'];
+    }
+}
+
+
 //get results from model
 $model = new YaquizModel;
-$results = $model->getAllSavedResults($quiz_id);
-$result_count = count($results);
+$result_count = $model->countTotalSavedResults($quiz_id, $filters);
+
+//if count > limit, determine pagination
+$pagecount = ceil($result_count / $yaqresultlimit);
+
+//if resultcount > 1 and page is greater than pagecount, redirect to last page
+if($result_count > 1 && $page > $pagecount){
+    $page = 1;
+}
 
 
+$results = $model->getAllSavedResults($quiz_id, $filters, $page, $yaqresultlimit);
 
 ?>
 
 <h1>Quiz Results: </h1>
 <?php echo $result_count; ?> saved user results found for this quiz.<br><br>
+
+<!-- filter by username field -->
+<div class="card card-body" style="max-width: 400px;">
+<form action="index.php?option=com_yaquiz&view=yaquiz&layout=results&id=<?php echo $quiz_id; ?>" method="post">
+    <div class="form-group">
+        <label for="username">Filter by Username:</label>
+        <input type="text" class="form-control" id="filterusername" name="filterusername" placeholder="Enter username">
+    </div>
+    <?php if(isset($_POST['filterusername']) && strlen($_POST['filterusername'] > 0) ) :?>
+        <span>Current Filter: <?php echo $_POST['filterusername']; ?></span>
+        <br/>
+    <?php endif;?>
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+</div>
+<br/>
 
 <table class="table table-striped">
     <thead>
@@ -63,8 +109,8 @@ $result_count = count($results);
         
             <?php 
                 $userid = $result->user_id;
-                $user = Factory::getApplication()->getIdentity($userid);
-                $username = $user->username; 
+                $quiz_taker = Factory::getUser($result->user_id);
+                $quiz_taker_username = $quiz_taker->username;
             ?>
 
         <tr>
@@ -72,7 +118,7 @@ $result_count = count($results);
                 <?php echo $result->id; ?>
             </td>
             <td>
-                <?php echo $username; ?>
+                <?php echo $quiz_taker_username; ?>
                 [<?php echo $userid; ?>]
 
             </td>
@@ -103,3 +149,29 @@ $result_count = count($results);
         <?php endforeach; ?>
     </tbody>
 </table>
+
+
+<?php if ($pagecount > 1):?>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <?php for($i = 1; $i <= $pagecount; $i++): ?>
+                <li class="page-item <?php if($i == $page){echo "active";} ?>"><a class="page-link" href="index.php?option=com_yaquiz&view=yaquiz&layout=results&id=<?php echo $quiz_id; ?>&page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+            <?php endfor; ?>
+        </ul>
+    </nav>
+<?php endif; ?>
+
+<!-- page limit selector -->
+<form action="index.php?option=com_yaquiz&view=yaquiz&layout=results&id=<?php echo $quiz_id; ?>&page=<?php echo $page; ?>" method="post">
+    <div class="form-group">
+        <label for="yaqresultlimit">Results Per Page:</label>
+        <select class="form-control" id="yaqresultlimit" name="yaqresultlimit">
+            <option value="5" <?php if($yaqresultlimit == 5){echo "selected";} ?>>5</option>
+            <option value="10" <?php if($yaqresultlimit == 10){echo "selected";} ?>>10</option>
+            <option value="25" <?php if($yaqresultlimit == 25){echo "selected";} ?>>25</option>
+            <option value="50" <?php if($yaqresultlimit == 50){echo "selected";} ?>>50</option>
+            <option value="100" <?php if($yaqresultlimit == 100){echo "selected";} ?>>100</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+</form>
