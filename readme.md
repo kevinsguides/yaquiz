@@ -36,12 +36,14 @@ You just need a site running Joomla 4 with a template that uses Bootstrap 5 (mos
 * Import questions from Excel spreadsheet 
 * Basic templating system for all front end pages
 * You can set a limit on the number of quiz attempts for logged in users.
+* Permission for viewing other users results
+* Page to view users results in backend
 
 ## Todo
 
 
-* New permission for viewing other users results
-* Page to view users results in backend
+
+
 * Pagination for quizzes in the backend, and for user results page in front end
   * filters for user results
   * expire/auto remove results after x days
@@ -54,9 +56,9 @@ You just need a site running Joomla 4 with a template that uses Bootstrap 5 (mos
 * Other question types
     * hot spot
     * matching
-    * dropdown fill in blank
+    * dropdown or dragging fill in blank
 * Clean/consistent interface
-* Fix Language Files (~70 done)
+* Fix Language Files/Constants (~70 done)
 * Additional styles
 
 * Quiz Certificates
