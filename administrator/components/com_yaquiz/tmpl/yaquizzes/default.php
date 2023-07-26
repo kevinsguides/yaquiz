@@ -16,6 +16,7 @@ use Joomla\CMS\Language\Text;
 use JRoute;
 use JText;
 use KevinsGuides\Component\Yaquiz\Administrator\Model\YaquizModel;
+use Joomla\CMS\Component\ComponentHelper;
 
 
 
@@ -52,11 +53,11 @@ $this->form->setValue('filter_limit', null, $filter_limit);
 $this->items = $model->getItems($filter_title, $filter_categories, $page, $filter_limit);
 
 //does user have core.delete access
-$user = \JFactory::getUser();
+$user = Factory::getApplication()->getIdentity();
 $canDelete = $user->authorise('core.delete', 'com_yaquiz');
 
 
-$gConfig = \JComponentHelper::getParams('com_yaquiz');
+$gConfig = ComponentHelper::getParams('com_yaquiz');
 
 Log::add('attempt load page ' . $page, Log::INFO, 'com_yaquiz');
 

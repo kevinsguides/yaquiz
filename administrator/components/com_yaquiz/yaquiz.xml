@@ -42,7 +42,7 @@
 </files>
 
     <administration>
-        <menu link="index.php?option=com_yaquiz">yaquiz</menu>
+        <menu link="index.php?option=com_yaquiz">com_yaquiz</menu>
         <submenu>
             <menu view="Yaquizzes">
                 COM_YAQUIZ_QUIZZES
