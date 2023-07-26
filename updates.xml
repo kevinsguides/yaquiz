@@ -1,10 +1,11 @@
 <updates>
- <update>
+
+  <update>
     <name>YaQuiz 0.4.00</name>
     <description></description>
     <element>com_yaquiz</element>
     <type>component</type>
-    <version>0.4.00</version>
+    <version>0.3.99</version>
     <infourl title="YAQuiz Docs">https://kevinsguides.com/guides/webdev/joomla4/free-extensions/yaq</infourl>
     <downloads>
       <downloadurl type="full" format="zip">https://github.com/kevinsguides/yaquiz/releases/download/v0.4.00/com_yaquiz_0.4.00.zip</downloadurl>
@@ -18,12 +19,12 @@
     <targetplatform name="joomla" version=".*" />
     <client>administrator</client>
   </update>
-  <update>
+   <update>
     <name>YaQuiz 0.4.00</name>
     <description></description>
     <element>com_yaquiz</element>
     <type>component</type>
-    <version>0.3.99</version>
+    <version>0.4.00</version>
     <infourl title="YAQuiz Docs">https://kevinsguides.com/guides/webdev/joomla4/free-extensions/yaq</infourl>
     <downloads>
       <downloadurl type="full" format="zip">https://github.com/kevinsguides/yaquiz/releases/download/v0.4.00/com_yaquiz_0.4.00.zip</downloadurl>
