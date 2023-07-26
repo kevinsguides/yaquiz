@@ -193,7 +193,7 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
 
 <?php foreach ($questions as $question): ?>
 
-    <div class="card mb-2">
+    <div class="card mb-2 questionpreview">
         <div class="card-header bg-dark text-white">
             <span class="text-white w-100" id="qn<?php echo $question->id; ?>"><?php echo $question->question; ?></span>
             <input class="float-end form-check-input" type="checkbox" name="selectedQuestions[]" value="<?php echo $question->id;?>"></input>
@@ -287,3 +287,10 @@ deleteQuizBtns.forEach((btn) => {
 
 </script>
 
+
+<style>
+.questionpreview .card-body{
+    max-height: 300px;
+    overflow-y: scroll;
+}
+</style>
