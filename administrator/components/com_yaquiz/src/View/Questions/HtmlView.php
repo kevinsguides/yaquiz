@@ -35,6 +35,8 @@ class HtmlView extends BaseHtmlView{
         //get all questions
         $this->items = $model->getItems();
 
+        //set menu location
+       
 
 
         $toolbar = Toolbar::getInstance('toolbar');
