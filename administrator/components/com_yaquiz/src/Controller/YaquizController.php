@@ -223,4 +223,14 @@ class YaquizController extends BaseController
         }
     }
 
+
+    public function resetAllStatsAndRecords(){
+        $quiz_id = $this->input->get('quiz_id', '', 'raw');
+        $model = $this->getModel('Yaquiz');
+        $model->resetAllStatsAndRecords($quiz_id);
+        //redirect to quiz
+        $this->setRedirect('index.php?option=com_yaquiz&view=Yaquiz&id=' . $this->input->get('quiz_id', '', 'raw'));
+        $this->setMEssage('All stats and records reset');
+    }
+
 }

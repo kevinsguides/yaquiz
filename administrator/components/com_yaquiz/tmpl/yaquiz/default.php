@@ -288,6 +288,10 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
     <div class="card-footer">
             <span class="w-100 d-block"><?php echo Text::_('COM_YAQUIZ_MISCOPS');?></span>
             <a href="index.php?option=com_yaquiz&task=Yaquiz.removeAllQuestionsFromQuiz&quiz_id=<?php echo $item->id; ?>" class="btn btn-danger btn-sm deleteAllQuestionsBtn"><span class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_REMOVEALLQNS');?></a>
+            <a
+            href="index.php?option=com_yaquiz&task=Yaquiz.resetAllStatsAndRecords&quiz_id=<?php echo $item->id; ?>"
+            title="<?php echo Text::_('COM_YAQUIZ_RESET_ALL_STATS_AND_RECORDS_DESC');?>"
+            class="btn btn-warning btn-sm"><span class="icon-bars"></span> <?php echo Text::_('COM_YAQUIZ_RESET_ALL_STATS_AND_RECORDS');?></a>
 
 </div>
 </div>

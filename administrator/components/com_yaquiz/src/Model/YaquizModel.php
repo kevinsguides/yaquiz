@@ -716,5 +716,22 @@ class YaquizModel extends AdminModel
 
     }
 
+    //clears all general and individual results saved for a quiz
+    public function resetAllStatsAndRecords($quiz_id){
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->delete('#__com_yaquiz_results_general');
+        $query->where('quiz_id = ' . $quiz_id);
+        $db->setQuery($query);
+        $db->execute();
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->delete('#__com_yaquiz_results');
+        $query->where('quiz_id = ' . $quiz_id);
+        $db->setQuery($query);
+        $db->execute();
+
+    }
+
 
 }

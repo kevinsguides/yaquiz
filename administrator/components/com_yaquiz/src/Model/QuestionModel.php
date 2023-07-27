@@ -183,7 +183,9 @@ class QuestionModel extends AdminModel
         $params->question_type = $data['question_type'];
         $params->randomize_mchoice = $data['randomize_mchoice'];
         $params->points = $data['points'];
-        $params->case_sensitive = $data['case_sensitive'];
+        if ($data['question_type'] == 'fill_blank') {
+            $params->case_sensitive = $data['case_sensitive'];
+        }
         $json = json_encode($params);
         Log::add('trynna save these params as json: ' . $json, Log::INFO, 'com_yaquiz ');
         return $json;
