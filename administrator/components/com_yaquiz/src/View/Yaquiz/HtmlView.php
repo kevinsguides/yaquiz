@@ -79,6 +79,10 @@ class HtmlView extends BaseHtmlView
         //if view is edit
         if($this->getLayout() == 'edit')
         {
+
+            //hide the main menu
+            $app->getInput()->set('hidemainmenu', true);
+
             //check if user has permission to edit
             if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
                 $app->enqueueMessage('You do not have permission to edit this quiz', 'error');

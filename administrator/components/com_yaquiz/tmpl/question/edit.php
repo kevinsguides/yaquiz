@@ -21,6 +21,7 @@ $jsfile =  'administrator/components/com_yaquiz/src/Scripts/question-edit.js';
 Log::add('try to load web asset'.$jsfile, Log::INFO, 'com_yaquiz');
 $wa->registerAndUseScript('yaquiz-admin-questioneditscript', $jsfile);
 $wa->registerAndUseStyle('yaquiz-admin-questioneditstyle', 'administrator/components/com_yaquiz/src/Style/question-edit.css');
+$wa->useScript('keepalive');
 
 
 //get items

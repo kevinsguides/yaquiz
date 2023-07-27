@@ -55,13 +55,6 @@ if (isset($_GET['page'])) {
     $page = $_GET['page'];
 }
 
-
-echo 'try to filder catid: ' . $filter_categories . '<br/>';
-
-
-
-
-
 //get items
 $model = $this->getModel('Questions');
 $items = $model->getItems($filter_title, $filter_categories, $page, $filter_limit);

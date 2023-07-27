@@ -6,9 +6,11 @@
 
 
 namespace KevinsGuides\Component\Yaquiz\Administrator\View\Yaquiz;
-use JHtml;
+
 
 defined ( '_JEXEC' ) or die;
+use JHtml;
+use Joomla\CMS\Factory;
 
 //get form
 $form = $this->form;
@@ -20,6 +22,10 @@ JHtml::_('behavior.keepalive');
 if(!isset($_GET['id'])){
     $_GET['id'] = 0;
 }
+
+$app = Factory::getApplication();
+$wa = $app->getDocument()->getWebAssetManager();
+$wa->useScript('keepalive');
 
 ?>
 <h1>Quiz Details Editor</h1>
