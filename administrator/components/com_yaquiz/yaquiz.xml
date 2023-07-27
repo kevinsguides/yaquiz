@@ -5,7 +5,7 @@
     <author>KevinsGuides</author>
     <authorEmail>kevinsguides@gmail.com</authorEmail>
     <authorUrl>https://kevinsguides.com</authorUrl>
-    <version>0.4.00</version>
+    <version>0.4.01</version>
     <description>COM_YAQUIZ_XML_DESCRIPTION</description>
     <namespace path="src/">KevinsGuides\Component\Yaquiz</namespace>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
@@ -45,10 +45,10 @@
     <administration>
         <menu link="index.php?option=com_yaquiz">com_yaquiz</menu>
         <submenu>
-            <menu view="Yaquizzes">
+            <menu view="yaquizzes">
                 COM_YAQUIZ_QUIZZES
             </menu>
-            <menu view="Questions">
+            <menu view="questions">
                 COM_YAQUIZ_QUESTIONS
             </menu>
             <menu link="option=com_categories&amp;view=categories&amp;extension=com_yaquiz">
