@@ -718,6 +718,13 @@ class YaquizModel extends AdminModel
 
     //clears all general and individual results saved for a quiz
     public function resetAllStatsAndRecords($quiz_id){
+
+        //user needs core.delete permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.delete', 'com_yaquiz')) {
+            throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
+        }
+
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->delete('#__com_yaquiz_results_general');
