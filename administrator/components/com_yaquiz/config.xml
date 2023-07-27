@@ -20,6 +20,7 @@
             label="COM_YAQUIZ_FIELD_RECORD_HITS_LABEL"
             description="COM_YAQUIZ_FIELD_RECORD_HITS_DESC"
             default="0"
+             class="btn-group btn-group-yesno"
             >
             <option value="1">JYES</option>
             <option value="0">JNO</option>
@@ -30,6 +31,7 @@
             label="COM_YAQUIZ_FIELD_RECORD_SUBMISSIONS_LABEL"
             description="COM_YAQUIZ_FIELD_RECORD_SUBMISSIONS_DESC"
             default="0"
+             class="btn-group btn-group-yesno"
         >
         <option value="1">JYES</option>
         <option value="0">JNO</option>
@@ -53,6 +55,19 @@
         label="COM_YAQUIZ_RESPECT_CACHE_LABEL"
         description="COM_YAQUIZ_RESPECT_CACHE_DESC"
         default="1"
+         class="btn-group btn-group-yesno"
+        >
+        <option value="1">JYES</option>
+        <option value="0">JNO</option>
+        </field>
+
+        <field
+        name="show_attempts_left"
+        type="radio"
+        label="COM_YAQUIZ_SHOW_ATTEMPTS_LEFT_LABEL"
+        description="COM_YAQUIZ_SHOW_ATTEMPTS_LEFT_DESC"
+        default="1"
+        class="btn-group btn-group-yesno"
         >
         <option value="1">JYES</option>
         <option value="0">JNO</option>

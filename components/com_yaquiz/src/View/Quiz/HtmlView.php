@@ -40,11 +40,7 @@ class HtmlView extends BaseHtmlView
 
 
 
-        //check reachedMaxAttempts
-        if($model->reachedMaxAttempts($this->quiz_id)){
-            $app->enqueueMessage(Text::_('COM_YAQUIZ_VIEW_QUIZ_REACHED_MAX_ATTEMPTS'), 'error');
-            $app->redirect('index.php');
-        }
+
 
         //set the title
         $this->document->setTitle($this->item->title);
@@ -72,6 +68,15 @@ class HtmlView extends BaseHtmlView
         if(!in_array($quizAccess, $userGroups)){
             $app->enqueueMessage(Text::_('COM_YAQUIZ_VIEW_QUIZ_DENIED'), 'error');
             $app->redirect('index.php');
+        }
+
+        //check reachedMaxAttempts
+        if($model->reachedMaxAttempts($this->quiz_id)){
+            //does not apply to results layout
+            if ($this->getLayout() != 'results'){
+                $this->setLayout('max_attempt_reached');
+                return parent::display($tpl);
+            }
         }
 
 

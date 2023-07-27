@@ -37,6 +37,14 @@ if ($gConfig->get('get_mathjax') === '2') {
     $wam->registerAndUseScript('com_yaquiz.mathjaxlocal', 'components/com_yaquiz/js/mathjax/es5/tex-svg.js', [], ['defer' => true]);
 }
 
+
+//config for attempts left display
+$showAttemptsLeft = false;
+$showAttemptsLeft = $gConfig->get('show_attempts_left', '1');
+if($showAttemptsLeft == '1'){
+    $showAttemptsLeft = true;
+}
+
 $theme = $gConfig->get('theme','default');
 $stylefile = '/components/com_yaquiz/tmpl/' . $theme . '/style.css';
 //if file exists
@@ -53,6 +61,8 @@ $model = new QuizModel();
 //the total number of questions in quiz from the model...
 $totalQuestions = $model->getTotalQuestions($quiz->id);
 $quiz_params = $model->getQuizParams($quiz->id);
+
+$attempts_left = $model->quizAttemptsLeft($quiz->id);
 
 //if current page is greater than total questions, redirect to last page
 if($currPage > $totalQuestions){

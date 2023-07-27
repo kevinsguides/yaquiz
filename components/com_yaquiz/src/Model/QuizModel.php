@@ -526,6 +526,50 @@ class QuizModel extends ItemModel{
     }
 
 
+    /**
+     * Check if user is allowed to keep trying the quiz
+     * @quiz_id - the id of the quiz
+     * @return - the number of attempts left, 0 if none left, or -1 if unlimited
+     */
+    public function quizAttemptsLeft($quiz_id){
+            
+            $max_attempts = (int)$this->getQuizParams($quiz_id)->max_attempts;
+            if($max_attempts == 0){
+                return -1;
+            }
+    
+            $db = Factory::getContainer()->get('DatabaseDriver');
+            $user = Factory::getApplication()->getIdentity();
+            $userid = $user->id;
+    
+            //if they're a guest...
+            if($user->guest){
+                return -1;
+            }
+    
+            $query = $db->getQuery(true);
+            $query->select('attempt_count');
+            $query->from($db->quoteName('#__com_yaquiz_user_quiz_map'));
+            $query->where($db->quoteName('user_id') . ' = ' . $db->quote($userid));
+            $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($quiz_id));
+            $db->setQuery($query);
+            $attempt_count = $db->loadResult();
+
+            if($attempt_count == 0){
+                return $max_attempts;
+            }
+    
+            if(!$attempt_count){
+                return -1;
+            }
+            if($attempt_count >= $max_attempts){
+                return 0;
+            }
+            return $max_attempts - $attempt_count;
+
+    }
+
+
     public function getAttemptCount($quiz_id, $userid){
             
 

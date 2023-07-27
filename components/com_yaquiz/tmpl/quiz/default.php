@@ -24,6 +24,8 @@ $wam = $app->getDocument()->getWebAssetManager();
 $style = 'components/com_yaquiz/src/Style/quiz.css';
 $wam->registerAndUseStyle('com_yaquiz.quiz', $style);
 
+
+
 //get config from component
 $globalParams = $app->getParams('com_yaquiz');
 if ($globalParams->get('get_mathjax') === '1') {
@@ -33,6 +35,14 @@ if ($globalParams->get('get_mathjax') === '2') {
     Log::add('Loading local mathjax', Log::INFO, 'com_yaquiz');
     $wam->registerAndUseScript('com_yaquiz.mathjaxlocal', 'components/com_yaquiz/js/mathjax/es5/tex-svg.js', [], ['defer' => true]);
 }
+
+//config for attempts left display
+$showAttemptsLeft = false;
+$showAttemptsLeft = $globalParams->get('show_attempts_left', '1');
+if($showAttemptsLeft == '1'){
+    $showAttemptsLeft = true;
+}
+
 $theme = $globalParams->get('theme','default');
 $stylefile = '/components/com_yaquiz/tmpl/' . $theme . '/style.css';
 //if file exists
@@ -61,6 +71,7 @@ if (isset($this->item)) {
 }
 
 $model = new QuizModel();
+$attempts_left = $model->quizAttemptsLeft($quiz->id);
 
 //get the questions (a list of objects)
 $questions = $model->getQuestions($quiz->id);

@@ -17,6 +17,20 @@ use Joomla\CMS\Language\Text;
 
 <?php if ($currPage == 0){
     echo $quiz->description;
+    if ($showAttemptsLeft) {
+        echo '<div class="badge bg-info text-white">';
+        if($attempts_left == 0){
+            echo Text::_('COM_YAQ_MAX_ATTEMPTS_REACHED');
+        }
+        elseif($attempts_left == 1){
+            echo Text::_('COM_YAQ_1ATTEMPT_LEFT');
+        }
+        elseif($attempts_left > 1){
+            echo Text::sprintf('COM_YAQ_ATTEMPTS_REMAINING', $attempts_left);
+        }
+        echo '</div>';
+    }
+
 } ?>
 
 <?php if ($currPage > 0 && $currPage <= $totalQuestions):
