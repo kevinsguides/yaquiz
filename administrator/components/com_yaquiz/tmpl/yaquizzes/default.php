@@ -264,3 +264,8 @@ deleteQuizBtns.forEach((btn) => {
 
 </script>
 <?php endif;?>
+
+</div>
+</div>
+<br/>
+<a href="https://kevinsguides.com/tips" class="btn btn-success btn-lg"><?php echo Text::_('COM_YAQUIZ_SUPPORT_THIS_PROJECT');?></a>

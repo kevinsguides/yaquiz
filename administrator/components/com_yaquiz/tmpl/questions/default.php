@@ -210,3 +210,6 @@ if ($filter_title || $filter_categories || $filter_limit) {
     </nav>
 <?php endif; ?>
 </div>
+
+<br/>
+<a href="https://kevinsguides.com/tips" class="btn btn-success btn-lg"><?php echo Text::_('COM_YAQUIZ_SUPPORT_THIS_PROJECT');?></a>
