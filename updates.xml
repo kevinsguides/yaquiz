@@ -8,6 +8,7 @@
     <infourl title="YAQuiz Docs">https://kevinsguides.com/guides/webdev/joomla4/free-extensions/yaq</infourl>
     <downloads>
       <downloadurl type="full" format="zip">https://github.com/kevinsguides/yaquiz/releases/download/v0.4.02/com_yaquiz_0.4.02.zip</downloadurl>
+      
     </downloads>
     <tags>
       <tag>stable</tag>
