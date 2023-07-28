@@ -40,6 +40,7 @@ class HtmlView extends BaseHtmlView{
         }
 
 
+
         //if question_id is not set, set to zero
         if($question_id == null)
         {
