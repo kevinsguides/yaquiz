@@ -210,7 +210,10 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
         <a href="index.php?option=com_yaquiz&view=yaquiz&id=<?php echo $item->id; ?>&setviewfull=1" class="btn btn-info btn-sm"><span class="icon-eye"></span> <?php echo Text::_('COM_YAQUIZ_VIEWFULL');?></a>
     <?php endif;  ?>
     <hr/>
-<?php foreach ($questions as $question): ?>
+
+<?php 
+//loop through questions in this quiz
+foreach ($questions as $question): ?>
 
     <div class="card mb-2 questionpreview text-dark">
         <div class="card-header bg-light">

@@ -72,6 +72,8 @@ class HtmlView extends BaseHtmlView
 
             ToolbarHelper::title(Text::_('COM_YAQUIZ_PAGETITLE_QUIZEDITPREFIX').$this->item->title, 'yaquiz');
            
+            $app->setUserState('com_yaquiz.redirectbackto', JUri::getInstance()->toString());
+
             return parent::display($tpl);
             
         }

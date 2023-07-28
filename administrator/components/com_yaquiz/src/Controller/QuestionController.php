@@ -62,11 +62,20 @@ class QuestionController extends BaseController
     }
     public function cancel()
     {
-        $this->setRedirect('index.php?option=com_yaquiz&view=questions');
+
+        
+        $app = Factory::getApplication();
+        $redirect = $app->getUserState('com_yaquiz.redirectbackto');
+        $this->setRedirect($redirect);
+
+        
     }
     public function saveclose()
     {
         $this->edit();
-        $this->setRedirect('index.php?option=com_yaquiz&view=questions');
+        $app = Factory::getApplication();
+        $redirect = $app->getUserState('com_yaquiz.redirectbackto');
+        $this->setRedirect($redirect);
+        
     }
 }
