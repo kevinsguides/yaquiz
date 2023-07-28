@@ -74,8 +74,11 @@ class HtmlView extends BaseHtmlView
         if($model->reachedMaxAttempts($this->quiz_id)){
             //does not apply to results layout
             if ($this->getLayout() != 'results'){
-                $this->setLayout('max_attempt_reached');
-                return parent::display($tpl);
+                //and they don't have core.edit permission
+                if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
+                    $this->setLayout('max_attempt_reached');
+                    return parent::display($tpl);
+                }
             }
         }
 
