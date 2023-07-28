@@ -158,6 +158,7 @@ default="1"
 name="quiz_question_numbering"
 type="radio"
 label="COM_YAQUIZ_YAQUIZ_QUIZ_QUESTION_NUMBERING_LABEL"
+description="COM_YAQUIZ_YAQUIZ_QUIZ_QUESTION_NUMBERING_DESC"
 required="true"
 default="1"
 >
