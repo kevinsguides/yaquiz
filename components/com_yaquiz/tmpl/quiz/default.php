@@ -36,6 +36,7 @@ if ($globalParams->get('get_mathjax') === '2') {
     $wam->registerAndUseScript('com_yaquiz.mathjaxlocal', 'components/com_yaquiz/js/mathjax/es5/tex-svg.js', [], ['defer' => true]);
 }
 
+
 //config for attempts left display
 $showAttemptsLeft = false;
 $showAttemptsLeft = $globalParams->get('show_attempts_left', '1');
@@ -72,6 +73,8 @@ if (isset($this->item)) {
 
 $model = new QuizModel();
 $attempts_left = $model->quizAttemptsLeft($quiz->id);
+$quiz_params = $model->getQuizParams($quiz->id);
+
 
 //get the questions (a list of objects)
 $questions = $model->getQuestions($quiz->id);
