@@ -13,6 +13,7 @@ defined ( '_JEXEC' ) or die;
 use KevinsGuides\Component\Yaquiz\Administrator\Model\YaquizModel;
 $model = new YaquizModel;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 $quiz_id = 0;
 $result_id = 0;

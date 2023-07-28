@@ -75,7 +75,10 @@ class QuestionModel extends AdminModel
                 $data->question_type = $params->question_type;
                 $data->randomize_mchoice = $params->randomize_mchoice;
                 $data->points = $params->points;
-                $data->case_sensitive = $params->case_sensitive;
+                if($data->question_type == 'fill_blank'){
+                    $data->case_sensitive = $params->case_sensitive;
+                }
+                
                 $data->modified_by = $app->getIdentity()->id;
 
                 //if question type is not multiple_choice

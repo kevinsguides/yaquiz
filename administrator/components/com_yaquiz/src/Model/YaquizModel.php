@@ -737,6 +737,12 @@ class YaquizModel extends AdminModel
         $query->where('quiz_id = ' . $quiz_id);
         $db->setQuery($query);
         $db->execute();
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->delete('#__com_yaquiz_user_quiz_map');
+        $query->where('quiz_id = ' . $quiz_id);
+        $db->setQuery($query);
+        $db->execute();
 
     }
 
