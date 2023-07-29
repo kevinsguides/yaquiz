@@ -6,12 +6,10 @@
 
 
 namespace KevinsGuides\Component\Yaquiz\Administrator\Helper;
-use JHtmlSidebar;
+
 use Joomla\CMS\Factory;
-use Joomla\CMS\Helper\CMSHelper;
-use Joomla\CMS\Log\Log;
-use JText;
-use JToolbarHelper;
+
+
 
 defined ( '_JEXEC' ) or die;
 

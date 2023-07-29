@@ -8,17 +8,18 @@
 namespace KevinsGuides\Component\Yaquiz\Administrator\View\Yaquiz;
 
 
+
 defined ( '_JEXEC' ) or die;
-use JHtml;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 //get form
 $form = $this->form;
 
 //tell Joomla we're using the YaquizController
-JHtml::_('behavior.formvalidator');
-JHtml::_('behavior.keepalive');
+HtmlHelper::_('behavior.formvalidator');
+HtmlHelper::_('behavior.keepalive');
 
 if(!isset($_GET['id'])){
     $_GET['id'] = 0;
@@ -34,5 +35,5 @@ $wa->useScript('keepalive');
 <form action="index.php?option=com_yaquiz&task=Yaquiz.save&id=<?php echo $_GET['id']; ?>" method="post" name="adminForm" id="item-form" aria-label="New Quiz" class="form-validate">
 <?php echo $form->renderFieldset('yaquiz'); ?>
 <input name="task" type="hidden" value="Yaquiz.save">
-<?php echo JHtml::_('form.token'); ?>
+<?php echo HtmlHelper::_('form.token'); ?>
 </form>

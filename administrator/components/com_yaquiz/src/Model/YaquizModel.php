@@ -924,9 +924,29 @@ class YaquizModel extends AdminModel
             }
         }
 
+    }
 
+    public function getTotalQuestionCount($pk = 0){
 
+        //user needs core.view permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.view', 'com_yaquiz')) {
+            throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
+        }
 
+        if($pk == 0){
+            return;
+        }
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('COUNT(*)');
+        $query->from('#__com_yaquiz_question_quiz_map');
+        $query->where('quiz_id = ' . $pk);
+        $db->setQuery($query);
+        $result = $db->loadResult();
+
+        return $result;
 
 
 

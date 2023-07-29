@@ -237,6 +237,14 @@ class QuestionsModel extends AdminModel
         $query->where('id IN ('.implode(',', $question_ids).')');
         $db->setQuery($query);
         $db->execute();
+
+        //also delete from question quiz map
+        $query = $db->getQuery(true);
+        $query->delete('#__com_yaquiz_question_quiz_map');
+        $query->where('question_id IN ('.implode(',', $question_ids).')');
+        $db->setQuery($query);
+        $db->execute();
+        
         
     }
 

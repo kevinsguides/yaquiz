@@ -9,14 +9,13 @@
 namespace KevinsGuides\Component\Yaquiz\Administrator\View\Yaquizzes;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;Use Joomla\CMS\Log\Log;
-use Joomla\CMS\Toolbar\Toolbar;
-use Joomla\CMS\Toolbar\ToolbarHelper;
+Use Joomla\CMS\Log\Log;
 use Joomla\CMS\Language\Text;
-use JRoute;
-use JText;
 use KevinsGuides\Component\Yaquiz\Administrator\Model\YaquizModel;
 use Joomla\CMS\Component\ComponentHelper;
+
+
+
 
 
 
@@ -28,6 +27,11 @@ $model = $this->getModel();
 $app = Factory::getApplication();
 $input = $app->input;
 $page = $input->get('page', 0);
+
+$wa = $app->getDocument()->getWebAssetManager();
+$wa->registerAndUseStyle('yaquiz-admin-yaquizstyle', 'administrator/components/com_yaquiz/src/Style/com_yaquiz.min.css');
+$wa->registerAndUseScript('yaquiz-utils', 'administrator/components/com_yaquiz/src/Scripts/utils.js');
+
 
 //get this form
 $this->form = $this->get('Form');
@@ -140,6 +144,7 @@ else {
                     <span class="badge bg-primary text-white"><?php echo Text::_('COM_YAQUIZ_TOTAL_SUBMISSIONS');?>: <?php echo $stats->submissions; ?></span>
                     <span class="badge bg-primary text-white"><?php echo Text::_('COM_YAQUIZ_TIMES_PASSED');?>: <?php echo $stats->total_times_passed; ?></span>
                     <?php endif; ?>
+                    <span class="badge bg-secondary text-white"><?php echo Text::_('COM_YAQUIZ_QUESTION_COUNT');?>: <?php echo $quizModel->getTotalQuestionCount($item->id); ?></span>
                     
                   </div>
                     <div class="col-12 col-md-3">
@@ -151,10 +156,15 @@ else {
                     <a class="btn btn-success btn-sm w-100 mb-1 text-start" href="index.php?option=com_yaquiz&view=yaquiz&id=<?php echo $item->id ?>"><span class="icon-checkbox"></span> <?php echo Text::_('COM_YAQUIZ_SELECTQNS');?></a>
                     <?php //if recording is set to 2 or 3
                     if($thisQuizParams->quiz_record_results >= 2 && $canViewResults):?>
-                    <a href="index.php?option=com_yaquiz&view=yaquiz&layout=results&id=<?php echo $item->id; ?>" class="btn btn-info btn-sm w-100 mb-1"><?php echo Text::_('COM_YAQUIZ_VIEW_ATTEMPTS_AND_RESULTS');?></a>
+                    <a href="index.php?option=com_yaquiz&view=yaquiz&layout=results&id=<?php echo $item->id; ?>" 
+                      class="btn btn-info btn-sm w-100 mb-1 text-start"> <i class="fas fa-chart-area"></i>
+                      <?php echo Text::_('COM_YAQUIZ_VIEW_ATTEMPTS_AND_RESULTS');?>
+                    </a>
                     <?php endif;?>
                     <?php if($canDelete): ?>
-                      <a class="btn btn-danger btn-sm mb-1 float-end deleteQuizBtn" href="index.php?option=com_yaquiz&view=yaquiz&task=Yaquiz.remove&quizid=<?php echo $item->id ?>"><span class="icon-trash"></span> <?php echo Text::_('COM_YAQUIZ_DELETE');?></a>
+                      <a class="btn btn-danger btn-sm mb-1 float-end doublecheckdialog" 
+                      data-confirm="<?php echo Text::_('COM_YAQUIZ_DELETE_CONFIRM'); ?>"
+                      href="index.php?option=com_yaquiz&view=yaquiz&task=Yaquiz.remove&quizid=<?php echo $item->id ?>"><span class="icon-trash"></span> <?php echo Text::_('COM_YAQUIZ_DELETE');?></a>
                     <?php endif; ?>
                     
                 </div>
@@ -237,33 +247,6 @@ $pagecount = $model->getTotalPages($filter_limit, $filter_title, $filter_categor
 <?php endif; ?>
 
 </div>
-
-<?php if($canDelete):?>
-<script>
-const deleteQuizBtns = document.querySelectorAll('.deleteQuizBtn');
-//add click listeners
-
-deleteQuizBtns.forEach((btn) => {
-
-    btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        //show confirm
-        const confirm = window.confirm('<?php echo Text::_('COM_YAQUIZ_DELETEQUIZ_CONFIRM'); ?>');
-        if (confirm) {
-            //go to href from btn
-            let goto = btn.getAttribute('href');
-            window.location.href = goto;
-            
-        }
-
-        
-    });
-
-});
-
-
-</script>
-<?php endif;?>
 
 </div>
 </div>

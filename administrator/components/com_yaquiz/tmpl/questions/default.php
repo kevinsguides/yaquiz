@@ -169,12 +169,8 @@ if ($filter_title || $filter_categories || $filter_limit) {
             </div>
         </div>
     <?php endforeach; ?>
-<?php else: ?>
-    <p><?php echo Text::_('COM_YAQUIZ_NOQUESTIONS');?></p>
-<?php endif; ?>
 
-
-<div class="row">
+    <div class="row">
     <div class="d-none d-lg-block col-lg-7">
 
     </div>
@@ -191,6 +187,13 @@ if ($filter_title || $filter_categories || $filter_limit) {
 </div>
     </div>
 </div>
+
+<?php else: ?>
+    <p><?php echo Text::_('COM_YAQUIZ_NOQUESTIONS');?></p>
+<?php endif; ?>
+
+
+
 
 <?php if ($pagecount > 1): ?>
     <nav class="pagination__wrapper">

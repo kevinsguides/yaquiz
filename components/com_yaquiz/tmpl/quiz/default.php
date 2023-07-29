@@ -9,7 +9,7 @@ namespace KevinsGuides\Component\Yaquiz\Site\View\Quiz;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Uri\Uri;
 use KevinsGuides\Component\Yaquiz\Site\Helper\QuestionBuilderHelper;
-use JHtml;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
 
@@ -61,7 +61,7 @@ if ($app->input->get('status') == 'retry') {
 }
 
 
-JHtml::_('behavior.keepalive');
+HtmlHelper::_('behavior.keepalive');
 
 
 //if $this-> item is already set
@@ -138,7 +138,7 @@ else:
                 <br />
                 <?php endforeach; ?>
 
-                <?php echo JHtml::_('form.token'); ?>
+                <?php echo HtmlHelper::_('form.token'); ?>
                 <button type="submit" class="btn btn-success btn-lg"><?php echo \JText::_('COM_YAQ_SUBMITQUIZ') ?></button>
             </form>
 

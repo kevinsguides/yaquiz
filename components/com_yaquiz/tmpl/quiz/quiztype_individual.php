@@ -13,6 +13,7 @@ use Joomla\CMS\Log\Log;
 use KevinsGuides\Component\Yaquiz\Site\Helper\QuestionBuilderHelper;
 use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
 
 defined ( '_JEXEC' ) or die;
 
@@ -75,7 +76,7 @@ if($currPage > $totalQuestions){
 
 $qbHelper = new QuestionBuilderHelper();
 
-JHtml::_('behavior.keepalive');
+HTMLHelper::_('behavior.keepalive');
 
 ?>
 
@@ -100,5 +101,5 @@ JHtml::_('behavior.keepalive');
 
 
 
-<?php echo JHtml::_('form.token'); ?>
+<?php echo HTMLHelper::_('form.token'); ?>
 </form>

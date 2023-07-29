@@ -7,13 +7,14 @@
 
 namespace KevinsGuides\Component\Yaquiz\Administrator\View\Question;
 use Joomla\CMS\Language\Text;
-use JHtml;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Factory;
 
 defined('_JEXEC') or die;
 
 //get WAM
-$app = \JFactory::getApplication();
+$app = Factory::getApplication();
 
 //get web asset manager
 $wa = $app->getDocument()->getWebAssetManager();
@@ -51,7 +52,7 @@ $question_type = $params->question_type;
 if($question_type == 'multiple_choice' || $question_type == 'fill_blank'){
     $answers = $item->answers;
     //decode json answers
-    $answers = json_decode($answers);
+    $answers = json_decode($answers ?? '');
 }
 
 $correct_answer = $item->correct;
@@ -232,7 +233,7 @@ function load_fill_blank($answers, $case_sensitive = 0){
     
  ?>
 <input name="task" type="hidden">
-    <?php JHtml::_('form.token'); ?>
+    <?php HTMLHelper::_('form.token'); ?>
 </form>
 <br/>
 <div class="text-center">
