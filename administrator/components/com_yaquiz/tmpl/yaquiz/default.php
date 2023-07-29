@@ -220,9 +220,9 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
 foreach ($questions as $question): ?>
 
     <div class="card mb-2 questionpreview text-dark">
-        <div class="card-header bg-light">
+        <div class="card-header p-1 bg-light">
         <span class="icon-question questionicon bg-light"> </span>
-            <span class="w-100" id="qn<?php echo $question->id; ?>"><?php echo $question->question; ?></span>
+            <span class="w-100 ps-3" id="qn<?php echo $question->id; ?>"><?php echo $question->question; ?></span>
             <input class="float-end form-check-input" type="checkbox" name="selectedQuestions[]" value="<?php echo $question->id;?>"></input>
         </div>
 
@@ -240,7 +240,7 @@ foreach ($questions as $question): ?>
         
         
     </div><?php endif;?>
-        <div class="card-footer bg-light">
+        <div class="card-footer bg-light p-1">
         <a class="btn btn-danger btn-sm" title="<?php echo Text::_('COM_YAQUIZ_REMOVE_TITLE');?>" href="index.php?option=com_yaquiz&task=yaquiz.removeQuestionFromQuiz&quiz_id=<?php echo $item->id; ?>&question_id=<?php echo $question->id; ?>"><span class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_REMOVE');?></a>
         
         <span class="badge bg-secondary"><?php echo Text::_('COM_YAQUIZ_ORDER');?>: <?php echo $question->ordering; ?></span>

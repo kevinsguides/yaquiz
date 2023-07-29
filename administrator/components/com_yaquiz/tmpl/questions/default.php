@@ -105,12 +105,13 @@ if ($filter_title || $filter_categories || $filter_limit) {
     <?php foreach ($items as $item): ?>
         <?php $params = json_decode($item->params); ?>
         <div class="card questionpreview mb-2">
-            <div class="card-header bg-light"><span class="icon-question questionicon bg-light"> </span>
-            <span class="w-100">
-                <a  href="index.php?option=com_yaquiz&view=Question&layout=edit&qnid=<?php echo $item->id; ?>"><?php echo $item->question; ?></a>
-            </span>
-            <span class="badge bg-primary float-end">ID: <?php echo $item->id; ?></span>
-            </div>
+
+        <div class="card-header p-1 bg-light">
+        <span class="icon-question questionicon bg-light"> </span>
+            <span class="w-100 ps-3" id="qn<?php echo $item->id; ?>"><?php echo $item->question; ?></span>
+            <input class="float-end form-check-input" type="checkbox" name="selectedQuestions[]" value="<?php echo $item->id;?>"></input>
+        </div>
+
             <div class="card-body">
                 <?php
                 $details = $item->details;
@@ -132,7 +133,7 @@ if ($filter_title || $filter_categories || $filter_limit) {
                 }
                 ?>
                 
-           
+                <span class="badge bg-primary float-end">ID: <?php echo $item->id; ?></span>
                 <span class="badge text-dark bg-light"><?php echo Text::_('COM_YAQUIZ_CATEGORY');?>:
                     <?php echo $sqhelper->getCategoryName($item->catid); ?>
                 </span>
@@ -154,7 +155,9 @@ if ($filter_title || $filter_categories || $filter_limit) {
                     data-confirm="<?php echo Text::_('COM_YAQUIZ_DELETE_CONFIRM').' '.$item->question;?>"
                     href="index.php?option=com_yaquiz&task=questions.deleteQuestion&delete=<?php echo $item->id; ?>"><span
                         class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_DELETE');?></a>
-                <a href="index.php?option=com_yaquiz&view=Question&layout=edit&qnid=<?php echo $item->id; ?>"><span
+                <a 
+                class="btn btn-info btn-sm"
+                href="index.php?option=com_yaquiz&view=Question&layout=edit&qnid=<?php echo $item->id; ?>"><span
                         class="icon-edit"></span> <?php echo Text::_('COM_YAQUIZ_EDIT');?></a>
                        
             </div>
