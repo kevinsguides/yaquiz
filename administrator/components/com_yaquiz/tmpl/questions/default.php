@@ -182,7 +182,7 @@ if ($filter_title || $filter_categories || $filter_limit) {
         <label for="batch_op"><?php echo Text::_('COM_YAQUIZ_BATCHOPS_WITHSELECTED');?></label>
         <select name="batch_op" class="form-select mb-1">
             <option value="0"><?php echo Text::_('COM_YAQUIZ_BATCHOPS_SELECTOP');?></option>
-            <option value="remove"><?php echo Text::_('COM_YAQUIZ_BATCHOPS_REMOVESELECTED');?></option>
+            <option value="remove"><?php echo Text::_('COM_YAQUIZ_DELETE_PERMANENTLY');?></option>
         </select>
         <input type="submit" class="btn btn-info btn-sm" value="<?php echo Text::_('COM_YAQUIZ_BATCHOPS_EXECUTE');?>">
 </div>

@@ -127,10 +127,16 @@ class QuestionsModel extends AdminModel
     }
 
     public function insertMultiQuestions($questions, $catid){
+
+
         $db = Factory::getContainer()->get('DatabaseDriver');
         $app = Factory::getApplication();
         $userid = $app->getIdentity()->id;
 
+        if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
+            $app->enqueueMessage('Edit permissions required', 'error');
+            return;
+        }
 
         foreach($questions as $question){
             Log::add('attempt insert question '.$question['question'], Log::INFO, 'com_yaquiz');
@@ -221,7 +227,7 @@ class QuestionsModel extends AdminModel
         //user needs permissions
         $app = Factory::getApplication();
         if($app->getIdentity()->authorise('core.delete', 'com_yaquiz') != true){
-            $app->enqueueMessage('Edit permissions required to remove questions from quiz', 'error');
+            $app->enqueueMessage('Delete permissions required to delete', 'error');
             return;
         }
 

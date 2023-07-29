@@ -13,3 +13,8 @@
 .questionpreview .card-header{
     padding-left: 1.5rem;
 }
+
+//if has form-check-input checked
+.questionpreview:has(.form-check-input:checked){
+    border: 2px solid #28a745;
+}
