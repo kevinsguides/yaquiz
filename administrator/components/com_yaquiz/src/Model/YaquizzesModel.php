@@ -114,4 +114,5 @@ class YaquizzesModel extends AdminModel
 
     }
 
+
 }
