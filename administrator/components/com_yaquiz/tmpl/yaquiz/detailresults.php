@@ -14,6 +14,7 @@ use KevinsGuides\Component\Yaquiz\Administrator\Model\YaquizModel;
 $model = new YaquizModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Juri;
 
 $quiz_id = 0;
 $result_id = 0;
@@ -36,7 +37,7 @@ $quiz_taker_username = $quiz_taker->username;
 <div class="container">
 <div class="card">
     <h1 class="card-header">
-        Full Attempt Results
+    <?php echo Text::_('COM_YAQUIZ_RESULTS_FULLRESULTS');?>
     </h1>
     <div class="card-body">
 
@@ -48,45 +49,45 @@ $quiz_taker_username = $quiz_taker->username;
 
     <table class="table table-striped">
             <thead>
-                <td>Property</td>
-                <td>Value</td>
+                <td><?php echo Text::_('COM_YAQUIZ_PROPERTY');?></td>
+                <td><?php echo Text::_('COM_YAQUIZ_VALUE');?></td>
             </thead>
             <tr>
-                <td>Quiz ID</td>
+                <td><?php echo Text::_('COM_YAQUIZ_QUIZID');?></td>
                 <td><?php echo $quiz->id; ?></td>
             </tr>
             <tr>
-                <td>Quiz Title</td>
+                <td><?php echo Text::_('COM_YAQUIZ_QUIZTITLE');?></td>
                 <td><?php echo $quiz->title; ?></td>
             </tr>
             <tr>
-                <td>Username</td>
+                <td><?php echo Text::_('JUSERNAME');?></td>
                 <td><a href="index.php?option=com_users&task=user.edit&id=<?php echo $quiz_taker->id; ?>" target="_blank"><?php echo $quiz_taker->username; ?></a></td>
             </tr>
             <tr>
-                <td>Full Name</td>
+                <td><?php echo Text::_('COM_YAQUIZ_FULLNAME');?></td>
                 <td><?php echo $quiz_taker_name; ?></td>
             </tr>
             <tr>
-                <td>Submit Time</td>
+                <td><?php echo Text::_('COM_YAQUIZ_SUBMITTIME');?></td>
                 <td><?php echo $their_results->submitted; ?></td>
             </tr>
             <tr>
-                <td>Grade (points/total)</td>
+                <td><?php echo Text::_('COM_YAQUIZ_GRADE_POINTS_OVER_TOTAL');?></td>
                 <td><?php echo $their_results->points.'/'.$their_results->total_points; ?></td>
             </tr>
             <tr>
-                <td>Score</td>
+                <td><?php echo Text::_('COM_YAQUIZ_SCORE');?></td>
                 <td><?php echo $their_results->score; ?>%</td>
             </tr>
             <tr>
-                <td>Pass/Fail</td>
+                <td><?php echo Text::_('COM_YAQUIZ_PASSFAIL');?></td>
                 <td><?php
                     if($their_results->passed){
-                        echo "Passed";
+                        echo Text::_('COM_YAQUIZ_PASSED');
                     }
                     else{
-                        echo "Failed";
+                        echo Text::_('COM_YAQUIZ_FAILED');
                     }
                 ?></td>
             </tr>
@@ -96,7 +97,7 @@ $quiz_taker_username = $quiz_taker->username;
 
 <br/>
 
-<h2>User Answers</h2>
+<h2><?php echo Text::_('COM_YAQUIZ_RESULTS_USERANSWERS');?></h2>
 <?php
 
     $detail_feedback = json_decode($their_results->full_results);
@@ -115,25 +116,28 @@ $quiz_taker_username = $quiz_taker->username;
         ">
             <span><?php echo $question_title; ?></span>
             
-            <span class="float-end"> [Point Value: <?php echo $question_params->points;?>]</span>
+            <span class="float-end"> [<?php echo Text::_('COM_YAQUIZ_POINTVALUE');?>: <?php echo $question_params->points;?>]</span>
         </div>
         <div class="card-body">
-        <p>Question Type: <?php echo $question_type; ?></p>
+        <p><?php echo Text::_('COM_YAQUIZ_QUESTIONTYPE') . ' - '.$question_type; ?></p>
         <hr>
-        <p>Details:</p>
+        <p><?php echo Text::_('COM_YAQUIZ_DETAILS');?>:</p>
         <?php
             if($item->question->details){
+
+                $item->question->details = str_replace('src="images', 'src="'.JUri::root().'images', $item->question->details);
+                
                 echo $item->question->details;
             }
             else{
-                echo "No extra question details were provided to user on quiz administration.";
+                echo Text::_('COM_YAQUIZ_NOEXTRAPERMS');
             }
         ?>
         <hr>
-        <p>Possible Answer(s)</p>
+        <p><?php echo Text::_('COM_YAQUIZ_POSSIBLE_ANSWERS');?></p>
         <?php echo $item->question->answers;?>
         <hr>
-        <p>User Selected Answer</p>
+        <p><?php echo Text::_('COM_YAQUIZ_USER_SELECTED_ANSWER');?></p>
         <?php echo $item->useranswer; ?>
         
 

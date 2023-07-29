@@ -40,17 +40,19 @@ if($item == null || $item->id == 0){
 
 $question = $item->question;
 $details = $item->details;
-$answers = $item->answers;
-//decode json answers
-$answers = json_decode($answers);
-
 
 
 $params = $item->params;
 //decode json params
 $params = json_decode($params);
 $question_type = $params->question_type;
-Log::add('question type is '.$question_type, Log::INFO, 'com_yaquiz');
+
+//$answers is only used for certain question types
+if($question_type == 'multiple_choice' || $question_type == 'fill_blank'){
+    $answers = $item->answers;
+    //decode json answers
+    $answers = json_decode($answers);
+}
 
 $correct_answer = $item->correct;
 
@@ -107,7 +109,7 @@ function load_mchoice_editor($answers, $correct_answer){
 function load_truefalse($correct_answer = 1){
     $html = '<div class="control-group">
                 <div class="control-label">
-                <h3>Select Correct Answer</h3>
+                <h3>'.Text::_('COM_YAQUIZ_SELECT_CORRECT_ANSWER').'</h3>
                 </div>
                 <div class="controls">
                 <div class="truefalse-editor">

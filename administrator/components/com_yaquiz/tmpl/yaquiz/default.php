@@ -174,7 +174,7 @@ $quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
     <?php echo $this->form->renderFieldset('filters'); ?>
     <div class="control-group">
         <div class="control-label">
-            <label for="filterSubmit">Filter Submit:</label>
+            <label for="filterSubmit"><?php echo Text::_('COM_YAQUIZ_FILTERSUBMIT');?></label>
 </div>
 <div class="controls">
     <button id="filterSubmit" type="submit" class="btn btn-primary btn-sm"><span class="icon-search"></span> <?php echo Text::_('COM_YAQUIZ_FILTER_AVAILABLE_QUESTIONS');?></button>

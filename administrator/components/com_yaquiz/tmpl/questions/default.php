@@ -94,7 +94,7 @@ if ($filter_title || $filter_categories || $filter_limit) {
                     ?>
                     <?php echo $form->renderFieldset('filters'); ?>
                     <input name="task" type="hidden">
-                    <input type="submit" value="Filter" class="btn btn-primary">
+                    <input type="submit" value="<?php echo Text::_('COM_YAQUIZ_FILTER');?>" class="btn btn-primary">
                 </div>
             </div>
         </div>
@@ -167,7 +167,7 @@ if ($filter_title || $filter_categories || $filter_limit) {
         </div>
     <?php endforeach; ?>
 <?php else: ?>
-    <p>No questions found</p>
+    <p><?php echo Text::_('COM_YAQUIZ_NOQUESTIONS');?></p>
 <?php endif; ?>
 
 
@@ -191,7 +191,8 @@ if ($filter_title || $filter_categories || $filter_limit) {
 
 <?php if ($pagecount > 1): ?>
     <nav class="pagination__wrapper">
-        <span class="float-end">Page <?php echo $page + 1; ?> of <?php echo $pagecount; ?></span>
+        
+        <span class="float-end"><?php echo Text::sprintf('COM_YAQUIZ_PAGINATION', $page + 1, $pagecount);?></span>
         <div class="pagination pagination-toolbar">
             <ul class="pagination m-0">
                 <?php if ($page > 0): ?>

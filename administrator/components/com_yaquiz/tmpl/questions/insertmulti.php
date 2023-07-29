@@ -7,6 +7,7 @@
 
 
 defined ( '_JEXEC' ) or die;
+use Joomla\CMS\Language\Text;
 
 //this tmpl contains a form to insert multiple questions at once
 //questions must be separated by a new line
@@ -23,14 +24,12 @@ $form = $this->form;
 
 ?>
 <div class="card">
-<h1 class="card-header">Multi-Question Insertion Wizard</h1>
+<h1 class="card-header"><?php echo Text::_('COM_YAQUIZ_INSERTMULTI_TITLE');?></h1>
 <div class="card-body">
-<p>Here, you can add many questions at once.</p>
-<p>To do so, you must upload an Excel file with the questions in it.</p>
-<p>The easiest way to do this is to download the example spreadsheet and edit as needed. It has examples of every question type.</p>
+<?php echo Text::_('COM_YAQUIZ_INSERTMULTI_DESC');?>
 </div>
 <div class="card-footer">
-<a href="<?php echo $exampleFile; ?>" class="btn btn-success" download>Download Example Spreadsheet</a>
+<a href="<?php echo $exampleFile; ?>" class="btn btn-success" download><?php echo Text::_('COM_YAQUIZ_INSERTMULTI_EXAMPLE');?></a>
 </div>
 </div>
 <br/>
@@ -42,7 +41,7 @@ $form = $this->form;
 <input type="hidden" name="task" value="Questions.startInsertMulti">
 </div>
 <div class="card-footer">
-<input type="submit" value="Upload & Review" class="btn btn-primary">
+<input type="submit" value="<?php echo Text::_('COM_YAQUIZ_UPLOAD_REVIEW');?>" class="btn btn-primary">
 </div></div>
 </form>
 
