@@ -12,6 +12,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use KevinsGuides\Component\Yaquiz\Site\Helper\QuestionBuilderHelper;
 use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
+use Joomla\CMS\Uri\Uri;
 
 defined ( '_JEXEC' ) or die;
 
@@ -78,7 +79,7 @@ JHtml::_('behavior.keepalive');
 
 ?>
 
-<form action="<?php echo JURI::root(); ?>index.php?option=com_yaquiz&task=quiz.loadNextPage" method="POST">
+<form action="<?php echo URI::root(); ?>index.php?option=com_yaquiz&task=quiz.loadNextPage" method="POST">
     <input type="hidden" name="quiz_id" value="<?php echo $quiz->id; ?>" />
     <input type="hidden" name="page" value="<?php echo $currPage; ?>" />
 

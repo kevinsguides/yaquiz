@@ -14,7 +14,7 @@ use KevinsGuides\Component\Yaquiz\Administrator\Model\YaquizModel;
 $model = new YaquizModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Juri;
+use Joomla\CMS\Uri\Uri;
 
 $quiz_id = 0;
 $result_id = 0;
@@ -125,7 +125,7 @@ $quiz_taker_username = $quiz_taker->username;
         <?php
             if($item->question->details){
 
-                $item->question->details = str_replace('src="images', 'src="'.JUri::root().'images', $item->question->details);
+                $item->question->details = str_replace('src="images', 'src="'.Uri::root().'images', $item->question->details);
                 
                 echo $item->question->details;
             }

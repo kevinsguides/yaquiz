@@ -12,7 +12,7 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
-use JUri;
+use Joomla\CMS\Uri\Uri;
 
 defined ( '_JEXEC' ) or die;
 
@@ -61,7 +61,7 @@ class HtmlView extends BaseHtmlView{
         //ToolbarHelper::addNew('Questions.newQuestion');
 
         //display the view
-        $app->setUserState('com_yaquiz.redirectbackto', JUri::getInstance()->toString());
+        $app->setUserState('com_yaquiz.redirectbackto', Uri::getInstance()->toString());
 
         return parent::display($tpl);
 

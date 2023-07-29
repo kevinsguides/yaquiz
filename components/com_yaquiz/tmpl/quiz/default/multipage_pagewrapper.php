@@ -6,6 +6,7 @@
 
 defined ( '_JEXEC' ) or die ();
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 ?>
 
@@ -49,7 +50,7 @@ use Joomla\CMS\Language\Text;
 </div>
 <div class="card-footer">
 <?php if ($currPage == 0):?>
-    <a href="<?php echo JURI::root(); ?>index.php?option=com_yaquiz&view=quiz&id=<?php echo $quiz->id; ?>&page=<?php echo $currPage + 1; ?>" class="btn btn-primary"><?php echo Text::_('COM_YAQ_START_QUIZ');?></a>
+    <a href="<?php echo Uri::root(); ?>index.php?option=com_yaquiz&view=quiz&id=<?php echo $quiz->id; ?>&page=<?php echo $currPage + 1; ?>" class="btn btn-primary"><?php echo Text::_('COM_YAQ_START_QUIZ');?></a>
 <?php endif;?>
 <?php if ($currPage > 0 && $currPage <= $totalQuestions):?>
     <button type="submit" name="nextpage" value="-1" class="btn btn-primary"><?php echo Text::_('COM_YAQ_PREV');?></button>

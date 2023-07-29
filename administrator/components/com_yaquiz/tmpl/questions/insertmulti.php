@@ -8,6 +8,7 @@
 
 defined ( '_JEXEC' ) or die;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 //this tmpl contains a form to insert multiple questions at once
 //questions must be separated by a new line
@@ -15,7 +16,7 @@ use Joomla\CMS\Language\Text;
 // THE_QUESTION || THE_DETAILS || THE_TYPE || ans1 | ans2 | ans3 | ans4 || THE_CATEGORY_ID || THE_POINTVALUE
 
 
-$exampleFile = JURI::root().'administrator/components/com_yaquiz/tmpl/questions/SampleQuestionSpreadsheet.xlsx';
+$exampleFile = URI::root().'administrator/components/com_yaquiz/tmpl/questions/SampleQuestionSpreadsheet.xlsx';
 
 
 $form = $this->form;

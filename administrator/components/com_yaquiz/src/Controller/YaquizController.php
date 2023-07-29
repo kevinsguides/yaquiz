@@ -15,7 +15,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Component\Menus\Administrator\Controller\ItemController;
 use Joomla\Input\Input;
 use JSession;
-use JUri;
+use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die;
 
@@ -147,7 +147,7 @@ class YaquizController extends BaseController
     public function preview(){
         //open a page in a new tab
         //redirect to preview view
-        $this->setRedirect(JUri::root().'index.php?option=com_yaquiz&view=quiz&id=' . $this->input->get('id', '', 'raw'));
+        $this->setRedirect(Uri::root().'index.php?option=com_yaquiz&view=quiz&id=' . $this->input->get('id', '', 'raw'));
     }
 
     public function remove($pk = null){

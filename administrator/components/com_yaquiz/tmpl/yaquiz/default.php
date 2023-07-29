@@ -18,7 +18,7 @@ use JFactory;
 use JHtml;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
-use JUri;
+use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use KevinsGuides\Component\Yaquiz\Administrator\Model\QuestionModel;
 //this the template to display 1 quiz info
@@ -140,7 +140,7 @@ function getQuestionListBox($titleFilter = null, $categoryfilter = null){
 $model = $this->getModel();
 $questions = $model->getQuestionsInQuiz($item->id);
 
-$quizlink = JUri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
+$quizlink = Uri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
 ?>
 
 <div class="container">
@@ -231,7 +231,7 @@ foreach ($questions as $question): ?>
         
         <?php 
         //fix image paths in question->details if they are relative
-        $question->details = str_replace('src="images', 'src="'.JUri::root().'images', $question->details);
+        $question->details = str_replace('src="images', 'src="'.Uri::root().'images', $question->details);
         ?>  
         <div class="p-1 bg-white">
         <?php echo $question->details; ?>

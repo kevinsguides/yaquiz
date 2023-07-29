@@ -48,7 +48,11 @@ if(empty($results)){
 
 ?>
 
+<div class="quiz-results">
 <?php echo $results; ?>
+</div>
+
+
 
 
 

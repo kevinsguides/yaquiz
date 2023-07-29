@@ -7,7 +7,7 @@
 namespace KevinsGuides\Component\Yaquiz\Site\View\Quiz;
 
 use Joomla\CMS\Log\Log;
-use JUri;
+use Joomla\CMS\Uri\Uri;
 use KevinsGuides\Component\Yaquiz\Site\Helper\QuestionBuilderHelper;
 use JHtml;
 use Joomla\CMS\Factory;
@@ -110,7 +110,7 @@ else:
 
         <?php if ($quizparams->quiz_displaymode == 'default'): ?>
 
-            <form action="<?php echo JUri::root(); ?>index.php?option=com_yaquiz&task=quiz.submitquiz" method="post">
+            <form action="<?php echo Uri::root(); ?>index.php?option=com_yaquiz&task=quiz.submitquiz" method="post">
                 <input type="hidden" name="quiz_id" value="<?php echo $quiz->id; ?>" />
                 <?php $i = 0;?>
                 <?php foreach ($questions as $question): ?>

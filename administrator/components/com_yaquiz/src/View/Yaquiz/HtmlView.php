@@ -6,14 +6,16 @@
 
 
 namespace KevinsGuides\Component\Yaquiz\Administrator\View\Yaquiz;
+
+
+defined ( '_JEXEC' ) or die;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use JUri;
-defined ( '_JEXEC' ) or die;
+use Joomla\CMS\Uri\Uri;
 
 //this view for 1 quiz
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -72,7 +74,7 @@ class HtmlView extends BaseHtmlView
 
             ToolbarHelper::title(Text::_('COM_YAQUIZ_PAGETITLE_QUIZEDITPREFIX').$this->item->title, 'yaquiz');
            
-            $app->setUserState('com_yaquiz.redirectbackto', JUri::getInstance()->toString());
+            $app->setUserState('com_yaquiz.redirectbackto', Uri::getInstance()->toString());
 
             return parent::display($tpl);
             
