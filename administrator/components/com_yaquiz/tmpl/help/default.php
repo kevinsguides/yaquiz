@@ -57,7 +57,7 @@ else{
 <h3><?php echo Text::_('COM_YAQUIZ_MATHJAX_HELP'); ?></h3>
 <?php echo Text::_('COM_YAQUIZ_MATHJAX_HELP_DESC'); ?>
 <pre>\(y=mx+b\)</pre>
-<p>You can try a tool like this <a href="https://latexeditor.lagrida.com/" target="_blank">Latex Editor</a> to help you format your equations.</p>
+<p><?php echo Text::sprintf('COM_YAQUIZ_TRY_LATEX_EDITOR', 'https://latexeditor.lagrida.com/');?></p>
 
 <h3><?php echo Text::_('COM_YAQUIZ_MISC_HELP'); ?></h3>
 <?php echo Text::_('COM_YAQUIZ_MISC_HELP_DETAILS'); ?>

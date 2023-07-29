@@ -79,14 +79,14 @@ else {
 
 <div class="container">
 <div class="card">
-  <h1 class="card-header">Quizzes</h1>
+  <h1 class="card-header"><?php echo Text::_('COM_YAQUIZ_QUIZZES');?></h1>
   <div class="card-body">
 <form id="adminForm" action="index.php?option=com_yaquiz&view=Yaquizzes" method="post">
 <div class="accordion" id="accordionFilters">
   <div class="accordion-item">
     <h2 class="accordion-header" id="hdgFilters">
       <button class="accordion-button <?php echo (isset($_POST['filters']) ? '' : 'collapsed') ?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilters" aria-expanded="true" aria-controls="collapseFilters">
-        Filters...
+      <?php echo Text::_('COM_YAQUIZ_FILTERS');?>
       </button>
     </h2>
     <div id="collapseFilters" class="accordion-collapse collapse <?php echo $filterset; ?>" aria-labelledby="hdgFilters" data-bs-parent="#accordionFilters">
@@ -96,8 +96,8 @@ else {
 
     <input name="task" type="hidden">
     
-    <button type="submit" class="btn btn-primary">Filter</button>
-    <a href="index.php?option=com_yaquiz&view=Yaquizzes" class="btn btn-dark">Reset</a>
+    <button type="submit" class="btn btn-primary"><?php echo Text::_('COM_YAQUIZ_FILTER');?></button>
+    <a href="index.php?option=com_yaquiz&view=Yaquizzes" class="btn btn-dark"><?php echo Text::_('COM_YAQUIZ_RESET');?></a>
  </div>
     </div>
   </div>
@@ -108,13 +108,13 @@ else {
     <?php if($this->items): ?>
         <div class="row">
             <div class="col-6">
-                <h3>Quiz Title: </h3>
+                <h3><?php echo Text::_('COM_YAQUIZ_YAQUIZ_TITLE_LABEL');?></h3>
     </div>
     <div class="col-3">
-        <h3>Category</h3>
+        <h3><?php echo Text::_('JCATEGORY');?></h3>
     </div>
     <div class="col-3">
-        <h3>Actions: </h3>
+        <h3><?php echo Text::_('COM_YAQUIZ_ACTIONS');?></h3>
         </div>
     </div>
    
@@ -136,9 +136,9 @@ else {
                     $stats = $model->getGeneralStats($item->id);
                     if($stats) :?>
                     <br/>
-                    <span class="badge bg-primary text-white">Average Score: <?php echo $stats->total_average_score; ?>%</span>
-                    <span class="badge bg-primary text-white">Total Submissions: <?php echo $stats->submissions; ?> attempts</span>
-                    <span class="badge bg-primary text-white">Times Passed: <?php echo $stats->total_times_passed; ?> times</span>
+                    <span class="badge bg-primary text-white"><?php echo Text::_('COM_YAQUIZ_AVERAGE_SCORE');?>: <?php echo $stats->total_average_score; ?>%</span>
+                    <span class="badge bg-primary text-white"><?php echo Text::_('COM_YAQUIZ_TOTAL_SUBMISSIONS');?>: <?php echo $stats->submissions; ?></span>
+                    <span class="badge bg-primary text-white"><?php echo Text::_('COM_YAQUIZ_TIMES_PASSED');?>: <?php echo $stats->total_times_passed; ?></span>
                     <?php endif; ?>
                     
                   </div>
@@ -151,7 +151,7 @@ else {
                     <a class="btn btn-success btn-sm w-100 mb-1 text-start" href="index.php?option=com_yaquiz&view=yaquiz&id=<?php echo $item->id ?>"><span class="icon-checkbox"></span> <?php echo Text::_('COM_YAQUIZ_SELECTQNS');?></a>
                     <?php //if recording is set to 2 or 3
                     if($thisQuizParams->quiz_record_results >= 2 && $canViewResults):?>
-                    <a href="index.php?option=com_yaquiz&view=yaquiz&layout=results&id=<?php echo $item->id; ?>" class="btn btn-info btn-sm w-100 mb-1">View All Attempts/Results</a>
+                    <a href="index.php?option=com_yaquiz&view=yaquiz&layout=results&id=<?php echo $item->id; ?>" class="btn btn-info btn-sm w-100 mb-1"><?php echo Text::_('COM_YAQUIZ_VIEW_ATTEMPTS_AND_RESULTS');?></a>
                     <?php endif;?>
                     <?php if($canDelete): ?>
                       <a class="btn btn-danger btn-sm mb-1 float-end deleteQuizBtn" href="index.php?option=com_yaquiz&view=yaquiz&task=Yaquiz.remove&quizid=<?php echo $item->id ?>"><span class="icon-trash"></span> <?php echo Text::_('COM_YAQUIZ_DELETE');?></a>

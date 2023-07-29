@@ -158,6 +158,14 @@ class QuestionsController extends BaseController
             if(isset($_POST['batch_op']) && $_POST['batch_op'] == 'remove'){
 
                 $questionIds = $_POST['selectedQuestions'];
+
+                //if there are no ids
+                if(empty($questionIds)){
+                    $this->setMessage('No questions selected','error');
+                    $this->setRedirect('index.php?option=com_yaquiz&view=yaquiz&id=' . $_POST['quiz_id']);
+                    return;
+                }
+
                 $model = $this->getModel('Questions');
                 $model->deleteQuestions($questionIds);
                 $this->setMessage('Questions deleted permanently.');

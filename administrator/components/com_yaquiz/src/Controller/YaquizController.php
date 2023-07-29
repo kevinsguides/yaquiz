@@ -210,6 +210,15 @@ class YaquizController extends BaseController
         if(isset($_POST['batch_op']) && $_POST['batch_op'] == 'remove'){
 
             $questionIds = $_POST['selectedQuestions'];
+
+            //if there are no ids
+            if(empty($questionIds)){
+                $this->setMessage('No questions selected','error');
+                $this->setRedirect('index.php?option=com_yaquiz&view=yaquiz&id=' . $_POST['quiz_id']);
+                return;
+            }
+
+
             $quiz_id = $_POST['quiz_id'];
             $model = $this->getModel('Yaquiz');
             $model->removeQuestionFromQuiz($quiz_id, $questionIds);
