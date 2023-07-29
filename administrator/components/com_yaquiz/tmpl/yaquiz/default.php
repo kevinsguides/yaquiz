@@ -14,8 +14,7 @@
 
 
 namespace KevinsGuides\Component\Yaquiz\Administrator\View\Yaquiz;
-use JFactory;
-use JHtml;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Uri\Uri;
@@ -188,7 +187,7 @@ $quizlink = Uri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
     <input type="hidden" name="quiz_id" value="<?php echo $item->id; ?>">
     <!-- get the questions selectlist -->
     <?php echo getQuestionListBox($filters->filter_title, $filters->filter_categories); ?>
-    <?php echo JHtml::_('form.token'); ?>
+    <?php echo HtmlHelper::_('form.token'); ?>
     <button type="submit" class="btn btn-success mt-2"><?php echo Text::_('COM_YAQUIZ_ADD_QUESTIONS');?></button>
 </form>
 
