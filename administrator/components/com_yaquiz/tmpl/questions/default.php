@@ -20,6 +20,7 @@ use Joomla\CMS\Factory;
 $app = Factory::getApplication();
 $wa = $app->getDocument()->getWebAssetManager();
 $wa->registerAndUseStyle('yaquiz-admin-yaquizstyle', 'administrator/components/com_yaquiz/src/Style/com_yaquiz.min.css');
+$wa->registerAndUseScript('yaquiz-utils', 'administrator/components/com_yaquiz/src/Scripts/utils.js');
 
 
 $sqhelper = new YaquizHelper();
@@ -149,7 +150,8 @@ if ($filter_title || $filter_categories || $filter_limit) {
                 <span class="badge text-dark bg-light"><?php echo Text::_('COM_YAQUIZ_QUESTION_POINTS_LABEL');?>: <?php echo $params->points; ?></span>
             </div>
             <div class="card-footer">
-                <a class="btn-danger float-end btn btn-sm"
+                <a class="btn-danger float-end btn btn-sm doublecheckdialog"
+                    data-confirm="<?php echo Text::_('COM_YAQUIZ_DELETE_CONFIRM').' '.$item->question;?>"
                     href="index.php?option=com_yaquiz&task=questions.deleteQuestion&delete=<?php echo $item->id; ?>"><span
                         class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_DELETE');?></a>
                 <a href="index.php?option=com_yaquiz&view=Question&layout=edit&qnid=<?php echo $item->id; ?>"><span
