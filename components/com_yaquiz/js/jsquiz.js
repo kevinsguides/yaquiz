@@ -22,7 +22,10 @@ btnFinish.addEventListener('click', function() {
         //get the question type
         let questionType = questionCards[i].getAttribute('data-qtype');
         let points = parseInt(questionCards[i].getAttribute('data-pointvalue'));
-        totalPossibleScore += points;
+        if(questionType != 'html_section'){
+            totalPossibleScore += points;
+        }
+        
         if(questionType == 'multiple_choice'){
             //the correct answer comes from the child form data-correctans value
 
@@ -84,6 +87,11 @@ btnFinish.addEventListener('click', function() {
             }
         }
 
+        if(questionType == 'html_section'){
+            //html_section is always correct
+            questionCards[i].setAttribute('data-iscorrect', '1');
+        }
+
     }
 
     scoreAsPercent = (score / totalPossibleScore) * 100;
@@ -120,6 +128,12 @@ function showAllFeedback(){
 
     //loop through all questioncards
     for (var i = 0; i < questionCards.length; i++) {
+
+        //if question type is  html_section, skip it
+        if(questionCards[i].getAttribute('data-qtype') == 'html_section'){
+            continue;
+        }
+
         //make every input readonly
         let inputs = questionCards[i].querySelectorAll('input');
         for (var j = 0; j < inputs.length; j++) {

@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS `#__com_yaquiz_question_quiz_map` (
   `quiz_id` int(11) NOT NULL,
   `question_id` int(11) NOT NULL,
   `ordering` int(11) NOT NULL DEFAULT 0,
+  `numbering` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;  
 

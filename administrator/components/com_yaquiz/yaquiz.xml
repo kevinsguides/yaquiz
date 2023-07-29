@@ -5,7 +5,7 @@
     <author>KevinsGuides</author>
     <authorEmail>kevinsguides@gmail.com</authorEmail>
     <authorUrl>https://kevinsguides.com</authorUrl>
-    <version>0.4.03</version>
+    <version>0.4.05</version>
     <description>COM_YAQUIZ_XML_DESCRIPTION</description>
     <namespace path="src/">KevinsGuides\Component\Yaquiz</namespace>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>

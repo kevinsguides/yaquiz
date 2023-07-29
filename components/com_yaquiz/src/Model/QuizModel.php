@@ -132,6 +132,21 @@ class QuizModel extends ItemModel{
         return $question;
     }
 
+    public static function getQuestionNumbering($question_id, $quiz_id){
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('numbering');
+        $query->from($db->quoteName('#__com_yaquiz_question_quiz_map'));
+        $query->where($db->quoteName('question_id') . ' = ' . $db->quote($question_id));
+        $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($quiz_id));
+
+        $db->setQuery($query);
+        $numbering = $db->loadResult();
+        return $numbering;
+
+    }
+
     public function getQuestionFromQuizOrdering($quiz_id, $order){
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
@@ -293,6 +308,10 @@ class QuizModel extends ItemModel{
     }
 
 
+    /**
+     * @param $pk int the id of the quiz
+     * @return int the number of questions in the quiz
+     */
     public function getTotalQuestions($pk = null){
         if ($pk === null) {
             $active = Factory::getApplication()->getMenu()->getActive();

@@ -198,6 +198,16 @@ function load_fill_blank($answers, $case_sensitive = 0){
         if($filterCategory != null){
             $form->setFieldAttribute('catid', 'default', $filterCategory);
         }
+
+        if ($item->id != '' && $item->id != 0){
+            //if question_type is html_section then hide the points field
+            if ($question_type == 'html_section'){
+                $form->setFieldAttribute('points', 'type', 'hidden');
+                $form->setFieldAttribute('feedback_right', 'type', 'hidden');
+                $form->setFieldAttribute('feedback_wrong', 'type', 'hidden');
+            }
+        }
+
         echo $form->renderFieldset('question'); 
     ?>
     <?php if ($item->id != '' && $item->id != 0){
@@ -211,8 +221,12 @@ function load_fill_blank($answers, $case_sensitive = 0){
          if ($question_type == 'fill_blank'){
             echo load_fill_blank($answers, $case_sensitive);
          }
+         if ($question_type == 'html_section'){
+            echo Text::_('COM_YAQUIZ_QUESTION_TYPE_HTML_SECTION_DESC');
+         }
     }
     else{
+
         echo Text::_('COM_YAQUIZ_SAVE_QUESTION_BEFORE_ANSWERS');
     }
     

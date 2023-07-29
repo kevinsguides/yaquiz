@@ -257,6 +257,9 @@ foreach ($questions as $question): ?>
     if ($question_type === 'fill_blank'){
         echo Text::_('COM_YAQUIZ_QUESTION_TYPE_FILLBLANK');
     }
+    if ($question_type === 'html_section'){
+        echo Text::_('COM_YAQUIZ_QUESTION_TYPE_HTML_SECTION');
+    }
     ?>
     </span>
 

@@ -61,6 +61,7 @@ $model = new QuizModel();
 //the total number of questions in quiz from the model...
 $totalQuestions = $model->getTotalQuestions($quiz->id);
 $quiz_params = $model->getQuizParams($quiz->id);
+$quiz_params->quiz_id = $quiz->id;
 
 $attempts_left = $model->quizAttemptsLeft($quiz->id);
 

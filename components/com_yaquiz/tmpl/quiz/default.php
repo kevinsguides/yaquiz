@@ -81,6 +81,7 @@ $questions = $model->getQuestions($quiz->id);
 $questionBuilder = new QuestionBuilderHelper();
 
 $quizparams = $model->getQuizParams($quiz->id);
+$quizparams->quiz_id = $quiz->id;
 
 //record hits
 if ($globalParams->get('record_hits') === '1') {
@@ -114,8 +115,11 @@ else:
                 <?php $i = 0;?>
                 <?php foreach ($questions as $question): ?>
                     <?php
-                    $i++;
-                    $actualid = $question->id - 1;
+                    if($question->params->question_type != 'html_section'){
+                        $i++;
+                    }
+                    
+                    $actualid = $question->id;
                     //check if $oldanswers is set
                     if ($oldanswers) {
                         //see if this question is in the old answers

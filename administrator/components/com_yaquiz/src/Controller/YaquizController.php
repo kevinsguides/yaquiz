@@ -114,6 +114,9 @@ class YaquizController extends BaseController
         }
 
         $model->addQuestionsToQuiz($quizid, $questionids);
+        //reorder
+        $model->reorderQns($quizid);
+        $model->recalculateQuestionNumbering($quizid);
         //redirect to the view
         $this->setRedirect('index.php?option=com_yaquiz&view=yaquiz&id=' . $quizid);
         //refresh
@@ -131,6 +134,7 @@ class YaquizController extends BaseController
         $model->removeQuestionFromQuiz($quizid, $questionid);
         //reorder
         $model->reorderQns($quizid);
+        $model->recalculateQuestionNumbering($quizid);
         //redirect to the view
         $this->setRedirect('index.php?option=com_yaquiz&view=yaquiz&id=' . $quizid);
     }
@@ -166,6 +170,8 @@ class YaquizController extends BaseController
         $quiz_id = $this->input->get('quiz_id', '', 'raw');
         $model = $this->getModel('Yaquiz');
         $neworder = $model->moveQuestionOrderUp($quiz_id, $this->input->get('qnid', '', 'raw'));
+
+        $model->recalculateQuestionNumbering($quiz_id);
         //redirect to quiz
         $this->setRedirect('index.php?option=com_yaquiz&view=Yaquiz&id=' . $this->input->get('quiz_id', '', 'raw') . '#qn' . $neworder );
     }
@@ -174,6 +180,7 @@ class YaquizController extends BaseController
         $quiz_id = $this->input->get('quiz_id', '', 'raw');
         $model = $this->getModel('Yaquiz');
         $neworder = $model->moveQuestionOrderDown($quiz_id, $this->input->get('qnid', '', 'raw'));
+        $model->recalculateQuestionNumbering($quiz_id);
         //redirect to quiz
         $this->setRedirect('index.php?option=com_yaquiz&view=Yaquiz&id=' . $this->input->get('quiz_id', '', 'raw') . '#qn' . $neworder );
     }
@@ -183,6 +190,8 @@ class YaquizController extends BaseController
         $quiz_id = $this->input->get('quiz_id', '', 'raw');
         $model = $this->getModel('Yaquiz');
         $model->reorder($quiz_id);
+        $model->recalculateQuestionNumbering($quiz_id);
+       
         //redirect to quiz
         //$this->setRedirect('index.php?option=com_yaquiz&view=Yaquiz&id=' . $this->input->get('quiz_id', '', 'raw'));
     }
@@ -223,6 +232,7 @@ class YaquizController extends BaseController
             $model = $this->getModel('Yaquiz');
             $model->removeQuestionFromQuiz($quiz_id, $questionIds);
             $model->reorderQns($quiz_id);
+            $model->recalculateQuestionNumbering($quiz_id);
             $this->setMessage('Questions removed from quiz');
             $this->setRedirect('index.php?option=com_yaquiz&view=yaquiz&id=' . $quiz_id);
         }else{

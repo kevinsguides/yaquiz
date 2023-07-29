@@ -49,6 +49,7 @@ default="multiple_choice"
 <option value="multiple_choice">COM_YAQUIZ_QUESTION_TYPE_MULTIPLECHOICE</option>
 <option value="true_false">COM_YAQUIZ_QUESTION_TYPE_TRUEFALSE</option>
 <option value="fill_blank">COM_YAQUIZ_QUESTION_TYPE_FILLBLANK</option>
+<option value="html_section">COM_YAQUIZ_QUESTION_TYPE_HTML_SECTION</option>
 </field>
 
 <field
@@ -57,6 +58,7 @@ type="number"
 label="COM_YAQUIZ_QUESTION_POINTS_LABEL"
 required="true"
 default="1"
+showon="question_type:multiple_choice,true_false,fill_blank"
 min="1"
 max="100"
 />

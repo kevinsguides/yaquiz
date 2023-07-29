@@ -114,6 +114,11 @@ class QuizController extends BaseController
         $all_feedback = array();
         foreach ($answers as $question_id => $answer) {
             $question = $model->getQuestion($question_id);
+
+            if($question->params->question_type === 'html_section'){
+                continue;
+            }
+
             if ($quizParams->quiz_use_points === '1') {
                 $point_multiplier = $question->params->points;
             } else {

@@ -150,6 +150,9 @@ if ($filter_title || $filter_categories || $filter_limit) {
                     if($params->question_type == 'true_false'){
                         echo Text::_('COM_YAQUIZ_QUESTION_TYPE_TRUEFALSE');  
                     }
+                    if ($params->question_type === 'html_section'){
+                        echo Text::_('COM_YAQUIZ_QUESTION_TYPE_HTML_SECTION');
+                    }
                 ?> </span>
                 <span class="badge text-dark bg-light"><?php echo Text::_('COM_YAQUIZ_QUESTION_POINTS_LABEL');?>: <?php echo $params->points; ?></span>
             </div>

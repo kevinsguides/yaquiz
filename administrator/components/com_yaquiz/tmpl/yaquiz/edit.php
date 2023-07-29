@@ -11,6 +11,7 @@ namespace KevinsGuides\Component\Yaquiz\Administrator\View\Yaquiz;
 defined ( '_JEXEC' ) or die;
 use JHtml;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 //get form
 $form = $this->form;
@@ -28,7 +29,7 @@ $wa = $app->getDocument()->getWebAssetManager();
 $wa->useScript('keepalive');
 
 ?>
-<h1>Quiz Details Editor</h1>
+<h1><?php echo Text::_('COM_YAQUIZ_QUIZDETAILSEDIT');?></h1>
 
 <form action="index.php?option=com_yaquiz&task=Yaquiz.save&id=<?php echo $_GET['id']; ?>" method="post" name="adminForm" id="item-form" aria-label="New Quiz" class="form-validate">
 <?php echo $form->renderFieldset('yaquiz'); ?>

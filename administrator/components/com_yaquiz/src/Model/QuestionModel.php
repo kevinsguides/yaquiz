@@ -164,6 +164,10 @@ class QuestionModel extends AdminModel
 
         }
 
+        if($qtype == 'html_section'){
+            $data['correct'] = -1;
+        }
+
 
 
         Log::add('save called from q model', Log::INFO, 'com_yaquiz');

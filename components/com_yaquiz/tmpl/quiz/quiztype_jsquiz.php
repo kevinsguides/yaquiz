@@ -116,7 +116,11 @@ foreach ($questions as $question):
 
     $numbering = "";
     if($quiz_params->quiz_question_numbering == "1"){
-        $numbering = $i . ". ";
+        $numbering = $model->getQuestionNumbering($question->id, $quiz->id) . ". ";
+    }
+
+    if ($numbering == 0){
+        $numbering = "";
     }
 
 

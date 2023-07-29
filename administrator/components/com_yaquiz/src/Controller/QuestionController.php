@@ -56,6 +56,7 @@ class QuestionController extends BaseController
             $newid = $data['id'];
         }
         //cue saved message
+
         $this->setMessage('Question saved');
         //send user back to the question they were editing
         $this->setRedirect('index.php?option=com_yaquiz&view=Question&layout=edit&qnid=' . $newid);

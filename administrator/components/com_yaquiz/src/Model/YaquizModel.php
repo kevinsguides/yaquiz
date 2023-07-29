@@ -881,5 +881,57 @@ class YaquizModel extends AdminModel
     }
 
 
+    /**
+     * Recalculates 'numbering' column of com_yaquiz_question_quiz_map column based on # of questions, ordering, while ignoring the 'html_section' question type
+     */
+    public function recalculateQuestionNumbering($pk = 0){
+
+        //user needs core.delete permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.delete', 'com_yaquiz')) {
+            throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
+        }
+
+        if($pk == 0){
+            return;
+        }
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+         //join with #__com_yaquiz_questions to get question type
+        $query->select('qmap.id, qmap.question_id, qns.params, qmap.ordering');
+        $query->from('#__com_yaquiz_questions AS qns');
+        $query->join('LEFT', '#__com_yaquiz_question_quiz_map AS qmap ON qmap.question_id = qns.id');
+        $query->where('qmap.quiz_id = ' . $pk);
+        $query->order('qmap.ordering ASC');
+        $db->setQuery($query);
+        $results = $db->loadObjectList();
+
+        $question_number = 1;
+
+        foreach($results as $result){
+            $params = json_decode($result->params);
+            if($params->question_type != 'html_section'){
+                //update the numbering
+                $db = Factory::getContainer()->get('DatabaseDriver');
+                $query = $db->getQuery(true);
+                $query->update('#__com_yaquiz_question_quiz_map');
+                $query->set('numbering = ' . $question_number);
+                $query->where('id = ' . $result->id);
+                $db->setQuery($query);
+                $db->execute();
+                $question_number++;
+            }
+        }
+
+
+
+
+
+
+
+    }
+
+
 
 }

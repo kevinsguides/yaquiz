@@ -10,6 +10,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
+use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
 
 defined('_JEXEC') or die;
 class QuestionBuilderHelper
@@ -35,8 +36,11 @@ class QuestionBuilderHelper
         //get question type
         $questionType = $params->question_type;
         $formatted_questionnum = '';
-        if ($quiz_params->quiz_question_numbering == 1) {
-            $formatted_questionnum = '<span class="questionnumber">' . $question->question_number . ')</span> ';
+        if ($quiz_params->quiz_question_numbering == 1 && $questionType != 'html_section') {
+            Log::add('trying to get question id ' . $question->id, Log::INFO, 'com_yaquiz');
+            Log::add('on quiz id ' . $quiz_params->quiz_id, Log::INFO, 'com_yaquiz');
+            $the_question_number = QuizModel::getQuestionNumbering($question->id, $quiz_params->quiz_id);
+            $formatted_questionnum = '<span class="questionnumber">' . $the_question_number . ')</span> ';
         } else {
             $this->questionnumber = '';
         }
@@ -57,7 +61,10 @@ class QuestionBuilderHelper
             echo $this->build_truefalse($question);
         } else if ($questionType == 'fill_blank') {
             echo $this->build_fill_blank($question);
-        } else {
+        } else if ($questionType == 'html_section'){
+            echo $this->build_html_section($question);
+        }
+         else {
             echo 'question type' . $questionType . ' not supported';
         }
 
@@ -79,7 +86,9 @@ class QuestionBuilderHelper
         //if we are retrying
         if (isset($question->defaultanswer)) {
             $defaultanswer = $question->defaultanswer;
+            echo '<script>console.log("defaultanswer: ' . $defaultanswer . '");</script>';
         } else {
+            echo '<script>console.log("defaultanswer not set");</script>';
             $defaultanswer = -1;
         }
         foreach ($answers as $answer) {
@@ -136,6 +145,13 @@ class QuestionBuilderHelper
 
         $html = '';
         $html .= '<input type="text" name="answers[' . $question->id . ']" value="' . $defaultanswer . '"/>';
+        return $html;
+    }
+
+    protected function build_html_section($question)
+    {
+        $html = '<input type="hidden" name="answers[' . $question->id . ']" value="-1"/>';
+
         return $html;
     }
 
