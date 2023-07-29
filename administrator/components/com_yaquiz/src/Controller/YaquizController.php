@@ -208,8 +208,7 @@ class YaquizController extends BaseController
     public function executeBatchOps(){
 
         if(isset($_POST['batch_op']) && $_POST['batch_op'] == 'remove'){
-            //
-            echo('you wanna delete stuff i think');
+
             $questionIds = $_POST['selectedQuestions'];
             $quiz_id = $_POST['quiz_id'];
             $model = $this->getModel('Yaquiz');

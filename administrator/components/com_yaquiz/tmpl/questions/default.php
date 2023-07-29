@@ -101,6 +101,9 @@ if ($filter_title || $filter_categories || $filter_limit) {
     </div>
 </form>
 
+<!-- begin items form for batch ops -->
+<form method="POST">
+
 <?php if ($items != null): ?>
     <?php foreach ($items as $item): ?>
         <?php $params = json_decode($item->params); ?>
@@ -150,7 +153,7 @@ if ($filter_title || $filter_categories || $filter_limit) {
                 ?> </span>
                 <span class="badge text-dark bg-light"><?php echo Text::_('COM_YAQUIZ_QUESTION_POINTS_LABEL');?>: <?php echo $params->points; ?></span>
             </div>
-            <div class="card-footer">
+            <div class="card-footer p-1">
                 <a class="btn-danger float-end btn btn-sm doublecheckdialog"
                     data-confirm="<?php echo Text::_('COM_YAQUIZ_DELETE_CONFIRM').' '.$item->question;?>"
                     href="index.php?option=com_yaquiz&task=questions.deleteQuestion&delete=<?php echo $item->id; ?>"><span
@@ -167,6 +170,24 @@ if ($filter_title || $filter_categories || $filter_limit) {
     <p>No questions found</p>
 <?php endif; ?>
 
+
+<div class="row">
+    <div class="d-none d-lg-block col-lg-7">
+
+    </div>
+    <div class="col-12 col-lg-5">
+    <div class="card card-body">
+<input type="hidden" name="quiz_id" value="<?php echo $item->id; ?>">
+        <input type="hidden" name="task" value="Questions.executeBatchOps">
+        <label for="batch_op"><?php echo Text::_('COM_YAQUIZ_BATCHOPS_WITHSELECTED');?></label>
+        <select name="batch_op" class="form-select mb-1">
+            <option value="0"><?php echo Text::_('COM_YAQUIZ_BATCHOPS_SELECTOP');?></option>
+            <option value="remove"><?php echo Text::_('COM_YAQUIZ_BATCHOPS_REMOVESELECTED');?></option>
+        </select>
+        <input type="submit" class="btn btn-info btn-sm" value="<?php echo Text::_('COM_YAQUIZ_BATCHOPS_EXECUTE');?>">
+</div>
+    </div>
+</div>
 
 <?php if ($pagecount > 1): ?>
     <nav class="pagination__wrapper">
@@ -216,7 +237,14 @@ if ($filter_title || $filter_categories || $filter_limit) {
         </div>
     </nav>
 <?php endif; ?>
+
+
+
 </div>
+
+
+
+</form>
 
 <br/>
 <a href="https://kevinsguides.com/tips" class="btn btn-success btn-lg"><?php echo Text::_('COM_YAQUIZ_SUPPORT_THIS_PROJECT');?></a>

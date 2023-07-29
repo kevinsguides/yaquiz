@@ -152,6 +152,23 @@ class QuestionsController extends BaseController
     }
 
 
+        //do something with multiple questions
+        public function executeBatchOps(){
+
+            if(isset($_POST['batch_op']) && $_POST['batch_op'] == 'remove'){
+
+                $questionIds = $_POST['selectedQuestions'];
+                $model = $this->getModel('Questions');
+                $model->deleteQuestions($questionIds);
+                $this->setMessage('Questions deleted permanently.');
+                $this->setRedirect('index.php?option=com_yaquiz&view=questions');
+            }else{
+                $this->setMessage('No batch operation selected','error');
+                $this->setRedirect('index.php?option=com_yaquiz&view=questions');
+            }
+        }
+
+
     
 
 }

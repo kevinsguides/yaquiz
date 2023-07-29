@@ -213,8 +213,24 @@ class QuestionsModel extends AdminModel
 
 
         }
-        
-        //log the entire query
+                
+    }
+
+    public function deleteQuestions($question_ids){
+
+        //user needs permissions
+        $app = Factory::getApplication();
+        if($app->getIdentity()->authorise('core.delete', 'com_yaquiz') != true){
+            $app->enqueueMessage('Edit permissions required to remove questions from quiz', 'error');
+            return;
+        }
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->delete('#__com_yaquiz_questions');
+        $query->where('id IN ('.implode(',', $question_ids).')');
+        $db->setQuery($query);
+        $db->execute();
         
     }
 
