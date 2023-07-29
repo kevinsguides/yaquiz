@@ -18,6 +18,8 @@ use Joomla\CMS\Log\Log;
 use KevinsGuides\Component\Yaquiz\Administrator\Helper\YaquizHelper;
 use Joomla\CMS\Factory;
 $app = Factory::getApplication();
+$wa = $app->getDocument()->getWebAssetManager();
+$wa->registerAndUseStyle('yaquiz-admin-yaquizstyle', 'administrator/components/com_yaquiz/src/Style/com_yaquiz.min.css');
 
 
 $sqhelper = new YaquizHelper();
@@ -101,8 +103,8 @@ if ($filter_title || $filter_categories || $filter_limit) {
 <?php if ($items != null): ?>
     <?php foreach ($items as $item): ?>
         <?php $params = json_decode($item->params); ?>
-        <div class="card mb-2">
-            <div class="card-header bg-light">
+        <div class="card questionpreview mb-2">
+            <div class="card-header bg-light"><span class="icon-question questionicon bg-light"> </span>
             <span class="w-100">
                 <a  href="index.php?option=com_yaquiz&view=Question&layout=edit&qnid=<?php echo $item->id; ?>"><?php echo $item->question; ?></a>
             </span>

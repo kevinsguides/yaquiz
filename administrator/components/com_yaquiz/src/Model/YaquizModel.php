@@ -746,5 +746,140 @@ class YaquizModel extends AdminModel
 
     }
 
+    //remove the general stats only
+    public function resetGeneralQuizStats($quiz_id){
+            
+            //user needs core.delete permission
+            $user = Factory::getApplication()->getIdentity();
+            if (!$user->authorise('core.delete', 'com_yaquiz')) {
+                throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
+            }
+    
+            $db = Factory::getContainer()->get('DatabaseDriver');
+            $query = $db->getQuery(true);
+            $query->delete('#__com_yaquiz_results_general');
+            $query->where('quiz_id = ' . $quiz_id);
+            $db->setQuery($query);
+            $db->execute();
+    
+    }
+
+    //remove the individual stats only
+    public function resetIndividualQuizStats($quiz_id){
+            
+            //user needs core.delete permission
+            $user = Factory::getApplication()->getIdentity();
+            if (!$user->authorise('core.delete', 'com_yaquiz')) {
+                throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
+            }
+    
+            $db = Factory::getContainer()->get('DatabaseDriver');
+            $query = $db->getQuery(true);
+            $query->delete('#__com_yaquiz_results');
+            $query->where('quiz_id = ' . $quiz_id);
+            $db->setQuery($query);
+            $db->execute();
+    
+    }
+
+    //reset all user attempt counts
+    public function resetAllQuizAttemptCounts($quiz_id){
+                
+                //user needs core.delete permission
+                $user = Factory::getApplication()->getIdentity();
+                if (!$user->authorise('core.delete', 'com_yaquiz')) {
+                    throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
+                }
+        
+                $db = Factory::getContainer()->get('DatabaseDriver');
+                $query = $db->getQuery(true);
+                $query->update('#__com_yaquiz_user_quiz_map');
+                $query->set('attempt_count = 0');
+                $query->where('quiz_id = ' . $quiz_id);
+                $db->setQuery($query);
+                $db->execute();
+        
+    }
+
+
+    //recalculates all fields of com_yaquiz_results_general for a quiz
+    //based on com_yaquiz_results
+    public function recalculateGeneralStatsFromSaved($quiz_id){
+
+        //user needs core.delete permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.delete', 'com_yaquiz')) {
+            throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
+        }
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('*');
+        $query->from('#__com_yaquiz_results');
+        $query->where('quiz_id = ' . $quiz_id);
+        $db->setQuery($query);
+        $results = $db->loadObjectList();
+
+        $total_attempts = count($results);
+        $total_passed = 0;
+        $total_user_points = 0;
+        $total_possible_points = 0;
+
+        foreach($results as $result){
+            if($result->passed == 1){
+                $total_passed++;
+            }
+            $total_user_points += $result->points;
+            $total_possible_points += $result->total_points;
+        }
+
+        $submissions = 0;
+        $total_average_score = 0;
+        $total_times_passed = 0;
+
+
+        if($total_attempts > 0){
+                //stuff we need to save...
+            $submissions = $total_attempts;
+            $total_average_score = $total_user_points / $total_possible_points;
+            //round to 2 decimal places
+            $total_average_score = round($total_average_score, 2);
+            $total_times_passed = $total_passed;
+        }
+
+
+        //see if we need to insert or update
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('*');
+        $query->from('#__com_yaquiz_results_general');
+        $query->where('quiz_id = ' . $quiz_id);
+        $db->setQuery($query);
+        $result = $db->loadObject();
+
+        if($result){
+            //update
+            $db = Factory::getContainer()->get('DatabaseDriver');
+            $query = $db->getQuery(true);
+            $query->update('#__com_yaquiz_results_general');
+            $query->set('submissions = ' . $submissions);
+            $query->set('total_average_score = ' . $total_average_score);
+            $query->set('total_times_passed = ' . $total_times_passed);
+            $query->where('quiz_id = ' . $quiz_id);
+            $db->setQuery($query);
+            $db->execute();
+        }else{
+            //insert
+            $db = Factory::getContainer()->get('DatabaseDriver');
+            $query = $db->getQuery(true);
+            $query->insert('#__com_yaquiz_results_general');
+            $query->columns('quiz_id, submissions, total_average_score, total_times_passed');
+            $query->values($quiz_id . ', ' . $submissions . ', ' . $total_average_score . ', ' . $total_times_passed);
+            $db->setQuery($query);
+            $db->execute();
+        }
+    }
+
+
 
 }

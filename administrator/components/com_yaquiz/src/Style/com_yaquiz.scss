@@ -1,0 +1,15 @@
+.questionpreview .questiondetails{
+    max-height: 300px;
+    overflow-y: auto;
+}
+.questionicon{
+    padding: 0.5rem;
+    border-radius: 50%;
+    position: absolute;
+    left: -10px;
+    top: 0;
+}
+
+.questionpreview .card-header{
+    padding-left: 1.5rem;
+}

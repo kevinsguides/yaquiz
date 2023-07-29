@@ -224,13 +224,50 @@ class YaquizController extends BaseController
     }
 
 
+    //This will remove all general stats, user scores saved, and user attempt counts
     public function resetAllStatsAndRecords(){
         $quiz_id = $this->input->get('quiz_id', '', 'raw');
         $model = $this->getModel('Yaquiz');
         $model->resetAllStatsAndRecords($quiz_id);
         //redirect to quiz
         $this->setRedirect('index.php?option=com_yaquiz&view=Yaquiz&id=' . $this->input->get('quiz_id', '', 'raw'));
-        $this->setMEssage('All stats and records reset');
+        $this->setMessage('All stats and records reset');
+    }
+
+    public function resetGeneralQuizStats(){
+        $quiz_id = $this->input->get('quiz_id', '', 'raw');
+        $model = $this->getModel('Yaquiz');
+        $model->resetGeneralQuizStats($quiz_id);
+        //redirect to quiz
+        $this->setRedirect('index.php?option=com_yaquiz&view=Yaquiz&id=' . $this->input->get('quiz_id', '', 'raw'));
+        $this->setMessage('General stats reset');
+    }
+
+    public function resetIndividualQuizStats(){
+        $quiz_id = $this->input->get('quiz_id', '', 'raw');
+        $model = $this->getModel('Yaquiz');
+        $model->resetIndividualQuizStats($quiz_id);
+        //redirect to quiz
+        $this->setRedirect('index.php?option=com_yaquiz&view=Yaquiz&id=' . $this->input->get('quiz_id', '', 'raw'));
+        $this->setMessage('Individual stats reset');
+    }
+
+    public function resetAllQuizAttemptCounts(){
+        $quiz_id = $this->input->get('quiz_id', '', 'raw');
+        $model = $this->getModel('Yaquiz');
+        $model->resetAllQuizAttemptCounts($quiz_id);
+        //redirect to quiz
+        $this->setRedirect('index.php?option=com_yaquiz&view=Yaquiz&id=' . $this->input->get('quiz_id', '', 'raw'));
+        $this->setMessage('All attempt counts reset');
+    }
+
+    public function recalculateGeneralStatsFromSaved(){
+        $quiz_id = $this->input->get('quiz_id', '', 'raw');
+        $model = $this->getModel('Yaquiz');
+        $model->recalculateGeneralStatsFromSaved($quiz_id);
+        //redirect to quiz
+        $this->setRedirect('index.php?option=com_yaquiz&view=Yaquiz&id=' . $this->input->get('quiz_id', '', 'raw'));
+        $this->setMessage('General stats recalculated');
     }
 
 }

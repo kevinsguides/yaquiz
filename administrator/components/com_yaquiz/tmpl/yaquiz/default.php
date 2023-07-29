@@ -37,6 +37,10 @@ if(!$canEdit){
     return;
 }
 
+$wa = $app->getDocument()->getWebAssetManager();
+$wa->registerAndUseStyle('yaquiz-admin-yaquizstyle', 'administrator/components/com_yaquiz/src/Style/com_yaquiz.min.css');
+$wa->registerAndUseScript('yaquiz-utils', 'administrator/components/com_yaquiz/src/Scripts/utils.js');
+
 //get the quiz
 
 $item = $this->item;
@@ -274,81 +278,101 @@ foreach ($questions as $question): ?>
 </div>
 </div>
 <br/>
+
 <div class="card">
     <h2 class="card-header bg-danger text-white"><?php echo Text::_('COM_YAQUIZ_BATCHOPS');?></h2>
     <div class="card-body">
-        <p><?php echo Text::_('COM_YAQUIZ_BATCHOPS_DESC');?></p>
+        <div class="row">
+            <div class="col-12 col-lg-5">
+                <div class="card card-body bg-light">
+                <p><?php echo Text::_('COM_YAQUIZ_BATCHOPS_DESC');?></p>
         <input type="hidden" name="quiz_id" value="<?php echo $item->id; ?>">
         <input type="hidden" name="task" value="Yaquiz.executeBatchOps">
         <label for="batch_op"><?php echo Text::_('COM_YAQUIZ_BATCHOPS_WITHSELECTED');?></label>
-        <select name="batch_op" class="form-select">
+        <select name="batch_op" class="form-select mb-1">
             <option value="0"><?php echo Text::_('COM_YAQUIZ_BATCHOPS_SELECTOP');?></option>
             <option value="remove"><?php echo Text::_('COM_YAQUIZ_BATCHOPS_REMOVESELECTED');?></option>
         </select>
         <input type="submit" class="btn btn-info btn-sm" value="<?php echo Text::_('COM_YAQUIZ_BATCHOPS_EXECUTE');?>">
+        <br/>
+        <a href="index.php?option=com_yaquiz&task=Yaquiz.removeAllQuestionsFromQuiz&quiz_id=<?php echo $item->id; ?>" 
+        class="btn btn-danger btn-sm doublecheckdialog"
+        data-confirm="<?php echo Text::_('COM_YAQUIZ_REMOVEALLQNS_CONFIRM');?>"
+        ><span class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_REMOVEALLQNS');?></a>
+                </div>
+            </div>
+            <div class="col-12 col-lg-7">
+            <span class="w-100 d-block"><?php echo Text::_('COM_YAQUIZ_GRADEKEEPING_OPS');?></span>
+            <hr/>
+            <a
+            href="index.php?option=com_yaquiz&task=Yaquiz.recalculateGeneralStatsFromSaved&quiz_id=<?php echo $item->id; ?>"
+            class="btn btn-info btn-sm doublecheckdialog"
+            data-confirm="<?php echo Text::_('COM_YAQUIZ_RECALC_GENERALSTATS_CONFIRM');?>"
+            title="<?php echo Text::_('COM_YAQUIZ_RECALC_GENERALSTATS_DESC');?>">
+            <span class="icon-refresh me-2"></span>
+            <?php echo Text::_('COM_YAQUIZ_RECALC_GENERALSTATS');?></a>
+            </a>
+            <span class="w-100 d-block"><?php echo Text::_('COM_YAQUIZ_RECALC_GENERALSTATS_DESC');?></span>
 
-    </div>
-    <div class="card-footer">
-            <span class="w-100 d-block"><?php echo Text::_('COM_YAQUIZ_MISCOPS');?></span>
-            <a href="index.php?option=com_yaquiz&task=Yaquiz.removeAllQuestionsFromQuiz&quiz_id=<?php echo $item->id; ?>" class="btn btn-danger btn-sm deleteAllQuestionsBtn"><span class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_REMOVEALLQNS');?></a>
+            <hr/>
+
+            <a
+            href="index.php?option=com_yaquiz&task=Yaquiz.resetGeneralQuizStats&quiz_id=<?php echo $item->id; ?>"
+            class="btn btn-warning btn-sm doublecheckdialog"
+            data-confirm="<?php echo Text::_('COM_YAQUIZ_RESET_GENERALSTATS_CONFIRM');?>"
+            title="<?php echo Text::_('COM_YAQUIZ_RESET_GENERALSTATS_DESC');?>">
+            <span class="icon-trash me-2"></span>
+            <?php echo Text::_('COM_YAQUIZ_RESET_GENERALSTATS');?></a>
+            </a>
+            <span class="w-100 d-block"><?php echo Text::_('COM_YAQUIZ_RESET_GENERALSTATS_DESC');?></span>
+
+            <hr/>
+            <a
+            href="index.php?option=com_yaquiz&task=Yaquiz.resetIndividualQuizStats&quiz_id=<?php echo $item->id; ?>"
+            class="btn btn-warning btn-sm doublecheckdialog"
+            data-confirm="<?php echo Text::_('COM_YAQUIZ_RESET_INDIVIDUALSTATS_CONFIRM');?>"
+            title="<?php echo Text::_('COM_YAQUIZ_RESET_ALL_INDIVIDUAL_SCORES_DESC');?>">
+            <span class="icon-trash me-2"></span>
+            <?php echo Text::_('COM_YAQUIZ_RESET_ALL_INDIVIDUAL_SCORES');?></a>
+            </a>
+            <span class="w-100 d-block"><?php echo Text::_('COM_YAQUIZ_RESET_ALL_INDIVIDUAL_SCORES_DESC');?></span>
+
+            <hr/>
+
+            <a
+            href="index.php?option=com_yaquiz&task=Yaquiz.resetAllQuizAttemptCounts&quiz_id=<?php echo $item->id; ?>"
+            class="btn btn-warning btn-sm doublecheckdialog"
+            data-confirm="<?php echo Text::_('COM_YAQUIZ_RESET_ATTEMPTCOUNT_CONFIRM');?>"
+            title="<?php echo Text::_('COM_YAQUIZ_RESET_ATTEMPTCOUNT_DESC');?>">
+            <span class="icon-trash me-2"></span>
+            <?php echo Text::_('COM_YAQUIZ_RESET_ATTEMPTCOUNT');?></a>
+            </a>
+            <span class="w-100 d-block"><?php echo Text::_('COM_YAQUIZ_RESET_ATTEMPTCOUNT_DESC');?></span>
+
+            <hr/>
+
             <a
             href="index.php?option=com_yaquiz&task=Yaquiz.resetAllStatsAndRecords&quiz_id=<?php echo $item->id; ?>"
             title="<?php echo Text::_('COM_YAQUIZ_RESET_ALL_STATS_AND_RECORDS_DESC');?>"
-            class="btn btn-warning btn-sm"><span class="icon-bars"></span> <?php echo Text::_('COM_YAQUIZ_RESET_ALL_STATS_AND_RECORDS');?></a>
+            data-confirm="<?php echo Text::_('COM_YAQUIZ_RESET_ALL_STATS_AND_RECORDS_CONFIRM');?>"
+            class="btn btn-danger btn-sm doublecheckdialog">
+            
+            <span class="icon-trash me-2"></span> <?php echo Text::_('COM_YAQUIZ_RESET_ALL_STATS_AND_RECORDS');?></a>
+            <span class="w-100 d-block"><?php echo Text::_('COM_YAQUIZ_RESET_ALL_STATS_AND_RECORDS_DESC');?></span>
+            </div>
+        </div>
 
-</div>
+
+    </div>
+
+
+
+
 </div>
 
 
 </form>
 </div>
-
-
-
-<script>
-const deleteQuizBtns = document.querySelectorAll('.deleteAllQuestionsBtn');
-//add click listeners
-
-deleteQuizBtns.forEach((btn) => {
-
-    btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        //show confirm
-        const confirm = window.confirm('<?php echo Text::_('COM_YAQUIZ_REMOVEALLQNS_CONFIRM'); ?>');
-        if (confirm) {
-            //go to href from btn
-            let goto = btn.getAttribute('href');
-            window.location.href = goto;
-            
-        }
-
-        
-    });
-
-});
-
-
-</script>
-
-
-<style>
-.questionpreview .questiondetails{
-    max-height: 300px;
-    overflow-y: auto;
-}
-.questionicon{
-    padding: 0.5rem;
-    border-radius: 50%;
-    position: absolute;
-    left: -10px;
-    top: 0;
-}
-
-.questionpreview .card-header{
-    padding-left: 1.5rem;
-}
-</style>
-
 
 <br/>
 <a href="https://kevinsguides.com/tips" class="btn btn-success btn-lg"><?php echo Text::_('COM_YAQUIZ_SUPPORT_THIS_PROJECT');?></a>

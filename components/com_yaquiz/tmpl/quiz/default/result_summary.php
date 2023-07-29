@@ -37,10 +37,13 @@ $html .= '<div class="card">
                 $html .= '<h4>'.Text::_('COM_YAQ_QSTATS').'</h4>';
                 $html .= '<p>'.Text::sprintf('COM_YAQ_ATTEMPTCOUNT', $gen_stats->submissions).'</p>';
                 $html .= '<p>'.Text::sprintf('COM_YAQ_AVGSCORE', $gen_stats->total_average_score).'</p>';
-                $percentWhoPassed = $gen_stats->total_times_passed / $gen_stats->submissions * 100;
-                //to 1 decimal
-                $percentWhoPassed = round($percentWhoPassed, 1);
-                $html .= '<p>'.Text::sprintf('COM_YAQ_PERCENTPASS', $percentWhoPassed).'</p>';
+                if ($gen_stats->submissions > 0){
+                    $percentWhoPassed = $gen_stats->total_times_passed / $gen_stats->submissions * 100;
+                    //to 1 decimal
+                    $percentWhoPassed = round($percentWhoPassed, 1);
+                    $html .= '<p>'.Text::sprintf('COM_YAQ_PERCENTPASS', $percentWhoPassed).'</p>';
+                }
+
             }
 
 
