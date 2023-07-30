@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function () {
             'questionIds': questionIds,
         };
 
-        const url = 'index.php?option=com_yaquiz&task=scriptaction.saveQuestionOrdering&format=json';
+        const url = 'index.php?option=com_yaquiz&task=ScriptAction.saveQuestionOrdering&format=json';
 
         //send fetch request
         fetch(url, {
