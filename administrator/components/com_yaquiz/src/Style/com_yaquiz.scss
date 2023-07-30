@@ -16,7 +16,7 @@
 
 //if has form-check-input checked
 .questionpreview:has(.form-check-input:checked){
-    border: 2px solid #28a745;
+    border: 2px solid #17d1ff;
 }
 
 
@@ -25,6 +25,11 @@
     padding-top: 5px;
     background-color: #c5c5c5;
 
+}
+
+
+.card.drag-item.questionpreview:has(.form-check-input:checked){
+    background:  rgb(10, 10, 10);
 }
 
 .dragging{

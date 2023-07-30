@@ -1,3 +1,6 @@
+//this is script for the quiz default view with all questions and such
+//mainly handles drag drop feature for ordering questions
+
 document.addEventListener('DOMContentLoaded', function () {
 
 
@@ -5,12 +8,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const toast = document.getElementById('toasty');
     const toastBody = document.getElementById('toasty-body');
     const toastTitle = document.getElementById('toasty-title');
-    const toastClose = document.getElementById('toasty-close');
 
 
 
 
-        // .drag-item can be dragged to change the order
+    // .drag-item can be dragged to change the order
     // .drag-dropzone are the dropzones
     // every .drag-item has a data-order attribute with the current order starting from 1
     // every .drag-dropzone has a data-order attribute with the current order starting from 0
@@ -39,6 +41,31 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             );
         });
+
+        //when it is actively being dragged, check if we need to scroll
+        item.addEventListener('drag', (e) => {
+
+            //get the mouse position
+            const mouseY = e.clientY;
+
+            //the top of the window is 0
+            //the bottom of the window is window.innerHeight
+
+            //if mouseY is less than 100, scroll up
+            if (mouseY < 100) {
+                window.scrollBy(0, -15);
+            }
+
+            //if mouseY is greater than window.innerHeight - 100, scroll down
+            if (mouseY > window.innerHeight - 100) {
+                window.scrollBy(0, 15);
+            }
+
+
+
+
+        });
+
     });
 
     //when someone drags an item over a dropzone
@@ -139,19 +166,26 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
-                toastTitle.innerText = 'Success';
-                toastBody.innerText = 'Question ordering saved.';
+                toastTitle.innerText = COM_YAQUIZ_SUCCESS;
+                toastBody.innerText = COM_YAQUIZ_ORDER_SAVED;
                 toast.classList.add('show');
                 setTimeout(function () {
                     toast.classList.remove('show');
                 }
                     , 3000);
-                    
+
             }
             )
             .catch((error) => {
-                console.error('Error:', error);
+                toastTitle.innerText = COM_YAQUIZ_ERROR;
+                toastBody.innerText = COM_YAQUIZ_ORDER_NOT_SAVED;
+                toast.classList.add('show');
+                setTimeout(function () {
+                    toast.classList.remove('show');
+                }
+
+                    , 3000);
+
             }
             );
 
