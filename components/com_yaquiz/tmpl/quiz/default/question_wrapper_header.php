@@ -4,6 +4,11 @@
  * @license     GNU General Public License version 2 or later;
 */
 
+/*
+* This layout file is displayed before each question in the quiz.
+* It should open the container the question is displayed in.
+* The question answers are displayed after this layout, before the footer.
+*/
 
 defined ( '_JEXEC' ) or die ();
 use Joomla\CMS\Language\Text;
@@ -22,6 +27,8 @@ if (isset($question->defaultanswer) && $question->defaultanswer === 'missing') {
     <h3 class="card-header"><?php echo $itemMissing . $formatted_questionnum . $question->question;?></h3>
     <div class="card-body">
         <?php echo $question->details;?>
+
+        <?php // fields user uses to answer question appear here ?>
 
 
 

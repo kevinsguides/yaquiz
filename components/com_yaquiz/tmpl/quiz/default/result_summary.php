@@ -22,7 +22,7 @@ $html .= '<div class="card">
 
             //progress bar display
             $passColor = ($results->passfail === 'pass') ? 'bg-success' : 'bg-danger';
-            $html .= '<div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="' . $resultPercent . '" aria-valuemin="0" aria-valuemax="100">';
+            $html .= '<div class="progress" role="progressbar" aria-label="grade" aria-valuenow="' . $resultPercent . '" aria-valuemin="0" aria-valuemax="100">';
             $html .= '<div class="progress-bar ' . $passColor . '" style="width: ' . $resultPercent . '%">' . $resultPercent . '%</div>  </div>';
             $html .= '<br/>';
 

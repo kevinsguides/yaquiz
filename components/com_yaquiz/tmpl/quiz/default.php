@@ -2,9 +2,18 @@
 /*
  * @copyright   (C) 2023 KevinsGuides.com
  * @license     GNU General Public License version 2 or later;
+ * 
+ * This file loads the quiz intro and questions all on one page. This is the default single-page quiz layout.
+ * 
+ * It should not contain any layout elements, but instead render the layout elements from the theme subdirectory.
+ * If you want to create a new style, you are suggested to override the "default" folder files 
+ * in the subdirectory this file is in
+ * 
 */
 
 namespace KevinsGuides\Component\Yaquiz\Site\View\Quiz;
+
+defined('_JEXEC') or die;
 
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Uri\Uri;
@@ -12,18 +21,11 @@ use KevinsGuides\Component\Yaquiz\Site\Helper\QuestionBuilderHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
-
-
-
-
-defined('_JEXEC') or die;
+use Joomla\CMS\Language\Text;
 
 
 $app = Factory::getApplication();
 $wam = $app->getDocument()->getWebAssetManager();
-$style = 'components/com_yaquiz/src/Style/quiz.css';
-$wam->registerAndUseStyle('com_yaquiz.quiz', $style);
-
 
 
 //get config from component
@@ -44,12 +46,20 @@ if($showAttemptsLeft == '1'){
     $showAttemptsLeft = true;
 }
 
+
+//determine theme to use
 $theme = $globalParams->get('theme','default');
 $stylefile = '/components/com_yaquiz/tmpl/' . $theme . '/style.css';
 //if file exists
-if (file_exists(JPATH_ROOT . $stylefile)) {
-    $wam->registerAndUseStyle('com_yaquiz.quizstyle', $stylefile);
+if (!file_exists(JPATH_ROOT . $stylefile)) {
+    $stylefile = 'components/com_yaquiz/src/Style/quiz.css';
 }
+$wam->registerAndUseStyle('com_yaquiz.quiz', $stylefile);
+
+//theme layout files
+$error_page = (JPATH_SITE . '/components/com_yaquiz/tmpl/quiz/' . $theme . '/error.php');
+$layout_template_intro = (JPATH_SITE . '/components/com_yaquiz/tmpl/quiz/' . $theme . '/singlepage_intro.php');
+$layout_submit_btn = (JPATH_SITE . '/components/com_yaquiz/tmpl/quiz/' . $theme . '/submit.php');
 
 
 if ($app->input->get('status') == 'retry') {
@@ -90,25 +100,19 @@ if ($globalParams->get('record_hits') === '1') {
 
 
 //if the quiz is null, show error
-if ($quiz == null):
-    ?>
-    <div class="card m-3">
-        <div class="card-body">
-            <h1><?php echo \JText::_('COM_YAQ_NOTFOUND') ?></h1>
-            <p><?php echo \JText::_('COM_YAQ_NOTFOUND_MORE') ?></p>
-        </div>
-    </div>
-    <?php
-else:
+if ($quiz == null){
 
-    
-    $template_intro = (JPATH_SITE . '/components/com_yaquiz/tmpl/quiz/' . $theme . '/singlepage_intro.php');
-    
+    $error = new \stdClass();
+    $error->type = 'error';
+    $error->message = Text::_('COM_YAQUIZ_QUIZ_NOT_FOUND');
+    $error->title = Text::_('COM_YAQUIZ_QUIZ_NOT_FOUND');
+    include($error_page);
 
-    ?>
-    <?php include($template_intro); ?>
+} else {
 
-        <?php if ($quizparams->quiz_displaymode == 'default'): ?>
+     include($layout_template_intro);
+
+        if ($quizparams->quiz_displaymode == 'default'): ?>
 
             <form action="<?php echo Uri::root(); ?>index.php?option=com_yaquiz&task=quiz.submitquiz" method="post">
                 <input type="hidden" name="quiz_id" value="<?php echo $quiz->id; ?>" />
@@ -139,12 +143,10 @@ else:
                 <?php endforeach; ?>
 
                 <?php echo HtmlHelper::_('form.token'); ?>
-                <button type="submit" class="btn btn-success btn-lg"><?php echo \JText::_('COM_YAQ_SUBMITQUIZ') ?></button>
+                <?php include($layout_submit_btn); ?>
             </form>
 
-        <?php endif; ?>
+        <?php endif;
+    }
 
-
-    <?php
-endif;
 ?>

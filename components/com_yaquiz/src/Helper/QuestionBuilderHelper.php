@@ -32,9 +32,9 @@ class QuestionBuilderHelper
     public function buildQuestion($question, $quiz_params)
     {
         //get the question params
-        $params = $question->params;
+        $question_params = $question->params;
         //get question type
-        $questionType = $params->question_type;
+        $questionType = $question_params->question_type;
         $formatted_questionnum = '';
         if ($quiz_params->quiz_question_numbering == 1 && $questionType != 'html_section') {
             Log::add('trying to get question id ' . $question->id, Log::INFO, 'com_yaquiz');
@@ -56,7 +56,7 @@ class QuestionBuilderHelper
 
         //if question type is multiple_choice
         if ($questionType == 'multiple_choice') {
-            echo $this->buildMChoice($question, $params);
+            echo $this->buildMChoice($question, $question_params);
         } else if ($questionType == 'true_false') {
             echo $this->build_truefalse($question);
         } else if ($questionType == 'fill_blank') {
@@ -73,7 +73,7 @@ class QuestionBuilderHelper
         return '';
         //return $html;
     }
-    protected function buildMChoice($question, $params)
+    protected function buildMChoice($question, $question_params)
     {
         $html = '';
         //get the answers
@@ -102,7 +102,7 @@ class QuestionBuilderHelper
             $answerArr[] = $ans;
         }
         //if randomize answers
-        if ($params->randomize_mchoice == 1 || ($this->globalParams->get('randomize_mchoice') == 1 && $params->randomize_mchoice == -1)) {
+        if ($question_params->randomize_mchoice == 1 || ($this->globalParams->get('randomize_mchoice') == 1 && $question_params->randomize_mchoice == -1)) {
             shuffle($answerArr);
         }
         //add answers to html
