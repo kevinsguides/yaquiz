@@ -1,3 +1,0 @@
-Styles placed in a "style.css" file in this directory tmpl/quiz/default 
-will be loaded over the provided css file...
-this is a work in progress

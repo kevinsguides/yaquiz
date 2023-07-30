@@ -22,6 +22,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
 use Joomla\CMS\Language\Text;
+use KevinsGuides\Component\Yaquiz\Site\Helper\ThemeHelper;
 
 
 $app = Factory::getApplication();
@@ -47,19 +48,17 @@ if($showAttemptsLeft == '1'){
 }
 
 
+
+
 //determine theme to use
-$theme = $globalParams->get('theme','default');
-$stylefile = '/components/com_yaquiz/tmpl/' . $theme . '/style.css';
-//if file exists
-if (!file_exists(JPATH_ROOT . $stylefile)) {
-    $stylefile = 'components/com_yaquiz/src/Style/quiz.css';
-}
+
+$stylefile = ThemeHelper::findFile('style.css');
 $wam->registerAndUseStyle('com_yaquiz.quiz', $stylefile);
 
 //theme layout files
-$error_page = (JPATH_SITE . '/components/com_yaquiz/tmpl/quiz/' . $theme . '/error.php');
-$layout_template_intro = (JPATH_SITE . '/components/com_yaquiz/tmpl/quiz/' . $theme . '/singlepage_intro.php');
-$layout_submit_btn = (JPATH_SITE . '/components/com_yaquiz/tmpl/quiz/' . $theme . '/submit.php');
+$error_page = ThemeHelper::findFile('error.php');
+$layout_template_intro = ThemeHelper::findFile('singlepage_intro.php');
+$layout_submit_btn = ThemeHelper::findFile('submit.php');
 
 
 if ($app->input->get('status') == 'retry') {

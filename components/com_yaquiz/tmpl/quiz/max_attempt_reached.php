@@ -5,7 +5,7 @@ namespace KevinsGuides\Component\Yaquiz\Site\View\Quiz;
 defined ( '_JEXEC' ) or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+use KevinsGuides\Component\Yaquiz\Site\Helper\ThemeHelper;
 
 //if $this-> item is already set
 if (isset($this->item)) {
@@ -24,7 +24,7 @@ $error->type = 'error';
 $error->message = Text::_('COM_YAQ_MAX_ATTEMPTS_REACHED');
 $error->title = $quiz->title;
 
-$error_page = (JPATH_SITE . '/components/com_yaquiz/tmpl/quiz/' . $theme . '/error.php');
+$error_page = ThemeHelper::findFile('error.php');
 include($error_page);
 
 ?>

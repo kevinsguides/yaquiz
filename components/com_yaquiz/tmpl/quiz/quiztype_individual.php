@@ -8,14 +8,16 @@
  * renders individual pages for each question with help of questionbuilder class
  * a better name for this would have been multi_page but that's what we're stuck with
 */
+
+
+defined ( '_JEXEC' ) or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use KevinsGuides\Component\Yaquiz\Site\Helper\QuestionBuilderHelper;
 use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
-
-defined ( '_JEXEC' ) or die;
+use KevinsGuides\Component\Yaquiz\Site\Helper\ThemeHelper;
 
 $currPage = $this->currPage;
 
@@ -47,16 +49,8 @@ if($showAttemptsLeft == '1'){
     $showAttemptsLeft = true;
 }
 
-$theme = $gConfig->get('theme','default');
-$stylefile = '/components/com_yaquiz/tmpl/' . $theme . '/style.css';
-//if file exists
-if (file_exists(JPATH_ROOT . $stylefile)) {
-    $wam->registerAndUseStyle('com_yaquiz.quizstyle', $stylefile);
-}
-else{
-$style = 'components/com_yaquiz/src/Style/quiz.css';
-$wam->registerAndUseStyle('com_yaquiz.quiz', $style);
-}
+$wam->registerAndUseStyle('com_yaquiz.quiz', ThemeHelper::findFile('style.css'));
+
 
 
 $model = new QuizModel();
@@ -94,8 +88,7 @@ HTMLHelper::_('behavior.keepalive');
     ?>
 
     <?php
-        $template = (JPATH_SITE . '/components/com_yaquiz/tmpl/quiz/' . $theme . '/multipage_pagewrapper.php');
-        include($template);
+        include(ThemeHelper::findFile('multipage_pagewrapper.php'));
     ?>
 
 
