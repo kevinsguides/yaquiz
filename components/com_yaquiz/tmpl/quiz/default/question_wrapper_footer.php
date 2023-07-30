@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 
 </div>
 
-<?php   if($quiz_params->quiz_use_points == 1) :?>
+<?php   if($quiz_params->quiz_use_points == 1 && $questionType != 'html_section') :?>
 <div class="card-footer">
     <?php
   
