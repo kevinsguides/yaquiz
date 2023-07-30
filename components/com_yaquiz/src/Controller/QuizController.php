@@ -196,10 +196,12 @@ class QuizController extends BaseController
         }
 
         //echo $buildResults;
-        $this->setRedirect('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id);
 
         //set the results state var
         $app->setUserState('com_yaquiz.results', $buildResults);
+        $this->setRedirect('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id);
+
+
     }
 
 

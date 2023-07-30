@@ -13,6 +13,8 @@
             default="default"
             >
             <option value="default">COM_YAQUIZ_STYLEDEFAULT</option>
+            <option value="dark">COM_YAQUIZ_STYLE_DARK</option>
+            <option value="custom">COM_YAQUIZ_STYLE_CUSTOM</option>
         </field>
         <field
             name="record_hits"

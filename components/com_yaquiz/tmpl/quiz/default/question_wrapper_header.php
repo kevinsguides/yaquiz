@@ -23,7 +23,7 @@ if (isset($question->defaultanswer) && $question->defaultanswer === 'missing') {
 
 ?>
 
-<div class="card">
+<div class="card yaq-question">
     <h3 class="card-header"><?php echo $itemMissing . $formatted_questionnum . $question->question;?></h3>
     <div class="card-body">
         <?php echo $question->details;?>

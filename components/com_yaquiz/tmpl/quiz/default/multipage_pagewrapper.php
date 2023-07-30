@@ -10,11 +10,11 @@ use Joomla\CMS\Uri\Uri;
 
 ?>
 
-<div class="card">
+<div class="card yaq-page">
 <div class="card-header">
     <h1><?php echo $quiz->title; ?></h1>
 </div>
-<div class="p-1">
+<div class="card-body p-1">
 
 <?php if ($currPage == 0){
     echo $quiz->description;

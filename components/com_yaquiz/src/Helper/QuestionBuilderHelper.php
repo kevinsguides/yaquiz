@@ -11,6 +11,7 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
+use KevinsGuides\Component\Yaquiz\Site\Helper\ThemeHelper;
 
 defined('_JEXEC') or die;
 class QuestionBuilderHelper
@@ -22,7 +23,6 @@ class QuestionBuilderHelper
     {
         $this->globalParams = Factory::getApplication()->getParams('com_yaquiz');
         $this->db = Factory::getContainer()->get('DatabaseDriver');
-        $this->theme = $this->globalParams->get('theme','default');
     }
 
 
@@ -48,9 +48,7 @@ class QuestionBuilderHelper
 
         $html = '';
         
-        $question_wrapper_header = (JPATH_SITE . '/components/com_yaquiz/tmpl/quiz/' . $this->theme . '/question_wrapper_header.php');
-        $question_wrapper_footer = (JPATH_SITE . '/components/com_yaquiz/tmpl/quiz/' . $this->theme . '/question_wrapper_footer.php');
-        include($question_wrapper_header);
+        include(ThemeHelper::findFile('question_wrapper_header.php'));
 
 
 
@@ -68,7 +66,7 @@ class QuestionBuilderHelper
             echo 'question type' . $questionType . ' not supported';
         }
 
-        include($question_wrapper_footer);
+        include(ThemeHelper::findFile('question_wrapper_footer.php'));
 
         return '';
         //return $html;
@@ -219,8 +217,7 @@ class QuestionBuilderHelper
         }
 
         //include the template for the result_summary.php template
-        $template = (JPATH_SITE . '/components/com_yaquiz/tmpl/quiz/' . $theme . '/result_summary.php');
-        include($template);
+        include(ThemeHelper::findFile('result_summary.php'));
         $html .= $feedback;
         return $html;
     }
@@ -228,13 +225,8 @@ class QuestionBuilderHelper
 
     protected function getQuestionFeedback($quiz_id, $question, $iscorrect, $useranswer, $questionnum)
     {
-        $theme = $this->globalParams->get('theme', 'default');
-        $template = (JPATH_SITE . '/components/com_yaquiz/tmpl/quiz/' . $theme . '/result_wrapper.php');
-
-        include($template);
+        include(ThemeHelper::findFile('result_wrapper.php'));
         return $html;
-
-
     }
 
     protected function getGeneralQuizStats($quiz_id){

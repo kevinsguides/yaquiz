@@ -11,7 +11,7 @@ use Joomla\CMS\Language\Text;
 ?>
 
 
-<div class="card">
+<div class="card yaq-intro">
     <h2 class="card-header">
         <?php echo $quiz->title; ?>
     </h2>

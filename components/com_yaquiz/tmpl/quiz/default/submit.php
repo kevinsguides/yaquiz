@@ -16,6 +16,6 @@ use Joomla\CMS\Language\Text;
 
 ?>
 
-<button type="submit" class="btn btn-success btn-lg"><?php echo Text::_('COM_YAQ_SUBMITQUIZ') ?></button>
+<button type="submit" class="btn btn-success btn-lg yaq-submit"><?php echo Text::_('COM_YAQ_SUBMITQUIZ') ?></button>
 
 

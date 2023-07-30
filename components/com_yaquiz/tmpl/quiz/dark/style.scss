@@ -1,0 +1,121 @@
+label.mchoice {
+    width: 100%;
+    background: rgb(10, 10, 10);
+    position: relative;
+    color: rgb(255, 255, 255);
+    padding: 0.5rem 0.5rem 0.5rem 3.5rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    cursor: pointer;
+
+    &::before{
+        content: '○';
+        background: #3d3d3d;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 24px;
+        vertical-align: middle;
+        padding: 0 0.5rem;
+    }
+
+    &:hover{
+        background: rgb(0, 0, 0);
+    }
+
+}
+
+
+  
+input:checked{
+    + label.mchoice {
+        background-color: black;
+        color: white; 
+        &::before{
+            content: '✓';
+            background: #002b00;
+            height: 100%;
+            position: absolute;
+            left: 0;
+        
+            vertical-align: middle;
+            padding: 0 0.5rem;
+        }
+    }
+}
+
+.card.yaq-question{
+    --card-border-color: rgb(22, 22, 22);
+
+    color: white;
+    .card-header{
+        background:rgb(22, 22, 22);
+        padding: 0.5rem;
+    }
+
+    .card-body{
+        background:rgb(44, 44, 44);
+        padding: 0.5rem;
+    }
+
+    .card-footer{
+        background:rgb(22, 22, 22);
+        padding: 0.5rem;
+    }
+
+}
+
+
+
+.btn.yaq-submit{
+    background: rgb(12, 12, 12);
+    color: white;
+    &:hover{
+        background: rgb(0, 0, 0);
+        color: white;
+    }
+}
+
+
+.card.yaq-intro{
+    --card-border-color: rgb(22, 22, 22);
+    .card-header{
+        background:rgb(22, 22, 22);
+        padding: 0.5rem;
+        color: white;
+    }
+
+    .card-body{
+        background:rgb(44, 44, 44);
+        padding: 0.5rem;
+        color: white;
+    }
+
+    .card-footer{
+        background:rgb(22, 22, 22);
+        padding: 0.5rem;
+        color: white;
+    }
+}
+
+.card.yaq-page{
+    --card-border-color: rgb(22, 22, 22);
+    .card-header{
+        background:rgb(22, 22, 22);
+        padding: 0.5rem;
+        color: white;
+    }
+
+    .card-body{
+        background:rgb(44, 44, 44);
+        padding: 0.5rem;
+        color: white;
+    }
+
+    .card-footer{
+        background:rgb(22, 22, 22);
+        padding: 0.5rem;
+        color: white;
+    }
+}

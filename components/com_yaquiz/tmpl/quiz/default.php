@@ -55,6 +55,7 @@ if($showAttemptsLeft == '1'){
 $stylefile = ThemeHelper::findFile('style.css');
 $wam->registerAndUseStyle('com_yaquiz.quiz', $stylefile);
 
+
 //theme layout files
 $error_page = ThemeHelper::findFile('error.php');
 $layout_template_intro = ThemeHelper::findFile('singlepage_intro.php');

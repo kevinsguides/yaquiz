@@ -5,21 +5,21 @@
 */
 
 namespace KevinsGuides\Component\Yaquiz\View\Quiz;
+
 use Joomla\CMS\Factory;
+use KevinsGuides\Component\Yaquiz\Site\Helper\ThemeHelper;
 
 defined('_JEXEC') or die;
 
 //get this item
 $item = $this->get('Item');
 
-
 //get userstate results
 $app = Factory::getApplication();
 $wam = $app->getDocument()->getWebAssetManager();
+$wam->registerAndUseStyle('com_yaquiz.quiz', ThemeHelper::findFile('style.css'));
 
-$results = $app->getUserState('com_yaquiz.results');
-
-
+$results=$app->getUserState('com_yaquiz.results');
 
 //get config from component
 $globalParams = $app->getParams('com_yaquiz');
@@ -30,12 +30,7 @@ if ($globalParams->get('get_mathjax') === '2') {
     $wam->registerAndUseScript('com_yaquiz.mathjaxlocal', 'components/com_yaquiz/js/mathjax/es5/tex-svg.js', [], ['defer' => true]);
 }
 
-$theme = $globalParams->get('theme','default');
-$stylefile = '/components/com_yaquiz/tmpl/' . $theme . '/style.css';
-//if file exists
-if (file_exists(JPATH_ROOT . $stylefile)) {
-    $wam->registerAndUseStyle('com_yaquiz.quizstyle', $stylefile);
-}
+
 
 
 $wam->useStyle('fontawesome');
