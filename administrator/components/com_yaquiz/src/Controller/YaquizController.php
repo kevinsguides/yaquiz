@@ -16,6 +16,12 @@ use Joomla\Component\Menus\Administrator\Controller\ItemController;
 use Joomla\Input\Input;
 use JSession;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+
+//use json response
+use Joomla\CMS\Response\JsonResponse;
+
+
 
 defined('_JEXEC') or die;
 
@@ -24,6 +30,7 @@ use Joomla\CMS\MVC\Controller\BaseController;
 class YaquizController extends BaseController
 
 {
+
     public function __construct($config = [])
     {
         Log::add('YaquizController::__construct() called', Log::INFO, 'com_yaquiz');
@@ -287,5 +294,6 @@ class YaquizController extends BaseController
         $this->setRedirect('index.php?option=com_yaquiz&view=Yaquiz&id=' . $this->input->get('quiz_id', '', 'raw'));
         $this->setMessage('General stats recalculated');
     }
+
 
 }

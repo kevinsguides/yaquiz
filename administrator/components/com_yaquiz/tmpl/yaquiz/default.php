@@ -19,7 +19,10 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+
 use KevinsGuides\Component\Yaquiz\Administrator\Model\QuestionModel;
+
+
 //this the template to display 1 quiz info
 
 defined('_JEXEC') or die;
@@ -39,6 +42,7 @@ if(!$canEdit){
 $wa = $app->getDocument()->getWebAssetManager();
 $wa->registerAndUseStyle('yaquiz-admin-yaquizstyle', 'administrator/components/com_yaquiz/src/Style/com_yaquiz.min.css');
 $wa->registerAndUseScript('yaquiz-utils', 'administrator/components/com_yaquiz/src/Scripts/utils.js');
+$wa->registerAndUseScript('yaquiz-utils', 'administrator/components/com_yaquiz/src/Scripts/yaquiz-default.js');
 
 //get the quiz
 
@@ -142,11 +146,15 @@ $questions = $model->getQuestionsInQuiz($item->id);
 $quizlink = Uri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
 ?>
 
+<script>
+//just some language constants
+const COM_YAQUIZ_ORDER = '<?php echo Text::_('COM_YAQUIZ_ORDER'); ?>';
+</script>
+
+
 <div class="container">
 <div class="card">
 <h1 class="card-header bg-light"><?php echo Text::_('COM_YAQUIZ_DETAILS');?>: <?php echo $item->title; ?></h1>
-
-
 
 <div class="card-body">
     <p><?php echo $item->description; ?></p>
@@ -214,13 +222,24 @@ $quizlink = Uri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
     <?php endif;  ?>
     <hr/>
 
+    <!-- items dropped here will get a new order of 0 -->
+    <div class="drag-dropzone"
+        data-order="0"
+    >
+    </div>
+
 <?php 
 //loop through questions in this quiz
 foreach ($questions as $question): ?>
 
-    <div class="card mb-2 questionpreview text-dark">
+    <div class="card mb-2 questionpreview text-dark drag-item"
+        data-order="<?php echo $question->ordering; ?>"
+        draggable="true"
+        id="qn<?php echo $question->id; ?>"
+        data-questionid="<?php echo $question->id; ?>"
+    >
         <div class="card-header p-1 bg-light">
-        <span class="icon-question questionicon bg-light"> </span>
+        <span class="icon-question questionicon bg-light draghandle"> </span>
             <span class="w-100 ps-3" id="qn<?php echo $question->id; ?>"><?php echo $question->question; ?></span>
             <input class="float-end form-check-input" type="checkbox" name="selectedQuestions[]" value="<?php echo $question->id;?>"></input>
         </div>
@@ -242,7 +261,7 @@ foreach ($questions as $question): ?>
         <div class="card-footer bg-light p-1">
         <a class="btn btn-danger btn-sm" title="<?php echo Text::_('COM_YAQUIZ_REMOVE_TITLE');?>" href="index.php?option=com_yaquiz&task=yaquiz.removeQuestionFromQuiz&quiz_id=<?php echo $item->id; ?>&question_id=<?php echo $question->id; ?>"><span class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_REMOVE');?></a>
         
-        <span class="badge bg-secondary"><?php echo Text::_('COM_YAQUIZ_ORDER');?>: <?php echo $question->ordering; ?></span>
+        <span class="badge bg-secondary orderbadge"><?php echo Text::_('COM_YAQUIZ_ORDER');?>: <?php echo $question->ordering; ?></span>
         <span class="badge bg-secondary"> <?php echo Text::_('COM_YAQUIZ_TYPE');?>: 
 
     <?php
@@ -275,6 +294,9 @@ foreach ($questions as $question): ?>
 
 </div>
     </div>
+<div class="drag-dropzone"
+    data-order="<?php echo $question->ordering; ?>">
+</div>
 <?php endforeach; ?>
 
 </div>

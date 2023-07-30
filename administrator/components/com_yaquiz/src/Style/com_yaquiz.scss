@@ -18,3 +18,34 @@
 .questionpreview:has(.form-check-input:checked){
     border: 2px solid #28a745;
 }
+
+
+.drag-item{
+    cursor: move;
+}
+
+.dragging{
+    opacity: 0.5;
+}
+
+.drag-dropzone{
+    display: block;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+    
+}
+
+.drag-dropzone.over{
+    border: 1px dashed #ccc;
+    background-color: #a0fdbf;
+    padding: 1rem;
+}
+
+.drag-dropzone.visible {
+    display: block;
+    border: 1px dashed #ccc;
+    margin-bottom: 0.5rem;
+    background-color: #ffffff5d;
+}
+

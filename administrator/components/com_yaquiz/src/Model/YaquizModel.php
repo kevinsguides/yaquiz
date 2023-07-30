@@ -399,6 +399,44 @@ class YaquizModel extends AdminModel
 
     }
 
+    /**
+     * Change the order of a question in a quiz. This is used when a question is dragged and dropped into a new position
+     * @param $quiz_id int
+     * @param $question_ids array - an array of question ids in the order they should be
+     */
+    public function changeQuestionOrder($quiz_id, $question_ids){
+
+        $app = Factory::getApplication();
+        if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
+            $app->enqueueMessage('Edit permissions required to change question ordering', 'error');
+            return;
+        }
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+
+        //update ordering for each question
+        $i = 1;
+        foreach($question_ids as $question_id){
+            $query = $db->getQuery(true);
+            $query->update('#__com_yaquiz_question_quiz_map');
+            $query->set('ordering = ' . $i);
+            $query->where('quiz_id = ' . $quiz_id);
+            $query->where('question_id = ' . $question_id);
+            $db->setQuery($query);
+            $db->execute();
+            $i++;
+        }
+
+        //call numbering
+        $this->recalculateQuestionNumbering($quiz_id);
+
+        return true;
+
+
+
+    }
+
 
     public function moveQuestionOrderDown($quiz_id, $question_id){
                     //user must have edit permissions to do this
