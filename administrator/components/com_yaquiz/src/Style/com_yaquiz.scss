@@ -20,8 +20,11 @@
 }
 
 
-.drag-item{
+.card.drag-item{
     cursor: move;
+    padding-top: 5px;
+    background-color: #c5c5c5;
+
 }
 
 .dragging{

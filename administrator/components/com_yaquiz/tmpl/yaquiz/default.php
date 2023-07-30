@@ -99,6 +99,8 @@ $this->form->setValue('filter_categories', null, $filters->filter_categories);
 $questionsModel = new \KevinsGuides\Component\Yaquiz\Administrator\Model\QuestionsModel();
 
 
+
+// TODO - make this a function in model instead
 //get a listbox of all questions in the database
 function getQuestionListBox($titleFilter = null, $categoryfilter = null){
 
@@ -144,6 +146,13 @@ $model = $this->getModel();
 $questions = $model->getQuestionsInQuiz($item->id);
 
 $quizlink = Uri::root().'index.php?option=com_yaquiz&view=quiz&id='.$item->id;
+
+HTMLHelper::_('bootstrap.toast');
+//add toast css
+
+
+
+
 ?>
 
 <script>
@@ -397,6 +406,21 @@ foreach ($questions as $question): ?>
 
 </form>
 </div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="toasty" class="toast" role="alert" aria-live="assertive" aria-atomic="true" 
+  data-bs-delay="1000"
+  >
+    <div class="toast-header">
+        <span id="toasty-title" class="me-auto">Title</span>
+      <button class="btn-close" type="button" id="toasty-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body" id="toasty-body">
+      Hello, world! This is a toast message.
+    </div>
+  </div>
+</div>
+
 
 <br/>
 <a href="https://kevinsguides.com/tips" class="btn btn-success btn-lg"><?php echo Text::_('COM_YAQUIZ_SUPPORT_THIS_PROJECT');?></a>

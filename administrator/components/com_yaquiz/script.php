@@ -21,7 +21,7 @@ class com_yaquizInstallerScript
 
     public function update($parent) 
     {
-        echo '<p>' . Text::_('COM_YAQUIZ_UPDATE_TEXT') . '</p>';
+        echo '<p>' . Text::sprintf('COM_YAQUIZ_UPDATE_TEXT', $this->new_version) . '</p>';
 
     }
 

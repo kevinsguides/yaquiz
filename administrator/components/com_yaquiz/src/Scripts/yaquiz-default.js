@@ -1,5 +1,15 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+
+    //toasts
+    const toast = document.getElementById('toasty');
+    const toastBody = document.getElementById('toasty-body');
+    const toastTitle = document.getElementById('toasty-title');
+    const toastClose = document.getElementById('toasty-close');
+
+
+
+
         // .drag-item can be dragged to change the order
     // .drag-dropzone are the dropzones
     // every .drag-item has a data-order attribute with the current order starting from 1
@@ -130,6 +140,14 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
+                toastTitle.innerText = 'Success';
+                toastBody.innerText = 'Question ordering saved.';
+                toast.classList.add('show');
+                setTimeout(function () {
+                    toast.classList.remove('show');
+                }
+                    , 3000);
+                    
             }
             )
             .catch((error) => {
