@@ -111,7 +111,7 @@ if ($filter_title || $filter_categories || $filter_limit) {
 
         <div class="card-header p-1 bg-light">
         <span class="icon-question questionicon bg-light"> </span>
-            <span class="w-100 ps-3" id="qn<?php echo $item->id; ?>"><?php echo $item->question; ?></span>
+            <span class="w-100 ps-3" id="qn<?php echo $item->id; ?>"><a href="index.php?option=com_yaquiz&view=Question&layout=edit&qnid=<?php echo $item->id; ?>"><?php echo $item->question; ?></a></span>
             <input class="float-end form-check-input" type="checkbox" name="selectedQuestions[]" value="<?php echo $item->id;?>"></input>
         </div>
 

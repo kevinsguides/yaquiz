@@ -14,7 +14,7 @@ use Joomla\CMS\Uri\Uri;
 <div class="card-header">
     <h1><?php echo $quiz->title; ?></h1>
 </div>
-<div class="card-body p-1">
+<div class="card-body p-2">
 
 <?php if ($currPage == 0){
     echo $quiz->description;
@@ -50,20 +50,20 @@ use Joomla\CMS\Uri\Uri;
 </div>
 <div class="card-footer">
 <?php if ($currPage == 0):?>
-    <a href="<?php echo Uri::root(); ?>index.php?option=com_yaquiz&view=quiz&id=<?php echo $quiz->id; ?>&page=<?php echo $currPage + 1; ?>" class="btn btn-primary"><?php echo Text::_('COM_YAQ_START_QUIZ');?></a>
+    <a href="<?php echo Uri::root(); ?>index.php?option=com_yaquiz&view=quiz&id=<?php echo $quiz->id; ?>&page=<?php echo $currPage + 1; ?>" class="btn btn-primary yaq-navbtn"><?php echo Text::_('COM_YAQ_START_QUIZ');?></a>
 <?php endif;?>
 <?php if ($currPage > 0 && $currPage <= $totalQuestions):?>
-    <button type="submit" name="nextpage" value="-1" class="btn btn-primary"><?php echo Text::_('COM_YAQ_PREV');?></button>
+    <button type="submit" name="nextpage" value="-1" class="btn btn-primary yaq-navbtn"><?php echo Text::_('COM_YAQ_PREV');?></button>
 <?php endif;?>
 
 <?php if($currPage > 0 && $currPage < $totalQuestions):?>
 
-    <button type="submit" name="nextpage" value="1" class="btn btn-primary"><?php echo Text::_('COM_YAQ_NEXT');?></button>
+    <button type="submit" name="nextpage" value="1" class="btn btn-primary yaq-navbtn"><?php echo Text::_('COM_YAQ_NEXT');?></button>
    
 <?php endif;?>
 
 <?php if ($currPage == $totalQuestions):?>
-    <button type="submit" name="nextpage" value="results" class="btn btn-primary"><?php echo Text::_('COM_YAQ_FINISH');?></button>
+    <button type="submit" name="nextpage" value="results" class="btn btn-primary yaq-navbtn"><?php echo Text::_('COM_YAQ_FINISH');?></button>
 <?php endif;?>
 <span class="float-end">
     <?php echo Text::sprintf('COM_YAQ_PAGEOF', $currPage + 1, $totalQuestions + 1); ?>

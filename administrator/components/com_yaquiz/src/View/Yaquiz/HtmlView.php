@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Uri\Uri;
 
 //this view for 1 quiz
@@ -30,7 +31,9 @@ class HtmlView extends BaseHtmlView
 
         Log::add('HtmlView::display() called', Log::INFO, 'com_yaquiz');
 
-        $toolbar = Toolbar::getInstance('toolbar');
+        //all quiz, comp set, quiz set, prev, quest man
+        //$toolbar = Toolbar::getInstance('toolbar');
+        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar('toolbar');
         //add component options
         
 
@@ -59,19 +62,18 @@ class HtmlView extends BaseHtmlView
             $this->item = $model->getQuiz($id);
             $quizParams = json_decode($this->item->params);
 
-            $toolbar->appendButton('Link', 'backward', 'COM_YAQUIZ_ALLQUIZZES', 'index.php?option=com_yaquiz&view=yaquizzes');
-            if($quizParams->quiz_record_results >= 2){
-                $toolbar->appendButton('Link', 'chart', 'COM_YAQUIZ_RESULTS', 'index.php?option=com_yaquiz&view=yaquiz&layout=results&id='.$id);
-                
-            }
 
-
-            $toolbar->appendButton('Link', 'options', 'COM_YAQUIZ_COMPSETTINGS', 'index.php?option=com_config&view=component&component=com_yaquiz');
+            ToolbarHelper::back('COM_YAQUIZ_ALLQUIZZES', 'index.php?option=com_yaquiz&view=yaquizzes');
             ToolbarHelper::custom('Yaquiz.redirectEdit', 'edit', 'edit', 'COM_YAQUIZ_QUIZSETTINGS', false);
             //an external link with target blank
             ToolbarHelper::custom('Yaquiz.preview', 'link', 'preview', 'COM_YAQUIZ_PREVIEW', false);
             ToolbarHelper::custom('Questions.display', 'checkbox', 'checkbox', 'COM_YAQUIZ_QUESTION_MGR', false);
+            if($quizParams->quiz_record_results > 1){
+                ToolbarHelper::custom('Yaquiz.gotoResults', 'link', 'results', 'COM_YAQUIZ_RESULTS', false);
 
+            }
+
+            ToolbarHelper::preferences('com_yaquiz', 640, 900);
             ToolbarHelper::title(Text::_('COM_YAQUIZ_PAGETITLE_QUIZEDITPREFIX').$this->item->title, 'yaquiz');
            
             $app->setUserState('com_yaquiz.redirectbackto', Uri::getInstance()->toString());

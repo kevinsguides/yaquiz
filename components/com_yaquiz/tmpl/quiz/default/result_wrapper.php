@@ -38,9 +38,9 @@ if ($quizParams->quiz_feedback_showcorrect === '1') {
 }
 
 if ($iscorrect) {
-    $icon = '<i class="fas fa-check-circle text-success"></i>';
+    $icon = '<i class="fas fa-check-circle yaq-icocorrect"></i>';
 } else {
-    $icon = '<i class="fas fa-times-circle text-danger"></i>';
+    $icon = '<i class="fas fa-times-circle yaq-icofail"></i>';
 }
 
 //numbering

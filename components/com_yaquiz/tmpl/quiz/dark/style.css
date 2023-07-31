@@ -102,4 +102,40 @@ input:checked + label.mchoice::before {
   color: white;
 }
 
+.btn.yaq-navbtn {
+  background: rgb(61, 61, 61);
+  color: white;
+  border: 1px solid rgb(7, 7, 7);
+}
+.btn.yaq-navbtn:hover {
+  background: rgb(0, 0, 0);
+  border: 1px solid rgb(7, 7, 7);
+  color: white;
+}
+
+.quiz-results .card {
+  --card-border-color: rgb(22, 22, 22);
+}
+.quiz-results .card-header {
+  background: rgb(22, 22, 22);
+  padding: 0.5rem;
+  color: white;
+}
+.quiz-results .card-body {
+  background: rgb(44, 44, 44);
+  padding: 0.5rem;
+  color: white;
+}
+.quiz-results .card-footer {
+  background: rgb(22, 22, 22);
+  padding: 0.5rem;
+  color: white;
+}
+.quiz-results .yaq-icocorrect {
+  color: rgb(77, 197, 77);
+}
+.quiz-results .yaq-icofail {
+  color: rgb(143, 25, 25);
+}
+
 /*# sourceMappingURL=style.css.map */

@@ -295,5 +295,11 @@ class YaquizController extends BaseController
         $this->setMessage('General stats recalculated');
     }
 
+    public function gotoResults(){
+        $quiz_id = $this->input->get('id', '', 'raw');
+        $this->setRedirect('index.php?option=com_yaquiz&view=yaquiz&layout=results&id=' . $quiz_id);
+
+    }
+
 
 }

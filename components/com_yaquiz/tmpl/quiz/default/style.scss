@@ -43,3 +43,13 @@ input:checked + label.mchoice::before{
 }
 
 
+
+.quiz-results{
+    .yaq-icocorrect{
+        color: rgb(0, 121, 0);
+    }
+    .yaq-icofail{
+        color: rgb(70, 0, 0);
+    }
+
+}
