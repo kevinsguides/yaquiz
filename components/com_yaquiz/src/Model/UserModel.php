@@ -30,8 +30,11 @@ class UserModel extends BaseModel
 
     /**
      * load results for a specific user
+     * @param pk user id
+     * @param limit # of results to return
+     * @param page page of results to return
      */
-    public function getUserResults($pk = null){
+    public function getUserResults($pk = null, $limit = null, $page = null){
 
         //if pk null, assume it's the id of current user
         if ($pk == null){
@@ -39,16 +42,48 @@ class UserModel extends BaseModel
             $pk = $user->id;
         }
 
+        if($limit == null){
+            $limit = 10;
+        }
+
+        if($page == null){
+            $page = 1;
+        }
+
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('*');
         $query->from($db->quoteName('#__com_yaquiz_results'));
         $query->where($db->quoteName('user_id') . ' = ' . $db->quote($pk));
+        $query->setLimit($limit, ($page-1)*$limit);
         //order by newest first
         $query->order('submitted DESC');
         $db->setQuery($query);
         $results = $db->loadObjectList();
         return $results;
+    }
+
+    /**
+     * count # of records for user pk
+     * @param pk user id
+     */
+    public function countTotalResults($pk = null){
+            
+            //if pk null, assume it's the id of current user
+            if ($pk == null){
+                $user = Factory::getApplication()->getIdentity();
+                $pk = $user->id;
+            }
+    
+            $db = Factory::getContainer()->get('DatabaseDriver');
+            $query = $db->getQuery(true);
+            $query->select('COUNT(*)');
+            $query->from($db->quoteName('#__com_yaquiz_results'));
+            $query->where($db->quoteName('user_id') . ' = ' . $db->quote($pk));
+            $db->setQuery($query);
+            $count = $db->loadResult();
+            return $count;
+
     }
 
     public function getIndividualResult($pk = null){

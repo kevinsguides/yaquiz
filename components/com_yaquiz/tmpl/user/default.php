@@ -11,14 +11,25 @@ use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
 
 defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
+//we might make this changeable later
+$filter_limit = 10;
 
 $model = $this->getModel();
 $quizModel = new QuizModel();
 
+$app = Factory::getApplication();
 
+$filter_page = $app->input->get('page', 1, 'INT');
+$page_count = ceil($model->countTotalResults(null) / $filter_limit);
 
+if($filter_page > $page_count){
+    $filter_page = $page_count;
+}
 
-$results = $model->getUserResults();
+$results = $model->getUserResults(null, $filter_limit, $filter_page);
+
 
 ?>
 
@@ -70,4 +81,57 @@ if (count($results) == 0) : ?>
     </tbody>
 </table>
 <?php endif; ?>
+
+<?php if ($page_count > 1) : ?>
+<nav aria-label="user results page navigation">
+    <ul class="pagination">
+        <?php //display up to 10 pages at a time
+        $start_page = $filter_page - 4;
+        $end_page = $filter_page + 5;
+        if($start_page < 1){
+            $start_page = 1;
+            if($page_count > 10){
+                $end_page = 10;
+            } else {
+                $end_page = $page_count;
+            }
+            
+        }
+        if($end_page > $page_count){
+            $end_page = $page_count;
+            if($page_count - 10 > 0){
+                $start_page = $page_count - 10;
+            } else {
+                $start_page = 1;
+            }
+
+        }
+        ?>
+        <?php if($start_page > 1) : ?>
+            <li class="page-item"><a class="page-link" title="<?php echo Text::_('COM_YAQ_FIRST_PAGE') ;?>" href="index.php?option=com_yaquiz&view=user&layout=default&page=1?>">
+            <i class="fas fa-chevron-left"></i></a></li>
+            </a></li>
+        <?php endif; ?>
+
+
+        <?php for($i = $start_page; $i <= $end_page; $i++) : ?>
+            <?php if($i == $filter_page) : ?>
+                <li class="page-item active"><a class="page-link" href="index.php?option=com_yaquiz&view=user&layout=default&page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+            <?php else: ?>
+                <li class="page-item"><a class="page-link" href="index.php?option=com_yaquiz&view=user&layout=default&page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+            <?php endif; ?>
+        <?php endfor; ?>
+
+        <?php 
+            //if total pages > end_page, display last page link
+            if($page_count > $end_page) : ?>
+                <li class="page-item"><a class="page-link" title="<?php echo Text::_('COM_YAQ_LAST_PAGE') ;?>" href="index.php?option=com_yaquiz&view=user&layout=default&page=<?php echo $page_count; ?>"><i class="fas fa-chevron-right"></i></a></li>
+        <?php endif; ?>
+        
+
+    </ul>
+</nav>
+
+<?php endif; ?>
+
 
