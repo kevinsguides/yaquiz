@@ -30,6 +30,7 @@ if($filter_page > $page_count){
 
 $results = $model->getUserResults(null, $filter_limit, $filter_page);
 
+// TODO: add filter by quiz title (only show user quizzes theyve actually taken in list)
 
 ?>
 
@@ -62,7 +63,8 @@ if (count($results) == 0) : ?>
             $formatted_score = $result->points . "/" . $result->total_points . " (" . $result->score . "%)";
 
             //format $result->submitted in human readable format
-            $result->submitted = date('F j, Y, g:i a', strtotime($result->submitted));
+            $submitted_date = date('F j, Y', strtotime($result->submitted));
+            $submitted_time = date('g:i a', strtotime($result->submitted));
 
             $resultsLink = Text::_('COM_YAQ_UNAVAILABLE');
             if($result->full_results != ''){
@@ -74,7 +76,7 @@ if (count($results) == 0) : ?>
                 <td><strong><?php echo $quizTitle; ?></strong></td>
                 <td><?php echo $result->passed; ?></td>
                 <td><?php echo $formatted_score; ?></td>
-                <td><?php echo $result->submitted; ?></td>
+                <td title="<?php echo $submitted_date.' '.$submitted_time; ?>"><?php echo $submitted_date; ?></td>
                 <td><?php echo $resultsLink; ?></td>
             </tr>
         <?php endforeach; ?>

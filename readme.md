@@ -45,6 +45,7 @@ You just need a site running Joomla 4 with a template that uses Bootstrap 5 (mos
 
 * First priority... more testing?
 
+* Accessibility fixes - currently quizzes are not navigable by tab
 * Pagination for quizzes in the backend, and for user results page in front end
   * filters for user results
   * expire/auto remove results after x days
