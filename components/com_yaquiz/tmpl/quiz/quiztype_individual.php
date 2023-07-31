@@ -5,6 +5,7 @@
 */
 
 /**
+ * This is the 1 question per page type
  * renders individual pages for each question with help of questionbuilder class
  * a better name for this would have been multi_page but that's what we're stuck with
 */
@@ -68,7 +69,7 @@ if($currPage > $totalQuestions){
 
 
 
-$qbHelper = new QuestionBuilderHelper();
+$qbHelper = new QuestionBuilderHelper(); //used in includes
 
 HTMLHelper::_('behavior.keepalive');
 
