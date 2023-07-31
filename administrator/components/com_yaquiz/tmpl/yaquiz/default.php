@@ -43,7 +43,7 @@ if (!$canEdit) {
 $wa = $app->getDocument()->getWebAssetManager();
 $wa->registerAndUseStyle('yaquiz-admin-yaquizstyle', 'administrator/components/com_yaquiz/src/Style/com_yaquiz.min.css');
 $wa->registerAndUseScript('yaquiz-utils', 'administrator/components/com_yaquiz/src/Scripts/utils.js');
-$wa->registerAndUseScript('yaquiz-utils', 'administrator/components/com_yaquiz/src/Scripts/yaquiz-default.js');
+$wa->registerAndUseScript('yaquiz-yaquiz', 'administrator/components/com_yaquiz/src/Scripts/yaquiz-default.js');
 
 //get the quiz
 
