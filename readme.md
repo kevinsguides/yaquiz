@@ -38,31 +38,34 @@ You just need a site running Joomla 4 with a template that uses Bootstrap 5 (mos
 * You can set a limit on the number of quiz attempts for logged in users.
 * Permission for viewing other users results
 * Page to view users results in backend
+* reset stats, attempt count, etc.
+* two main styles + custom
 
 ## Todo
 
-
-
+* First priority... more testing?
 
 * Pagination for quizzes in the backend, and for user results page in front end
   * filters for user results
   * expire/auto remove results after x days
   * maybe show all quizzes the user has taken on first page, then their results for each quiz on a separate page, rather than all results for all quiz on one page
-* a cool dashboard for quiz results and such
-* checkins for questions
-* reset hit/sub count button
+* make checkin system work for quizzes and questions
 * quiz by category - a quiz that automatically pulls all questions from a category
 * randomize from pool - ability to select a random # of questions from a category
 * Other question types
     * hot spot
     * matching
     * dropdown or dragging fill in blank
-* Clean/consistent interface
-* Fix Language Files/Constants (~70 done)
-* Additional styles
-
+* Fix Language Files/Constants (~90 done)
+* Use proper Joomla tmpl system
 * Quiz Certificates
-
+* Individually edit student grades, delete individual records, etc.
+* Overhaul/review permissions system
+* Score/range based quizzes (Personality tests, diagnostic tests, range etc.)
+* Email results to teacher and/or student (or just use kind of like a general form builder)
+* Auto category mode - Each quiz is given a unique category and questions are automatically isolated to that quiz
+* Easy insert mode - add quiz questions with JS, more responsive
+* Overhaul JS quiz system to tie in with rest of the system
 
 
 ### Basic Build Instructions
