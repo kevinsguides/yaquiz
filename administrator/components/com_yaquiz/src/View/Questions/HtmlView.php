@@ -6,6 +6,7 @@
 
 
 namespace KevinsGuides\Component\Yaquiz\Administrator\View\Questions;
+
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
@@ -13,24 +14,26 @@ use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 
-defined ( '_JEXEC' ) or die;
+defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
-class HtmlView extends BaseHtmlView{
+class HtmlView extends BaseHtmlView
+{
 
 
     public function display($tpl = null)
     {
-  
+
         //get model
         $model = $this->getModel();
         $app = Factory::getApplication();
         $wa = $app->getDocument()->getWebAssetManager();
 
         $cParams = ComponentHelper::getParams('com_yaquiz');
-        if($cParams->get('load_mathjax')==='1'){
+        if ($cParams->get('load_mathjax') === '1') {
             $wa->registerAndUseScript('com_yaquiz.mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
         }
         $this->form = $model->getForm();
@@ -38,34 +41,32 @@ class HtmlView extends BaseHtmlView{
         $this->items = $model->getItems();
 
         //set menu location
-       
 
 
-        $toolbar = Toolbar::getInstance('toolbar');
-        //if we're on the default layout, add the toolbar
-        if ($this->getLayout() === 'default') {
-            $toolbar->appendButton('Link', 'new', 'COM_YAQUIZ_NEWQUESTION', 'index.php?option=com_yaquiz&view=Question&layout=edit');
-            if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') == true){
-                $toolbar->appendButton('Link', 'file', 'COM_YAQUIZ_IMPORTEXCEL', 'index.php?option=com_yaquiz&view=Questions&layout=insertmulti');
-            }
-           
-        }
-        if ($this->getLayout() === 'insertmulti') {
-            $toolbar->appendButton('Link', 'backward', 'COM_YAQUIZ_QUESTION_MGR', 'index.php?option=com_yaquiz&view=Questions&layout=default');
-        }
+
+
+        $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar('toolbar');
+
         //add component options
-        $toolbar->appendButton('Link', 'options', 'COM_YAQUIZ_COMPSETTINGS', 'index.php?option=com_config&view=component&component=com_yaquiz');
-        $toolbar->appendButton('Link', 'folder', 'JCATEGORIES', 'index.php?option=com_categories&extension=com_yaquiz');
+
         ToolbarHelper::title(Text::_('COM_YAQUIZ_PAGETITLE_QUESTIONS'), 'list');
+
+        //if we're on the default layout, add the toolbar
+        if ($app->getIdentity()->authorise('core.edit', 'com_yaquiz') == true) {
+            if ($this->getLayout() === 'default') {
+                ToolbarHelper::addNew('Question.new', 'COM_YAQUIZ_NEWQUESTION');
+                ToolbarHelper::link('index.php?option=com_yaquiz&view=Questions&layout=insertmulti', 'COM_YAQUIZ_IMPORTEXCEL', 'file', 'COM_YAQUIZ_IMPORTEXCEL', false);
+            }
+        }
+
+        ToolbarHelper::link('index.php?option=com_categories&extension=com_yaquiz', 'JCATEGORIES', 'folder', 'JCATEGORIES', false);
         ToolbarHelper::custom('Yaquizzes.display', 'list', 'list', 'COM_YAQUIZ_QUIZMANAGER', false);
+        ToolbarHelper::preferences('com_yaquiz');
         //ToolbarHelper::addNew('Questions.newQuestion');
 
         //display the view
         $app->setUserState('com_yaquiz.redirectbackto', Uri::getInstance()->toString());
 
         return parent::display($tpl);
-
     }
-
-
 }

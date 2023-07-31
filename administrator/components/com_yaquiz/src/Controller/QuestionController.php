@@ -79,4 +79,12 @@ class QuestionController extends BaseController
         $this->setRedirect($redirect);
         
     }
+
+
+    public function new(){
+        $app = Factory::getApplication();
+        
+        $this->setRedirect('index.php?option=com_yaquiz&view=Question&layout=edit');
+    }
+
 }

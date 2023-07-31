@@ -69,7 +69,7 @@ class HtmlView extends BaseHtmlView
             ToolbarHelper::custom('Yaquiz.preview', 'link', 'preview', 'COM_YAQUIZ_PREVIEW', false);
             ToolbarHelper::custom('Questions.display', 'checkbox', 'checkbox', 'COM_YAQUIZ_QUESTION_MGR', false);
             if($quizParams->quiz_record_results > 1){
-                ToolbarHelper::custom('Yaquiz.gotoResults', 'link', 'results', 'COM_YAQUIZ_RESULTS', false);
+                ToolbarHelper::custom('Yaquiz.gotoResults', 'chart', 'results', 'COM_YAQUIZ_RESULTS', false);
 
             }
 
@@ -77,6 +77,8 @@ class HtmlView extends BaseHtmlView
             ToolbarHelper::title(Text::_('COM_YAQUIZ_PAGETITLE_QUIZEDITPREFIX').$this->item->title, 'yaquiz');
            
             $app->setUserState('com_yaquiz.redirectbackto', Uri::getInstance()->toString());
+
+
 
             return parent::display($tpl);
             
