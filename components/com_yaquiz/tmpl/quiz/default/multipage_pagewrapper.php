@@ -42,31 +42,35 @@ use Joomla\CMS\Uri\Uri;
         $question->defaultanswer = $previous_answer;
     }
     $question->question_number = $currPage;
-    echo $qbHelper->buildQuestion($question, $quiz_params);
+    echo $qbHelper->buildQuestion($question, $quiz_params, 1);
     ?>
     <input type="hidden" name="question_id" value="<?php echo $question->id; ?>" />
 <?php endif;?>
 
 </div>
-<div class="card-footer">
+<div class="card-footer text-center">
 <?php if ($currPage == 0):?>
-    <a href="<?php echo Uri::root(); ?>index.php?option=com_yaquiz&view=quiz&id=<?php echo $quiz->id; ?>&page=<?php echo $currPage + 1; ?>" class="btn btn-primary yaq-navbtn"><?php echo Text::_('COM_YAQ_START_QUIZ');?></a>
+    <a href="<?php echo Uri::root(); ?>index.php?option=com_yaquiz&view=quiz&id=<?php echo $quiz->id; ?>&page=<?php echo $currPage + 1; ?>" class="btn btn-primary yaq-navbtn float-start"><?php echo Text::_('COM_YAQ_START_QUIZ');?></a>
 <?php endif;?>
-<?php if ($currPage > 0 && $currPage <= $totalQuestions):?>
-    <button type="submit" name="nextpage" value="-1" class="btn btn-primary yaq-navbtn"><?php echo Text::_('COM_YAQ_PREV');?></button>
+
+<?php if ($currPage == $totalQuestions):?>
+    <button type="submit" name="nextpage" value="results" class="btn btn-primary yaq-navbtn float-end"><?php echo Text::_('COM_YAQ_FINISH');?></button>
 <?php endif;?>
 
 <?php if($currPage > 0 && $currPage < $totalQuestions):?>
 
-    <button type="submit" name="nextpage" value="1" class="btn btn-primary yaq-navbtn"><?php echo Text::_('COM_YAQ_NEXT');?></button>
-   
+<button type="submit" name="nextpage" value="1" class="btn btn-primary yaq-navbtn float-end"><?php echo Text::_('COM_YAQ_NEXT');?></button>
+
 <?php endif;?>
 
-<?php if ($currPage == $totalQuestions):?>
-    <button type="submit" name="nextpage" value="results" class="btn btn-primary yaq-navbtn"><?php echo Text::_('COM_YAQ_FINISH');?></button>
+<?php if ($currPage > 0 && $currPage <= $totalQuestions):?>
+    <button type="submit" name="nextpage" value="-1" class="btn btn-primary yaq-navbtn float-start"><?php echo Text::_('COM_YAQ_PREV');?></button>
 <?php endif;?>
-<span class="float-end">
+
+<span>
     <?php echo Text::sprintf('COM_YAQ_PAGEOF', $currPage + 1, $totalQuestions + 1); ?>
 </span>
+
+
 </div>
 </div>

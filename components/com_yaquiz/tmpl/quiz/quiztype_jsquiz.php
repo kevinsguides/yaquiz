@@ -1,8 +1,13 @@
 <?php
-/*
- * @copyright   (C) 2023 KevinsGuides.com
- * @license     GNU General Public License version 2 or later;
-*/
+/**
+ * @copyright (C) 2023 KevinsGuides.com
+ * @license GNU General Public License version 2 or later;
+ * 
+ * This file produces a quiz using javascript
+ * it doesn't save results or anything (yet) Just allows users to take quiz and see results
+ */
+
+
 
 namespace KevinsGuides\Component\Yaquiz\Site\View\Quiz;
 defined('_JEXEC') or die;

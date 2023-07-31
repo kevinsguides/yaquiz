@@ -37,8 +37,6 @@ class QuestionBuilderHelper
         $questionType = $question_params->question_type;
         $formatted_questionnum = '';
         if ($quiz_params->quiz_question_numbering == 1 && $questionType != 'html_section') {
-            Log::add('trying to get question id ' . $question->id, Log::INFO, 'com_yaquiz');
-            Log::add('on quiz id ' . $quiz_params->quiz_id, Log::INFO, 'com_yaquiz');
             $the_question_number = QuizModel::getQuestionNumbering($question->id, $quiz_params->quiz_id);
             $formatted_questionnum = '<span class="questionnumber">' . $the_question_number . ')</span> ';
         } else {
@@ -73,7 +71,7 @@ class QuestionBuilderHelper
     }
     protected function buildMChoice($question, $question_params)
     {
-        $html = '';
+        $html = '<div class="mchoice-holder">';
         //get the answers
         $answers = $question->answers;
         //decode
@@ -84,14 +82,13 @@ class QuestionBuilderHelper
         //if we are retrying
         if (isset($question->defaultanswer)) {
             $defaultanswer = $question->defaultanswer;
-            echo '<script>console.log("defaultanswer: ' . $defaultanswer . '");</script>';
         } else {
-            echo '<script>console.log("defaultanswer not set");</script>';
             $defaultanswer = -1;
         }
+
         foreach ($answers as $answer) {
             //add radio button
-            $ans = '<input class="d-none" type="radio" name="answers[' . $question->id . ']" id="question_' . $question->id . '_answer_' . $answeridx . '" value="' . $answeridx . '" ' . ($defaultanswer == $answeridx ? 'checked' : '') . '/>';
+            $ans = '<input class="mchoice-rb" type="radio" name="answers[' . $question->id . ']" id="question_' . $question->id . '_answer_' . $answeridx . '" value="' . $answeridx . '" ' . ($defaultanswer == $answeridx ? 'checked' : '') . '/>';
             //add label
             $ans .= '<label class="form-check-label mchoice text-start mt-1" for="question_' . $question->id . '_answer_' . $answeridx . '">' . $answer . '</label>';
             $answeridx++;
@@ -108,6 +105,7 @@ class QuestionBuilderHelper
             $html .= $ans;
         }
         //end radio button group
+        $html .= '</div>';
         return $html;
     }
 
