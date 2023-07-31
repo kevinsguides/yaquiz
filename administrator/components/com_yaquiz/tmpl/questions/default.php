@@ -36,6 +36,7 @@ if (isset($_POST['filters'])) {
     if ($_POST['filters']['filter_title']) {
         $form->setValue('filter_title', null, $_POST['filters']['filter_title']);
         $filter_title = $_POST['filters']['filter_title'];
+        $app->setUserState('com_yaquiz.questions.filter_title', $filter_title);
     }
     if (isset($_POST['filters']['filter_categories'])) {
         $form->setValue('filter_categories', null, $_POST['filters']['filter_categories']);
@@ -45,11 +46,13 @@ if (isset($_POST['filters'])) {
     if ($_POST['filters']['filter_limit']) {
         $form->setValue('filter_limit', null, $_POST['filters']['filter_limit']);
         $filter_limit = $_POST['filters']['filter_limit'];
+        $app->setUserState('com_yaquiz.questions.filter_limit', $filter_limit);
     }
 }
 
+$filter_title = $app->getUserState('com_yaquiz.questions.filter_title', null);
 $filter_categories = $app->getUserState('com_yaquiz.questions.filter_categories', null);
-
+$filter_limit = $app->getUserState('com_yaquiz.questions.filter_limit', 10);
 
 
 
@@ -60,8 +63,14 @@ if (isset($_GET['page'])) {
 
 //get items
 $model = $this->getModel('Questions');
-$items = $model->getItems($filter_title, $filter_categories, $page, $filter_limit);
 $pagecount = $model->getPageCount($filter_categories, $filter_title, $filter_limit);
+
+if($page > $pagecount) {
+    $page = $pagecount;
+}
+
+$items = $model->getItems($filter_title, $filter_categories, $page, $filter_limit);
+
 
 //see if we need to show accordion
 $showAccordion = false;
@@ -91,6 +100,7 @@ if ($filter_title || $filter_categories || $filter_limit) {
                 <div class="accordion-body">
                     <?php //set filter_categories of form to $filter_categories
                     $form->setValue('filter_categories', null, $filter_categories);
+                    $form->setValue('filter_limit', null, $filter_limit);
                     ?>
                     <?php echo $form->renderFieldset('filters'); ?>
                     <input name="task" type="hidden">
