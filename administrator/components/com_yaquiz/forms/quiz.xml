@@ -192,6 +192,18 @@ default="70"
 />
 
 <field
+name="quiz_certificate"
+type="list"
+label="COM_YAQUIZ_YAQUIZ_QUIZ_CERTIFICATE_LABEL"
+description="COM_YAQUIZ_YAQUIZ_QUIZ_CERTIFICATE_DESC"
+required="true"
+default="none"
+>
+<option value="none">None</option>
+<option value="pdf">Standard PDF</option>
+</field>
+
+<field
 name="created"
 type="calendar"
 label="JGLOBAL_FIELD_CREATED_LABEL"

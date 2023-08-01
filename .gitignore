@@ -7,6 +7,9 @@
 components/com_yaquiz
 !components/com_yaquiz
 !components/com_yaquiz/**
+components/com_yaquiz/vendor/
+
+
 
 
 #dont ignore administrator/components/com_simplequiz

@@ -86,6 +86,10 @@ class UserModel extends BaseModel
 
     }
 
+    /**
+     * load a single result
+     * @param pk result id
+     */
     public function getIndividualResult($pk = null){
 
         $app = Factory::getApplication();
@@ -111,7 +115,6 @@ class UserModel extends BaseModel
             $app->enqueueMessage(Text::_('COM_YAQUIZ_VIEW_QUIZ_RESULT_DENIED'), 'error');
             return false;
         }
-
         return $result;
 
     }

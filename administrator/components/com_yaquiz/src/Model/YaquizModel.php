@@ -96,6 +96,7 @@ class YaquizModel extends AdminModel
                 //set checked_out_time to current time
                 $data->checked_out_time = date('Y-m-d H:i:s');
                 $data->quiz_displaymode = 'default';
+                $data->quiz_certificate = "none";
                 $data->access = $access;
             } else {
                 $params = $this->getParams($data->id);
@@ -111,6 +112,13 @@ class YaquizModel extends AdminModel
                 $data->quiz_record_guest_results = $params['quiz_record_guest_results'];
                 $data->quiz_show_general_stats = $params['quiz_show_general_stats'];
                 $data->max_attempts = $params['max_attempts'];
+                //some things were added later so we need to set defaults if they dont exist
+                if($params['quiz_certificate']){
+                    $data->quiz_certificate = $params['quiz_certificate'];
+                }
+                else{
+                    $data->quiz_certificate = "none";
+                }
                 $this->checkout($data->id);
             }
 
@@ -588,6 +596,7 @@ class YaquizModel extends AdminModel
         $params['quiz_record_guest_results'] = $data['quiz_record_guest_results'];
         $params['quiz_show_general_stats'] = $data['quiz_show_general_stats'];
         $params['max_attempts'] = $data['max_attempts'];
+        $params['quiz_certificate'] = $data['quiz_certificate'];
         //encode
         $params = json_encode($params);
         return $params;
