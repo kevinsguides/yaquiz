@@ -50,7 +50,7 @@ use Joomla\CMS\Uri\Uri;
 </div>
 <div class="card-footer text-center">
 <?php if ($currPage == 0):?>
-    <a href="<?php echo Uri::root(); ?>index.php?option=com_yaquiz&view=quiz&id=<?php echo $quiz->id; ?>&page=<?php echo $currPage + 1; ?>" class="btn btn-primary yaq-navbtn float-start"><?php echo Text::_('COM_YAQ_START_QUIZ');?></a>
+    <a href="<?php echo Uri::root(); ?>index.php?option=com_yaquiz&view=quiz&id=<?php echo $quiz->id; ?>&page=<?php echo $currPage + 1; ?>" class="btn btn-primary yaq-navbtn float-end"><?php echo Text::_('COM_YAQ_START_QUIZ');?></a>
 <?php endif;?>
 
 <?php if ($currPage == $totalQuestions):?>

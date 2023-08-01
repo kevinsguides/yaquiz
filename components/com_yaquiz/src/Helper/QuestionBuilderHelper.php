@@ -135,11 +135,11 @@ class QuestionBuilderHelper
         }
 
         $html = '
-        <input class="d-none" type="radio" name="answers[' . $question->id . ']" id="answers[' . $question->id . ']t" value="1" ' . ($defaultanswer == 1 ? 'checked' : '') . '/>
+        <input class="mchoice-rb"  type="radio" name="answers[' . $question->id . ']" id="answers[' . $question->id . ']t" value="1" ' . ($defaultanswer == 1 ? 'checked' : '') . '/>
         <label class="form-check-label mchoice text-start mt-1" for="answers[' . $question->id . ']t">'.Text::_('COM_YAQ_TRUE').'</label><br/>'
         ;
         $html .= '
-        <input class="d-none" type="radio" name="answers[' . $question->id . ']" id="answers[' . $question->id . ']f" value="0" ' . ($defaultanswer == 0 ? 'checked' : '') . '/>
+        <input class="mchoice-rb"  type="radio" name="answers[' . $question->id . ']" id="answers[' . $question->id . ']f" value="0" ' . ($defaultanswer == 0 ? 'checked' : '') . '/>
         <label class="form-check-label mchoice text-start mt-1" for="answers[' . $question->id . ']f">'.Text::_('COM_YAQ_FALSE').'</label><br/>
         ';
         return $html;

@@ -16,10 +16,12 @@ if (isset($question->defaultanswer) && $question->defaultanswer === 'missing') {
 ?>
 
 
-<div class="card mb-3">
+<div class="card mb-3 yaq-question">
     <span class="card-header"><span class="fs-3"><?php echo $itemMissing . $formatted_questionnum . $question->question;?></span></span>
     <div class="card-body">
+        <?php if ($question->details) : ?>
         <?php echo $question->details;?>
-        <hr/>
+        <br/>
+        <?php endif;?>
 
 
