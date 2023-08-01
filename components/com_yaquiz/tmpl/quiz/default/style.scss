@@ -11,14 +11,6 @@ label.mchoice {
     &:hover{
         background: rgb(200, 200, 200);
     }
-
-    &:focus{
-        border: 5px solid black;
-    }
-
-    &:active{
-        background: rgb(141, 5, 5);
-    }
 }
 
 .mchoice-holder{

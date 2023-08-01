@@ -112,41 +112,9 @@ if ($quiz == null){
 
      include($layout_template_intro);
 
-        if ($quizparams->quiz_displaymode == 'default'): ?>
-
-            <form action="<?php echo Uri::root(); ?>index.php?option=com_yaquiz&task=quiz.submitquiz" method="post">
-                <input type="hidden" name="quiz_id" value="<?php echo $quiz->id; ?>" />
-                <?php $i = 0;?>
-                <?php foreach ($questions as $question): ?>
-                    <?php
-                    if($question->params->question_type != 'html_section'){
-                        $i++;
-                    }
-                    
-                    $actualid = $question->id;
-                    //check if $oldanswers is set
-                    if ($oldanswers) {
-                        //see if this question is in the old answers
-                        foreach ($oldanswers as $oldanswer) {
-                            if ($oldanswer['question_id'] == $actualid) {
-                                $question->defaultanswer = $oldanswer['answer'];
-                            }
-                        }
-                        if (!isset($question->defaultanswer) && ($app->input->get('status') == 'retry')) {
-                            $question->defaultanswer = 'missing';
-                        }
-                    }
-                    $question->question_number = $i;
-                    echo $questionBuilder->buildQuestion($question, $quizparams);
-                    ?>
-                <br />
-                <?php endforeach; ?>
-
-                <?php echo HtmlHelper::_('form.token'); ?>
-                <?php include($layout_submit_btn); ?>
-            </form>
-
-        <?php endif;
+        if ($quizparams->quiz_displaymode == 'default'){
+            include(ThemeHelper::findFile('singlepage_questionscontainer.php'));
+        }
     }
 
 ?>

@@ -100,14 +100,14 @@ class HtmlView extends BaseHtmlView
         if ($this->getLayout() != 'results'){
         //if quiz displaymode is default 
         if($quizparams->quiz_displaymode === 'individual'){
-            $this->setLayout('quiztype_individual');
+            $this->setLayout('quiztype_oneperpage');
             $this->currPage = $app->input->get('page', 0);
         }
         elseif ($quizparams->quiz_displaymode === 'jsquiz'){
             $this->setLayout('quiztype_jsquiz');
         }
         else{
-            $this->setLayout('default');
+            $this->setLayout('quiztype_singlepage');
         }
         }
 

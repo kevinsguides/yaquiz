@@ -24,6 +24,21 @@ label.mchoice:hover {
   background: rgb(0, 0, 0);
 }
 
+.mchoice-holder {
+  position: relative;
+}
+
+input.mchoice-rb {
+  display: block;
+  position: absolute;
+  opacity: 0;
+  top: 5px;
+  left: 5px;
+}
+input.mchoice-rb:focus + label.mchoice {
+  border: 2px solid rgb(85, 85, 85);
+}
+
 input:checked + label.mchoice {
   background-color: black;
   color: white;

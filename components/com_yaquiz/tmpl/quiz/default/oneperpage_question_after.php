@@ -6,7 +6,7 @@
 
 /*
 * This layout file is displayed after each question in the quiz.
-* It should close the container surrounding the question.
+* It should close the container (if any) surrounding the question.
 *
 * The following variables are visible
 * $questionType - the type of question being displayed
@@ -23,10 +23,10 @@ use Joomla\CMS\Language\Text;
 ?>
 
 
-</div>
+
 
 <?php   if($quiz_params->quiz_use_points == 1 && $questionType != 'html_section') :?>
-<div class="card-footer">
+
     <?php
   
         if($question_params->points > 1){
@@ -37,6 +37,5 @@ use Joomla\CMS\Language\Text;
         }
     ?>
 
-</div>
 <?php endif; ?>
-</div>
+

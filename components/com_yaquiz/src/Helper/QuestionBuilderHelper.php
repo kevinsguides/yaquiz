@@ -45,10 +45,17 @@ class QuestionBuilderHelper
         $itemMissing = '';
 
         $html = '';
+
+        if($quiz_params->quiz_displaymode == 'default'){
+            include(ThemeHelper::findFile('singlepage_question_before.php'));
+        }
+        elseif($quiz_params->quiz_displaymode == 'individual'){
+            include(ThemeHelper::findFile('oneperpage_question_before.php'));
+        }
+        elseif($quiz_params->quiz_displaymode == 'jsquiz'){
+            include(ThemeHelper::findFile('jsquiz_question_before.php'));
+        }
         
-        include(ThemeHelper::findFile('question_wrapper_header.php'));
-
-
 
         //if question type is multiple_choice
         if ($questionType == 'multiple_choice') {
@@ -64,7 +71,15 @@ class QuestionBuilderHelper
             echo 'question type' . $questionType . ' not supported';
         }
 
-        include(ThemeHelper::findFile('question_wrapper_footer.php'));
+        if($quiz_params->quiz_displaymode == 'default'){
+            include(ThemeHelper::findFile('singlepage_question_after.php'));
+        }
+        elseif($quiz_params->quiz_displaymode == 'individual'){
+            include(ThemeHelper::findFile('oneperpage_question_after.php'));
+        }
+        elseif($quiz_params->quiz_displaymode == 'jsquiz'){
+            include(ThemeHelper::findFile('jsquiz_question_after.php'));
+        }
 
         return '';
         //return $html;
@@ -255,6 +270,38 @@ class QuestionBuilderHelper
             return $answers[$quiz_id][$question_id];
         } else {
             return null;
+        }
+
+    }
+
+
+    //render all questions for singlepage layout
+    public function renderAllQuestions($questions, $quizparams, $oldanswers = null)
+    {
+
+        $app = Factory::getApplication();
+        $i = 0;
+        foreach ($questions as $question){
+            if($question->params->question_type != 'html_section'){
+                $i++;
+            }
+            
+            $actualid = $question->id;
+            //check if $oldanswers is set
+            if ($oldanswers) {
+                //see if this question is in the old answers
+                foreach ($oldanswers as $oldanswer) {
+                    if ($oldanswer['question_id'] == $actualid) {
+                        $question->defaultanswer = $oldanswer['answer'];
+                    }
+                }
+                if (!isset($question->defaultanswer) && ($app->input->get('status') == 'retry')) {
+                    $question->defaultanswer = 'missing';
+                }
+            }
+
+            $question->question_number = $i;
+            echo $this->buildQuestion($question, $quizparams);
         }
 
     }

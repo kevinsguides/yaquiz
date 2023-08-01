@@ -89,7 +89,7 @@ HTMLHelper::_('behavior.keepalive');
     ?>
 
     <?php
-        include(ThemeHelper::findFile('multipage_pagewrapper.php'));
+        include(ThemeHelper::findFile('oneperpage_pagecontainer.php'));
     ?>
 
 

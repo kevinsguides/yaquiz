@@ -12,12 +12,6 @@ label.mchoice {
 label.mchoice:hover {
   background: rgb(200, 200, 200);
 }
-label.mchoice:focus {
-  border: 5px solid black;
-}
-label.mchoice:active {
-  background: rgb(141, 5, 5);
-}
 
 .mchoice-holder {
   position: relative;

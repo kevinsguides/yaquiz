@@ -6,7 +6,8 @@
 
 /*
 * This layout file is displayed before each question in the quiz.
-* It should open the container the question is displayed in.
+* It should open the container (if any) the question is displayed in.
+* Note: This affects questions on both paged and single-page quizzes.
 * The question answers are displayed after this layout, before the footer.
 */
 
@@ -23,9 +24,10 @@ if (isset($question->defaultanswer) && $question->defaultanswer === 'missing') {
 
 ?>
 
-<div class="card yaq-question">
-    <h3 class="card-header"><?php echo $itemMissing . $formatted_questionnum . $question->question;?></h3>
-    <div class="card-body">
+
+    <span class="fs-3"><?php echo $itemMissing . $formatted_questionnum . $question->question;?></span>
+    <hr/>
+
         <?php echo $question->details;?>
 
         <?php // fields user uses to answer question appear here ?>
