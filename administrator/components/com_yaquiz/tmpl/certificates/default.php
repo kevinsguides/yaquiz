@@ -9,6 +9,7 @@ namespace KevinsGuides\Component\Yaquiz\Administrator\View\Certificates;
 defined('_JEXEC') or die;
 
 use KevinsGuides\Component\Yaquiz\Administrator\Helper\CertHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 $certHelper = new CertHelper();
 
@@ -34,3 +35,8 @@ class="table table-striped table-hover"
 </tr>
 <?php endforeach; ?>
 </table>
+
+<form id="adminForm" action="index.php?option=com_yaquiz&task=certificates.edit" method="post">
+<input name="task" type="hidden">
+    <?php HTMLHelper::_('form.token'); ?>
+</form>

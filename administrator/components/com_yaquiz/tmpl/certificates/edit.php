@@ -29,7 +29,13 @@ $form = $this->get('Form');
 
 <h1>Edit Certificate: <?php echo $certificate_name; ?></h1>
 
+<form id="adminForm" action="index.php?option=com_yaquiz&task=Certificates.save" method="post">
 <?php echo $form->renderFieldset('certificates'); ?>
+
+<input type="hidden" name="certfile" value="<?php echo $certificate_name; ?>" />
+<input type="hidden" name="task" value="Certificates.save" />
+<?php echo HTMLHelper::_('form.token'); ?>
+</form>
 
 <h3><?php echo Text::_('COM_YAQUIZ_CERTTEMPLATE_CONSTANTS');?></h3>
 <p><?php echo Text::_('COM_YAQUIZ_CERTTEMPLATE_CONSTANTS_DESC');?></p>
@@ -42,6 +48,5 @@ $form = $this->get('Form');
 <li><strong>QUIZ_TIME</strong> - <?php echo Text::_('COM_YAQUIZ_CERTTEMPLATE_CONSTANTS_QUIZ_TIME');?></li>
 <li><strong>CERT_CODE</strong> - <?php echo Text::_('COM_YAQUIZ_CERTTEMPLATE_CONSTANTS_CERT_CODE');?></li>
 <li><strong>QUIZ_COPYRIGHT</strong> - <?php echo Text::_('COM_YAQUIZ_CERTTEMPLATE_CONSTANTS_QUIZ_COPYRIGHT');?></li>
-
 </ul>
 

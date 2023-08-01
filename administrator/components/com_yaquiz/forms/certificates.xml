@@ -19,6 +19,7 @@
         default="Your Template Here"
         editor="codemirror"
         required="false"
+        filter="none"
         />
 
     </fieldset>

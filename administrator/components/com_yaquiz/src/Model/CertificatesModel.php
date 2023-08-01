@@ -11,6 +11,7 @@ use Joomla\CMS\MVC\Model\AdminModel;
 use KevinsGuides\Component\Yaquiz\Administrator\Helper\CertHelper;
 use Joomla\CMS\Factory;
 
+use Joomla\CMS\Language\Text;
 
 class CertificatesModel extends AdminModel
 {
@@ -25,8 +26,16 @@ class CertificatesModel extends AdminModel
 
         $app = Factory::getApplication();
         $certfile = $app->input->get('certfile', null, 'STRING');
+
+
         $certHelper = new CertHelper();
-        $certificate_html = $certHelper->getCertHtml($certfile);
+        if($certfile != null){
+            $certificate_html = $certHelper->getCertHtml($certfile);
+        }
+        else{
+            $certificate_html = $certHelper->getCertHtml('default.html');
+        }
+        
 
         //load certificates form
         $form = $this->loadForm('com_yaquiz.certificates', 'certificates', ['control' => 'jform', 'load_data' => $loadData]);
@@ -37,6 +46,8 @@ class CertificatesModel extends AdminModel
 
         if($certfile == 'default.html'){
             $form->setFieldAttribute('certfile', 'disabled', 'true');
+            $form->setFieldAttribute('templatehtml', 'disabled', 'true');
+            $app->enqueueMessage(Text::_('COM_YAQUIZ_NOEDIT_DEFAULT_CERT'), 'warning');
         }
         
         $form->setValue('certfile', null, $certfile);

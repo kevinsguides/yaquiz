@@ -43,5 +43,17 @@ class CertHelper{
         return $html;
     }
 
+    public function saveCertHtml($certfile, $html){
+
+        $dir = JPATH_ROOT . '/components/com_yaquiz/certificates';
+        $file = $dir . '/' . $certfile;
+
+ 
+
+        file_put_contents($file, $html);
+
+        return true;
+    }
+
 
 }

@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Language\Text;
-
+use Joomla\CMS\Factory;
 class HtmlView extends BaseHtmlView
 {
     public function display($tpl = null)
@@ -20,13 +20,18 @@ class HtmlView extends BaseHtmlView
         
         ToolbarHelper::title(Text::_('COM_YAQUIZ_CERTIFICATES'));
 
-
+        $app = Factory::getApplication();
+        $certfile = $app->input->get('certfile', null, 'STRING');
 
         //if layout edit
         if($this->getLayout() == 'edit'){
             $model = $this->getModel();
             $form = $model->getForm();
             ToolbarHelper::cancel('Certificates.cancel');
+            if($certfile != 'default.html'){
+
+            ToolbarHelper::save('Certificates.save');
+            }
         }else{
             ToolbarHelper::addNew('Certificates.add');
         }
