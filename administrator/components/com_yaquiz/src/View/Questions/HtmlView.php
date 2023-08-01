@@ -50,6 +50,10 @@ class HtmlView extends BaseHtmlView
         //add component options
 
         ToolbarHelper::title(Text::_('COM_YAQUIZ_PAGETITLE_QUESTIONS'), 'list');
+        if ($this->getLayout() === 'insertmulti') {
+            ToolbarHelper::back();
+        }
+
 
         //if we're on the default layout, add the toolbar
         if ($app->getIdentity()->authorise('core.edit', 'com_yaquiz') == true) {
@@ -60,9 +64,8 @@ class HtmlView extends BaseHtmlView
         }
 
         ToolbarHelper::link('index.php?option=com_categories&extension=com_yaquiz', 'JCATEGORIES', 'folder', 'JCATEGORIES', false);
-        ToolbarHelper::custom('Yaquizzes.display', 'list', 'list', 'COM_YAQUIZ_QUIZMANAGER', false);
+        ToolbarHelper::link('index.php?option=com_yaquiz', 'COM_YAQUIZ_QUIZMANAGER', 'list', 'COM_YAQUIZ_QUIZMANAGER', false);
         ToolbarHelper::preferences('com_yaquiz');
-        //ToolbarHelper::addNew('Questions.newQuestion');
 
         //display the view
         $app->setUserState('com_yaquiz.redirectbackto', Uri::getInstance()->toString());
