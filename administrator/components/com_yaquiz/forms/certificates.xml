@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+
+    <fieldset name="certificates" addfieldprefix="Joomla\Component\Yaquiz\Administrator\Field">
+
+        <field
+            name="certfile"
+            type="text"
+            label="COM_YAQUIZ_CERTNAME"
+            description="COM_YAQUIZ_CERTNAME_DESC"
+            required="true"
+        />
+
+        <field
+        name="templatehtml"
+        type="editor"
+        label="COM_YAQUIZ_CERTTEMPLATE"
+        description="COM_YAQUIZ_CERTTEMPLATE_DESC"
+        default="Your Template Here"
+        editor="codemirror"
+        required="false"
+        />
+
+    </fieldset>
+</form>

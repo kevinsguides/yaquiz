@@ -40,6 +40,9 @@
     <folder>src</folder>
     <folder>tmpl</folder>
     <folder>js</folder>
+    <folder>language</folder>
+    <folder>certificates</folder>
+    <folder>vendor</folder>
 </files>
 
     <administration>
@@ -53,6 +56,9 @@
             </menu>
             <menu link="option=com_categories&amp;view=categories&amp;extension=com_yaquiz">
                 COM_YAQUIZ_CATEGORIES
+            </menu>
+            <menu link="option=com_yaquiz&amp;view=certificates">
+                COM_YAQUIZ_CERTIFICATES
             </menu>
             <menu link="option=com_yaquiz&amp;view=Help">
                 COM_YAQUIZ_HELP
