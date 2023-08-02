@@ -155,7 +155,9 @@ else {
                     <a class="btn btn-info btn-sm w-100 mb-1 text-start" href="index.php?option=com_yaquiz&view=yaquiz&layout=edit&id=<?php echo $item->id ?>"><span class="icon-options"></span> <?php echo Text::_('COM_YAQUIZ_QUIZSETTINGS');?></a>
                     <a class="btn btn-success btn-sm w-100 mb-1 text-start" href="index.php?option=com_yaquiz&view=yaquiz&id=<?php echo $item->id ?>"><span class="icon-checkbox"></span> <?php echo Text::_('COM_YAQUIZ_SELECTQNS');?></a>
                     <?php //if recording is set to 2 or 3
-                    if($thisQuizParams->quiz_record_results >= 2 && $canViewResults):?>
+                    if(($thisQuizParams->quiz_record_results > 1 && $canViewResults)||
+                    ($thisQuizParams->quiz_record_results == -1 && $canViewResults && $gConfig->get('quiz_record_results') > 1)
+                    ):?>
                     <a href="index.php?option=com_yaquiz&view=yaquiz&layout=results&id=<?php echo $item->id; ?>" 
                       class="btn btn-info btn-sm w-100 mb-1 text-start"> <i class="fas fa-chart-area"></i>
                       <?php echo Text::_('COM_YAQUIZ_VIEW_ATTEMPTS_AND_RESULTS');?>
