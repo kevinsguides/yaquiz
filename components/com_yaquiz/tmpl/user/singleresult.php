@@ -9,6 +9,7 @@ use Joomla\CMS\Log\Log;
 use KevinsGuides\Component\Yaquiz\Site\Helper\QuestionBuilderHelper;
 use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 defined('_JEXEC') or die;
 
@@ -19,6 +20,8 @@ $quizTitle = $quizModel->getItem($dbresults->quiz_id)->title;
 
 $app = \Joomla\CMS\Factory::getApplication();
 $user = $app->getIdentity();
+
+$comp_params = ComponentHelper::getParams('com_yaquiz');
 
 $qbHelper = new QuestionBuilderHelper();
 
@@ -32,8 +35,8 @@ if($dbresults->passed == 1){
 $results = new \stdClass();
 $results->correct = $dbresults->points;
 $results->total = $dbresults->total_points;
-Log::add('$results->correct: ' . $results->correct, Log::INFO, 'com_yaquiz');
-Log::add('$results->total: ' . $results->total, Log::INFO, 'com_yaquiz');
+
+
 $results->quiz_id = $dbresults->quiz_id;
 $results->questions = json_decode($dbresults->full_results);
 
@@ -64,7 +67,18 @@ $quiz_params = $quizModel->getQuizParams($dbresults->quiz_id);
 
 $max_attempts = $quiz_params->max_attempts;
 
-$quiz_certificate = $quiz_params->quiz_certificate;
+if(isset($quiz_params->use_certificates))
+{
+    $use_certificates = $quiz_params->use_certificates;
+}
+else
+{
+    $use_certificates = "-1";
+}
+
+if($use_certificates == "-1"){
+    $use_certificates = $comp_params->get('use_certificates', 0);
+}
 
 $remaining_attempts = $max_attempts - $attempt_count;
 
@@ -92,7 +106,7 @@ else {
 <p><?php echo Text::sprintf('COM_YAQ_ATTEMPT_COUNT', $attempt_count); ?></p>
 <p><?php echo $remaining_attempts; ?></p>
 
-<?php if ($quiz_certificate != 'none' && $passfail == 'pass') : ?>
+<?php if ($use_certificates == '1' && $passfail == 'pass') : ?>
     <p><a href="index.php?option=com_yaquiz&task=User.generateQuizCert&format=raw&quiz_id=<?php echo $dbresults->quiz_id; ?>&result_id=<?php echo $dbresults->id; ?>" class="btn btn-success btn-lg"><i class="fas fa-certificate"></i> <?php echo Text::_('COM_YAQ_VIEW_CERTIFICATE');?></a></p>
 <?php endif; ?>
 

@@ -20,6 +20,8 @@ class CertHelper{
         $certs = array();
         foreach($files as $file){
             if($file != '.' && $file != '..'){
+                //remove .html extension
+                $file = substr($file, 0, -5);
                 $certs[] = $file;
             }
         }
@@ -31,7 +33,7 @@ class CertHelper{
     public function getCertHtml($certfile){
 
         $dir = JPATH_ROOT . '/components/com_yaquiz/certificates';
-        $file = $dir . '/' . $certfile;
+        $file = $dir . '/' . $certfile . '.html';
 
         if(!file_exists($file)){
             return false;
@@ -43,10 +45,44 @@ class CertHelper{
         return $html;
     }
 
-    public function saveCertHtml($certfile, $html){
+    public function deleteCertHtml($certfile){
 
         $dir = JPATH_ROOT . '/components/com_yaquiz/certificates';
+        $file = $dir . '/' . $certfile . '.html';
+
+        if(!file_exists($file)){
+            return false;
+        }
+
+        unlink($file);
+
+        return true;
+    }
+
+    public function saveCertHtml($certfile, $certfile_start, $html){
+
+        //if the certfile was changed, delete the old one if it exists
+        if($certfile != $certfile_start){
+            $this->deleteCertHtml($certfile_start);
+        }
+
+        //make sure certfile ends with .html
+        if(substr($certfile, -5) != '.html'){
+            $certfile .= '.html';
+        }
+
+        //replace spaces with underscores
+        $certfile = str_replace(' ', '_', $certfile);
+
+        $dir = JPATH_ROOT . '/components/com_yaquiz/certificates';
+
+
         $file = $dir . '/' . $certfile;
+
+        ob_start();
+        echo $html;
+        $html = ob_get_clean();
+
 
  
 

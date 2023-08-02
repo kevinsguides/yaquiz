@@ -15,6 +15,7 @@ use KevinsGuides\Component\Yaquiz\Site\Model\UserModel;
 use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
 use Dompdf\Dompdf;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 
 class UserController extends BaseController
@@ -47,9 +48,23 @@ class UserController extends BaseController
 
         $pdf_filename = $quiz->title . '_' . $user->username . '_' . $submitdate_short . '.pdf';
 
+        $quiz_params = $quiz_model->getQuizParams($result->quiz_id);
+        $comp_params = ComponentHelper::getParams('com_yaquiz');
+
+        //figure out what cert file to use
+        if(isset($quiz_params->certificate_file)){
+            $certificate_file = $quiz_params->certificate_file;
+        }
+        else{
+            $certificate_file = "global";
+        }
+        if($certificate_file == "global"){
+            $certificate_file = $comp_params->get('certificate_file', 'default.html');
+        }
+
         //get html for pdf
         //load from html file at components/com_yaquiz/certificates/default.html
-        $html_to_pdf = file_get_contents(JPATH_ROOT . '/components/com_yaquiz/certificates/default.html');
+        $html_to_pdf = file_get_contents(JPATH_ROOT . '/components/com_yaquiz/certificates/'.$certificate_file);
 
         //replace placeholders with actual values
         $html_to_pdf = str_replace('QUIZ_NAME', $quiz->title, $html_to_pdf);

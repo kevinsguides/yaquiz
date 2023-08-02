@@ -10,6 +10,13 @@ defined('_JEXEC') or die;
 
 use KevinsGuides\Component\Yaquiz\Administrator\Helper\CertHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
+$app = Factory::getApplication();
+$wam = $app->getDocument()->getWebAssetManager();
+$wam->registerAndUseScript('yaquiz-utils', 'administrator/components/com_yaquiz/src/Scripts/utils.js');
+
 
 $certHelper = new CertHelper();
 
@@ -24,14 +31,18 @@ class="table table-striped table-hover"
 <thead>
 <tr>
 <th>Template</th>
-<th>Actions</th>
+<th><?php echo Text::_('COM_YAQUIZ_EDIT'); ?></th>
+<th><?php echo Text::_('COM_YAQUIZ_PREVIEW'); ?></th>
+<th><?php echo Text::_('COM_YAQUIZ_DELETE'); ?></th>
 </tr>
 </thead>
 <tbody>
 <?php foreach($certs as $cert): ?>
 <tr>
 <td><?php echo $cert; ?></td>
-<td><a href="index.php?option=com_yaquiz&view=certificates&layout=edit&certfile=<?php echo $cert; ?>">Edit</a></td>
+<td><a href="index.php?option=com_yaquiz&view=certificates&layout=edit&certfile=<?php echo $cert; ?>"><?php echo ($cert == "default" ? Text::_('COM_YAQUIZ_VIEW') : Text::_('COM_YAQUIZ_EDIT')) ;?></a></td>
+<td><a href="index.php?option=com_yaquiz&task=Certificates.getCertPreview&format=raw&certfile=<?php echo $cert; ?>"><?php echo Text::_('COM_YAQUIZ_PREVIEW');?></a></td>
+<td><a class="doublecheckdialog" href="index.php?option=com_yaquiz&task=certificates.delete&certfile=<?php echo $cert; ?>"><?php echo ($cert == "default" ? '' : Text::_('COM_YAQUIZ_DELETE')) ;?></a></td>
 </tr>
 <?php endforeach; ?>
 </table>

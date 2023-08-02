@@ -127,6 +127,29 @@ label="COM_YAQUIZ_GLOBAL_OPTIONS_LABEL">
     <option value="0">JNO</option>
     </field>
 
+    <field
+    name="use_certificates"
+    type="radio"
+    label="COM_YAQUIZ_GLOBAL_USE_CERTIFICATES"
+    description="COM_YAQUIZ_GLOBAL_USE_CERTIFICATES_DESC"
+    default="0"
+    class="btn-group btn-group-yesno"
+    >
+    <option value="1">JYES</option>
+    <option value="0">JNO</option>
+    </field>
+
+    <field
+    name="certificate_file"
+    type="filelist"
+    label="COM_YAQUIZ_GLOBAL_CERTFILE"
+    description="COM_YAQUIZ_GLOBAL_CERTFILE_DESC"
+    default="default.html"
+    directory="/components/com_yaquiz/certificates"
+    filter="\.html$"
+    />
+
+
 
 
 

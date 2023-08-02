@@ -17,6 +17,7 @@ use Joomla\CMS\Language\Text;
 
 $app = Factory::getApplication();
 
+
 $certificate_name = $app->input->get('certfile', null, 'STRING');
 
 HTMLHelper::_('behavior.core');
@@ -32,7 +33,7 @@ $form = $this->get('Form');
 <form id="adminForm" action="index.php?option=com_yaquiz&task=Certificates.save" method="post">
 <?php echo $form->renderFieldset('certificates'); ?>
 
-<input type="hidden" name="certfile" value="<?php echo $certificate_name; ?>" />
+<input type="hidden" name="certfile_start" value="<?php echo $certificate_name; ?>" />
 <input type="hidden" name="task" value="Certificates.save" />
 <?php echo HTMLHelper::_('form.token'); ?>
 </form>

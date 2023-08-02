@@ -14,7 +14,8 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Input\Input;
 use Joomla\CMS\MVC\Controller\BaseController;
 use KevinsGuides\Component\Yaquiz\Administrator\Helper\CertHelper;
-
+require_once JPATH_ROOT . '/components/com_yaquiz/vendor/autoload.php';
+use Dompdf\Dompdf;
 class CertificatesController extends BaseController
 {
 
@@ -62,25 +63,114 @@ class CertificatesController extends BaseController
             $app->redirect('index.php?option=com_yaquiz&view=certificates');
         }
 
-        $data = $app->input->post->getArray();
+        $data = $_POST['jform'];
+        $certfile = $data['certfile'];
+        $certfile_start =  $_POST['certfile_start'];
+        //if no title, set to certificate-date-time
+        if(strlen($certfile) < 1){
+            $certfile = 'certificate-'.date('Y-m-d-H-i-s');
+        }
 
-        $certfile = $data['jform']['certfile'];
-        $templatehtml = htmlspecialchars($data['jform']['templatehtml'], ENT_QUOTES, 'UTF-8');
-
-        echo 'html looks like this: <pre>'.($templatehtml).'</pre>';
-
+        $templatehtml = ($data['templatehtml']);
 
         $certHelper = new CertHelper();
-        if($certHelper->saveCertHtml($certfile, $templatehtml)){
+        if($certHelper->saveCertHtml($certfile, $certfile_start, $templatehtml)){
             $app->enqueueMessage('Certificate saved'.print_r($data), 'message');
         }
         else{
             $app->enqueueMessage('Error saving certificate'.print_r($data), 'error');
         }
 
-        //$app->redirect('index.php?option=com_yaquiz&view=certificates');
+        $app->redirect('index.php?option=com_yaquiz&view=certificates');
+
+    }
+
+    public function delete(){
+
+        $filename = $_GET['certfile'];
+
+        $app = Factory::getApplication();
+        $input = $app->input;
+        $user = $app->getIdentity();
+
+        if(!$user->authorise('core.admin', 'com_yaquiz')){
+            $app->enqueueMessage('You do not have permission to edit certificates', 'error');
+            $app->redirect('index.php?option=com_yaquiz&view=certificates');
+        }
+
+        $certHelper = new CertHelper();
+        if($certHelper->deleteCertHtml($filename)){
+            $app->enqueueMessage('Certificate deleted', 'message');
+        }
+        else{
+            $app->enqueueMessage('Error deleting certificate', 'error');
+        }
+
+        $app->redirect('index.php?option=com_yaquiz&view=certificates');
+
+    }
+
+    public function getCertPreview()
+    {
+
+        $app = Factory::getApplication();
+        $user = $app->getIdentity();
+        if(!$user->authorise('core.view', 'com_yaquiz')){
+            $app->enqueueMessage('You do not have permission to view previews', 'error');
+            $app->redirect('index.php?option=com_yaquiz&view=certificates');
+        }
+
+        $certfile = $_GET['certfile'];
+
+        $pdf_filename = $certfile . '.pdf';
+
+        if(!isset($certfile)){
+            $app->enqueueMessage('No certificate file specified', 'error');
+            $app->redirect('index.php?option=com_yaquiz&view=certificates');
+        }
+
+        $certfile = $certfile . '.html';
+
+        //check if cert file exists
+        if(!file_exists(JPATH_ROOT . '/components/com_yaquiz/certificates/'.$certfile)){
+            $app->enqueueMessage('Certificate file not found', 'error');
+            $app->redirect('index.php?option=com_yaquiz&view=certificates');
+        }
 
 
+        //get html for pdf
+        //load from html file at components/com_yaquiz/certificates/default.html
+        $html_to_pdf = file_get_contents(JPATH_ROOT . '/components/com_yaquiz/certificates/'.$certfile);
+
+        //replace placeholders with actual values
+        $html_to_pdf = str_replace('QUIZ_NAME', "Sample Quiz", $html_to_pdf);
+        $html_to_pdf = str_replace('USER_FULLNAME',"John Doe", $html_to_pdf);
+        $html_to_pdf = str_replace('QUIZ_SCORE', "95", $html_to_pdf);
+        $html_to_pdf = str_replace('QUIZ_TOTAL', "100", $html_to_pdf);
+        $html_to_pdf = str_replace('QUIZ_TIME', "12:30", $html_to_pdf);
+        $html_to_pdf = str_replace('QUIZ_DATE', "01-02-2023", $html_to_pdf);
+        $site_name = Factory::getConfig()->get('sitename');
+        $html_to_pdf = str_replace('QUIZ_COPYRIGHT', date('Y') .'  '. $site_name, $html_to_pdf);
+
+        //create an 8 digit hash of the user id and result id
+        $cert_code = "ABCD1234";
+
+        $html_to_pdf = str_replace('CERT_CODE', $cert_code, $html_to_pdf);
+
+
+
+        // instantiate and use the dompdf class
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html_to_pdf);
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'landscape');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream($pdf_filename);
 
 
     }

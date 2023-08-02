@@ -191,16 +191,30 @@ required="true"
 default="70"
 />
 
+
 <field
-name="quiz_certificate"
-type="list"
-label="COM_YAQUIZ_YAQUIZ_QUIZ_CERTIFICATE_LABEL"
-description="COM_YAQUIZ_YAQUIZ_QUIZ_CERTIFICATE_DESC"
-required="true"
-default="none"
+name="use_certificates"
+type="radio"
+label="COM_YAQUIZ_USE_CERTIFICATES"
+description="COM_YAQUIZ_USE_CERTIFICATES_DESC"
+default="-1"
 >
-<option value="none">None</option>
-<option value="pdf">Standard PDF</option>
+<option value="1">JYES</option>
+<option value="0">JNO</option>
+<option value="-1">Use Global</option>
+</field>
+
+
+<field
+name="certificate_file"
+type="filelist"
+label="COM_YAQUIZ_CERTFILE"
+description="COM_YAQUIZ_CERTFILE_DESC"
+default="global"
+directory="/components/com_yaquiz/certificates"
+filter="\.html$"
+>
+<option value="global">Use Global</option>
 </field>
 
 <field

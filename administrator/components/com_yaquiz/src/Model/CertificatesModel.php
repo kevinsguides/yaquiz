@@ -26,6 +26,7 @@ class CertificatesModel extends AdminModel
 
         $app = Factory::getApplication();
         $certfile = $app->input->get('certfile', null, 'STRING');
+        
 
 
         $certHelper = new CertHelper();
@@ -33,7 +34,7 @@ class CertificatesModel extends AdminModel
             $certificate_html = $certHelper->getCertHtml($certfile);
         }
         else{
-            $certificate_html = $certHelper->getCertHtml('default.html');
+            $certificate_html = $certHelper->getCertHtml('default');
         }
         
 
@@ -44,14 +45,13 @@ class CertificatesModel extends AdminModel
         $form->setValue('templatehtml', null, $certificate_html);
         //if it's default.html, disable the name field
 
-        if($certfile == 'default.html'){
+        if($certfile == 'default'){
             $form->setFieldAttribute('certfile', 'disabled', 'true');
             $form->setFieldAttribute('templatehtml', 'disabled', 'true');
             $app->enqueueMessage(Text::_('COM_YAQUIZ_NOEDIT_DEFAULT_CERT'), 'warning');
         }
         
         $form->setValue('certfile', null, $certfile);
-
 
         return $form;
 

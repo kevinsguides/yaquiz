@@ -96,7 +96,8 @@ class YaquizModel extends AdminModel
                 //set checked_out_time to current time
                 $data->checked_out_time = date('Y-m-d H:i:s');
                 $data->quiz_displaymode = 'default';
-                $data->quiz_certificate = "none";
+                $data->use_certificates = "-1";
+                $data->certificate_file = "global";
                 $data->access = $access;
             } else {
                 $params = $this->getParams($data->id);
@@ -113,16 +114,24 @@ class YaquizModel extends AdminModel
                 $data->quiz_show_general_stats = $params['quiz_show_general_stats'];
                 $data->max_attempts = $params['max_attempts'];
                 //some things were added later so we need to set defaults if they dont exist
-                if($params['quiz_certificate']){
-                    $data->quiz_certificate = $params['quiz_certificate'];
+                if(isset($params['use_certificates'])){
+                    $data->use_certificates = $params['use_certificates'];
                 }
                 else{
-                    $data->quiz_certificate = "none";
+                    $data->use_certificates = "-1";
                 }
+                $data->certificate_file=((isset($params['certificate_file'])) ? $params['certificate_file'] : 'global');
                 $this->checkout($data->id);
             }
 
+            //show global settings in labels
+            $global_use_certs = $cParams->get('use_certificates', 0);
+            //set label for form field use_certificates
+            $form->setFieldAttribute('use_certificates', 'label', Text::_('COM_YAQUIZ_USE_CERTIFICATES') . ' (' . Text::sprintf('COM_YAQUIZ_GLOBAL_LBL', (($global_use_certs == "1") ? Text::_('JYES') : Text::_('JNO'))).')');
 
+            $global_certificate_file = $cParams->get('certificate_file', 'default');
+            //set label for form field certificate_file
+            $form->setFieldAttribute('certificate_file', 'label', Text::_('COM_YAQUIZ_CERTFILE') . ' (' . Text::sprintf('COM_YAQUIZ_GLOBAL_LBL', (($global_certificate_file))).')');
 
             $form->bind($data);
             return $form;
@@ -134,8 +143,6 @@ class YaquizModel extends AdminModel
                 return false;
             }
             return $form;
-
-
 
         }
 
@@ -596,7 +603,8 @@ class YaquizModel extends AdminModel
         $params['quiz_record_guest_results'] = $data['quiz_record_guest_results'];
         $params['quiz_show_general_stats'] = $data['quiz_show_general_stats'];
         $params['max_attempts'] = $data['max_attempts'];
-        $params['quiz_certificate'] = $data['quiz_certificate'];
+        $params['use_certificates'] = $data['use_certificates'];
+        $params['certificate_file'] = $data['certificate_file'];
         //encode
         $params = json_encode($params);
         return $params;
