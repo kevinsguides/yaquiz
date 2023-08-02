@@ -8,6 +8,7 @@ namespace KevinsGuides\Component\Yaquiz\View\Quiz;
 
 use Joomla\CMS\Factory;
 use KevinsGuides\Component\Yaquiz\Site\Helper\ThemeHelper;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -38,7 +39,7 @@ $wam->useStyle('fontawesome');
 
 //if results are empty
 if(empty($results)){
-    $results = 'No results to display';
+    $results = Text::_('COM_YAQUIZ_NO_RESULTS');
 }
 
 ?>

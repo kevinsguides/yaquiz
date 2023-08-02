@@ -187,10 +187,17 @@ class QuestionBuilderHelper
     * @param $results - the results object
     * @return $html - the html to display
     */
-    public function buildResultsArea($quiz_id, $results)
+    public function buildResultsArea($quiz_id, $results, $result_id = 0)
     {
         $app = Factory::getApplication();
+        
         $gConfig = $this->globalParams;
+
+        if($result_id == 0){
+            //check in app input
+            $result_id = $app->input->getInt('resultid', 0);
+        }
+
 
         //the default will be a simple x/x with percentage
         //trim to 2 decimal places
@@ -231,6 +238,7 @@ class QuestionBuilderHelper
 
         //include the template for the result_summary.php template
         include(ThemeHelper::findFile('result_summary.php'));
+
         $html .= $feedback;
         return $html;
     }

@@ -13,6 +13,21 @@ if ($quizParams->quiz_use_points === '1') {
     $pointtext = 'points.';
 }
 
+if(isset($quizParams->use_certificates))
+{
+    $use_certificates = $quizParams->use_certificates;
+}
+else
+{
+    $use_certificates = "-1";
+}
+
+if($use_certificates == "-1"){
+    $use_certificates = $gConfig->get('use_certificates', 0);
+}
+
+
+
 
 $html .= '<div class="card">
             <h3 class="card-header">'.Text::_('COM_YAQ_QUIZ_RESULTS').'</h3>
@@ -44,6 +59,30 @@ $html .= '<div class="card">
                     $html .= '<p>'.Text::sprintf('COM_YAQ_PERCENTPASS', $percentWhoPassed).'</p>';
                 }
 
+            }
+
+            //see if using certificates
+            if($use_certificates == '1'){
+                $html .= 'use cert val is '.$use_certificates;
+                $user = $app->getIdentity();
+                //user must be logged in
+                if($user->id > 0){
+                    $html .= 'user is logged in';
+                    //see if they passed
+                    if($results->passfail === 'pass'){
+                        $html .= 'user passed';
+                        
+                        $html .= 'result id is '.$result_id;
+                        if($result_id != 0){
+                           //link to ceretificate
+                            $html .= '<hr/><h3>'.Text::_('COM_YAQ_YOUR_CERTIFICATE').'</h3>';
+                            $html .= '<p>'.Text::sprintf('COM_YAQ_EARNED_CERTIFICATE_MESSAGE', $resultPercent).'</p>';
+                            $html .= '<p><a href="index.php?option=com_yaquiz&task=User.generateQuizCert&format=raw&quiz_id='.$quiz_id.'&result_id='.$result_id.'" class="btn btn-success btn-lg"><i class="fas fa-certificate"></i>'.Text::_('COM_YAQ_VIEW_CERTIFICATE').'</a></p>';
+                        }
+                        
+                        
+                    }
+                }
             }
 
 

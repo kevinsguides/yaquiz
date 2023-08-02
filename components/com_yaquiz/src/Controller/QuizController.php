@@ -169,11 +169,13 @@ class QuizController extends BaseController
         $results->questions = $all_feedback;
         $results->passfail = $passfail;
 
+        $new_result_id = 0;
+
         //save individual results (level 2 or 3)
         if ($quiz_record_results >= 2) {
             //user must be logged in
             if (!$app->getIdentity()->guest) {
-                $model->saveIndividualResults($results, $quiz_record_results);
+                $new_result_id = $model->saveIndividualResults($results, $quiz_record_results);
             }
 
         }
@@ -183,7 +185,7 @@ class QuizController extends BaseController
         //set quiz title state var
         $quiz = $model->getItem($quiz_id);
         $title = $quiz->title;
-        $buildResults = $qbhelper->buildResultsArea($quiz_id, $results);
+        $buildResults = $qbhelper->buildResultsArea($quiz_id, $results, $new_result_id);
 
 
         //check if the user already started this quiz
@@ -195,11 +197,19 @@ class QuizController extends BaseController
             $session->clear('sq_quiz_id');
         }
 
-        //echo $buildResults;
-
         //set the results state var
         $app->setUserState('com_yaquiz.results', $buildResults);
-        $this->setRedirect('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id);
+
+        //echo $buildResults;
+        if($new_result_id != 0){
+            $this->setRedirect('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id . '&resultid=' . $new_result_id);
+        }
+        else{
+            $this->setRedirect('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id);
+        }
+
+        
+        
 
 
     }

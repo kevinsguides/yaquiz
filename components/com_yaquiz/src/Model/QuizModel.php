@@ -499,6 +499,19 @@ class QuizModel extends ItemModel{
             $db->execute();
         }
 
+        //return the result id (latest one there may be multiple)
+        $query = $db->getQuery(true);
+        $query->select('id');
+        $query->from($db->quoteName('#__com_yaquiz_results'));
+        $query->where($db->quoteName('user_id') . ' = ' . $db->quote($userid));
+        $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($results->quiz_id));
+        $query->order($db->quoteName('id') . ' DESC');
+        $query->setLimit(1);
+        $db->setQuery($query);
+        $result = $db->loadResult();
+        return $result;
+
+
 
     }
 

@@ -67,19 +67,6 @@ $quiz_params = $quizModel->getQuizParams($dbresults->quiz_id);
 
 $max_attempts = $quiz_params->max_attempts;
 
-if(isset($quiz_params->use_certificates))
-{
-    $use_certificates = $quiz_params->use_certificates;
-}
-else
-{
-    $use_certificates = "-1";
-}
-
-if($use_certificates == "-1"){
-    $use_certificates = $comp_params->get('use_certificates', 0);
-}
-
 $remaining_attempts = $max_attempts - $attempt_count;
 
 if($max_attempts == 0){
@@ -105,11 +92,6 @@ else {
 <p><?php echo (Text::_('COM_YAQ_ORIGINAL_SUBMIT').$format_submitted_date); ?></p>
 <p><?php echo Text::sprintf('COM_YAQ_ATTEMPT_COUNT', $attempt_count); ?></p>
 <p><?php echo $remaining_attempts; ?></p>
-
-<?php if ($use_certificates == '1' && $passfail == 'pass') : ?>
-    <p><a href="index.php?option=com_yaquiz&task=User.generateQuizCert&format=raw&quiz_id=<?php echo $dbresults->quiz_id; ?>&result_id=<?php echo $dbresults->id; ?>" class="btn btn-success btn-lg"><i class="fas fa-certificate"></i> <?php echo Text::_('COM_YAQ_VIEW_CERTIFICATE');?></a></p>
-<?php endif; ?>
-
 </div>
 <div class="card-footer">
     <a href="index.php?option=com_yaquiz&view=user" class="btn btn-primary btn-sm"><i class="fas fa-arrow-circle-left"></i> <?php echo Text::_('COM_YAQ_RETURN');?></a>
