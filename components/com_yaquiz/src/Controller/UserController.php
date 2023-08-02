@@ -14,8 +14,12 @@ use Joomla\CMS\Factory;
 use KevinsGuides\Component\Yaquiz\Site\Model\UserModel;
 use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
 use Dompdf\Dompdf;
+use Dompdf\Options;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
+
+
 
 
 class UserController extends BaseController
@@ -80,11 +84,14 @@ class UserController extends BaseController
         $cert_code = substr(md5($user_id . $result_id), 0, 8);
 
         $html_to_pdf = str_replace('CERT_CODE', $cert_code, $html_to_pdf);
+        $html_to_pdf = str_replace('SITEROOT_URI/', Uri::root(), $html_to_pdf);
 
 
 
         // instantiate and use the dompdf class
-        $dompdf = new Dompdf();
+        $options = new Options();
+        $options->set('isRemoteEnabled', true);
+        $dompdf = new Dompdf($options);
         $dompdf->loadHtml($html_to_pdf);
 
         // (Optional) Setup the paper size and orientation

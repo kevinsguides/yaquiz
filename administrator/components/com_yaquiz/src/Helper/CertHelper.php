@@ -20,6 +20,11 @@ class CertHelper{
         $certs = array();
         foreach($files as $file){
             if($file != '.' && $file != '..'){
+                //must be a .html file
+                if(substr($file, -5) != '.html'){
+                    continue;
+                }
+
                 //remove .html extension
                 $file = substr($file, 0, -5);
                 $certs[] = $file;

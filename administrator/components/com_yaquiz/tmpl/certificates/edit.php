@@ -49,5 +49,7 @@ $form = $this->get('Form');
 <li><strong>QUIZ_TIME</strong> - <?php echo Text::_('COM_YAQUIZ_CERTTEMPLATE_CONSTANTS_QUIZ_TIME');?></li>
 <li><strong>CERT_CODE</strong> - <?php echo Text::_('COM_YAQUIZ_CERTTEMPLATE_CONSTANTS_CERT_CODE');?></li>
 <li><strong>QUIZ_COPYRIGHT</strong> - <?php echo Text::_('COM_YAQUIZ_CERTTEMPLATE_CONSTANTS_QUIZ_COPYRIGHT');?></li>
+<li><strong>SITEROOT_URI/</strong> - <?php echo Text::_('COM_YAQUIZ_CERTTEMPLATE_CONSTANTS_SITEROOT_URI');?></li>
 </ul>
+<p><?php echo Text::_('COM_YAQUIZ_CERTTEMPLATE_IMGNOTE');?></p>
 

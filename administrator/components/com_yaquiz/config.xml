@@ -146,7 +146,8 @@ label="COM_YAQUIZ_GLOBAL_OPTIONS_LABEL">
     description="COM_YAQUIZ_GLOBAL_CERTFILE_DESC"
     default="default.html"
     directory="/components/com_yaquiz/certificates"
-    filter="\.html$"
+    fileFilter="\.html$"
+
     />
 
 

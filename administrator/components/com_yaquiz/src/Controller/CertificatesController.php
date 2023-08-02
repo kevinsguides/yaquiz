@@ -14,8 +14,10 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Input\Input;
 use Joomla\CMS\MVC\Controller\BaseController;
 use KevinsGuides\Component\Yaquiz\Administrator\Helper\CertHelper;
+use Joomla\CMS\Uri\Uri;
 require_once JPATH_ROOT . '/components/com_yaquiz/vendor/autoload.php';
 use Dompdf\Dompdf;
+use Dompdf\Options;
 class CertificatesController extends BaseController
 {
 
@@ -113,6 +115,9 @@ class CertificatesController extends BaseController
     public function getCertPreview()
     {
 
+
+
+
         $app = Factory::getApplication();
         $user = $app->getIdentity();
         if(!$user->authorise('core.view', 'com_yaquiz')){
@@ -149,6 +154,7 @@ class CertificatesController extends BaseController
         $html_to_pdf = str_replace('QUIZ_TOTAL', "100", $html_to_pdf);
         $html_to_pdf = str_replace('QUIZ_TIME', "12:30", $html_to_pdf);
         $html_to_pdf = str_replace('QUIZ_DATE', "01-02-2023", $html_to_pdf);
+        $html_to_pdf = str_replace('SITEROOT_URI/', Uri::root(), $html_to_pdf);
         $site_name = Factory::getConfig()->get('sitename');
         $html_to_pdf = str_replace('QUIZ_COPYRIGHT', date('Y') .'  '. $site_name, $html_to_pdf);
 
@@ -160,7 +166,9 @@ class CertificatesController extends BaseController
 
 
         // instantiate and use the dompdf class
-        $dompdf = new Dompdf();
+        $options = new Options();
+        $options->set('isRemoteEnabled', true);
+        $dompdf = new Dompdf($options);
         $dompdf->loadHtml($html_to_pdf);
 
         // (Optional) Setup the paper size and orientation

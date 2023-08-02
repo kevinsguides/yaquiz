@@ -212,7 +212,7 @@ label="COM_YAQUIZ_CERTFILE"
 description="COM_YAQUIZ_CERTFILE_DESC"
 default="global"
 directory="/components/com_yaquiz/certificates"
-filter="\.html$"
+fileFilter="\.html$"
 >
 <option value="global">Use Global</option>
 </field>
