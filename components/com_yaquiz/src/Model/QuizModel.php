@@ -446,6 +446,9 @@ class QuizModel extends ItemModel{
             $results->full_results = '';
         }
 
+
+
+
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->insert($db->quoteName('#__com_yaquiz_results'));
@@ -508,10 +511,21 @@ class QuizModel extends ItemModel{
         $query->order($db->quoteName('id') . ' DESC');
         $query->setLimit(1);
         $db->setQuery($query);
-        $result = $db->loadResult();
-        return $result;
+        $result_id = $db->loadResult();
 
 
+        //create a result hash
+        $verifyhash = substr(md5($userid . $result_id), 0, 8);
+
+        //update the record with the hash
+        $query = $db->getQuery(true);
+        $query->update($db->quoteName('#__com_yaquiz_results'));
+        $query->set($db->quoteName('verifyhash') . ' = ' . $db->quote($verifyhash));
+        $query->where($db->quoteName('id') . ' = ' . $db->quote($result_id));
+        $db->setQuery($query);
+        $db->execute();
+
+        return $result_id;
 
     }
 

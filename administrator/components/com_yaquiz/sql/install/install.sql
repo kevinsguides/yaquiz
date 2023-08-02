@@ -73,6 +73,7 @@ CREATE TABLE IF NOT EXISTS `#__com_yaquiz_results` (
   `submitted` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `passed` tinyint(1) NOT NULL DEFAULT '0',
   `full_results` text,
+  `verifyhash` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
