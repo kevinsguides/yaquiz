@@ -22,12 +22,6 @@ class HtmlView extends BaseHtmlView{
         $app = Factory::getApplication();
         //hide the main menu
         $app->getInput()->set('hidemainmenu', true);
-        //make sure user has edit perms
-        if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
-            $app->enqueueMessage(Text::_('COM_YAQUIZ_PERM_NOEDITQUESTIONS'), 'error');
-            $app->redirect('index.php?option=com_yaquiz&view=yaquizzes');
-        }
-
   
         //get model
         $model = $this->getModel();

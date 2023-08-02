@@ -56,7 +56,7 @@ class HtmlView extends BaseHtmlView
 
 
         //if we're on the default layout, add the toolbar
-        if ($app->getIdentity()->authorise('core.edit', 'com_yaquiz') == true) {
+        if ($app->getIdentity()->authorise('core.create', 'com_yaquiz') == true) {
             if ($this->getLayout() === 'default') {
                 ToolbarHelper::addNew('Question.new', 'COM_YAQUIZ_NEWQUESTION');
                 ToolbarHelper::link('index.php?option=com_yaquiz&view=Questions&layout=insertmulti', 'COM_YAQUIZ_IMPORTEXCEL', 'file', 'COM_YAQUIZ_IMPORTEXCEL', false);

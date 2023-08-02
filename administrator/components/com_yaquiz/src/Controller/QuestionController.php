@@ -32,11 +32,6 @@ class QuestionController extends BaseController
     public function edit($cachable = false, $urlparams = array())
     {
         $app = Factory::getApplication();
-        if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
-            $app->enqueueMessage('You do not have permission to edit questions', 'error');
-            $app->redirect('index.php?option=com_yaquiz&view=yaquizzes');
-        }
-
 
         //get the model
         $model = $this->getModel('Question');

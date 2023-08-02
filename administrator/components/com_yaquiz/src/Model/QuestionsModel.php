@@ -112,11 +112,11 @@ class QuestionsModel extends AdminModel
     
     public function getForm($data = [], $loadData = true)
     {
-//user needs permission
-$user = Factory::getApplication()->getIdentity();
-if (!$user->authorise('core.manage', 'com_yaquiz')) {
-    throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'));
-}
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.manage', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'));
+        }
         $app = Factory::getApplication();
         if ($app->input->get('layout') == 'insertmulti') {
             $form = $this->loadForm('com_yaquiz.insertmulti', 'insertmulti');

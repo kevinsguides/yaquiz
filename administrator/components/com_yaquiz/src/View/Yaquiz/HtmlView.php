@@ -60,7 +60,7 @@ class HtmlView extends BaseHtmlView
         {
         //set this item to that quiz
             $this->item = $model->getQuiz($id);
-            $quizParams = json_decode($this->item->params);
+            $quizParams = $model->getParams($id);
 
 
             ToolbarHelper::back('COM_YAQUIZ_ALLQUIZZES', 'index.php?option=com_yaquiz&view=yaquizzes');
@@ -68,9 +68,13 @@ class HtmlView extends BaseHtmlView
             //an external link with target blank
             ToolbarHelper::custom('Yaquiz.preview', 'link', 'preview', 'COM_YAQUIZ_PREVIEW', false);
             ToolbarHelper::custom('Questions.display', 'checkbox', 'checkbox', 'COM_YAQUIZ_QUESTION_MGR', false);
-            if($quizParams->quiz_record_results > 1){
+            if($quizParams['quiz_record_results'] > 1){
                 ToolbarHelper::custom('Yaquiz.gotoResults', 'chart', 'results', 'COM_YAQUIZ_RESULTS', false);
-
+            }
+            if($quizParams['quiz_record_results'] == -1){
+                if($cParams->get('quiz_record_results') > 1){
+                    ToolbarHelper::custom('Yaquiz.gotoResults', 'chart', 'results', 'COM_YAQUIZ_RESULTS', false);
+                }
             }
 
             ToolbarHelper::preferences('com_yaquiz', 640, 900);
@@ -92,7 +96,7 @@ class HtmlView extends BaseHtmlView
             $app->getInput()->set('hidemainmenu', true);
 
             //check if user has permission to edit
-            if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
+            if($app->getIdentity()->authorise('core.manage', 'com_yaquiz') != true){
                 $app->enqueueMessage('You do not have permission to edit this quiz', 'error');
                 $app->redirect('index.php?option=com_yaquiz&view=yaquizzes');
             }
