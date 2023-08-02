@@ -636,5 +636,28 @@ class QuizModel extends ItemModel{
     
     }
 
+
+    public function getResultFromVerificationCode($certcode){
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+
+        $query = $db->getQuery(true);
+        
+        //join results and users table
+        $query->select('r.score, r.submitted, u.name, q.title as quiz_title');
+        $query->from($db->quoteName('#__com_yaquiz_results', 'r'));
+        $query->join('LEFT', $db->quoteName('#__users', 'u') . ' ON (' . $db->quoteName('r.user_id') . ' = ' . $db->quoteName('u.id') . ')');
+        //join with quizzes too get the quiz name
+        $query->join('LEFT', $db->quoteName('#__com_yaquiz_quizzes', 'q') . ' ON (' . $db->quoteName('r.quiz_id') . ' = ' . $db->quoteName('q.id') . ')');
+        $query->where($db->quoteName('r.verifyhash') . ' = ' . $db->quote($certcode));
+        $db->setQuery($query);
+        $result = $db->loadObject();
+
+
+        return $result;
+
+
+    }
+
 }
 

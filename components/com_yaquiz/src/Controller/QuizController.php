@@ -287,18 +287,39 @@ class QuizController extends BaseController
             if (array_key_exists($quiz_id, $current_answers)) {
                 unset($current_answers[$quiz_id]);
                 $session->set('sq_answers', $current_answers);
-                $this->setMessage(\JText::_('COM_YAQ_QUIZ_RESET'), 'warning');
+                $this->setMessage(Text::_('COM_YAQ_QUIZ_RESET'), 'warning');
                 $this->setRedirect('index.php?option=com_yaquiz&view=quiz&id=' . $quiz_id . '&page=0');
             } else {
-                $this->setMessage(\JText::_('COM_YAQ_QUIZ_RESET_ALREADY'), 'warning');
+                $this->setMessage(Text::_('COM_YAQ_QUIZ_RESET_ALREADY'), 'warning');
                 $this->setRedirect('index.php');
             }
         } else {
             $session->clear('sq_answers');
             $session->clear('sq_quiz_id');
-            $this->setMessage(\JText::_('COM_YAQ_QUIZ_RESET'), 'warning');
+            $this->setMessage(Text::_('COM_YAQ_QUIZ_RESET'), 'warning');
             $this->setRedirect('index.php');
         }
+    }
+
+    public function verifyquiz(){
+
+
+        $app = Factory::getApplication();
+        $input = $app->getInput();
+        $certcode = $input->get('certcode', '', 'string');
+        $model = $this->getModel('quiz');
+        $result = $model->getResultFromVerificationCode($certcode);
+
+        if($result){
+            $session = Factory::getApplication()->getSession();
+            $app->setUserState('sq_verify_result', $result);
+            $this->setRedirect('index.php?option=com_yaquiz&view=certverify&layout=verifycheck');
+        }
+        else{
+            $app->enqueueMessage(Text::_('COM_YAQ_QUIZ_VERIFY_FAIL'), 'error');
+            $this->setRedirect('index.php?option=com_yaquiz&view=quiz&layout=verify');
+        }
+
     }
 
 }

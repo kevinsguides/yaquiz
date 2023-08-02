@@ -104,6 +104,7 @@ $results = $model->getAllSavedResults($quiz_id, $filters, $page, $yaqresultlimit
             <th><?PHP echo Text::_('COM_YAQUIZ_PASSFAIL');?></th>
             <th><?PHP echo Text::_('COM_YAQUIZ_SCORE');?></th>
             <th><?PHP echo Text::_('COM_YAQUIZ_SUBMITTEDON');?></th>
+            <th><?php echo Text::_('COM_YAQUIZ_VERIFICATION_HASH'); ?></th>
             <th><?PHP echo Text::_('COM_YAQUIZ_MOREDETAILS');?></th>
         </tr>
     </thead>
@@ -136,6 +137,7 @@ $results = $model->getAllSavedResults($quiz_id, $filters, $page, $yaqresultlimit
             ?></td>
             <td><?php echo $result->score; ?></td>
             <td><?php echo $result->submitted; ?></td>
+            <td><?php echo (isset($result->verifyhash)?$result->verifyhash:Text::_('COM_YAQUIZ_UNAVAILABLE')); ?></td>
             <td>
                 <?php 
                 
