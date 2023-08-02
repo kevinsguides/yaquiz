@@ -65,7 +65,7 @@ class YaquizModel extends AdminModel
 
         //make sure we have edit permissions
         if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
-            $app->enqueueMessage('Edit permissions required to change question ordering', 'error');
+            $app->enqueueMessage('COM_YAQUIZ_PERM_REQUIRED_EDIT', 'error');
             return;
         }
 
@@ -200,10 +200,10 @@ class YaquizModel extends AdminModel
     public function insert($data)
     {
 
-        //user must have edit permissions to do this
+        //user must have create permissions to do this
         $app = Factory::getApplication();
-        if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
-            $app->enqueueMessage('Edit permissions required to make quizzes', 'error');
+        if($app->getIdentity()->authorise('core.create', 'com_yaquiz') != true){
+            $app->enqueueMessage('COM_YAQUIZ_PERM_REQUIRED_CREATE', 'error');
             return;
         }
 
@@ -230,7 +230,7 @@ class YaquizModel extends AdminModel
         //user must have edit permissions to do this
         $app = Factory::getApplication();
         if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
-            $app->enqueueMessage('Edit permissions required to change quiz settings', 'error');
+            $app->enqueueMessage('COM_YAQUIZ_PERM_REQUIRED_EDIT', 'error');
             return;
         }
 
@@ -315,8 +315,8 @@ class YaquizModel extends AdminModel
 
         //user must have admin permissions to do this
         $app = Factory::getApplication();
-        if($app->getIdentity()->authorise('core.admin', 'com_yaquiz') != true){
-            $app->enqueueMessage('View permissions required to see questions', 'error');
+        if($app->getIdentity()->authorise('core.manage', 'com_yaquiz') != true){
+            $app->enqueueMessage('COM_YAQUIZ_PERM_REQUIRED_MANAGE', 'error');
             return;
         }
 
@@ -374,7 +374,7 @@ class YaquizModel extends AdminModel
         //user must have edit permissions to do this
         $app = Factory::getApplication();
         if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
-            $app->enqueueMessage('Edit permissions required to change question ordering', 'error');
+            $app->enqueueMessage('COM_YAQUIZ_PERM_REQUIRED_EDIT', 'error');
             return;
         }
 
@@ -396,7 +396,7 @@ class YaquizModel extends AdminModel
         //user must have edit permissions to do this
         $app = Factory::getApplication();
         if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
-            $app->enqueueMessage('Edit permissions required to change question ordering', 'error');
+            $app->enqueueMessage('COM_YAQUIZ_PERM_REQUIRED_EDIT', 'error');
             return;
         }
 
@@ -458,7 +458,7 @@ class YaquizModel extends AdminModel
 
         $app = Factory::getApplication();
         if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
-            $app->enqueueMessage('Edit permissions required to change question ordering', 'error');
+            $app->enqueueMessage('COM_YAQUIZ_PERM_REQUIRED_EDIT', 'error');
             return;
         }
 
@@ -492,7 +492,7 @@ class YaquizModel extends AdminModel
                     //user must have edit permissions to do this
         $app = Factory::getApplication();
         if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
-            $app->enqueueMessage('Edit permissions required to change question ordering', 'error');
+            $app->enqueueMessage('COM_YAQUIZ_PERM_REQUIRED_EDIT', 'error');
             return;
         }
             $db = Factory::getContainer()->get('DatabaseDriver');
@@ -556,7 +556,7 @@ class YaquizModel extends AdminModel
         //user needs core.edit permissions
         $app = Factory::getApplication();
         if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
-            $app->enqueueMessage('Edit permissions required to remove questions from quiz', 'error');
+            $app->enqueueMessage('COM_YAQUIZ_PERM_REQUIRED_EDIT', 'error');
             return;
         }
 
@@ -585,6 +585,12 @@ class YaquizModel extends AdminModel
     public function getParams($qid)
     {
 
+        //user needs core.manage permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.manage', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'));
+        }
+
         //get params from db
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
@@ -606,6 +612,12 @@ class YaquizModel extends AdminModel
 
     public function setParams($qid, $params)
     {
+
+        //user needs core.EDIT permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.edit', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_EDIT'));
+        }
 
         //encode params
         $params = json_encode($params);
@@ -647,6 +659,13 @@ class YaquizModel extends AdminModel
 
     public function getCategoryName($pk)
     {
+
+        //user needs core.manage permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.manage', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'));
+        }
+
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('title');
@@ -659,6 +678,12 @@ class YaquizModel extends AdminModel
 
     //reorder the questions from 1 to n based on current order
     public function reorderQns($pk){
+
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.edit', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_EDIT'));
+        }
 
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
@@ -688,7 +713,7 @@ class YaquizModel extends AdminModel
         //user needs core.edit permission
         $user = Factory::getApplication()->getIdentity();
         if (!$user->authorise('core.edit', 'com_yaquiz')) {
-            throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_EDIT'));
         }
 
 
@@ -707,7 +732,7 @@ class YaquizModel extends AdminModel
             //user needs core.delete permission
             $user = Factory::getApplication()->getIdentity();
             if (!$user->authorise('core.delete', 'com_yaquiz')) {
-                throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
+                throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_DELETE'));
             }
     
             //remove all questions from quiz
@@ -739,6 +764,12 @@ class YaquizModel extends AdminModel
     public function getAllSavedResults($pk = 0, $filters = null, $page = 1, $limit = 5){
         if($pk == 0){
             return;
+        }
+
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.manage', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'));
         }
 
         $db = Factory::getContainer()->get('DatabaseDriver');
@@ -790,6 +821,13 @@ class YaquizModel extends AdminModel
     }
 
     public function getIndividualAttemptResult($pk = 0, $attempt_id = 0){
+
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('yaquiz.viewresults', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_VIEWRESULTS'));
+        }
+
         if ($pk == 0 || $attempt_id == 0) {
             return;
         }
@@ -812,7 +850,7 @@ class YaquizModel extends AdminModel
         //user needs core.delete permission
         $user = Factory::getApplication()->getIdentity();
         if (!$user->authorise('core.delete', 'com_yaquiz')) {
-            throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_DELETE'));
         }
 
         $db = Factory::getContainer()->get('DatabaseDriver');
@@ -842,7 +880,7 @@ class YaquizModel extends AdminModel
             //user needs core.delete permission
             $user = Factory::getApplication()->getIdentity();
             if (!$user->authorise('core.delete', 'com_yaquiz')) {
-                throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
+                throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_DELETE'));
             }
     
             $db = Factory::getContainer()->get('DatabaseDriver');
@@ -860,7 +898,7 @@ class YaquizModel extends AdminModel
             //user needs core.delete permission
             $user = Factory::getApplication()->getIdentity();
             if (!$user->authorise('core.delete', 'com_yaquiz')) {
-                throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
+                throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_DELETE'));
             }
     
             $db = Factory::getContainer()->get('DatabaseDriver');
@@ -878,7 +916,7 @@ class YaquizModel extends AdminModel
                 //user needs core.delete permission
                 $user = Factory::getApplication()->getIdentity();
                 if (!$user->authorise('core.delete', 'com_yaquiz')) {
-                    throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
+                    throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_DELETE'));
                 }
         
                 $db = Factory::getContainer()->get('DatabaseDriver');
@@ -899,7 +937,7 @@ class YaquizModel extends AdminModel
         //user needs core.delete permission
         $user = Factory::getApplication()->getIdentity();
         if (!$user->authorise('core.delete', 'com_yaquiz')) {
-            throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_DELETE'));
         }
 
         $db = Factory::getContainer()->get('DatabaseDriver');
@@ -979,7 +1017,7 @@ class YaquizModel extends AdminModel
         //user needs core.delete permission
         $user = Factory::getApplication()->getIdentity();
         if (!$user->authorise('core.delete', 'com_yaquiz')) {
-            throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_DELETE'));
         }
 
         if($pk == 0){
@@ -1018,10 +1056,10 @@ class YaquizModel extends AdminModel
 
     public function getTotalQuestionCount($pk = 0){
 
-        //user needs core.admin permission
+        //user needs core.manage permission
         $user = Factory::getApplication()->getIdentity();
-        if (!$user->authorise('core.admin', 'com_yaquiz')) {
-            throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
+        if (!$user->authorise('core.manage', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'));
         }
 
         if($pk == 0){
