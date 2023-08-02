@@ -14,6 +14,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Input\Input;
 use Joomla\CMS\MVC\Controller\BaseController;
 use KevinsGuides\Component\Yaquiz\Administrator\Helper\CertHelper;
+use KevinsGuides\Component\Yaquiz\Administrator\Model\CertificatesModel;
 use Joomla\CMS\Uri\Uri;
 require_once JPATH_ROOT . '/components/com_yaquiz/vendor/autoload.php';
 use Dompdf\Dompdf;
@@ -96,7 +97,7 @@ class CertificatesController extends BaseController
         $user = $app->getIdentity();
 
         if(!$user->authorise('core.admin', 'com_yaquiz')){
-            $app->enqueueMessage('You do not have permission to edit certificates', 'error');
+            $app->enqueueMessage('You do not have permission to delete certificates', 'error');
             $app->redirect('index.php?option=com_yaquiz&view=certificates');
         }
 
@@ -114,10 +115,6 @@ class CertificatesController extends BaseController
 
     public function getCertPreview()
     {
-
-
-
-
         $app = Factory::getApplication();
         $user = $app->getIdentity();
         if(!$user->authorise('core.view', 'com_yaquiz')){
@@ -181,6 +178,21 @@ class CertificatesController extends BaseController
         // Output the generated PDF to Browser
         $dompdf->stream($pdf_filename);
 
+    }
+
+    public function rebuildVerifyCodes(){
+
+        $app = Factory::getApplication();
+        $model = $this->getModel('certificates');
+        if($model->rebuildVerifyCodes()){
+            $app->enqueueMessage('Verify codes rebuilt', 'message');
+        }
+        else{
+            $app->enqueueMessage('Error rebuilding verify codes', 'error');
+        }
+
+        
+        $app->redirect('index.php?option=com_yaquiz&view=certificates');
 
     }
 

@@ -52,3 +52,9 @@ class="table table-striped table-hover"
 <input name="task" type="hidden">
     <?php HTMLHelper::_('form.token'); ?>
 </form>
+
+
+<div class="card bg-light card-body">
+
+<span><i class="fas fa-info-circle me-2"></i><?php echo Text::_('COM_YAQUIZ_REBUILD_VERIFY_CODES_DESC');?></span>
+</div>

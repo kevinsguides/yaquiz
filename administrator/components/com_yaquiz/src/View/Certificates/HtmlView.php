@@ -23,6 +23,9 @@ class HtmlView extends BaseHtmlView
         $app = Factory::getApplication();
         $certfile = $app->input->get('certfile', null, 'STRING');
 
+        $user = Factory::getApplication()->getIdentity();
+
+
         //if layout edit
         if($this->getLayout() == 'edit'){
             $model = $this->getModel();
@@ -33,8 +36,12 @@ class HtmlView extends BaseHtmlView
             $app->getInput()->set('hidemainmenu', true);
             }
         }else{
-            ToolbarHelper::addNew('Certificates.add');
-            ToolbarHelper::preferences('com_yaquiz');
+
+            if ($user->authorise('core.admin', 'com_yaquiz')) {
+                ToolbarHelper::addNew('Certificates.add');
+                ToolbarHelper::custom('Certificates.rebuildVerifyCodes', 'refresh', '', 'COM_YAQUIZ_REBUILD_VERIFY_CODES', false);
+                ToolbarHelper::preferences('com_yaquiz');
+            }    
         }
 
 
