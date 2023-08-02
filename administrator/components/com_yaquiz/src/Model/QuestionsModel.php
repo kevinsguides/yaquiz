@@ -7,6 +7,7 @@
 
 namespace KevinsGuides\Component\Yaquiz\Administrator\Model;
 use Exception;
+use Joomla\CMS\Language\Text;
 use JFactory;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
@@ -24,6 +25,13 @@ class QuestionsModel extends AdminModel
     //get all the Items
     public function getItems($filter_title = null, $filter_categories = null, $page = 0, $filter_limit = 10)
     {
+
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.manage', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'));
+        }
+
         //get the database driver
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
@@ -49,6 +57,11 @@ class QuestionsModel extends AdminModel
     //get items by their category
     public function getItemsByCategory($category)
     {
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.manage', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'));
+        }
         //get the database driver
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
@@ -63,6 +76,11 @@ class QuestionsModel extends AdminModel
     //get items in groups of 10
     public function getItemsByPage($page)
     {
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.manage', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'));
+        }
         //get the database driver
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
@@ -76,6 +94,11 @@ class QuestionsModel extends AdminModel
     }
 
     public function getCategories(){
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.manage', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'));
+        }
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('id, title');
@@ -89,7 +112,11 @@ class QuestionsModel extends AdminModel
     
     public function getForm($data = [], $loadData = true)
     {
-
+//user needs permission
+$user = Factory::getApplication()->getIdentity();
+if (!$user->authorise('core.manage', 'com_yaquiz')) {
+    throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'));
+}
         $app = Factory::getApplication();
         if ($app->input->get('layout') == 'insertmulti') {
             $form = $this->loadForm('com_yaquiz.insertmulti', 'insertmulti');
@@ -107,6 +134,11 @@ class QuestionsModel extends AdminModel
     }
 
     public function getPageCount($filter_categories = null, $filter_title = null, $filter_limit = 10){
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.manage', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'));
+        }
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('COUNT(*)');
@@ -128,6 +160,11 @@ class QuestionsModel extends AdminModel
 
     public function insertMultiQuestions($questions, $catid){
 
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.create', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_CREATE'));
+        }
 
         $db = Factory::getContainer()->get('DatabaseDriver');
         $app = Factory::getApplication();
@@ -224,11 +261,10 @@ class QuestionsModel extends AdminModel
 
     public function deleteQuestions($question_ids){
 
-        //user needs permissions
-        $app = Factory::getApplication();
-        if($app->getIdentity()->authorise('core.delete', 'com_yaquiz') != true){
-            $app->enqueueMessage('Delete permissions required to delete', 'error');
-            return;
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.delete', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_DELETE'));
         }
 
         $db = Factory::getContainer()->get('DatabaseDriver');

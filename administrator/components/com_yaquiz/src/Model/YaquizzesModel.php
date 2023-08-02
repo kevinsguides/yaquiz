@@ -10,6 +10,8 @@ namespace KevinsGuides\Component\Yaquiz\Administrator\Model;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
+use Exception;
+use Joomla\CMS\Language\Text;
 
 defined ( '_JEXEC' ) or die;
 
@@ -23,6 +25,13 @@ class YaquizzesModel extends AdminModel
     //get all the Items
     public function getItems($titlefilter = null, $catfilter=null, $page=1, $limit=10)
     {
+
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.manage', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'));
+        }
+
         //get the database driver
         $db = $this->getDatabase();
         $query = $db->getQuery(true);
@@ -41,6 +50,13 @@ class YaquizzesModel extends AdminModel
     }
 
     public function getTotalPages($limit, $titlefilter = null, $catfilter=null){
+
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.manage', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'));
+        }
+
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('count(*)');
@@ -58,6 +74,13 @@ class YaquizzesModel extends AdminModel
 
     /** get general stats for an individual quiz */
     public function getGeneralStats($pk = null){
+
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.manage', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'));
+        }
+
         if (!$pk) {
             return null;
         }
@@ -87,6 +110,14 @@ class YaquizzesModel extends AdminModel
 	 * @return \Joomla\CMS\Form\Form
 	 */
 	public function getForm($data = array(), $loadData = true) {
+
+
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.manage', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'));
+        }
+
         //get the yaquizzes form
         $form = $this->loadForm('com_yaquiz.yaquizzes', 'yaquizzes', array('control' => 'filters', 'load_data' => $loadData));
         if (empty($form)) {
@@ -97,6 +128,14 @@ class YaquizzesModel extends AdminModel
 	}
 
     public function getQuizParams($pk = null){
+
+
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.manage', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'));
+        }
+
         if (!$pk) {
             return null;
         }

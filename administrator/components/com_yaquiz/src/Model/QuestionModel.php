@@ -11,6 +11,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\MVC\Model\BaseModel;
 use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
+use Exception;
 
 defined('_JEXEC') or die;
 
@@ -32,6 +33,12 @@ class QuestionModel extends AdminModel
     //get a single question
     public function getItem($id = null)
     {
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.manage', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'));
+        }
+
         //get the database driver
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
@@ -51,6 +58,12 @@ class QuestionModel extends AdminModel
     //form getter
     public function getForm($data = [], $loadData = true)
     {
+
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.manage', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'));
+        }
 
         $app = Factory::getApplication();
 
@@ -127,6 +140,8 @@ class QuestionModel extends AdminModel
     public function save($data)
     {
 
+
+
         //log everything in $data array
         $data_array_to_string = '';
         foreach ($data as $key => $value) {
@@ -201,6 +216,13 @@ class QuestionModel extends AdminModel
 
     public function update($data)
     {
+
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.edit', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_EDIT'));
+        }
+
         $app = Factory::getApplication();
         Log::add('update function called', Log::INFO, 'com_yaquiz');
         $db = Factory::getContainer()->get('DatabaseDriver');
@@ -225,6 +247,13 @@ class QuestionModel extends AdminModel
 
     public function create($data)
     {
+
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.create', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_CREATE'));
+        }
+
         Log::add('create function called', Log::INFO, 'com_yaquiz');
         $app = Factory::getApplication();
         $db = Factory::getContainer()->get('DatabaseDriver');
@@ -256,11 +285,14 @@ class QuestionModel extends AdminModel
 
     public function deleteQuestion($pk)
     {
+
+
+
         $app = Factory::getApplication();
-        if($app->getIdentity()->authorise('core.delete', 'com_yaquiz') != true){
-            //cue message
-            $app->enqueueMessage('You don\'t have permission to delete questions.', 'error');
-            throw new \Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        //user needs permission
+        $user = Factory::getApplication()->getIdentity();
+        if (!$user->authorise('core.delete', 'com_yaquiz')) {
+            throw new Exception(Text::_('COM_YAQUIZ_PERM_REQUIRED_DELETE'));
         }
         
 
