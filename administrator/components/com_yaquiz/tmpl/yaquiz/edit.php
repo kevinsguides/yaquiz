@@ -27,7 +27,7 @@ if(!isset($_GET['id'])){
 
 $app = Factory::getApplication();
 $wa = $app->getDocument()->getWebAssetManager();
-$wa->useScript('keepalive');
+
 
 ?>
 <h1><?php echo Text::_('COM_YAQUIZ_QUIZDETAILSEDIT');?></h1>

@@ -181,4 +181,6 @@ $results = $model->getAllSavedResults($quiz_id, $filters, $page, $yaqresultlimit
     <button type="submit" class="btn btn-primary"><?PHP echo Text::_('COM_YAQUIZ_UPDATE');?></button>
 </form>
 <br/>
+<div class="text-center">
 <a href="https://kevinsguides.com/tips" class="btn btn-success btn-lg"><?php echo Text::_('COM_YAQUIZ_SUPPORT_THIS_PROJECT');?></a>
+</div>

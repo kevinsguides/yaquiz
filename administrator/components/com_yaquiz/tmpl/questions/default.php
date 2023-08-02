@@ -264,4 +264,6 @@ if ($filter_title || $filter_categories || $filter_limit) {
 </form>
 
 <br/>
+<div class="text-center">
 <a href="https://kevinsguides.com/tips" class="btn btn-success btn-lg"><?php echo Text::_('COM_YAQUIZ_SUPPORT_THIS_PROJECT');?></a>
+</div>

@@ -24,13 +24,14 @@ $certs = $certHelper->getCertificates();
 
 ?>
 
-<h1>Certificate Templates</h1>
+<h1><?php echo Text::_('COM_YAQUIZ_CERTIFICATES');?></h1>
+<p><?php echo Text::_('COM_YAQUIZ_CERTIFICATE_TEMPLATE_DESC');?></p>
 <table
 class="table table-striped table-hover"
 >
 <thead>
 <tr>
-<th>Template</th>
+<th><?php echo Text::_('COM_YAQUIZ_TEMPLATE');?></th>
 <th><?php echo Text::_('COM_YAQUIZ_EDIT'); ?></th>
 <th><?php echo Text::_('COM_YAQUIZ_PREVIEW'); ?></th>
 <th><?php echo Text::_('COM_YAQUIZ_DELETE'); ?></th>

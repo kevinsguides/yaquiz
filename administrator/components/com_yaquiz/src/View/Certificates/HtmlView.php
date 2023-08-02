@@ -29,11 +29,12 @@ class HtmlView extends BaseHtmlView
             $form = $model->getForm();
             ToolbarHelper::cancel('Certificates.cancel');
             if($certfile != 'default.html'){
-
             ToolbarHelper::save('Certificates.save');
+            $app->getInput()->set('hidemainmenu', true);
             }
         }else{
             ToolbarHelper::addNew('Certificates.add');
+            ToolbarHelper::preferences('com_yaquiz');
         }
 
 
