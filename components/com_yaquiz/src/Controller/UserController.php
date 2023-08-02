@@ -75,6 +75,7 @@ class UserController extends BaseController
         $html_to_pdf = str_replace('USER_FULLNAME', $user->name, $html_to_pdf);
         $html_to_pdf = str_replace('QUIZ_SCORE', $result->points, $html_to_pdf);
         $html_to_pdf = str_replace('QUIZ_TOTAL', $result->total_points, $html_to_pdf);
+        $html_to_pdf = str_replace('SCORE_AS_PERCENT', $result->score, $html_to_pdf);
         $html_to_pdf = str_replace('QUIZ_TIME', $submitdate_time, $html_to_pdf);
         $html_to_pdf = str_replace('QUIZ_DATE', $submitdate_short, $html_to_pdf);
         $site_name = Factory::getConfig()->get('sitename');

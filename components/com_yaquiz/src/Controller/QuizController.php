@@ -317,7 +317,7 @@ class QuizController extends BaseController
         }
         else{
             $app->enqueueMessage(Text::_('COM_YAQ_QUIZ_VERIFY_FAIL'), 'error');
-            $this->setRedirect('index.php?option=com_yaquiz&view=quiz&layout=verify');
+            $this->setRedirect('index.php?option=com_yaquiz&view=certverify');
         }
 
     }

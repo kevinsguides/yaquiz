@@ -40,6 +40,8 @@ if (!$canEdit) {
     return;
 }
 
+$canDelete = $user->authorise('core.delete', 'com_yaquiz');
+
 $wa = $app->getDocument()->getWebAssetManager();
 $wa->registerAndUseStyle('yaquiz-admin-yaquizstyle', 'administrator/components/com_yaquiz/src/Style/com_yaquiz.min.css');
 $wa->registerAndUseScript('yaquiz-utils', 'administrator/components/com_yaquiz/src/Scripts/utils.js');
@@ -306,7 +308,7 @@ HTMLHelper::_('bootstrap.toast');
             </div>
         </div>
         <br />
-
+        <?php if ($canDelete) :?>
         <div class="card">
             <h2 class="card-header bg-danger text-white"><?php echo Text::_('COM_YAQUIZ_QUIZ_OPS'); ?></h2>
             <div class="card-body">
@@ -376,6 +378,7 @@ HTMLHelper::_('bootstrap.toast');
 
 
         </div>
+        <?php endif; ?>
 
 
     </form>

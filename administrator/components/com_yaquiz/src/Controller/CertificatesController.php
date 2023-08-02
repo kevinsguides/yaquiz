@@ -150,8 +150,9 @@ class CertificatesController extends BaseController
         //replace placeholders with actual values
         $html_to_pdf = str_replace('QUIZ_NAME', "Sample Quiz", $html_to_pdf);
         $html_to_pdf = str_replace('USER_FULLNAME',"John Doe", $html_to_pdf);
-        $html_to_pdf = str_replace('QUIZ_SCORE', "95", $html_to_pdf);
-        $html_to_pdf = str_replace('QUIZ_TOTAL', "100", $html_to_pdf);
+        $html_to_pdf = str_replace('QUIZ_SCORE', "19", $html_to_pdf);
+        $html_to_pdf = str_replace('SCORE_AS_PERCENT', "95", $html_to_pdf);
+        $html_to_pdf = str_replace('QUIZ_TOTAL', "20", $html_to_pdf);
         $html_to_pdf = str_replace('QUIZ_TIME', "12:30", $html_to_pdf);
         $html_to_pdf = str_replace('QUIZ_DATE', "01-02-2023", $html_to_pdf);
         $html_to_pdf = str_replace('SITEROOT_URI/', Uri::root(), $html_to_pdf);

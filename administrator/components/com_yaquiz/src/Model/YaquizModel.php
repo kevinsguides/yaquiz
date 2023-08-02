@@ -199,6 +199,15 @@ class YaquizModel extends AdminModel
 
     public function insert($data)
     {
+
+        //user must have edit permissions to do this
+        $app = Factory::getApplication();
+        if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
+            $app->enqueueMessage('Edit permissions required to make quizzes', 'error');
+            return;
+        }
+
+
         Log::add('insert called in quizmodel', Log::INFO, 'com_yaquiz');
         //insert quiz
         $db = Factory::getContainer()->get('DatabaseDriver');
@@ -217,6 +226,14 @@ class YaquizModel extends AdminModel
 
     public function update($data)
     {
+
+        //user must have edit permissions to do this
+        $app = Factory::getApplication();
+        if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
+            $app->enqueueMessage('Edit permissions required to change quiz settings', 'error');
+            return;
+        }
+
         Log::add('update called in quizmodel', Log::INFO, 'com_yaquiz');
         //update quiz
         $app = Factory::getApplication();
@@ -240,6 +257,12 @@ class YaquizModel extends AdminModel
 
     public function addQuestionsToQuiz($quizid, $questionids)
     {
+        //user must have edit permissions to do this
+        $app = Factory::getApplication();
+        if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
+            $app->enqueueMessage('Edit permissions required to add questions.', 'error');
+            return;
+        }
 
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
@@ -289,6 +312,13 @@ class YaquizModel extends AdminModel
 
     public function getQuestionsInQuiz($quiz_id)
     {
+
+        //user must have admin permissions to do this
+        $app = Factory::getApplication();
+        if($app->getIdentity()->authorise('core.admin', 'com_yaquiz') != true){
+            $app->enqueueMessage('View permissions required to see questions', 'error');
+            return;
+        }
 
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
@@ -341,7 +371,12 @@ class YaquizModel extends AdminModel
 
     public function updateQuestionOrder($quiz_id, $question_id, $newOrder)
     {
-
+        //user must have edit permissions to do this
+        $app = Factory::getApplication();
+        if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
+            $app->enqueueMessage('Edit permissions required to change question ordering', 'error');
+            return;
+        }
 
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
@@ -983,9 +1018,9 @@ class YaquizModel extends AdminModel
 
     public function getTotalQuestionCount($pk = 0){
 
-        //user needs core.view permission
+        //user needs core.admin permission
         $user = Factory::getApplication()->getIdentity();
-        if (!$user->authorise('core.view', 'com_yaquiz')) {
+        if (!$user->authorise('core.admin', 'com_yaquiz')) {
             throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
         }
 
