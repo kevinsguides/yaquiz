@@ -10,7 +10,7 @@ use Joomla\CMS\Language\Text;
 
 
 //check points
-$quizParams = $this->getQuizParams($quiz_id);
+$quizParams = $model->getQuizParams($quiz_id);
 $pointsFeedback = '';
 if ($quizParams->quiz_use_points === '1') {
     if ($iscorrect) {

@@ -166,21 +166,6 @@ class QuestionBuilderHelper
         return $html;
     }
 
-    public function getQuizParams($pk)
-    {
-        $db = Factory::getContainer()->get('DatabaseDriver');
-        $query = $db->getQuery(true);
-        $query->select('params');
-        $query->from($db->quoteName('#__com_yaquiz_quizzes'));
-        $query->where($db->quoteName('id') . ' = ' . $db->quote($pk));
-        $db->setQuery($query);
-        $quiz_params = $db->loadObject();
-        //decode
-        $quiz_params = json_decode($quiz_params->params);
-        return $quiz_params;
-    }
-
-
     /*
     * Called by the QuizController on form submit...
     * @param $quiz_id - the quiz id
@@ -202,8 +187,9 @@ class QuestionBuilderHelper
         //the default will be a simple x/x with percentage
         //trim to 2 decimal places
         $resultPercent = round((((int)$results->correct / (int)$results->total) * 100), 0);
+        $model = new QuizModel();
         //get quiz params
-        $quizParams = $this->getQuizParams($quiz_id);
+        $quizParams = $model->getQuizParams($quiz_id);
 
         //get the quiz template style from global params
         $theme = $this->globalParams->get('theme', 'default');
@@ -246,6 +232,7 @@ class QuestionBuilderHelper
 
     protected function getQuestionFeedback($quiz_id, $question, $iscorrect, $useranswer, $questionnum)
     {
+        $model = new QuizModel();
         include(ThemeHelper::findFile('result_wrapper.php'));
         return $html;
     }

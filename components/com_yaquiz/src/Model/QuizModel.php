@@ -61,7 +61,11 @@ class QuizModel extends ItemModel{
         $query->where($db->quoteName('id') . ' = ' . $db->quote($pk));
         $db->setQuery($query);
         $params = $db->loadResult();
-        return json_decode($params);
+        $params = json_decode($params);
+        return $params;
+
+
+
     }
 
 

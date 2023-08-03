@@ -7,11 +7,6 @@
 defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 
-//echo everything after this
-$pointtext = 'questions right.';
-if ($quizParams->quiz_use_points === '1') {
-    $pointtext = 'points.';
-}
 
 if(isset($quizParams->use_certificates))
 {
@@ -31,9 +26,16 @@ if($use_certificates == "-1"){
 
 $html .= '<div class="card">
             <h3 class="card-header">'.Text::_('COM_YAQ_QUIZ_RESULTS').'</h3>
-            <div class="card-body">
-            <p>'.Text::sprintf('COM_YAQ_NUMCORRECTOFTOTAL', $results->correct, $results->total).'</p>
-            <p>'.Text::sprintf('COM_YAQ_PERCENTOFCORRECT', $resultPercent).'</p>';
+            <div class="card-body">';
+            if ($quizParams->quiz_use_points === '1') {
+                $html .= '<p>'.Text::sprintf('COM_YAQ_NUM_CORRECT_OF_POINTS', $results->correct, $results->total).'</p>';
+            
+            }
+            else {
+            $html .= '<p>'.Text::sprintf('COM_YAQ_NUMCORRECTOFTOTAL', $results->correct, $results->total).'</p>';
+            }
+
+            $html .= '<p>'.Text::sprintf('COM_YAQ_PERCENTOFCORRECT', $resultPercent).'</p>';
 
             //progress bar display
             $passColor = ($results->passfail === 'pass') ? 'bg-success' : 'bg-danger';
