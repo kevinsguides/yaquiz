@@ -176,7 +176,7 @@ class CertificatesController extends BaseController
         $dompdf->render();
 
         // Output the generated PDF to Browser
-        $dompdf->stream($pdf_filename);
+        $dompdf->stream($pdf_filename , array("Attachment"=>0));
 
     }
 
