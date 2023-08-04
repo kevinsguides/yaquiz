@@ -102,7 +102,7 @@ class UserController extends BaseController
         $dompdf->render();
 
         // Output the generated PDF to Browser
-        $dompdf->stream($pdf_filename , array("Attachment" => false));
+        $dompdf->stream($pdf_filename , array("Attachment" => true));
     }
 
 }

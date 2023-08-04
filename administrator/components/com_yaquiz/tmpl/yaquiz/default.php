@@ -34,12 +34,6 @@ $app = Factory::getApplication();
 //permissions
 $user = $app->getIdentity();
 $canEdit = $user->authorise('core.edit', 'com_yaquiz');
-
-if (!$canEdit) {
-    $app->enqueueMessage("You do not have permission to edit quizzes.", "error");
-    return;
-}
-
 $canDelete = $user->authorise('core.delete', 'com_yaquiz');
 
 $wa = $app->getDocument()->getWebAssetManager();
@@ -206,7 +200,7 @@ HTMLHelper::_('bootstrap.toast');
             <h4><?php echo Text::_('COM_YAQUIZ_AVAILABLE_QUESTIONS'); ?></h4>
             <span style="font-size: 0.8rem;"><?php echo Text::_('COM_YAQUIZ_AVAILABLE_QUESTIONS_DESC'); ?></span>
             <form action="index.php?option=com_yaquiz&task=yaquiz.addQuestionsToQuiz" method="post">
-                <input type="hidden" name="quiz_id" value="<?php echo $item->id; ?>">
+                <input type="hidden" name="id" value="<?php echo $item->id; ?>">
                 <!-- get the questions selectlist -->
                 <?php echo getQuestionListBox($filters->filter_title, $filters->filter_categories); ?>
                 <?php echo HtmlHelper::_('form.token'); ?>
@@ -266,7 +260,7 @@ HTMLHelper::_('bootstrap.toast');
 
                             </div><?php endif; ?>
                         <div class="card-footer bg-light p-1">
-                            <a class="btn btn-danger btn-sm" title="<?php echo Text::_('COM_YAQUIZ_REMOVE_TITLE'); ?>" href="index.php?option=com_yaquiz&task=yaquiz.removeQuestionFromQuiz&quiz_id=<?php echo $item->id; ?>&question_id=<?php echo $question->id; ?>"><span class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_REMOVE'); ?></a>
+                            <a class="btn btn-danger btn-sm" title="<?php echo Text::_('COM_YAQUIZ_REMOVE_TITLE'); ?>" href="index.php?option=com_yaquiz&task=yaquiz.removeQuestionFromQuiz&id=<?php echo $item->id; ?>&question_id=<?php echo $question->id; ?>"><span class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_REMOVE'); ?></a>
 
                             <span class="badge bg-secondary orderbadge"><?php echo Text::_('COM_YAQUIZ_ORDER'); ?>: <?php echo $question->ordering; ?></span>
                             <span class="badge bg-secondary"> <?php echo Text::_('COM_YAQUIZ_TYPE'); ?>:
@@ -292,8 +286,8 @@ HTMLHelper::_('bootstrap.toast');
 
 
 
-                            <a href="index.php?option=com_yaquiz&task=Yaquiz.orderUp&quiz_id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-primary btn-sm me-1 float-end"><i class="far fa-caret-square-up"></i> <?php echo Text::_('COM_YAQUIZ_ORDERUP'); ?></a>
-                            <a href="index.php?option=com_yaquiz&task=Yaquiz.orderDown&quiz_id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-primary btn-sm me-1 float-end"><i class="far fa-caret-square-down"></i> <?php echo Text::_('COM_YAQUIZ_ORDERDOWN'); ?></a>
+                            <a href="index.php?option=com_yaquiz&task=Yaquiz.orderUp&id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-primary btn-sm me-1 float-end"><i class="far fa-caret-square-up"></i> <?php echo Text::_('COM_YAQUIZ_ORDERUP'); ?></a>
+                            <a href="index.php?option=com_yaquiz&task=Yaquiz.orderDown&id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-primary btn-sm me-1 float-end"><i class="far fa-caret-square-down"></i> <?php echo Text::_('COM_YAQUIZ_ORDERDOWN'); ?></a>
 
                             <a class="btn btn-primary btn-sm me-1 float-end" title="<?php echo Text::_('COM_YAQUIZ_QUESTION_EDITOR'); ?>" href="index.php?option=com_yaquiz&view=Question&layout=edit&qnid=<?php echo $question->id; ?>"><span class="icon-edit"></span></a>
 
@@ -316,7 +310,7 @@ HTMLHelper::_('bootstrap.toast');
                     <div class="col-12 col-lg-7">
                         <h3 class="w-100 d-block"><i class="fas fa-user-graduate"></i> <?php echo Text::_('COM_YAQUIZ_GRADEKEEPING_OPS'); ?></h3>
                         <hr />
-                        <a href="index.php?option=com_yaquiz&task=Yaquiz.recalculateGeneralStatsFromSaved&quiz_id=<?php echo $item->id; ?>" class="w-100  text-start btn btn-info btn-sm doublecheckdialog" data-confirm="<?php echo Text::_('COM_YAQUIZ_RECALC_GENERALSTATS_CONFIRM'); ?>" title="<?php echo Text::_('COM_YAQUIZ_RECALC_GENERALSTATS_DESC'); ?>">
+                        <a href="index.php?option=com_yaquiz&task=Yaquiz.recalculateGeneralStatsFromSaved&id=<?php echo $item->id; ?>" class="w-100  text-start btn btn-info btn-sm doublecheckdialog" data-confirm="<?php echo Text::_('COM_YAQUIZ_RECALC_GENERALSTATS_CONFIRM'); ?>" title="<?php echo Text::_('COM_YAQUIZ_RECALC_GENERALSTATS_DESC'); ?>">
                             <span class="icon-refresh me-2"></span>
                             <?php echo Text::_('COM_YAQUIZ_RECALC_GENERALSTATS'); ?></a>
                         </a>
@@ -324,14 +318,14 @@ HTMLHelper::_('bootstrap.toast');
 
                         <hr />
 
-                        <a href="index.php?option=com_yaquiz&task=Yaquiz.resetGeneralQuizStats&quiz_id=<?php echo $item->id; ?>" class="w-100  text-start btn btn-warning btn-sm doublecheckdialog" data-confirm="<?php echo Text::_('COM_YAQUIZ_RESET_GENERALSTATS_CONFIRM'); ?>" title="<?php echo Text::_('COM_YAQUIZ_RESET_GENERALSTATS_DESC'); ?>">
+                        <a href="index.php?option=com_yaquiz&task=Yaquiz.resetGeneralQuizStats&id=<?php echo $item->id; ?>" class="w-100  text-start btn btn-warning btn-sm doublecheckdialog" data-confirm="<?php echo Text::_('COM_YAQUIZ_RESET_GENERALSTATS_CONFIRM'); ?>" title="<?php echo Text::_('COM_YAQUIZ_RESET_GENERALSTATS_DESC'); ?>">
                             <span class="icon-trash me-2"></span>
                             <?php echo Text::_('COM_YAQUIZ_RESET_GENERALSTATS'); ?></a>
                         </a>
                         <span class="w-100 d-block"><?php echo Text::_('COM_YAQUIZ_RESET_GENERALSTATS_DESC'); ?></span>
 
                         <hr />
-                        <a href="index.php?option=com_yaquiz&task=Yaquiz.resetIndividualQuizStats&quiz_id=<?php echo $item->id; ?>" class="w-100  text-start btn btn-warning btn-sm doublecheckdialog" data-confirm="<?php echo Text::_('COM_YAQUIZ_RESET_INDIVIDUALSTATS_CONFIRM'); ?>" title="<?php echo Text::_('COM_YAQUIZ_RESET_ALL_INDIVIDUAL_SCORES_DESC'); ?>">
+                        <a href="index.php?option=com_yaquiz&task=Yaquiz.resetIndividualQuizStats&id=<?php echo $item->id; ?>" class="w-100  text-start btn btn-warning btn-sm doublecheckdialog" data-confirm="<?php echo Text::_('COM_YAQUIZ_RESET_INDIVIDUALSTATS_CONFIRM'); ?>" title="<?php echo Text::_('COM_YAQUIZ_RESET_ALL_INDIVIDUAL_SCORES_DESC'); ?>">
                             <span class="icon-trash me-2"></span>
                             <?php echo Text::_('COM_YAQUIZ_RESET_ALL_INDIVIDUAL_SCORES'); ?></a>
                         </a>
@@ -339,7 +333,7 @@ HTMLHelper::_('bootstrap.toast');
 
                         <hr />
 
-                        <a href="index.php?option=com_yaquiz&task=Yaquiz.resetAllQuizAttemptCounts&quiz_id=<?php echo $item->id; ?>" class="w-100  text-start btn btn-warning btn-sm doublecheckdialog" data-confirm="<?php echo Text::_('COM_YAQUIZ_RESET_ATTEMPTCOUNT_CONFIRM'); ?>" title="<?php echo Text::_('COM_YAQUIZ_RESET_ATTEMPTCOUNT_DESC'); ?>">
+                        <a href="index.php?option=com_yaquiz&task=Yaquiz.resetAllQuizAttemptCounts&id=<?php echo $item->id; ?>" class="w-100  text-start btn btn-warning btn-sm doublecheckdialog" data-confirm="<?php echo Text::_('COM_YAQUIZ_RESET_ATTEMPTCOUNT_CONFIRM'); ?>" title="<?php echo Text::_('COM_YAQUIZ_RESET_ATTEMPTCOUNT_DESC'); ?>">
                             <span class="icon-trash me-2"></span>
                             <?php echo Text::_('COM_YAQUIZ_RESET_ATTEMPTCOUNT'); ?></a>
                         </a>
@@ -347,7 +341,7 @@ HTMLHelper::_('bootstrap.toast');
 
                         <hr />
 
-                        <a href="index.php?option=com_yaquiz&task=Yaquiz.resetAllStatsAndRecords&quiz_id=<?php echo $item->id; ?>" title="<?php echo Text::_('COM_YAQUIZ_RESET_ALL_STATS_AND_RECORDS_DESC'); ?>" data-confirm="<?php echo Text::_('COM_YAQUIZ_RESET_ALL_STATS_AND_RECORDS_CONFIRM'); ?>" class="w-100  text-start btn btn-danger btn-sm doublecheckdialog">
+                        <a href="index.php?option=com_yaquiz&task=Yaquiz.resetAllStatsAndRecords&id=<?php echo $item->id; ?>" title="<?php echo Text::_('COM_YAQUIZ_RESET_ALL_STATS_AND_RECORDS_DESC'); ?>" data-confirm="<?php echo Text::_('COM_YAQUIZ_RESET_ALL_STATS_AND_RECORDS_CONFIRM'); ?>" class="w-100  text-start btn btn-danger btn-sm doublecheckdialog">
 
                             <span class="icon-trash me-2"></span> <?php echo Text::_('COM_YAQUIZ_RESET_ALL_STATS_AND_RECORDS'); ?></a>
                         <span class="w-100 d-block"><?php echo Text::_('COM_YAQUIZ_RESET_ALL_STATS_AND_RECORDS_DESC'); ?></span>
@@ -356,7 +350,7 @@ HTMLHelper::_('bootstrap.toast');
                         <div class="card card-body bg-light">
                             <h3><?php echo Text::_('COM_YAQUIZ_BATCHOPS'); ?></h3>
                             <p><?php echo Text::_('COM_YAQUIZ_BATCHOPS_DESC'); ?></p>
-                            <input type="hidden" name="quiz_id" value="<?php echo $item->id; ?>">
+                            <input type="hidden" name="id" value="<?php echo $item->id; ?>">
                             <input type="hidden" name="task" value="Yaquiz.executeBatchOps">
                             <label for="batch_op"><?php echo Text::_('COM_YAQUIZ_BATCHOPS_WITHSELECTED'); ?></label>
                             <select name="batch_op" class="form-select mb-1">
@@ -366,7 +360,7 @@ HTMLHelper::_('bootstrap.toast');
                             <input type="submit" class="btn btn-info btn-sm" value="<?php echo Text::_('COM_YAQUIZ_BATCHOPS_EXECUTE'); ?>">
                             <br />
                             <hr/>
-                            <a href="index.php?option=com_yaquiz&task=Yaquiz.removeAllQuestionsFromQuiz&quiz_id=<?php echo $item->id; ?>" class="btn btn-danger btn-sm doublecheckdialog" data-confirm="<?php echo Text::_('COM_YAQUIZ_REMOVEALLQNS_CONFIRM'); ?>"><span class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_REMOVEALLQNS'); ?></a>
+                            <a href="index.php?option=com_yaquiz&task=Yaquiz.removeAllQuestionsFromQuiz&id=<?php echo $item->id; ?>" class="btn btn-danger btn-sm doublecheckdialog" data-confirm="<?php echo Text::_('COM_YAQUIZ_REMOVEALLQNS_CONFIRM'); ?>"><span class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_REMOVEALLQNS'); ?></a>
                         </div>
                     </div>
                 </div>

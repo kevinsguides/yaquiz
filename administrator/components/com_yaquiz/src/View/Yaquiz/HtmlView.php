@@ -54,11 +54,14 @@ class HtmlView extends BaseHtmlView
         if($cParams->get('load_mathjax')==='1'){
             $wa->registerAndUseScript('com_yaquiz.mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js');
         }
-        
+
+
+        $user = $app->getIdentity();
+
         //if view is default
         if($this->getLayout() == 'default')
         {
-        //set this item to that quiz
+            //set this item to that quiz
             $this->item = $model->getQuiz($id);
             $quizParams = $model->getParams($id);
 
@@ -95,18 +98,11 @@ class HtmlView extends BaseHtmlView
             //hide the main menu
             $app->getInput()->set('hidemainmenu', true);
 
-            //check if user has permission to edit
-            if($app->getIdentity()->authorise('core.manage', 'com_yaquiz') != true){
-                $app->enqueueMessage('You do not have permission to edit this quiz', 'error');
-                $app->redirect('index.php?option=com_yaquiz&view=yaquizzes');
-            }
-
             //check if item is checked out
             if($model->isCheckedOut($model->getQuiz($id))){
                 $app->enqueueMessage('This quiz is currently being edited by another user', 'error');
                 $app->redirect('index.php?option=com_yaquiz&view=yaquizzes');
             }
-
 
             //we need a toolbar
             $this->addEditToolbar();
@@ -117,7 +113,11 @@ class HtmlView extends BaseHtmlView
                 //get data for that quiz
                 $data = $model->getQuiz($id);
                 //get the form
-                $this->form = $model->getForm($data, false);
+                $formy = $model->getForm($data, false);
+                if($formy == false){
+                    $app->redirect('index.php?option=com_yaquiz&view=yaquizzes');
+                }
+                $this->form = $formy;
                 return parent::display($tpl);
             }
             else{

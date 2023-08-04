@@ -17,6 +17,7 @@ use KevinsGuides\Component\Yaquiz\Administrator\Helper\CertHelper;
 use KevinsGuides\Component\Yaquiz\Administrator\Model\CertificatesModel;
 use Joomla\CMS\Uri\Uri;
 require_once JPATH_ROOT . '/components/com_yaquiz/vendor/autoload.php';
+
 use Dompdf\Dompdf;
 use Dompdf\Options;
 class CertificatesController extends BaseController
@@ -176,7 +177,7 @@ class CertificatesController extends BaseController
         $dompdf->render();
 
         // Output the generated PDF to Browser
-        $dompdf->stream($pdf_filename , array("Attachment"=>0));
+        $dompdf->stream($pdf_filename , array("Attachment"=> true));
 
     }
 
