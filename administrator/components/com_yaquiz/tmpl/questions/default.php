@@ -48,12 +48,17 @@ if (isset($_POST['filters'])) {
         $filter_limit = $_POST['filters']['filter_limit'];
         $app->setUserState('com_yaquiz.questions.filter_limit', $filter_limit);
     }
+    if ($_POST['filters']['filter_order']) {
+        $form->setValue('filter_order', null, $_POST['filters']['filter_order']);
+        $filter_order = $_POST['filters']['filter_order'];
+        $app->setUserState('com_yaquiz.questions.filter_order', $filter_order);
+    }
 }
 
 $filter_title = $app->getUserState('com_yaquiz.questions.filter_title', null);
 $filter_categories = $app->getUserState('com_yaquiz.questions.filter_categories', null);
 $filter_limit = $app->getUserState('com_yaquiz.questions.filter_limit', 10);
-
+$filter_order = $app->getUserState('com_yaquiz.questions.filter_order', 'q.id ASC');
 
 
 $page = 0;
@@ -69,7 +74,7 @@ if($page > $pagecount) {
     $page = $pagecount;
 }
 
-$items = $model->getItems($filter_title, $filter_categories, $page, $filter_limit);
+$items = $model->getItems($filter_title, $filter_categories, $page, $filter_limit, $filter_order);
 
 
 //see if we need to show accordion
@@ -165,21 +170,27 @@ if ($filter_title || $filter_categories || $filter_limit) {
                     }
                 ?> </span>
                 <span class="badge text-dark bg-light"><?php echo Text::_('COM_YAQUIZ_QUESTION_POINTS_LABEL');?>: <?php echo $params->points; ?></span>
+                <span class="badge text-light bg-secondary" title="<?php echo Text::_('COM_YAQUIZ_CREATED_BY');?>"><i class="fas fa-user"></i> <?php echo $item->username; ?></span>
             </div>
             <div class="card-footer p-1">
+            <?php if (YaquizHelper::canDelete()) :?>
                 <a class="btn-danger float-end btn btn-sm doublecheckdialog"
                     data-confirm="<?php echo Text::_('COM_YAQUIZ_DELETE_CONFIRM').' '.$item->question;?>"
                     href="index.php?option=com_yaquiz&task=questions.deleteQuestion&delete=<?php echo $item->id; ?>"><span
                         class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_DELETE');?></a>
+            <?php endif; ?>
+            <?php if (YaquizHelper::canEditQuestion($item->id)) :?>
                 <a 
                 class="btn btn-info btn-sm"
                 href="index.php?option=com_yaquiz&view=Question&layout=edit&id=<?php echo $item->id; ?>"><span
                         class="icon-edit"></span> <?php echo Text::_('COM_YAQUIZ_EDIT');?></a>
+            <?php endif; ?>
                        
             </div>
         </div>
     <?php endforeach; ?>
 
+    <?php if (YaquizHelper::canDelete()) :?>
     <div class="row">
     <div class="d-none d-lg-block col-lg-7">
 
@@ -197,6 +208,7 @@ if ($filter_title || $filter_categories || $filter_limit) {
 </div>
     </div>
 </div>
+<?php endif;?>
 
 <?php else: ?>
     <p><?php echo Text::_('COM_YAQUIZ_NOQUESTIONS');?></p>

@@ -16,6 +16,17 @@
         <option value="0">COM_YAQUIZ_FILTER_UNCATEGORIZED_ALL</option>
         </field>
 
+        <field
+             name="filter_order"
+                type="list"
+                label="JGLOBAL_SORT_BY"
+                default="q.id ASC"
+                >
+                <option value="q.id ASC">COM_YAQUIZ_QUESTION_ID_ASC</option>
+                <option value="q.id DESC">COM_YAQUIZ_QUESTION_ID_DESC</option>
+                <option value="u.username ASC">COM_YAQUIZ_CREATED_BY_USER</option>
+        </field>
+
 
 
         <field
