@@ -17,6 +17,8 @@ use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Component\Content\Administrator\Helper\ContentHelper;
+use KevinsGuides\Component\Yaquiz\Administrator\Helper\YaquizHelper;
 
 //this view for 1 quiz
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -56,8 +58,6 @@ class HtmlView extends BaseHtmlView
         }
 
 
-        $user = $app->getIdentity();
-
         //if view is default
         if($this->getLayout() == 'default')
         {
@@ -66,8 +66,17 @@ class HtmlView extends BaseHtmlView
             $quizParams = $model->getParams($id);
 
 
+            
+
+
             ToolbarHelper::back('COM_YAQUIZ_ALLQUIZZES', 'index.php?option=com_yaquiz&view=yaquizzes');
-            ToolbarHelper::custom('Yaquiz.redirectEdit', 'edit', 'edit', 'COM_YAQUIZ_QUIZSETTINGS', false);
+
+            if(YaquizHelper::canEditQuiz($id)){
+                
+                ToolbarHelper::custom('Yaquiz.redirectEdit', 'edit', 'edit', 'COM_YAQUIZ_QUIZSETTINGS', false);
+            }
+            
+
             //an external link with target blank
             ToolbarHelper::custom('Yaquiz.preview', 'link', 'preview', 'COM_YAQUIZ_PREVIEW', false);
             ToolbarHelper::custom('Questions.display', 'checkbox', 'checkbox', 'COM_YAQUIZ_QUESTION_MGR', false);
@@ -80,7 +89,10 @@ class HtmlView extends BaseHtmlView
                 }
             }
 
-            ToolbarHelper::preferences('com_yaquiz', 640, 900);
+            if($app->getIdentity()->authorise('core.admin', 'com_yaquiz')){
+                ToolbarHelper::preferences('com_yaquiz');
+            }
+            
             ToolbarHelper::title(Text::_('COM_YAQUIZ_PAGETITLE_QUIZEDITPREFIX').$this->item->title, 'yaquiz');
            
             $app->setUserState('com_yaquiz.redirectbackto', Uri::getInstance()->toString());

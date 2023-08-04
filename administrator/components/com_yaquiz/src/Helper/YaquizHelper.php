@@ -9,7 +9,7 @@ namespace KevinsGuides\Component\Yaquiz\Administrator\Helper;
 
 use Joomla\CMS\Factory;
 
-
+use KevinsGuides\Component\Yaquiz\Administrator\Model\YaquizModel;
 
 defined ( '_JEXEC' ) or die;
 
@@ -30,6 +30,46 @@ class YaquizHelper{
             return 'Uncategorized';
         }
         
+    }
+
+
+    public static function canEditQuiz($id = null){
+
+
+        $user = Factory::getApplication()->getIdentity();
+
+        // Check edit
+        if ($user->authorise('core.edit', 'com_yaquiz')) {
+            return true;
+        }
+
+        if($id === null){
+            $app = Factory::getApplication();
+            $id = $app->input->getInt('id');
+        }
+        
+
+        // Check edit own
+        if ($user->authorise('core.edit.own', 'com_yaquiz')) {
+            $userId = $user->id;
+
+            // Check for existing quiz
+            if ($id) {
+                // Get the user who created the article
+                $model = new YaquizModel();
+                $createdBy = (int) $model->getQuiz($id)->created_by;
+                // If the article is yours to edit, allow it.
+                if ($createdBy === $userId) {
+                    return true;
+                }
+            }
+
+        }
+
+
+
+        return  false;
+
     }
 
 }

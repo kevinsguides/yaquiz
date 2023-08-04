@@ -6,16 +6,17 @@
 
  
 namespace KevinsGuides\Component\Yaquiz\Administrator\Controller;
+
+
+
+defined ( '_JEXEC' ) or die;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Input\Input;
-
-
-defined ( '_JEXEC' ) or die;
-
+use Joomla\CMS\Language\Text;
 /**
  * Summary of QuestionsController
  */
@@ -43,8 +44,44 @@ class QuestionsController extends BaseController
         $this->setRedirect('index.php?option=com_yaquiz&view=questions');
     }
 
+
+    public function allowDelete()
+    {
+
+        $user = Factory::getApplication()->getIdentity();
+
+        // Check edit
+        if ($user->authorise('core.delete', 'com_yaquiz')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function allowAdd()
+    {
+
+        $user = Factory::getApplication()->getIdentity();
+
+        // Check edit
+        if ($user->authorise('core.create', 'com_yaquiz')) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+
     public function deleteQuestion()
     {
+
+        if(!$this->allowDelete()){
+            $this->setMessage(Text::_('COM_YAQUIZ_PERM_REQUIRED_DELETE'), 'error');
+            $this->setRedirect('index.php?option=com_yaquiz&view=questions');
+            return;
+        }
+
         $model = $this->getModel('Question');
         $delete = $this->input->get('delete', '0');
         if($model->deleteQuestion($delete)){
@@ -65,6 +102,12 @@ class QuestionsController extends BaseController
      * and then loads the questions into a table for user review
      */
     public function startInsertMulti(){
+
+        if(!$this->allowAdd()){
+            $this->setMessage(Text::_('COM_YAQUIZ_PERM_REQUIRED_CREATE'), 'error');
+            $this->setRedirect('index.php?option=com_yaquiz&view=questions');
+            return;
+        }
 
         $app = Factory::getApplication();
 
@@ -115,6 +158,14 @@ class QuestionsController extends BaseController
     }
 
     public function insertMultiSaveAll(){
+
+        if(!$this->allowAdd()){
+            $this->setMessage(Text::_('COM_YAQUIZ_PERM_REQUIRED_CREATE'), 'error');
+            $this->setRedirect('index.php?option=com_yaquiz&view=questions');
+            return;
+        }
+
+
         //get the preview info from session and display
         $app = Factory::getApplication();
         $session = $app->getSession();
@@ -154,6 +205,12 @@ class QuestionsController extends BaseController
 
         //do something with multiple questions
         public function executeBatchOps(){
+
+            if(!$this->allowDelete()){
+                $this->setMessage(Text::_('COM_YAQUIZ_PERM_REQUIRED_DELETE'), 'error');
+                $this->setRedirect('index.php?option=com_yaquiz&view=questions');
+                return;
+            }
 
             if(isset($_POST['batch_op']) && $_POST['batch_op'] == 'remove'){
 

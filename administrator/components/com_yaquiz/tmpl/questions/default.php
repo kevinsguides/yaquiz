@@ -121,7 +121,7 @@ if ($filter_title || $filter_categories || $filter_limit) {
 
         <div class="card-header p-1 bg-light">
         <span class="icon-question questionicon bg-light"> </span>
-            <span class="w-100 ps-3" id="qn<?php echo $item->id; ?>"><a href="index.php?option=com_yaquiz&view=Question&layout=edit&qnid=<?php echo $item->id; ?>"><?php echo $item->question; ?></a></span>
+            <span class="w-100 ps-3" id="qn<?php echo $item->id; ?>"><a href="index.php?option=com_yaquiz&view=Question&layout=edit&id=<?php echo $item->id; ?>"><?php echo $item->question; ?></a></span>
             <input class="float-end form-check-input" type="checkbox" name="selectedQuestions[]" value="<?php echo $item->id;?>"></input>
         </div>
 
@@ -173,7 +173,7 @@ if ($filter_title || $filter_categories || $filter_limit) {
                         class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_DELETE');?></a>
                 <a 
                 class="btn btn-info btn-sm"
-                href="index.php?option=com_yaquiz&view=Question&layout=edit&qnid=<?php echo $item->id; ?>"><span
+                href="index.php?option=com_yaquiz&view=Question&layout=edit&id=<?php echo $item->id; ?>"><span
                         class="icon-edit"></span> <?php echo Text::_('COM_YAQUIZ_EDIT');?></a>
                        
             </div>

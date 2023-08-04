@@ -289,7 +289,7 @@ HTMLHelper::_('bootstrap.toast');
                             <a href="index.php?option=com_yaquiz&task=Yaquiz.orderUp&id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-primary btn-sm me-1 float-end"><i class="far fa-caret-square-up"></i> <?php echo Text::_('COM_YAQUIZ_ORDERUP'); ?></a>
                             <a href="index.php?option=com_yaquiz&task=Yaquiz.orderDown&id=<?php echo $item->id; ?>&qnid=<?php echo $question->id; ?>" class="btn btn-primary btn-sm me-1 float-end"><i class="far fa-caret-square-down"></i> <?php echo Text::_('COM_YAQUIZ_ORDERDOWN'); ?></a>
 
-                            <a class="btn btn-primary btn-sm me-1 float-end" title="<?php echo Text::_('COM_YAQUIZ_QUESTION_EDITOR'); ?>" href="index.php?option=com_yaquiz&view=Question&layout=edit&qnid=<?php echo $question->id; ?>"><span class="icon-edit"></span></a>
+                            <a class="btn btn-primary btn-sm me-1 float-end" title="<?php echo Text::_('COM_YAQUIZ_QUESTION_EDITOR'); ?>" href="index.php?option=com_yaquiz&view=Question&layout=edit&id=<?php echo $question->id; ?>"><span class="icon-edit"></span></a>
 
 
 

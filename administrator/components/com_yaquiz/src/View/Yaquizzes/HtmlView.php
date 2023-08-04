@@ -26,12 +26,17 @@ class HtmlView extends BaseHtmlView
     public function display($tpl = null)
     {
 
+        $app = Factory::getApplication();
+
+        
         $toolbar = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar('toolbar');
         ToolbarHelper::title(Text::_('COM_YAQUIZ_PAGETITLE_QUIZLIST'), 'yaquiz');
         ToolbarHelper::link('index.php?option=com_yaquiz&view=yaquiz&layout=edit', 'COM_YAQUIZ_NEWQUIZ', 'new', 'COM_YAQUIZ_NEWQUIZ', false);
         ToolbarHelper::link('index.php?option=com_categories&extension=com_yaquiz', 'JCATEGORIES', 'folder', 'JCATEGORIES', false);
         ToolbarHelper::custom('Questions.display', 'checkbox', 'checkbox', 'COM_YAQUIZ_QUESTION_MGR', false);
-        ToolbarHelper::preferences('com_yaquiz');
+        if($app->getIdentity()->authorise('core.admin', 'com_yaquiz')){
+            ToolbarHelper::preferences('com_yaquiz');
+        }
 
         return parent::display($tpl);
     }

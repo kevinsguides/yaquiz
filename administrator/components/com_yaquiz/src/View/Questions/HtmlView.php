@@ -65,7 +65,10 @@ class HtmlView extends BaseHtmlView
 
         ToolbarHelper::link('index.php?option=com_categories&extension=com_yaquiz', 'JCATEGORIES', 'folder', 'JCATEGORIES', false);
         ToolbarHelper::link('index.php?option=com_yaquiz', 'COM_YAQUIZ_QUIZMANAGER', 'list', 'COM_YAQUIZ_QUIZMANAGER', false);
-        ToolbarHelper::preferences('com_yaquiz');
+        
+        if($app->getIdentity()->authorise('core.admin', 'com_yaquiz')){
+            ToolbarHelper::preferences('com_yaquiz');
+        }
 
         //display the view
         $app->setUserState('com_yaquiz.redirectbackto', Uri::getInstance()->toString());
