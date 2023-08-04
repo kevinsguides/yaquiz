@@ -43,10 +43,20 @@ $html .= '<div class="card">
             $html .= '<div class="progress-bar ' . $passColor . '" style="width: ' . $resultPercent . '%">' . $resultPercent . '%</div>  </div>';
             $html .= '<br/>';
 
+            $passMessage = $this->globalParams->get('lang_pass');
+            if($passMessage == ""){
+                $passMessage = Text::_('COM_YAQUIZ_DEFAULT_PASSMESSAGE');
+            }
+
+            $failMessage = $this->globalParams->get('lang_fail');
+            if($failMessage == ""){
+                $failMessage = Text::_('COM_YAQUIZ_DEFAULT_FAILMESSAGE');
+            }
+
             if ($results->passfail === 'pass') {
-                $html .= '<p class="p-3 bg-light text-success">' . $this->globalParams->get('lang_pass') . '</p>';
+                $html .= '<p class="p-3 bg-light text-success">' . $passMessage . '</p>';
             } else {
-                $html .= '<p class="p-3 bg-light text-danger">' . $this->globalParams->get('lang_fail') . '</p>';
+                $html .= '<p class="p-3 bg-light text-danger">' . $failMessage . '</p>';
             }
 
             //see if we're showing general stats
