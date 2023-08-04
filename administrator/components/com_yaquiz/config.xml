@@ -234,14 +234,14 @@ name="lang_pass"
 type="textarea"
 label="COM_YAQUIZ_FIELD_LANG_PASS_LABEL"
 description="COM_YAQUIZ_FIELD_LANG_PASS_DESC"
-default="COM_YAQUIZ_DEFAULT_PASSMESSAGE"
+default=""
 />
 <field
 name="lang_fail"
 type="textarea"
 label="COM_YAQUIZ_FIELD_LANG_FAIL_LABEL"
 description="COM_YAQUIZ_FIELD_LANG_FAIL_DESC"
-default="COM_YAQUIZ_DEFAULT_FAILMESSAGE"
+default=""
 />
 </fieldset>
 
