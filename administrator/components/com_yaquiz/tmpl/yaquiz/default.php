@@ -20,6 +20,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
 use KevinsGuides\Component\Yaquiz\Administrator\Model\QuestionModel;
 
@@ -140,7 +141,11 @@ function getQuestionListBox($titleFilter = null, $categoryfilter = null)
 $model = $this->getModel();
 $questions = $model->getQuestionsInQuiz($item->id);
 
-$quizlink = Uri::root() . 'index.php?option=com_yaquiz&view=quiz&id=' . $item->id;
+//$quizlink = Uri::root() . 'index.php?option=com_yaquiz&view=quiz&id=' . $item->id;
+
+//$quizlink = Route::_('index.php?option=com_yaquiz&view=quiz&id=' . $item->id, false);
+
+$quizlink = Route::link('site', 'index.php?option=com_yaquiz&view=quiz&id=' . $item->id);
 
 HTMLHelper::_('bootstrap.toast');
 //add toast css

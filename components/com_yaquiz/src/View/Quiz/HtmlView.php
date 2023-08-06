@@ -118,4 +118,15 @@ class HtmlView extends BaseHtmlView
         parent::display($tpl);
         
     }
+
+
+    public function getRoute($url = '')
+    {
+        Log::add('getRoute called', Log::INFO, 'com_yaquiz');
+        $app = Factory::getApplication();
+        $router = $app->getRouter();
+        $uri = $router->build($url);
+        return $uri->toString();
+    }
+
 }

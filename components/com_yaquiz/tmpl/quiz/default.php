@@ -23,6 +23,7 @@ use Joomla\CMS\Factory;
 use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
 use Joomla\CMS\Language\Text;
 use KevinsGuides\Component\Yaquiz\Site\Helper\ThemeHelper;
+use Joomla\CMS\Router\Route;
 
 
 $app = Factory::getApplication();
@@ -114,7 +115,10 @@ if ($quiz == null){
 
         if ($quizparams->quiz_displaymode == 'default'): ?>
 
-            <form action="<?php echo Uri::root(); ?>index.php?option=com_yaquiz&task=quiz.submitquiz" method="post">
+            <form 
+                action="<?php echo Route::_('index.php?option=com_yaquiz&task=quiz.submitquiz'); ?>"
+                method="post">
+                
                 <input type="hidden" name="quiz_id" value="<?php echo $quiz->id; ?>" />
                 <?php $i = 0;?>
                 <?php foreach ($questions as $question): ?>

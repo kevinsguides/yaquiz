@@ -45,6 +45,8 @@ You just need a site running Joomla 4 with a template that uses Bootstrap 5 (mos
 ## Todo
 
 
+* URL Rewriting/seo
+* parent front end all quizzes view
 * HTML quiz cert option for performance or compatibility
 * expire/auto remove results after x days
 * maybe show all quizzes the user has taken on first page, then their results for each quiz on a separate page, rather than all results for all quiz on one page
@@ -62,6 +64,7 @@ You just need a site running Joomla 4 with a template that uses Bootstrap 5 (mos
 * Auto category mode - Each quiz is given a unique category and questions are automatically isolated to that quiz
 * Easy insert mode - add quiz questions with JS, more responsive
 * Overhaul JS quiz system to tie in with rest of the system
+
 
 
 ### Basic Build Instructions

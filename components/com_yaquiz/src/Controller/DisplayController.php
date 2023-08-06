@@ -18,6 +18,9 @@ defined ('_JEXEC') or die;
  */
 class DisplayController extends BaseController{
 
+    protected $default_view = 'categories';
+    protected $app;
+
     //on display...
     /**
      * Summary of display

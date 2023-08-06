@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS `#__com_yaquiz_quizzes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
+  `alias` varchar(255) NOT NULL UNIQUE,
   `description` text,
   `published` tinyint(1) NOT NULL DEFAULT '0',
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
