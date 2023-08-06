@@ -76,32 +76,54 @@ class Router extends RouterBase{
                 $segments[] = $query['id'];
                 unset($query['id']);
             }
+
         }
+
+        if(isset($query['layout'])){
+            $segments[] = $query['layout'];
+            unset($query['layout']);
+        }
+
+        if(isset($query['resultid'])){
+            $segments[] = $query['resultid'];
+            unset($query['resultid']);
+        }
+
+
 
         return $segments;
         
     }
 
 
+
     public function parse(&$segments){
+
+        $app = Factory::getApplication();
+        $layout = $app->input->get('layout', 'default');
+        Log::add('layout: ' . $layout, Log::DEBUG, 'yaquiz');
 
 
         Log::add('parse with segments ' . print_r($segments, true), Log::DEBUG, 'yaquiz');
         
         $view = $segments[0];
+        
+        $Itemid = null;
 
-        //the MENU item id
-        $Itemid = $this->menu->getActive()->id;
+        $vars = [];
+
+        if($this->menu->getActive()){
+            $Itemid = $this->menu->getActive()->id;
+        }
 
 
-        Log::add('Itemid: ' . $Itemid, Log::DEBUG, 'yaquiz');
         //if we have an Itemid, we can use it to get the view and id
         if($Itemid){
             $item = $this->menu->getItem($Itemid);
             Log::add('item: ' . print_r($item, true), Log::DEBUG, 'yaquiz');
             if($item->component == 'com_yaquiz'){
                 Log::add('item component is com_yaquiz', Log::DEBUG, 'yaquiz');
-                $vars = [];
+                
                 if($view === 'quiz'){
                     
                     $active = $this->menu->getActive();
@@ -109,16 +131,44 @@ class Router extends RouterBase{
                     Log::add('quiz_id: ' . $quiz_id, Log::DEBUG, 'yaquiz');
                     $vars['view'] = $view;
                     $vars['id'] = $quiz_id;
-
                 }
+
+                // Reset segments to make J4 Router happy.
+                $segments = [];
+                //force menu item id #166 to be used
+                //$vars['Itemid'] = 166;
                 
+                return $vars;
+            }
+
+        }
+
+        if ($view == 'quiz' && isset($segments[2])){
+            $layout = $segments[2];
+            if($layout == 'results'){
+                $vars['view'] = $view;
+                $vars['layout'] = $layout;
+                $vars['id'] = $segments[1];
+
+                //see if there is a menu item with this quiz id
+                $quiz_id = $segments[1];
+                $menu_id = $this->findMenuItemIdByQuizId($quiz_id);
+                if($menu_id){
+                    Log::add('found menu item id: ' . $menu_id, Log::DEBUG, 'yaquiz');
+                    $vars['Itemid'] = $menu_id;
+                }
+                else{
+                    $vars['Itemid'] = 0;
+                }
+
+
+
+                // Reset segments to make J4 Router happy.
+                Log::add('i think we on result view', Log::DEBUG, 'yaquiz');
                 $segments = [];
                 return $vars;
             }
         }
-
-        $vars = [];
-
 
 
 		if ($view == 'quiz')
@@ -127,12 +177,30 @@ class Router extends RouterBase{
 			$vars['id'] = $segments[1];
 			// Reset segments to make J4 Router happy.
 			$segments = [];
+            return $vars;
 		}
-
-
-		return $vars;
-		
        
+    }
+
+
+    public function findMenuItemIdByQuizId($quiz_id){
+        Log::add('trying to find menu item id for quiz id: ' . $quiz_id, Log::DEBUG, 'yaquiz');
+        $db = Factory::getDbo();
+        $query = $db->getQuery(true);
+        $query->select('id');
+        $query->from('#__menu');
+        //where link has com_yaquiz in it
+        $query->where('link LIKE "%com_yaquiz%"');
+        $query->where("params LIKE '%\"quiz_id\":\"" . $quiz_id . "\"%'");
+        $db->setQuery($query);
+        $result = $db->loadResult();
+        //if there is a result
+        if($result){
+            return $result;
+        }
+        else{
+            return null;
+        }
     }
 
 

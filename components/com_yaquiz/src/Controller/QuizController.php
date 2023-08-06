@@ -14,6 +14,7 @@ use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Input\Input;
 use JSession;
+use Joomla\CMS\Router\Route;
 //use language
 use Joomla\CMS\Language\Text;
 
@@ -52,7 +53,7 @@ class QuizController extends BaseController
             //cue error message
             $this->setMessage('Token failed');
             //redirect to the view
-            $this->setRedirect('index.php?option=com_yaquiz');
+            $this->setRedirect(Route::_('index.php?option=com_yaquiz'));
             return;
         }
 
@@ -101,7 +102,7 @@ class QuizController extends BaseController
             //save all answered info to their session
             $session = $app->getSession();
             $session->set('sq_retryanswers', $answered);
-            $this->setRedirect('index.php?option=com_yaquiz&view=quiz&id=' . $quiz_id . '&status=retry');
+            $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=quiz&id=' . $quiz_id . '&status=retry'));
             return;
         }
 
@@ -202,10 +203,10 @@ class QuizController extends BaseController
 
         //echo $buildResults;
         if($new_result_id != 0){
-            $this->setRedirect('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id . '&resultid=' . $new_result_id);
+            $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id . '&resultid=' . $new_result_id));
         }
         else{
-            $this->setRedirect('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id);
+            $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id));
         }
 
         
@@ -242,7 +243,7 @@ class QuizController extends BaseController
             //$this->setRedirect('index.php?option=com_yaquiz&view=quiz&layout=results&id='.$quiz_id);
 
         } else {
-            $this->setRedirect('index.php?option=com_yaquiz&view=quiz&id=' . $quiz_id . '&page=' . $page);
+            $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=quiz&id=' . $quiz_id . '&page=' . $page));
         }
 
 
@@ -297,7 +298,7 @@ class QuizController extends BaseController
             $session->clear('sq_answers');
             $session->clear('sq_quiz_id');
             $this->setMessage(Text::_('COM_YAQ_QUIZ_RESET'), 'warning');
-            $this->setRedirect('index.php');
+            $this->setRedirect(Route::_('index.php'));
         }
     }
 
@@ -313,11 +314,11 @@ class QuizController extends BaseController
         if($result){
             $session = Factory::getApplication()->getSession();
             $app->setUserState('sq_verify_result', $result);
-            $this->setRedirect('index.php?option=com_yaquiz&view=certverify&layout=verifycheck');
+            $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=certverify&layout=verifycheck'));
         }
         else{
             $app->enqueueMessage(Text::_('COM_YAQ_QUIZ_VERIFY_FAIL'), 'error');
-            $this->setRedirect('index.php?option=com_yaquiz&view=certverify');
+            $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=certverify'));
         }
 
     }
