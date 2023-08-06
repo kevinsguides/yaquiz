@@ -39,8 +39,12 @@ class QuizModel extends ItemModel{
 	 */
 	public function getItem($pk = null) {
 
+        Log::add('QuizModel::getItem() called', Log::INFO, 'com_yaquiz');
+
         $app = Factory::getApplication();
-        $pk = $app->input->getInt('id');
+        if($pk == null){
+            $pk = $app->input->getInt('id');
+        }
 
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
@@ -53,7 +57,14 @@ class QuizModel extends ItemModel{
 	}
 
     public function getQuizParams($pk = null){
-        
+
+
+        $app = Factory::getApplication();
+        if($pk == null){
+            $pk = $app->input->getInt('id');
+        } 
+
+
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('params');
@@ -72,21 +83,11 @@ class QuizModel extends ItemModel{
 
     public function getQuestions($pk = null)
     {
-        //the __yaquiz_question_quiz_map table has question_id and quiz_id cols
-        //need to join with the questions table to get the questions for this quiz
-        //get pk from GET
-        // if(isset($_GET['id'])){
-        //     $pk = $_GET['id'];
-        // }
-        // else{
-        //     $active = Factory::getApplication()->getMenu()->getActive();
-        //     //get params from the menu item
-        //     $pk = $active->getParams()->get('quiz_id');
-        // }
-
 
         $app = Factory::getApplication();
-        $pk = $app->input->getInt('id');
+        if($pk == null){
+            $pk = $app->input->getInt('id');
+        }
  
         Log::add('attempt get questions with quiz id'.$pk, Log::INFO, 'com_yaquiz');
 

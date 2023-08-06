@@ -9,6 +9,13 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Controller\BaseController;
 use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
+use KevinsGuides\Component\Yaquiz\Site\Service\Router as YaquizRouter;
+
+
+use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Input\Input;
+
 
 defined ('_JEXEC') or die;
 
@@ -18,8 +25,26 @@ defined ('_JEXEC') or die;
  */
 class DisplayController extends BaseController{
 
-    protected $default_view = 'categories';
+    protected $default_view = 'quiz';
     protected $app;
+
+
+    public function __construct($config = [], MVCFactoryInterface $factory = null, ?CMSApplication $app = null, ?Input $input = null){
+        Log::add('DisplayController::__construct', Log::INFO, 'com_yaquiz');
+        parent::__construct($config, $factory, $app, $input);
+        $this->app = Factory::getApplication();
+        $menu = $this->app->getMenu();
+        $active = $menu->getActive();
+        //if active component not com_yaquiz
+        if($active->component != 'com_yaquiz'){
+            Log::add('manually setting active menu item', Log::DEBUG, 'com_yaquiz');
+            $router = new YaquizRouter();
+            $newId = $router->findMenuItemIdByQuizId($app->input->get('id'));
+            $menu->setActive($newId);
+        }
+        
+    }
+
 
     //on display...
     /**
@@ -34,6 +59,20 @@ class DisplayController extends BaseController{
         $layout = $this->input->get('layout');
         $pagenum = $this->input->get('page');
         $app = Factory::getApplication();
+
+        //check for Itemid
+        $itemid = $app->input->get('Itemid', null);
+
+        Log::add('Itemid is ' . $itemid, Log::DEBUG, 'com_yaquiz');
+        if(!$itemid){
+
+            Log::add('try set to 107');
+            
+
+        }
+
+        $app->input->set('Itemid', 107);
+
         
         //get config from component
         $gConfig = $app->getParams('com_yaquiz');

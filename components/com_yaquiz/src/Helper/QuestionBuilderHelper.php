@@ -199,7 +199,7 @@ class QuestionBuilderHelper
         //check if quiz_showfeedback is 1
         if ($quizParams->quiz_showfeedback == 1) {
             //loop through results $results->question_feedback
-            Log::add('from qbhelper looks like this'.print_r($results->questions, true), Log::INFO, 'yaquiz');
+            //Log::add('from qbhelper looks like this'.print_r($results->questions, true), Log::INFO, 'yaquiz');
             $questionnum = 0;
             
             foreach ($results->questions as $question) {

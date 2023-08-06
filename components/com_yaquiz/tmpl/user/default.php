@@ -53,7 +53,7 @@ if (count($results) == 0) : ?>
     </thead>
     <tbody>
         <?php foreach ($results as $result) : 
-            $quizTitle = $quizModel->getItem($result->quiz_id)->title;
+            $quizTitle = $result->title;
             if($result->passed == 1){
                 $result->passed = Text::_('COM_YAQ_YES');
             } else {

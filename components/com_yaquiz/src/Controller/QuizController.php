@@ -42,6 +42,8 @@ class QuizController extends BaseController
         $this->registerTask('submitquiz', 'submitquiz');
         $this->registerTask('loadnextpage', 'loadnextpage');
 
+        Log::add('QuizController::display', Log::INFO, 'com_yaquiz');
+
 
     }
 
@@ -62,6 +64,7 @@ class QuizController extends BaseController
         $app = Factory::getApplication();
         $input = $app->getInput();
         $quiz_id = $input->get('quiz_id', 0, 'int');
+        
         $quiz = $this->getModel('Quiz')->getItem($quiz_id);
         $model = new QuizModel();
         $quizParams = $model->getQuizParams($quiz_id);
@@ -82,6 +85,11 @@ class QuizController extends BaseController
             $answers = $answers[$quiz_id];
 
         }
+
+        //check for existing set Itemid
+        $itemid = $input->get('Itemid', 0, 'int');
+        Log::add('existing itemid: ' . $itemid, Log::INFO, 'com_yaquiz');
+
 
 
 
@@ -203,9 +211,12 @@ class QuizController extends BaseController
 
         //echo $buildResults;
         if($new_result_id != 0){
-            $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id . '&resultid=' . $new_result_id));
+            Log::add('redirecting to: ' . Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id . '&resultid=' . $new_result_id . '&Itemid=' . $itemid), Log::INFO, 'com_yaquiz');
+
+            $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id . '&resultid=' . $new_result_id . '&Itemid=' . $itemid));
         }
         else{
+            Log::add('redirecting to: ' . Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id), Log::INFO, 'com_yaquiz');
             $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id));
         }
 

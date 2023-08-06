@@ -99,6 +99,15 @@ if ($globalParams->get('record_hits') === '1') {
 }
 
 
+//menu itemid
+if($itemid = $app->getMenu()->getActive()->id){
+    $itemid = '&Itemid=' . $itemid;
+}
+else{
+    $itemid = '';
+}
+
+
 //if the quiz is null, show error
 if ($quiz == null){
 
@@ -111,6 +120,13 @@ if ($quiz == null){
 } else {
 
      include($layout_template_intro);
+?>
+<form action="<?php echo Uri::root(); ?>index.php?option=com_yaquiz&task=quiz.submitquiz<?php echo $itemid; ?>" method="post">
+                <input type="hidden" name="quiz_id" value="<?php echo $quiz->id; ?>" />
+
+
+<?php
+
 
         if ($quizparams->quiz_displaymode == 'default'){
             include(ThemeHelper::findFile('singlepage_questionscontainer.php'));
@@ -118,3 +134,5 @@ if ($quiz == null){
     }
 
 ?>
+
+</form>

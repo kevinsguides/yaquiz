@@ -25,21 +25,20 @@ class HtmlView extends BaseHtmlView
         $app = Factory::getApplication();
         $active = $app->getMenu()->getActive();
         $globalParams = Factory::getApplication()->getParams('com_yaquiz');
-        $model = $this->getModel();
+        $model = $this->getModel('Quiz');
 
+        // try to get quiz from input
+        $this->quiz_id = $app->input->get('id', 0);
 
-
-        //get params from the menu item
-        $this->params = $active->getParams();
-        $this->quiz_id = $this->params->get('quiz_id');
-        //if quiz_id is not set, try to get it from the request
-        if(!$this->quiz_id){
-            $this->quiz_id = $app->input->get('id', 0);
+        //if it didnt work, see if it's in the menu item params
+        if($this->quiz_id == 0){
+            Log::add('Quiz id not found in input, checking menu', Log::DEBUG, 'com_yaquiz');
+            $this->quiz_id = $active->getParams()->get('quiz_id');
+            Log::add('found quiz id from menu its ' . $this->quiz_id, Log::DEBUG, 'com_yaquiz');
         }
+
+
         $this->item = $model->getItem($this->quiz_id);
-
-
-
 
 
         //set the title
@@ -47,6 +46,7 @@ class HtmlView extends BaseHtmlView
 
         //check if quiz exists
         if(!$this->item){
+            Log::add('Quiz not found', Log::ERROR, 'com_yaquiz');
             $app->enqueueMessage(Text::_('COM_YAQUIZ_VIEW_QUIZ_NOT_FOUND'), 'error');
             $app->redirect('index.php');
         }

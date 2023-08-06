@@ -30,6 +30,7 @@ class UserModel extends BaseModel
 
     /**
      * load results for a specific user
+     * gets everything except full_results
      * @param pk user id
      * @param limit # of results to return
      * @param page page of results to return
@@ -52,14 +53,20 @@ class UserModel extends BaseModel
 
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
-        $query->select('*');
-        $query->from($db->quoteName('#__com_yaquiz_results'));
-        $query->where($db->quoteName('user_id') . ' = ' . $db->quote($pk));
+        //$query->select('id, quiz_id, user_id, score, points, total_points, submitted, passed');
+        //$query->select('r.id, r.quiz_id, r.user_id, r.score, r.points, r.total_points, r.submitted, r.passed, q.title');
+        $query->select('r.*, q.title');
+        $query->from($db->quoteName('#__com_yaquiz_results', 'r'));
+        $query->join('LEFT', $db->quoteName('#__com_yaquiz_quizzes', 'q') . ' ON (' . $db->quoteName('r.quiz_id') . ' = ' . $db->quoteName('q.id') . ')');
+        $query->where($db->quoteName('r.user_id') . ' = ' . $db->quote($pk));
         $query->setLimit($limit, ($page-1)*$limit);
         //order by newest first
         $query->order('submitted DESC');
         $db->setQuery($query);
         $results = $db->loadObjectList();
+        Log::add('Loading results for user: ' . $pk . ' results: ' . 
+            print_r($results, true)
+        , Log::INFO, 'yaquiz');
         return $results;
     }
 
