@@ -44,7 +44,8 @@ You just need a site running Joomla 4 with a template that uses Bootstrap 5 (mos
 
 ## Todo
 
-
+* **ROUTER CURRENTLY IS NOT WORKING PROPERLY**
+    * Quiz may conflict with your home page if you have home page specific modules, this will be resolved in the next update along with full URL rewriting support.
 * URL Rewriting/seo
 * parent front end all quizzes view
 * HTML quiz cert option for performance or compatibility
