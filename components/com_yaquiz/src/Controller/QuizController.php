@@ -229,7 +229,7 @@ class QuizController extends BaseController
 
     public function loadnextpage()
     {
-        Log::add('YaquizController::loadnextpage()', Log::INFO, 'com_yaquiz');
+
         $app = Factory::getApplication();
         $input = $app->getInput();
         $quiz_id = $input->get('quiz_id', 0, 'int');
