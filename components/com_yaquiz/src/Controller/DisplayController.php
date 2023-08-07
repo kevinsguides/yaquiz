@@ -10,6 +10,7 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Controller\BaseController;
 use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
 use KevinsGuides\Component\Yaquiz\Site\Service\Router as YaquizRouter;
+Use Joomla\CMS\Router\Route;
 
 
 use Joomla\CMS\Application\CMSApplication;
@@ -30,6 +31,8 @@ class DisplayController extends BaseController{
 
 
     public function __construct($config = [], MVCFactoryInterface $factory = null, ?CMSApplication $app = null, ?Input $input = null){
+
+        //an incredibly hacky way to fix active item menu because Joomla's documentation is god awful
         Log::add('DisplayController::__construct', Log::INFO, 'com_yaquiz');
         parent::__construct($config, $factory, $app, $input);
         $this->app = Factory::getApplication();
@@ -37,11 +40,52 @@ class DisplayController extends BaseController{
         $active = $menu->getActive();
         //if active component not com_yaquiz
         if($active && $active->component != 'com_yaquiz'){
-            Log::add('manually setting active menu item', Log::DEBUG, 'com_yaquiz');
+            Log::add('joomla thinks active component is '. $active->component, Log::INFO, 'com_yaquiz');
             $router = new YaquizRouter();
-            $newId = $router->findMenuItemIdByQuizId($app->input->get('id'));
-            $menu->setActive($newId);
+
+            $view = $app->input->get('view');
+
+            if($view == 'quiz'){
+                $newId = $router->findMenuItemIdByQuizId($app->input->get('id'));
+            }
+            elseif($view == 'user'){
+                $newId = $router->findUserResultsMenuItemId();
+            }
+                
+            
+            //$menu->setActive($newId);
+
+            $new_url = 'index.php?option=com_yaquiz';
+
+            $new_url .= '&view='.$view;
+
+            $layout = $app->input->get('layout');
+            if($layout != null){
+                $new_url .= '&layout='.$layout;
+            }
+            
+            $page = $app->input->get('page');
+            if($page != null){
+                $new_url .= '&page='.$page;
+            }
+            $quiz_id = $app->input->get('id');
+            if ($quiz_id != null) {
+                $new_url .= '&id='.$quiz_id;
+            }
+
+            $resultid = $app->input->get('resultid');
+            if ($resultid != null) {
+                $new_url .= '&resultid='.$resultid;
+            }
+
+            $new_url .= '&Itemid='.$newId;
+
+            //reroute to fixed url...
+            if($newId != null){
+                $app->redirect(Route::_($new_url, false));
+            }
         }
+        
         
     }
 

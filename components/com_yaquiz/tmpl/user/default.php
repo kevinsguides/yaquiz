@@ -12,6 +12,7 @@ use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
 defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Log\Log;
 
 //we might make this changeable later
@@ -71,7 +72,7 @@ if (count($results) == 0) : ?>
 
             $resultsLink = Text::_('COM_YAQ_UNAVAILABLE');
             if($result->full_results != ''){
-                $resultsLink = '<a href="index.php?option=com_yaquiz&view=user&layout=singleresult&resultid='.$result->id.'">'.Text::_('COM_YAQ_VIEW_RESULTS').'</a>';
+                $resultsLink = '<a href="'.Route::_('index.php?option=com_yaquiz&view=user&layout=singleresult&resultid='.$result->id).'">'.Text::_('COM_YAQ_VIEW_RESULTS').'</a>';
             }
             
             ?>
@@ -113,24 +114,24 @@ if (count($results) == 0) : ?>
         }
         ?>
         <?php if($start_page > 1) : ?>
-            <li class="page-item"><a class="page-link" title="<?php echo Text::_('COM_YAQ_FIRST_PAGE') ;?>" href="index.php?option=com_yaquiz&view=user&layout=default&page=1?>">
+            <li class="page-item"><a class="page-link" title="<?php echo Text::_('COM_YAQ_FIRST_PAGE') ;?>" href="<?php echo Route::_('index.php?option=com_yaquiz&view=user&layout=default&page=1');?>">
             <i class="fas fa-chevron-left"></i></a></li>
             </a></li>
         <?php endif; ?>
 
 
         <?php for($i = $start_page; $i <= $end_page; $i++) : ?>
-            <?php if($i == $filter_page) : ?>
-                <li class="page-item active"><a class="page-link" href="index.php?option=com_yaquiz&view=user&layout=default&page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+            <?php if($i == $filter_page) : ?> 
+                <li class="page-item active"><a class="page-link" href="<?php echo Route::_('index.php?option=com_yaquiz&view=user&layout=default&page='.$i);?>"><?php echo $i; ?></a></li>
             <?php else: ?>
-                <li class="page-item"><a class="page-link" href="index.php?option=com_yaquiz&view=user&layout=default&page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                <li class="page-item"><a class="page-link" href="<?php echo Route::_('index.php?option=com_yaquiz&view=user&layout=default&page='.$i);?>"><?php echo $i; ?></a></li>
             <?php endif; ?>
         <?php endfor; ?>
 
         <?php 
             //if total pages > end_page, display last page link
             if($page_count > $end_page) : ?>
-                <li class="page-item"><a class="page-link" title="<?php echo Text::_('COM_YAQ_LAST_PAGE') ;?>" href="index.php?option=com_yaquiz&view=user&layout=default&page=<?php echo $page_count; ?>"><i class="fas fa-chevron-right"></i></a></li>
+                <li class="page-item"><a class="page-link" title="<?php echo Text::_('COM_YAQ_LAST_PAGE') ;?>" href="<?php echo Route::_('index.php?option=com_yaquiz&view=user&layout=default&page='.$page_count);?>"><i class="fas fa-chevron-right"></i></a></li>
         <?php endif; ?>
         
 
