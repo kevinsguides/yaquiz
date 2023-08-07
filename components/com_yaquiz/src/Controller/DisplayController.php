@@ -36,7 +36,7 @@ class DisplayController extends BaseController{
         $menu = $this->app->getMenu();
         $active = $menu->getActive();
         //if active component not com_yaquiz
-        if($active->component != 'com_yaquiz'){
+        if($active && $active->component != 'com_yaquiz'){
             Log::add('manually setting active menu item', Log::DEBUG, 'com_yaquiz');
             $router = new YaquizRouter();
             $newId = $router->findMenuItemIdByQuizId($app->input->get('id'));
@@ -62,17 +62,6 @@ class DisplayController extends BaseController{
 
         //check for Itemid
         $itemid = $app->input->get('Itemid', null);
-
-        Log::add('Itemid is ' . $itemid, Log::DEBUG, 'com_yaquiz');
-        if(!$itemid){
-
-            Log::add('try set to 107');
-            
-
-        }
-
-        $app->input->set('Itemid', 107);
-
         
         //get config from component
         $gConfig = $app->getParams('com_yaquiz');

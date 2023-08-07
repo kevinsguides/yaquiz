@@ -19,6 +19,7 @@ use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use KevinsGuides\Component\Yaquiz\Site\Helper\ThemeHelper;
+use Joomla\CMS\Router\Route;
 
 $currPage = $this->currPage;
 
@@ -75,7 +76,7 @@ HTMLHelper::_('behavior.keepalive');
 
 ?>
 
-<form action="<?php echo URI::root(); ?>index.php?option=com_yaquiz&task=quiz.loadNextPage" method="POST">
+<form action="<?php echo Route::_('index.php?option=com_yaquiz&task=quiz.loadNextPage'); ?>" method="POST">
     <input type="hidden" name="quiz_id" value="<?php echo $quiz->id; ?>" />
     <input type="hidden" name="page" value="<?php echo $currPage; ?>" />
 

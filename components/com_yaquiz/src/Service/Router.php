@@ -82,7 +82,7 @@ class Router extends RouterBase
 
         $segments[] = $query['view'];
         
-        unset($query['view']);
+        
 
         if (isset($query['id'])) {
             $segments[] = $query['id'];
@@ -99,6 +99,23 @@ class Router extends RouterBase
             unset($query['resultid']);
         }
 
+        if (isset($query['page']) && $query['view'] == 'quiz') {
+            $segments[] = 'quizpage';
+            $segments[] = $query['page'];
+            unset($query['page']);
+        }
+        elseif (isset($query['page'])){
+            $segments[] = $query['page'];
+            unset($query['page']);
+        }
+
+        if (isset($query['Itemid'])) {
+            //$segments[] = $query['Itemid'];
+            unset($query['Itemid']);
+        }
+
+        unset($query['view']);
+
         //Log::add('app input look like this: ' . print_r($app->input, true), Log::DEBUG, 'yaquiz');
         Log::add('i built segments: ' . print_r($segments, true), Log::DEBUG, 'yaquiz');
         return $segments;
@@ -109,8 +126,7 @@ class Router extends RouterBase
     public function parse(&$segments)
     {
 
-        Log::add('parse called with segments: ' . print_r($segments, true), Log::DEBUG, 'yaquiz');
-
+        Log::add('parse given segments... ' . print_r($segments, true), Log::DEBUG, 'yaquiz');
         $app = Factory::getApplication();
         $layout = $app->input->get('layout', null);
         $view = $segments[0];
@@ -119,27 +135,26 @@ class Router extends RouterBase
 
         $vars = [];
 
-        if ($this->menu->getActive()) {
-            $Itemid = $this->menu->getActive()->id;
+        $active = $this->menu->getActive();
+
+        if ($active) {
+            $Itemid = $active->id;
         }
 
-        $view_from_app_input = $app->input->get('view', 'quiz');
+        $view_from_app_input = $app->input->get('view', $view);
         //if they dont match, use the one from the INPUT
         if ($view_from_app_input != $view) {
             $view = $view_from_app_input;
         }
 
-
         //if we have an Itemid, we can use it to get the view and id
-        if ($Itemid) {
-            Log::add('getting info from menu item id: ' . $Itemid, Log::DEBUG, 'yaquiz');
+        if ($active) {
+            Log::add('we on an active item');
             $item = $this->menu->getItem($Itemid);
             //Log::add('item: ' . print_r($item, true), Log::DEBUG, 'yaquiz');
             if ($item->component == 'com_yaquiz') {
-                Log::add('item component is com_yaquiz', Log::DEBUG, 'yaquiz');
 
                 if ($view === 'quiz') {
-
                     $active = $this->menu->getActive();
 
                     $quiz_id = $active->getParams()->get('quiz_id');
@@ -148,7 +163,6 @@ class Router extends RouterBase
                         $quiz_id = $segments[1];
                     }
 
-                    Log::add('quiz_id: ' . $quiz_id, Log::DEBUG, 'yaquiz');
                     $vars['view'] = $view;
                     $vars['id'] = $quiz_id;
                     if($layout){
@@ -164,17 +178,40 @@ class Router extends RouterBase
                     $vars['Itemid'] = $Itemid;
 
                 }
-
                 // Reset segments to make J4 Router happy.
-                Log::add('returning vars: ' . print_r($vars, true), Log::DEBUG, 'yaquiz');
                 $segments = [];
                 return $vars;
             }
         }
 
+        if ($view == 'user') {
+
+            $vars['view'] = $view;
+            if(!isset($segments[1])){
+                $segments[1] = 'default';
+                $segments[2] = '1';
+            }
+
+            $vars['layout'] = $segments[1];
+
+            $vars['Itemid'] = $this->findUserResultsMenuItemId();
+
+            if ($vars['layout'] == 'default') {
+                $vars['page'] = $segments[2];
+            
+            }
+            elseif($vars['layout'] == 'singleresult'){
+                $vars['resultid'] = $segments[2];
+             
+            }
+            $segments = [];
+            return $vars;
+        }
+
         if ($view == 'quiz' && isset($segments[2])) {
-            Log::add('getting info from segments', Log::DEBUG, 'yaquiz');
+            Log::add('getting info from segmentssss', Log::DEBUG, 'yaquiz');
             $layout = $segments[2];
+            Log::add('layout is ' . $layout, Log::DEBUG, 'yaquiz');
             if ($layout == 'results') {
                 $vars['view'] = $view;
                 $vars['layout'] = $layout;
@@ -184,16 +221,27 @@ class Router extends RouterBase
                 $quiz_id = $segments[1];
                 $menu_id = $this->findMenuItemIdByQuizId($quiz_id);
                 if ($menu_id) {
-                    Log::add('found menu item id: ' . $menu_id, Log::DEBUG, 'yaquiz');
+                
                     $vars['Itemid'] = $menu_id;;
                 } else {
-                    Log::add('no menu item id found', Log::DEBUG, 'yaquiz');
+                
                     $vars['Itemid'] = 0;
                 }
 
                 // Reset segments to make J4 Router happy.
                 $segments = [];
                 return $vars;
+            }
+
+            if($layout == 'quizpage'){
+                $vars['layout'] = 'quiztype_oneperpage';
+                $vars['view'] = $view;
+                $vars['id'] = $segments[1];
+                $vars['page'] = $segments[3];
+                $vars['Itemid'] = $this->findMenuItemIdByQuizId($vars['id']);
+                $segments = [];
+                return $vars;
+
             }
         }
 
@@ -215,6 +263,20 @@ class Router extends RouterBase
             // Reset segments to make J4 Router happy.
             $segments = [];
             return $vars;
+        }
+
+        if ($view == 'certverify'){
+
+            $vars['view'] = $view;
+            $vars['layout'] = $segments[1];
+            $vars['Itemid'] = (int) $this->findCertVerifyMenuItemId();
+            Log::add('found CERT VERIFY verify menu item id: ' . $vars['Itemid'] , Log::DEBUG, 'yaquiz');
+            $segments = [];
+            $app->getMenu()->setActive($vars['Itemid']);
+            return $vars;
+
+
+
         }
     }
 
@@ -268,4 +330,43 @@ class Router extends RouterBase
         }
 
     }
+
+
+    public function findUserResultsMenuItemId(){
+
+        $db = Factory::getDbo();
+        $query = $db->getQuery(true);
+        $query->select('id, published, level');
+        $query->from('#__menu');
+        //get all results where path like com-yaquiz-categories
+        $query->where('link LIKE "%com_yaquiz&view=user%"');
+        //where published 1
+        $query->where('published = 1');
+        //order by level, 1 to highest
+        $query->order('level ASC');
+        $db->setQuery($query);
+        $result = $db->loadResult();
+
+        return (int) $result;
+
+    }
+
+
+    public function findCertVerifyMenuItemId(){
+        $db = Factory::getDbo();
+        $query = $db->getQuery(true);
+        $query->select('id, published, level');
+        $query->from('#__menu');
+        //get all results
+        $query->where('link LIKE "%com_yaquiz&view=certverify%"');
+        //where published 1
+        $query->where('published = 1');
+        //order by level, 1 to highest
+        $query->order('level ASC');
+        $db->setQuery($query);
+        $result = $db->loadResult();
+
+        return (int) $result;
+    }
+
 }

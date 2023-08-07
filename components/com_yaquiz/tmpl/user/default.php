@@ -12,6 +12,7 @@ use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
 defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 //we might make this changeable later
 $filter_limit = 10;
@@ -22,6 +23,8 @@ $quizModel = new QuizModel();
 $app = Factory::getApplication();
 
 $filter_page = $app->input->get('page', 1, 'INT');
+Log::add('filter_page: '.$filter_page, Log::DEBUG, 'com_yaquiz');
+
 $page_count = ceil($model->countTotalResults(null) / $filter_limit);
 
 if($filter_page > $page_count){
