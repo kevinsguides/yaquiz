@@ -45,6 +45,7 @@ use Joomla\CMS\Router\Route;
     $question->question_number = $currPage;
     echo $qbHelper->buildQuestion($question, $quiz_params, 1);
     ?>
+    
     <input type="hidden" name="question_id" value="<?php echo $question->id; ?>" />
 <?php endif;?>
 
