@@ -12,7 +12,7 @@
                 label="COM_YAQUIZ_MENUNOTE_LABEL"
                 description="COM_YAQUIZ_MENUNOTE_DESC"
                 />
-            <field name="quiz_id" type="sql"
+            <field name="id" type="sql"
                 label="COM_YAQUIZ_QUIZ_ID_LABEL"
                 description="COM_YAQUIZ_QUIZ_ID_DESC"
                 default="0"

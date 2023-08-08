@@ -232,7 +232,7 @@ class QuizController extends BaseController
 
         $app = Factory::getApplication();
         $input = $app->getInput();
-        $quiz_id = $input->get('quiz_id', 0, 'int');
+        $quiz_id = $input->get('id', 0, 'int');
         $page = $input->get('page', 0, 'int');
         $nextpage = $input->get('nextpage', 0, 'int, string');
         if ($nextpage == '-1' || $nextpage == 1) {
@@ -254,6 +254,7 @@ class QuizController extends BaseController
             //$this->setRedirect('index.php?option=com_yaquiz&view=quiz&layout=results&id='.$quiz_id);
 
         } else {
+            Log::add('redirecting to... ' . Route::_('index.php?option=com_yaquiz&view=quiz&id=' . $quiz_id . '&page=' . $page), Log::INFO, 'com_yaquiz');
             $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=quiz&id=' . $quiz_id . '&page=' . $page));
         }
 

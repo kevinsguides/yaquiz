@@ -5,12 +5,13 @@
 */
 
 namespace KevinsGuides\Component\Yaquiz\Site\Controller;
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Controller\BaseController;
 use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
 use KevinsGuides\Component\Yaquiz\Site\Service\Router as YaquizRouter;
-Use Joomla\CMS\Router\Route;
+use Joomla\CMS\Router\Route;
 
 
 use Joomla\CMS\Application\CMSApplication;
@@ -18,75 +19,83 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Input\Input;
 
 
-defined ('_JEXEC') or die;
+defined('_JEXEC') or die;
 
 
 /**
  * Summary of DisplayController
  */
-class DisplayController extends BaseController{
+class DisplayController extends BaseController
+{
 
     protected $default_view = 'quiz';
     protected $app;
 
 
-    public function __construct($config = [], MVCFactoryInterface $factory = null, ?CMSApplication $app = null, ?Input $input = null){
+    public function __construct($config = [], MVCFactoryInterface $factory = null, ?CMSApplication $app = null, ?Input $input = null)
+    {
 
-        //an incredibly hacky way to fix active item menu because Joomla's documentation is god awful
-        Log::add('DisplayController::__construct', Log::INFO, 'com_yaquiz');
         parent::__construct($config, $factory, $app, $input);
-        $this->app = Factory::getApplication();
-        $menu = $this->app->getMenu();
-        $active = $menu->getActive();
-        //if active component not com_yaquiz
-        if($active && $active->component != 'com_yaquiz'){
-            Log::add('joomla thinks active component is '. $active->component, Log::INFO, 'com_yaquiz');
-            $router = new YaquizRouter();
+        
 
-            $view = $app->input->get('view');
+        //see if we are using SEF urls in global config
+        $config = Factory::getConfig();
+        $sef = $config->get('sef');
 
-            if($view == 'quiz'){
-                $newId = $router->findMenuItemIdByQuizId($app->input->get('id'));
-            }
-            elseif($view == 'user'){
-                $newId = $router->findUserResultsMenuItemId();
-            }
-                
+        if ($sef == 0) {
+            //an incredibly hacky way to fix active item menu because Joomla's documentation is god awful
+            Log::add('DisplayController::__construct', Log::INFO, 'com_yaquiz');
             
-            //$menu->setActive($newId);
+            $this->app = Factory::getApplication();
+            $menu = $this->app->getMenu();
+            $active = $menu->getActive();
+            //if active component not com_yaquiz
+            if ($active && $active->component != 'com_yaquiz') {
+                Log::add('joomla thinks active component is ' . $active->component, Log::INFO, 'com_yaquiz');
+                $router = new YaquizRouter();
 
-            $new_url = 'index.php?option=com_yaquiz';
+                $view = $app->input->get('view');
 
-            $new_url .= '&view='.$view;
+                if ($view == 'quiz') {
+                    $newId = $router->findMenuItemIdByQuizId($app->input->get('id'));
+                } elseif ($view == 'user') {
+                    $newId = $router->findUserResultsMenuItemId();
+                }
 
-            $layout = $app->input->get('layout');
-            if($layout != null){
-                $new_url .= '&layout='.$layout;
-            }
-            
-            $page = $app->input->get('page');
-            if($page != null){
-                $new_url .= '&page='.$page;
-            }
-            $quiz_id = $app->input->get('id');
-            if ($quiz_id != null) {
-                $new_url .= '&id='.$quiz_id;
-            }
 
-            $resultid = $app->input->get('resultid');
-            if ($resultid != null) {
-                $new_url .= '&resultid='.$resultid;
-            }
+                //$menu->setActive($newId);
 
-            $new_url .= '&Itemid='.$newId;
+                $new_url = 'index.php?option=com_yaquiz';
 
-            //reroute to fixed url...
-            if($newId != null){
-                $app->redirect(Route::_($new_url, false));
+                $new_url .= '&view=' . $view;
+
+                $layout = $app->input->get('layout');
+                if ($layout != null) {
+                    $new_url .= '&layout=' . $layout;
+                }
+
+                $page = $app->input->get('page');
+                if ($page != null) {
+                    $new_url .= '&page=' . $page;
+                }
+                $quiz_id = $app->input->get('id');
+                if ($quiz_id != null) {
+                    $new_url .= '&id=' . $quiz_id;
+                }
+
+                $resultid = $app->input->get('resultid');
+                if ($resultid != null) {
+                    $new_url .= '&resultid=' . $resultid;
+                }
+
+                $new_url .= '&Itemid=' . $newId;
+
+                //reroute to fixed url...
+                if ($newId != null) {
+                    $app->redirect(Route::_($new_url, false));
+                }
             }
         }
-        
-        
     }
 
 
@@ -97,7 +106,8 @@ class DisplayController extends BaseController{
      * @param mixed $urlparams
      * @return void
      */
-    public function display($cachable = false, $urlparams = array()){
+    public function display($cachable = false, $urlparams = array())
+    {
         Log::add('DisplayController::display', Log::INFO, 'com_yaquiz');
         $cachable = false;
         $layout = $this->input->get('layout');
@@ -106,23 +116,18 @@ class DisplayController extends BaseController{
 
         //check for Itemid
         $itemid = $app->input->get('Itemid', null);
-        
+
         //get config from component
         $gConfig = $app->getParams('com_yaquiz');
-        if ($gConfig->get('respect_jcache',"1") == "1") {
+        if ($gConfig->get('respect_jcache', "1") == "1") {
             //if the layout is not results, and there is no page number, then we are on the first page of a quiz and it's cachable
-            if($layout != 'results' && $pagenum == null){
+            if ($layout != 'results' && $pagenum == null) {
                 $cachable = true;
             }
-        }   
+        }
 
         $wam = $app->getDocument()->getWebAssetManager();
         $wam->useStyle('fontawesome');
         parent::display($cachable, $urlparams);
-
-        
     }
-
-
-  
 }
