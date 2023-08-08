@@ -63,7 +63,8 @@ class QuizController extends BaseController
         //get submitted answers
         $app = Factory::getApplication();
         $input = $app->getInput();
-        $quiz_id = $input->get('quiz_id', 0, 'int');
+        $quiz_id = $input->get('id', 0, 'int');
+        Log::add('quiz_id AT THIS POINT: ' . $quiz_id, Log::INFO, 'com_yaquiz');
         
         $quiz = $this->getModel('Quiz')->getItem($quiz_id);
         $model = new QuizModel();
@@ -232,6 +233,7 @@ class QuizController extends BaseController
 
         $app = Factory::getApplication();
         $input = $app->getInput();
+        Log::add('input looks like this: ' . print_r($input, true), Log::INFO, 'com_yaquiz');
         $quiz_id = $input->get('id', 0, 'int');
         $page = $input->get('page', 0, 'int');
         $nextpage = $input->get('nextpage', 0, 'int, string');

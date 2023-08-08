@@ -75,7 +75,7 @@ HTMLHelper::_('behavior.keepalive');
 ?>
 
 <form action="<?php echo URI::root(); ?>index.php?option=com_yaquiz&task=quiz.loadNextPage" method="POST">
-    <input type="hidden" name="quiz_id" value="<?php echo $quiz->id; ?>" />
+    <input type="hidden" name="id" value="<?php echo $quiz->id; ?>" />
     <input type="hidden" name="page" value="<?php echo $currPage; ?>" />
 
 

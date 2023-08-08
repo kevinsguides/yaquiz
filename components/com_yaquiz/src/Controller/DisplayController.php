@@ -57,9 +57,11 @@ class DisplayController extends BaseController
                 $view = $app->input->get('view');
 
                 if ($view == 'quiz') {
-                    $newId = $router->findMenuItemIdByQuizId($app->input->get('id'));
+                    $newId = $router->getMenuItemIdByQuizId($app->input->get('id'));
                 } elseif ($view == 'user') {
-                    $newId = $router->findUserResultsMenuItemId();
+                    $newId = $router->getUserResultsMenuItemId();
+                } elseif ($view == 'certverify') {
+                    $newId = $router->getCertVerifyMenuItemId();
                 }
 
 
@@ -92,6 +94,7 @@ class DisplayController extends BaseController
 
                 //reroute to fixed url...
                 if ($newId != null) {
+                    Log::add('DisplayController::__construct: redirecting to ' . $new_url, Log::INFO, 'com_yaquiz'  );
                     $app->redirect(Route::_($new_url, false));
                 }
             }
