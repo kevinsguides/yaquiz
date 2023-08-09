@@ -41,6 +41,9 @@ label="COM_YAQUIZ_YAQUIZ_DESCRIPTION_LABEL"
 filter="JComponentHelper::filterText"
 buttons="true"
 />
+</fieldset>
+<fieldset name="publishing" addfieldprefix="Joomla\Component\Yaquiz\Administrator\Field">
+
 <field
 name="published"
 type="list"
@@ -60,17 +63,6 @@ default="0"
 />
 
 <field
-name="max_attempts"
-type="number"
-label="COM_YAQUIZ_YAQUIZ_MAX_ATTEMPTS_LABEL"
-description="COM_YAQUIZ_YAQUIZ_MAX_ATTEMPTS_DESC"
-required="true"
-default="0"
-/>
-
-
-
-<field
 name="quiz_displaymode"
 type="list"
 label="COM_YAQUIZ_YAQUIZ_QUIZ_DISPLAYMODE_LABEL"
@@ -82,6 +74,97 @@ default="default"
 <option value="jsquiz">JavaScript Quiz (fully cacheable)</option>
 </field>
 
+<field
+name="jsquiz_note"
+type="note"
+label="COM_YAQUIZ_YAQUIZ_QUIZ_JSQUIZ_NOTE_LABEL"
+description="COM_YAQUIZ_YAQUIZ_QUIZ_JSQUIZ_NOTE_DESC"
+showon="quiz_displaymode:jsquiz"
+/>
+
+
+<field
+name="quiz_question_numbering"
+type="radio"
+label="COM_YAQUIZ_YAQUIZ_QUIZ_QUESTION_NUMBERING_LABEL"
+description="COM_YAQUIZ_YAQUIZ_QUIZ_QUESTION_NUMBERING_DESC"
+required="true"
+default="1"
+class="btn-group btn-group-yesno"
+>
+<option value="1">Yes</option>
+<option value="0">No</option>
+</field>
+
+</fieldset>
+
+<fieldset name="grading" addfieldprefix="Joomla\Component\Yaquiz\Administrator\Field"> 
+
+<field
+name="quiz_showfeedback"
+type="radio"
+label="COM_YAQUIZ_YAQUIZ_QUIZ_FEEDBACK_LABEL"
+required="true"
+description="COM_YAQUIZ_YAQUIZ_QUIZ_FEEDBACK_DESC"
+default="1"
+>
+<option value="1">JYES</option>
+<option value="0">JNO</option>
+</field>
+
+<field
+name="quiz_feedback_showcorrect"
+type="radio"
+label="COM_YAQUIZ_YAQUIZ_QUIZ_FEEDBACK_SHOWCORRECT_LABEL"
+required="true"
+showon="quiz_showfeedback:1"
+description="COM_YAQUIZ_YAQUIZ_QUIZ_FEEDBACK_SHOWCORRECT_DESC"
+default="1"
+>
+<option value="1">Yes</option>
+<option value="0">No</option>
+</field>
+
+
+
+<field
+name="quiz_use_points"
+type="radio"
+label="COM_YAQUIZ_YAQUIZ_QUIZ_USE_POINTS_LABEL"
+description="COM_YAQUIZ_YAQUIZ_QUIZ_USE_POINTS_DESC"
+required="true"
+default="0"
+>
+<option value="1">Yes</option>
+<option value="0">No</option>
+</field>
+
+
+
+<field 
+name="passing_score"
+type="number"
+min="0"
+max="100"
+label="COM_YAQUIZ_YAQUIZ_QUIZ_PASSING_SCORE_LABEL"
+description="COM_YAQUIZ_YAQUIZ_QUIZ_PASSING_SCORE_DESC"
+required="true"
+default="70"
+/>
+
+
+</fieldset>
+
+
+<fieldset name="usersandrecords" addfieldprefix="Joomla\Component\Yaquiz\Administrator\Field">
+<field
+name="max_attempts"
+type="number"
+label="COM_YAQUIZ_YAQUIZ_MAX_ATTEMPTS_LABEL"
+description="COM_YAQUIZ_YAQUIZ_MAX_ATTEMPTS_DESC"
+required="true"
+default="0"
+/>
 <field
 name="quiz_record_results"
 type="list"
@@ -128,75 +211,8 @@ default="-1"
 <option value="0">JNO</option>
 </field>
 
-<field
-name="jsquiz_note"
-type="note"
-label="COM_YAQUIZ_YAQUIZ_QUIZ_JSQUIZ_NOTE_LABEL"
-description="COM_YAQUIZ_YAQUIZ_QUIZ_JSQUIZ_NOTE_DESC"
-showon="quiz_displaymode:jsquiz"
-/>
-
-<field
-name="quiz_showfeedback"
-type="radio"
-label="COM_YAQUIZ_YAQUIZ_QUIZ_FEEDBACK_LABEL"
-required="true"
-description="COM_YAQUIZ_YAQUIZ_QUIZ_FEEDBACK_DESC"
-default="1"
->
-<option value="1">JYES</option>
-<option value="0">JNO</option>
-</field>
-
-<field
-name="quiz_feedback_showcorrect"
-type="radio"
-label="COM_YAQUIZ_YAQUIZ_QUIZ_FEEDBACK_SHOWCORRECT_LABEL"
-required="true"
-showon="quiz_showfeedback:1"
-description="COM_YAQUIZ_YAQUIZ_QUIZ_FEEDBACK_SHOWCORRECT_DESC"
-default="1"
->
-<option value="1">Yes</option>
-<option value="0">No</option>
-</field>
-
-<field
-name="quiz_question_numbering"
-type="radio"
-label="COM_YAQUIZ_YAQUIZ_QUIZ_QUESTION_NUMBERING_LABEL"
-description="COM_YAQUIZ_YAQUIZ_QUIZ_QUESTION_NUMBERING_DESC"
-required="true"
-default="1"
->
-<option value="1">Yes</option>
-<option value="0">No</option>
-</field>
-
-<field
-name="quiz_use_points"
-type="radio"
-label="COM_YAQUIZ_YAQUIZ_QUIZ_USE_POINTS_LABEL"
-description="COM_YAQUIZ_YAQUIZ_QUIZ_USE_POINTS_DESC"
-required="true"
-default="0"
->
-<option value="1">Yes</option>
-<option value="0">No</option>
-</field>
 
 
-
-<field 
-name="passing_score"
-type="number"
-min="0"
-max="100"
-label="COM_YAQUIZ_YAQUIZ_QUIZ_PASSING_SCORE_LABEL"
-description="COM_YAQUIZ_YAQUIZ_QUIZ_PASSING_SCORE_DESC"
-required="true"
-default="70"
-/>
 
 
 <field

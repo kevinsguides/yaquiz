@@ -19,7 +19,6 @@ class QuizModel extends ItemModel{
 
     public function __construct($config = array(), MVCFactoryInterface $factory = null)
     {
-        Log::add('QuizModel::__construct() called', Log::INFO, 'com_yaquiz');
         parent::__construct($config, $factory);
     }
 
@@ -38,8 +37,6 @@ class QuizModel extends ItemModel{
 	 * @return object
 	 */
 	public function getItem($pk = null) {
-
-        Log::add('QuizModel::getItem() called', Log::INFO, 'com_yaquiz');
 
         $app = Factory::getApplication();
         if($pk == null){
@@ -64,7 +61,6 @@ class QuizModel extends ItemModel{
             $pk = $app->input->getInt('id');
         } 
 
-
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('params');
@@ -88,8 +84,6 @@ class QuizModel extends ItemModel{
         if($pk == null){
             $pk = $app->input->getInt('id');
         }
- 
-        Log::add('attempt get questions with quiz id'.$pk, Log::INFO, 'com_yaquiz');
 
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
@@ -126,7 +120,7 @@ class QuizModel extends ItemModel{
     public function getQuestion($question_id)
     {
 
-        Log::add('attempt get question with id'.$question_id, Log::INFO, 'com_yaquiz');
+     
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('*');
@@ -666,6 +660,59 @@ class QuizModel extends ItemModel{
 
 
     }
+
+
+
+    //Stuff related to logging start and end times of quizzes, and setting time limits on quizzes
+
+    // `#__com_yaquiz_user_quiz_times` (
+    //     `id` int(11) NOT NULL AUTO_INCREMENT,
+    //     `quiz_id` int(11) NOT NULL,
+    //     `user_id` int(11) NOT NULL,
+    //     `result_id` int(11) NOT NULL DEFAULT 0,
+    //     `start_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    //     `limit_time` datetime DEFAULT NULL,
+    //     `completed` tinyint(1) NOT NULL DEFAULT 0,
+
+
+
+    //return id of an existing timer if it exists and completed is 0
+    public function findExistingQuizTimer($quiz_id, $user_id){
+                
+            $db = Factory::getContainer()->get('DatabaseDriver');
+    
+            $query = $db->getQuery(true);
+            $query->select('id');
+            $query->from($db->quoteName('#__com_yaquiz_user_quiz_times'));
+            $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($quiz_id));
+            $query->where($db->quoteName('user_id') . ' = ' . $db->quote($user_id));
+            $query->where($db->quoteName('completed') . ' = 0');
+            $db->setQuery($query);
+            $id = $db->loadResult();
+    
+            if(!$id){
+                return false;
+            }
+            return $id;
+
+    }
+
+
+    public function startQuizTimer($quiz_id, $user_id){
+            
+            $db = Factory::getContainer()->get('DatabaseDriver');
+    
+            $query = $db->getQuery(true);
+            $query->insert($db->quoteName('#__com_yaquiz_user_quiz_times'));
+            $query->columns($db->quoteName('quiz_id') . ', ' . $db->quoteName('user_id'));
+            $query->values($db->quote($quiz_id) . ', ' . $db->quote($user_id));
+            $db->setQuery($query);
+            $db->execute();
+    
+            return $db->insertid();
+    
+    }
+
 
 }
 

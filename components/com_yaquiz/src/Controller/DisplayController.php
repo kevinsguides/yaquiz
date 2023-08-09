@@ -101,10 +101,11 @@ class DisplayController extends BaseController
      */
     public function display($cachable = false, $urlparams = array())
     {
-        Log::add('DisplayController::display', Log::INFO, 'com_yaquiz');
+        
         $cachable = false;
         $layout = $this->input->get('layout');
         $pagenum = $this->input->get('page');
+        $view = $this->input->get('view');
         $app = Factory::getApplication();
 
         //check for Itemid
@@ -118,6 +119,8 @@ class DisplayController extends BaseController
                 $cachable = true;
             }
         }
+
+
 
         $wam = $app->getDocument()->getWebAssetManager();
         $wam->useStyle('fontawesome');
