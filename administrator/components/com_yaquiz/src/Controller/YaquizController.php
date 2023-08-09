@@ -63,10 +63,15 @@ class YaquizController extends BaseController
     {
 
         $user = Factory::getApplication()->getIdentity();
+        Log::add('checking permissions', Log::INFO, 'com_yaquiz');
 
         // Check edit
         if ($user->authorise('core.edit', 'com_yaquiz')) {
+            Log::add('YaquizController::allowEdit() core.edit allowed', Log::INFO, 'com_yaquiz');
             return true;
+        }
+        else{
+            Log::add('YaquizController::allowEdit() core.edit NOT allowed', Log::INFO, 'com_yaquiz');
         }
 
         // Check edit own

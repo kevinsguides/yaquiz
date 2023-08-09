@@ -4,9 +4,8 @@
         <message>Display a quiz.</message>
     </layout>
 
-
-    <fields name="params">
-        <fieldset name="yaquiz">
+	<fields name="request">
+ <fieldset name="request">
             <field name="menunote"
                 type="note"
                 label="COM_YAQUIZ_MENUNOTE_LABEL"
@@ -28,9 +27,12 @@
             description="COM_YAQUIZ_QUIZ_ID_MAUAL_DESC"
             default=""
             required="false"
-            showon="quiz_id:0"
+            showon="id:0"
             />
 
         </fieldset>
-    </fields>
+	</fields>
+
+
+
 </metadata>

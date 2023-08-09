@@ -4,6 +4,7 @@ defined ( '_JEXEC' ) or die;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use KevinsGuides\Component\Yaquiz\Administrator\Model\YaquizModel;
 
 class com_yaquizInstallerScript
 {
@@ -78,6 +79,28 @@ class com_yaquizInstallerScript
                     $app->enqueueMessage(Text::_('COM_YAQUIZ_UPDATE_0_4_10'), 'notice');
 
             }   
+
+
+            //if we're updating from a version older than 0.4.25, we need to generate alias for quizzes based off their titles
+            if (version_compare($this->old_version_short, '0.4.25', '<')){ 
+
+                $db = Factory::getContainer()->get('DatabaseDriver');
+                $db->setQuery('SELECT * FROM #__com_yaquiz_quizzes');
+                $quizzes = $db->loadObjectList();
+
+                $yaqmodel = new YaquizModel;
+
+                foreach ($quizzes as $quiz){
+                    $alias = $yaqmodel->sanitizeAlias('', $quiz->title);
+                    $db->setQuery('UPDATE #__com_yaquiz_quizzes SET alias = "' . $alias . '" WHERE id = ' . $quiz->id);
+                    $db->execute();
+                }
+
+                $app = Factory::getApplication();
+                $app->enqueueMessage(Text::_('COM_YAQUIZ_UPDATE_0_4_25'), 'notice');
+
+            }
+
         }
 
 

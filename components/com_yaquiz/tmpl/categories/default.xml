@@ -3,4 +3,21 @@
     <layout title="COM_YAQUIZ_MENU_CATEGORIES">
         <message>COM_YAQUIZ_MENU_CATEGORIES_DESC</message>
     </layout>
+
+	<!-- Add fields to the request variables for the layout. -->
+	<fields name="request">
+		<fieldset name="request"
+		>
+			<field
+				name="id"
+				type="category"
+				label="JGLOBAL_FIELD_CATEGORIES_CHOOSE_CATEGORY_LABEL"
+				extension="com_yaquiz"
+				show_root="true"
+				required="true"
+			/>
+		</fieldset>
+	</fields>
+
+
 </metadata>

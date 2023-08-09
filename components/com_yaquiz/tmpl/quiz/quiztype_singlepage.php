@@ -122,7 +122,7 @@ if ($quiz == null){
      include($layout_template_intro);
 ?>
 <form action="<?php echo Uri::root(); ?>index.php?option=com_yaquiz&task=quiz.submitquiz<?php echo $itemid; ?>" method="post">
-                <input type="hidden" name="quiz_id" value="<?php echo $quiz->id; ?>" />
+                <input type="hidden" name="id" value="<?php echo $quiz->id; ?>" />
 
 
 <?php

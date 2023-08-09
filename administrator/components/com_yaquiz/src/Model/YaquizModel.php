@@ -62,12 +62,6 @@ class YaquizModel extends AdminModel
         //the default access level
         $access = $cParams->get('access', 1);
 
-        //permissions
-        if($app->getIdentity()->authorise('core.manage', 'com_yaquiz') != true){
-            $app->enqueueMessage(Text::_('COM_YAQUIZ_PERM_REQUIRED_MANAGE'), 'error');
-            return false;
-        }
-
 
         //if layout is edit
         if ($app->input->get('layout') == 'edit') {
@@ -103,12 +97,6 @@ class YaquizModel extends AdminModel
                 //they must be editing an existing quiz
 
                 $params = $this->getParams($data->id);
-
-                //they must have core.edit permissions, or be the creator of the quiz
-                if($app->getIdentity()->authorise('core.edit.own', 'com_yaquiz') == true && $data->created_by != $app->getIdentity()->id){
-                    $app->enqueueMessage(Text::_('COM_YAQUIZ_PERM_REQUIRED_EDITOWN'), 'error');
-                    return false;
-                }
 
 
                 //get 'quiz_displaymode' from params
@@ -216,6 +204,8 @@ class YaquizModel extends AdminModel
             return;
         }
 
+        $alias = $this->sanitizeAlias($data['alias'], $data['title']);
+
         Log::add('insert called in quizmodel', Log::INFO, 'com_yaquiz');
         //insert quiz
         $db = Factory::getContainer()->get('DatabaseDriver');
@@ -225,8 +215,11 @@ class YaquizModel extends AdminModel
         $data['created_by'] = $app->getIdentity()->id;
         $data['modified_by'] = $app->getIdentity()->id;
         $data['checked_out'] = 0;
-        $query->columns('title, description, published, created_by, created, modified_by, modified, params, access, hits, catid');
-        $query->values($db->quote($data['title']) . ', ' . $db->quote($data['description']) . ', ' . $db->quote($data['published']) . ', ' . $db->quote($data['created_by']) . ', ' . $db->quote($data['created']) . ', ' . $db->quote($data['modified_by']) . ', ' . $db->quote($data['modified']) . ', ' . $db->quote($this->dataToParams($data)) . ', ' . $db->quote($data['access']) . ', ' . $db->quote($data['hits']) . ', ' . $db->quote($data['catid']));
+
+
+
+        $query->columns('title, alias, description, published, created_by, created, modified_by, modified, params, access, hits, catid');
+        $query->values($db->quote($data['title']) . ', ' . $db->quote($alias) . ', ' . $db->quote($data['description']) . ', ' . $db->quote($data['published']) . ', ' . $db->quote($data['created_by']) . ', ' . $db->quote($data['created']) . ', ' . $db->quote($data['modified_by']) . ', ' . $db->quote($data['modified']) . ', ' . $db->quote($this->dataToParams($data)) . ', ' . $db->quote($data['access']) . ', ' . $db->quote($data['hits']) . ', ' . $db->quote($data['catid']));
         $db->setQuery($query);
         $db->execute();
         return $db->insertid();
@@ -241,6 +234,10 @@ class YaquizModel extends AdminModel
         $query = $db->getQuery(true);
         $query->update('#__com_yaquiz_quizzes');
         $query->set('title = ' . $db->quote($data['title']));
+        
+        $alias = $this->sanitizeAlias($data['alias'], $data['title']);
+        $query->set('alias = ' . $db->quote($alias));
+
         $query->set('description = ' . $db->quote($data['description']));
         $query->set('published = ' . $db->quote($data['published']));
         $query->set('modified_by = ' . $app->getIdentity()->id);
@@ -253,6 +250,18 @@ class YaquizModel extends AdminModel
         $db->execute();
         return $data['id'];
 
+    }
+
+    public function sanitizeAlias($alias, $title){
+        //if alias is empty, generate one from title
+        if($alias == null || $alias == ''){
+            $alias = $title;
+        }
+        $alias = str_replace(' ', '-', $alias);
+        $alias = preg_replace('/[^A-Za-z0-9\-]/', '', $alias);
+        //lower case
+        $alias = strtolower($alias);
+        return $alias;
     }
 
     public function addQuestionsToQuiz($quizid, $questionids)
