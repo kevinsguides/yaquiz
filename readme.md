@@ -41,12 +41,9 @@ You just need a site running Joomla 4 with a template that uses Bootstrap 5 (mos
 * reset stats, attempt count, etc.
 * two main styles + custom
 * Quiz Certificates (PDF)
+* Router with SEF URLs, Quiz item alias, etc.
 
 ## Todo
-
-* **ROUTER CURRENTLY IS NOT WORKING PROPERLY**
-    * Quiz may conflict with your home page if you have home page specific modules, this will be resolved in the next update along with full URL rewriting support.
-* URL Rewriting/seo
 * parent front end all quizzes view
 * HTML quiz cert option for performance or compatibility
 * expire/auto remove results after x days
