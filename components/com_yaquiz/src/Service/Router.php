@@ -384,6 +384,7 @@ class Router extends RouterView
         } else {
             return null;
         }
+
     }
 
 
@@ -409,7 +410,6 @@ class Router extends RouterView
 
     public function getQuizAlias($quiz_id)
     {
-        Log::add('checking for quiz alias: ' . $quiz_id, Log::DEBUG, 'yaquiz');
         $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->select('alias');
@@ -418,8 +418,31 @@ class Router extends RouterView
         $db->setQuery($query);
         $result = $db->loadResult();
         if ($result) {
-            Log::add('return result alias: ' . $result, Log::DEBUG, 'yaquiz');
+            if($this->getQuizAliasCount($result) > 1){
+                return $quiz_id;
+            }
             return $result;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Checks if there are multiple identical quiz alias
+     * @param $quiz_alias
+     */
+    public function getQuizAliasCount($quiz_alias){
+        $db = Factory::getDbo();
+        $query = $db->getQuery(true);
+        $query->select('COUNT(*)');
+        $query->from('#__com_yaquiz_quizzes');
+        $query->where('alias = "' . $quiz_alias . '"');
+        $db->setQuery($query);
+        $result = $db->loadResult();
+        if ($result) {
+            return $result;
+
         } else {
             return null;
         }
