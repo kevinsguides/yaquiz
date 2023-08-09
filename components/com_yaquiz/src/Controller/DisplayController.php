@@ -36,67 +36,57 @@ class DisplayController extends BaseController
     {
 
         parent::__construct($config, $factory, $app, $input);
-        
 
         //see if we are using SEF urls in global config
         $config = Factory::getConfig();
         $sef = $config->get('sef');
 
-        if ($sef == 0) {
-            //an incredibly hacky way to fix active item menu because Joomla's documentation is god awful
-            Log::add('DisplayController::__construct', Log::INFO, 'com_yaquiz');
-            
-            $this->app = Factory::getApplication();
-            $menu = $this->app->getMenu();
-            $active = $menu->getActive();
-            //if active component not com_yaquiz
-            if ($active && $active->component != 'com_yaquiz') {
-                Log::add('joomla thinks active component is ' . $active->component, Log::INFO, 'com_yaquiz');
-                $router = new YaquizRouter();
+        $this->app = Factory::getApplication();
+        $menu = $this->app->getMenu();
+        $active = $menu->getActive();
+        //if active component not com_yaquiz
+        if ($active && $active->component != 'com_yaquiz') {
+            Log::add('joomla thinks active component is ' . $active->component, Log::INFO, 'com_yaquiz');
+            $router = new YaquizRouter();
 
-                $view = $app->input->get('view');
+            $view = $app->input->get('view');
 
-                if ($view == 'quiz') {
-                    $newId = $router->getMenuItemIdByQuizId($app->input->get('id'));
-                } elseif ($view == 'user') {
-                    $newId = $router->getUserResultsMenuItemId();
-                } elseif ($view == 'certverify') {
-                    $newId = $router->getCertVerifyMenuItemId();
-                }
+            if ($view == 'quiz') {
+                $newId = $router->getMenuItemIdByQuizId($app->input->get('id'));
+            } elseif ($view == 'user') {
+                $newId = $router->getUserResultsMenuItemId();
+            } elseif ($view == 'certverify') {
+                $newId = $router->getCertVerifyMenuItemId();
+            }
 
+            $new_url = 'index.php?option=com_yaquiz';
 
-                //$menu->setActive($newId);
+            $new_url .= '&view=' . $view;
 
-                $new_url = 'index.php?option=com_yaquiz';
+            $layout = $app->input->get('layout');
+            if ($layout != null) {
+                $new_url .= '&layout=' . $layout;
+            }
 
-                $new_url .= '&view=' . $view;
+            $page = $app->input->get('page');
+            if ($page != null) {
+                $new_url .= '&page=' . $page;
+            }
+            $quiz_id = $app->input->get('id');
+            if ($quiz_id != null) {
+                $new_url .= '&id=' . $quiz_id;
+            }
 
-                $layout = $app->input->get('layout');
-                if ($layout != null) {
-                    $new_url .= '&layout=' . $layout;
-                }
+            $resultid = $app->input->get('resultid');
+            if ($resultid != null) {
+                $new_url .= '&resultid=' . $resultid;
+            }
 
-                $page = $app->input->get('page');
-                if ($page != null) {
-                    $new_url .= '&page=' . $page;
-                }
-                $quiz_id = $app->input->get('id');
-                if ($quiz_id != null) {
-                    $new_url .= '&id=' . $quiz_id;
-                }
+            $new_url .= '&Itemid=' . $newId;
 
-                $resultid = $app->input->get('resultid');
-                if ($resultid != null) {
-                    $new_url .= '&resultid=' . $resultid;
-                }
-
-                $new_url .= '&Itemid=' . $newId;
-
-                //reroute to fixed url...
-                if ($newId != null) {
-                    Log::add('DisplayController::__construct: redirecting to ' . $new_url, Log::INFO, 'com_yaquiz'  );
-                    $app->redirect(Route::_($new_url, false));
-                }
+            //reroute to fixed url...
+            if ($newId != null) {
+                $app->redirect(Route::_($new_url, false));
             }
         }
     }

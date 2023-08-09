@@ -141,11 +141,16 @@ function getQuestionListBox($titleFilter = null, $categoryfilter = null)
 $model = $this->getModel();
 $questions = $model->getQuestionsInQuiz($item->id);
 
-//$quizlink = Uri::root() . 'index.php?option=com_yaquiz&view=quiz&id=' . $item->id;
+$quizlink = Uri::root() . 'index.php?option=com_yaquiz&view=quiz&id=' . $item->id;
 
 //$quizlink = Route::_('index.php?option=com_yaquiz&view=quiz&id=' . $item->id, false);
 
-$quizlink = Route::link('site', 'index.php?option=com_yaquiz&view=quiz&id=' . $item->id);
+$quizlink_route = Route::link('site', 'index.php?option=com_yaquiz&view=quiz&id=' . $item->id);
+
+//get Global Configuration
+$gconfig = Factory::getConfig();
+$sef = $gconfig->get('sef');
+
 
 HTMLHelper::_('bootstrap.toast');
 //add toast css
@@ -175,6 +180,9 @@ HTMLHelper::_('bootstrap.toast');
         <div class="card-footer">
             <p><?php echo Text::_('COM_YAQUIZ_QUIZ_ID'); ?>: <?php echo $item->id; ?></p>
             <p><?php echo Text::_('COM_YAQUIZ_RAWQUIZLINK'); ?>: <a href="<?php echo $quizlink; ?>" target="_blank"><?php echo $quizlink; ?></a>
+            <?php if ($sef == 1) : ?>
+                <p><?php echo Text::_('COM_YAQUIZ_SEFQUIZLINK'); ?>: <a href="<?php echo $quizlink_route; ?>" target="_blank"><?php echo $quizlink_route; ?></a>
+                <?php endif; ?>
             </p>
             </pre>
         </div>
