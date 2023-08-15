@@ -39,19 +39,13 @@ class Router extends RouterView
     public function __construct($app = null, $menu = null)
     {
 
-        Log::add('yaquiz router constructor called');
-
         parent::__construct($app, $menu);
-
-
-
     }
 
     public function preprocess($query)
     {
         //find first segment from url
         $segments = $this->app->input->get('segments', [], 'array');
-        Log::add('PREPRO segments are ' . print_r($segments, true), Log::DEBUG, 'yaquiz');
 
         //if no itemid, we need to guess one
         if (!isset($query['Itemid']) && isset($query['view']) && $query['view'] == 'quiz') {
@@ -74,8 +68,7 @@ class Router extends RouterView
     {
 
 
-        Log::add('build starting with query ' . print_r($query, true), Log::DEBUG, 'yaquiz');
-
+ 
         $segments = [];
         $app = Factory::getApplication();
 
@@ -151,8 +144,6 @@ class Router extends RouterView
             unset($query['resultid']);
         }
 
-
-        Log::add('yaquiz router return build segments ' . implode('/', $segments), Log::DEBUG, 'yaquiz');
         return $segments;
     }
 
@@ -160,8 +151,6 @@ class Router extends RouterView
 
     public function parse(&$segments)
     {
-
-        Log::add('PARSE PARSING STUFF ' . print_r($segments, true), Log::DEBUG, 'yaquiz');
         $active = $this->menu->getActive();
         $vars = [];
 
@@ -265,7 +254,7 @@ class Router extends RouterView
 
     public function getMenuItemIdByQuizId($quiz_id)
     {
-        Log::add('trying to find menu item id for quiz id: ' . $quiz_id, Log::DEBUG, 'yaquiz');
+
         $db = Factory::getDbo();
         $query = $db->getQuery(true);
         $query->select('id');

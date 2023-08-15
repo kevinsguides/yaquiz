@@ -165,6 +165,31 @@ description="COM_YAQUIZ_YAQUIZ_MAX_ATTEMPTS_DESC"
 required="true"
 default="0"
 />
+
+<field
+name="quiz_use_timer"
+type="radio"
+label="COM_YAQUIZ_YAQUIZ_QUIZ_USE_TIMER_LABEL"
+description="COM_YAQUIZ_YAQUIZ_QUIZ_USE_TIMER_DESC"
+required="true"
+default="0"
+class="btn-group btn-group-yesno"
+>
+<option value="1">Yes</option>
+<option value="0">No</option>
+</field>
+
+<field
+name="quiz_timer_limit"
+type="number"
+label="COM_YAQUIZ_YAQUIZ_QUIZ_TIMER_LIMIT_LABEL"
+description="COM_YAQUIZ_YAQUIZ_QUIZ_TIMER_LIMIT_DESC"
+required="true"
+default="15"
+showon="quiz_use_timer:1"
+/>
+
+
 <field
 name="quiz_record_results"
 type="list"

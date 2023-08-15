@@ -37,12 +37,12 @@ class YaquizModel extends AdminModel
     //get the quiz
     public function getQuiz($qid)
     {
-        Log::add('try get quiz with qid ' . $qid, Log::INFO, 'com_yaquiz');
+
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('*');
         $query->from('#__com_yaquiz_quizzes');
-        Log::add('trynna open quiz with id: ' . $qid, Log::INFO, 'com_yaquiz');
+
         $query->where('id = ' . $qid);
         $db->setQuery($query);
         $item = $db->loadObject();
@@ -93,14 +93,12 @@ class YaquizModel extends AdminModel
                 $data->use_certificates = "-1";
                 $data->certificate_file = "global";
                 $data->access = $access;
+                $data->quiz_use_timer = 0;
+                $data->quiz_timer_limit = 0;
             } else {
                 //they must be editing an existing quiz
 
                 $params = $this->getParams($data->id);
-
-
-                //get 'quiz_displaymode' from params
-                Log::add('params: ' . $params['quiz_displaymode'], Log::INFO, 'com_yaquiz');
                 $data->quiz_displaymode = $params['quiz_displaymode'];
                 $data->quiz_showfeedback = $params['quiz_showfeedback'];
                 $data->quiz_feedback_showcorrect = $params['quiz_feedback_showcorrect'];
@@ -111,6 +109,7 @@ class YaquizModel extends AdminModel
                 $data->quiz_record_guest_results = $params['quiz_record_guest_results'];
                 $data->quiz_show_general_stats = $params['quiz_show_general_stats'];
                 $data->max_attempts = $params['max_attempts'];
+
                 //some things were added later so we need to set defaults if they dont exist
                 if(isset($params['use_certificates'])){
                     $data->use_certificates = $params['use_certificates'];
@@ -119,6 +118,8 @@ class YaquizModel extends AdminModel
                     $data->use_certificates = "-1";
                 }
                 $data->certificate_file=((isset($params['certificate_file'])) ? $params['certificate_file'] : 'global');
+                $data->quiz_use_timer = ((isset($params['quiz_use_timer'])) ? $params['quiz_use_timer'] : 0);
+                $data->quiz_timer_limit = ((isset($params['quiz_timer_limit'])) ? $params['quiz_timer_limit'] : 0);
                 $this->checkout($data->id);
             }
 
@@ -606,6 +607,8 @@ class YaquizModel extends AdminModel
         $params['max_attempts'] = $data['max_attempts'];
         $params['use_certificates'] = $data['use_certificates'];
         $params['certificate_file'] = $data['certificate_file'];
+        $params['quiz_use_timer'] = $data['quiz_use_timer'];
+        $params['quiz_timer_limit'] = $data['quiz_timer_limit'];
         //encode
         $params = json_encode($params);
         return $params;

@@ -46,7 +46,7 @@ class DisplayController extends BaseController
         $active = $menu->getActive();
         //if active component not com_yaquiz
         if ($active && $active->component != 'com_yaquiz') {
-            Log::add('joomla thinks active component is ' . $active->component, Log::INFO, 'com_yaquiz');
+
             $router = new YaquizRouter();
 
             $view = $app->input->get('view');
@@ -80,6 +80,11 @@ class DisplayController extends BaseController
             $resultid = $app->input->get('resultid');
             if ($resultid != null) {
                 $new_url .= '&resultid=' . $resultid;
+            }
+
+            $status = $app->input->get('status');
+            if ($status != null) {
+                $new_url .= '&status=' . $status;
             }
 
             $new_url .= '&Itemid=' . $newId;
@@ -120,10 +125,14 @@ class DisplayController extends BaseController
             }
         }
 
+        $id = $app->input->get('id', null);
+
 
 
         $wam = $app->getDocument()->getWebAssetManager();
         $wam->useStyle('fontawesome');
+
+
         parent::display($cachable, $urlparams);
     }
 }

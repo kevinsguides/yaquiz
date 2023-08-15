@@ -107,6 +107,15 @@ else{
     $itemid = '';
 }
 
+//check if using a timer
+$uses_timer = $quizparams->quiz_use_timer;
+if($uses_timer == 1){
+    $uses_timer = true;
+    $wam->registerAndUseScript('com_yaquiz.timer', 'components/com_yaquiz/js/timer.js', [], ['defer' => true]);
+}
+else{
+    $uses_timer = false;
+}
 
 //if the quiz is null, show error
 if ($quiz == null){
@@ -121,7 +130,7 @@ if ($quiz == null){
 
      include($layout_template_intro);
 ?>
-<form action="<?php echo Uri::root(); ?>index.php?option=com_yaquiz&task=quiz.submitquiz<?php echo $itemid; ?>" method="post">
+<form id="yaQuizForm" action="<?php echo Uri::root(); ?>index.php?option=com_yaquiz&task=quiz.submitquiz<?php echo $itemid; ?>" method="post">
                 <input type="hidden" name="id" value="<?php echo $quiz->id; ?>" />
 
 
@@ -130,6 +139,12 @@ if ($quiz == null){
 
         if ($quizparams->quiz_displaymode == 'default'){
             include(ThemeHelper::findFile('singlepage_questionscontainer.php'));
+        }
+
+        if ($uses_timer){
+            $user = $app->getIdentity();
+            $seconds_left = $model->getTimeRemainingAsSeconds($user->id, $quiz->id);
+            include(ThemeHelper::findFile('quiztimer.php'));
         }
     }
 

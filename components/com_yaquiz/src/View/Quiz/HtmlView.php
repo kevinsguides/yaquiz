@@ -68,7 +68,7 @@ class HtmlView extends BaseHtmlView
 
         $quizparams = $model->getQuizParams($this->item->id);
         $quizAccess = $this->item->access;
-        $user = Factory::getUser();
+        $user = Factory::getApplication()->getIdentity();
         $userGroups = $user->getAuthorisedViewLevels();
         if(!in_array($quizAccess, $userGroups)){
             $app->enqueueMessage(Text::_('COM_YAQUIZ_VIEW_QUIZ_DENIED'), 'error');
@@ -83,6 +83,9 @@ class HtmlView extends BaseHtmlView
                 if($app->getIdentity()->authorise('core.edit', 'com_yaquiz') != true){
                     $this->setLayout('max_attempt_reached');
                     return parent::display($tpl);
+                }
+                else{
+                    $app->enqueueMessage(Text::_('COM_YAQ_MAX_REACHED_BUT_ADMIN'), 'warning');
                 }
             }
         }
@@ -99,21 +102,49 @@ class HtmlView extends BaseHtmlView
             $wam->registerAndUseStyle('com_yaquiz.quizstyle', $styleFile);
         }
 
+        $using_timer = false;
+
+
+        //check if quiz has a timer
+        if($quizparams->quiz_use_timer == 1 && $quizparams->quiz_timer_limit > 0){
+
+            //check if user is logged in
+            if($user->guest){
+                $app->enqueueMessage(Text::_('COM_YAQUIZ_VIEW_QUIZ_MUST_BE_LOGGED_IN'), 'error');
+                $app->redirect('index.php');
+            }
+            $using_timer = true;
+        }
+        
+
+
 
         //if we're not on the results layout
-
         if ($this->getLayout() != 'results'){
-        //if quiz displaymode is default 
-        if($quizparams->quiz_displaymode === 'individual'){
-            $this->setLayout('quiztype_oneperpage');
-            $this->currPage = $app->input->get('page', 0);
-        }
-        elseif ($quizparams->quiz_displaymode === 'jsquiz'){
-            $this->setLayout('quiztype_jsquiz');
-        }
-        else{
-            $this->setLayout('quiztype_singlepage');
-        }
+            //if quiz displaymode is default 
+            if($quizparams->quiz_displaymode === 'individual'){
+                $this->setLayout('quiztype_oneperpage');
+                $this->currPage = $app->input->get('page', 0);
+            }
+            elseif ($quizparams->quiz_displaymode === 'jsquiz'){
+                $this->setLayout('quiztype_jsquiz');
+            }
+            elseif ($using_timer){
+                //we must be using a 1 page quiz, check for timer
+
+                //check if timer has already begun
+                $timer_id = $model->getTimerId($user->id, $this->quiz_id);
+                if($timer_id == 0){
+                    $this->setLayout('quiztype_singlepage_beforebegin');
+                }
+                else{
+                    $this->setLayout('quiztype_singlepage');
+                }
+            }
+            else{
+                //we must be using a 1 page quiz, where the timer is disabled or has already begin
+                $this->setLayout('quiztype_singlepage');
+            }
         }
 
 

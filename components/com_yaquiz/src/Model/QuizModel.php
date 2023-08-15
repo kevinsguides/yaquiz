@@ -665,51 +665,102 @@ class QuizModel extends ItemModel{
 
     //Stuff related to logging start and end times of quizzes, and setting time limits on quizzes
 
-    // `#__com_yaquiz_user_quiz_times` (
-    //     `id` int(11) NOT NULL AUTO_INCREMENT,
-    //     `quiz_id` int(11) NOT NULL,
-    //     `user_id` int(11) NOT NULL,
-    //     `result_id` int(11) NOT NULL DEFAULT 0,
-    //     `start_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    //     `limit_time` datetime DEFAULT NULL,
-    //     `completed` tinyint(1) NOT NULL DEFAULT 0,
+    /**
+     * Create a new timer
+     * @return - the id of the timer record
+     */
+    public function createNewTimer($user_id, $quiz_id){
+        Log::add('try to make timer with uid ' . $user_id . ' and quizid ' . $quiz_id, Log::INFO, 'com_yaquiz');
+            
+            //the time allowed in minutes
+            $time_allowed = $this->getQuizParams($quiz_id)->quiz_timer_limit;
+
+
+    
+            $db = Factory::getContainer()->get('DatabaseDriver');
+            $query = $db->getQuery(true);
+            $query->insert($db->quoteName('#__com_yaquiz_user_quiz_times'));
+            $query->columns($db->quoteName('user_id') . ', ' . $db->quoteName('quiz_id') . ', ' . $db->quoteName('start_time') . ', ' . $db->quoteName('limit_time'));
+            //start with time allowed plus fifteen seconds
+            $query->values($db->quote($user_id) . ', ' . $db->quote($quiz_id) . ', NOW(), DATE_ADD(NOW(), INTERVAL ' . ($time_allowed * 60 + 15) . ' SECOND)');
+            $db->setQuery($query);
+            $db->execute();
+            $timer_id = $db->insertid();
+    
+            return $timer_id;
+    
+    }
 
 
 
-    //return id of an existing timer if it exists and completed is 0
-    public function findExistingQuizTimer($quiz_id, $user_id){
+    /**
+     * check if user has already started a quiz
+     * @return - the id of the timer record, or 0 if none exist, already expired, or already completed
+     */
+    public function getTimerId($user_id, $quiz_id){
                 
             $db = Factory::getContainer()->get('DatabaseDriver');
     
             $query = $db->getQuery(true);
             $query->select('id');
             $query->from($db->quoteName('#__com_yaquiz_user_quiz_times'));
-            $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($quiz_id));
             $query->where($db->quoteName('user_id') . ' = ' . $db->quote($user_id));
+            $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($quiz_id));
             $query->where($db->quoteName('completed') . ' = 0');
+            $query->where($db->quoteName('result_id') . ' = 0');
+            $query->where($db->quoteName('limit_time') . ' > NOW()');
             $db->setQuery($query);
-            $id = $db->loadResult();
-    
-            if(!$id){
-                return false;
+            $timer_id = $db->loadResult();
+
+            if(!$timer_id){
+                return 0;
             }
-            return $id;
+
+            return $timer_id;
+
+    }
+
+    public function getTimeRemainingAsSeconds($user_id, $quiz_id){
+
+        $timer_id = $this->getTimerId($user_id, $quiz_id);
+
+        if(!$timer_id){
+            return 0;
+        }
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+
+        $query = $db->getQuery(true);
+        $query->select('TIMESTAMPDIFF(SECOND, NOW(), limit_time) as time_remaining');
+        $query->from($db->quoteName('#__com_yaquiz_user_quiz_times'));
+        $query->where($db->quoteName('id') . ' = ' . $db->quote($timer_id));
+        $db->setQuery($query);
+        $time_remaining = $db->loadResult();
+
+        return $time_remaining;
 
     }
 
 
-    public function startQuizTimer($quiz_id, $user_id){
+    public function updateTimerOnSubitted($user_id, $quiz_id, $result_id){
             
+            $timer_id = $this->getTimerId($user_id, $quiz_id);
+    
+            if(!$timer_id){
+                return 0;
+            }
+    
             $db = Factory::getContainer()->get('DatabaseDriver');
     
             $query = $db->getQuery(true);
-            $query->insert($db->quoteName('#__com_yaquiz_user_quiz_times'));
-            $query->columns($db->quoteName('quiz_id') . ', ' . $db->quoteName('user_id'));
-            $query->values($db->quote($quiz_id) . ', ' . $db->quote($user_id));
+            $query->update($db->quoteName('#__com_yaquiz_user_quiz_times'));
+            $query->set($db->quoteName('completed') . ' = 1');
+            $query->set($db->quoteName('result_id') . ' = ' . $db->quote($result_id));
+            $query->where($db->quoteName('id') . ' = ' . $db->quote($timer_id));
             $db->setQuery($query);
             $db->execute();
     
-            return $db->insertid();
+            return 1;
     
     }
 
