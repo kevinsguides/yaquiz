@@ -12,6 +12,7 @@ use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\CMS\Session\Session;
 use Joomla\Input\Input;
 use JSession;
 use Joomla\CMS\Router\Route;
@@ -33,7 +34,6 @@ class QuizController extends BaseController
      * Summary of display
      * @param mixed $cachable
      * @param mixed $urlparams
-     * @return void
      */
     public function display($cachable = false, $urlparams = array())
     {
@@ -41,17 +41,18 @@ class QuizController extends BaseController
         //register tasks
         $this->registerTask('submitquiz', 'submitquiz');
         $this->registerTask('loadnextpage', 'loadnextpage');
-
-        Log::add('QuizController::display', Log::INFO, 'com_yaquiz');
-
-
+        $this->registerTask('startTimedQuiz', 'startTimedQuiz');
     }
 
+    /**
+     * Submit a quiz, grade it, store results if needed, and redirect to the results page
+     * TODO: refactor this into smaller methods
+     * 
+     */
     public function submitquiz()
     {
         //check for token
-        if (!JSession::checkToken()) {
-            Log::add('YaquizController::save() token failed', Log::INFO, 'com_yaquiz');
+        if (!Session::checkToken()) {
             //cue error message
             $this->setMessage('Token failed');
             //redirect to the view
@@ -63,9 +64,8 @@ class QuizController extends BaseController
         //get submitted answers
         $app = Factory::getApplication();
         $input = $app->getInput();
+        $user = $app->getIdentity();
         $quiz_id = $input->get('id', 0, 'int');
-        Log::add('quiz_id AT THIS POINT: ' . $quiz_id, Log::INFO, 'com_yaquiz');
-        
         $quiz = $this->getModel('Quiz')->getItem($quiz_id);
         $model = new QuizModel();
         $quizParams = $model->getQuizParams($quiz_id);
@@ -84,44 +84,135 @@ class QuizController extends BaseController
             $session = $app->getSession();
             $answers = $session->get('sq_answers', array());
             $answers = $answers[$quiz_id];
-
         }
 
         //check for existing set Itemid
         $itemid = $input->get('Itemid', 0, 'int');
-        Log::add('existing itemid: ' . $itemid, Log::INFO, 'com_yaquiz');
 
-
-
-
-        //make sure they answered all the questions...
-        if (count($answers) < $model->getTotalQuestions($quiz_id)) {
-            $this->setMessage(\JText::_('COM_YAQ_HAS_UNANSWERED_QUESTIONS'), 'warning');
-
-            //foreach question, save its answer and id to an array
-            $answered = array();
-            foreach ($answers as $question_id => $answer) {
-                $answered[] = array(
-                    'question_id' => $question_id,
-                    'answer' => $answer
-                );
+        //See if this is a timed quiz and if so, check if they ran out of time
+        if ($quizParams->quiz_use_timer === '1') {
+            $timeleft = $model->getTimeRemainingAsSeconds($user->id, $quiz_id);
+            //if they ran out of time with 15 seconds or less, submit the quiz and grade as is
+            if ($timeleft <= 15) {
+                $app->enqueueMessage('Time up', 'warning');
             }
-
-
-            //save all answered info to their session
-            $session = $app->getSession();
-            $session->set('sq_retryanswers', $answered);
-            $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=quiz&id=' . $quiz_id . '&status=retry'));
-            return;
+            //if they ran out of time and quiz is more than 15 seconds expired, the whole quiz is wrong
+            elseif ($timeleft < 0) {
+            }
+            else{
+                //make sure answered all questions
+                if(!$this->checkQuestionsAnswered($answers, $quiz_id)){
+                    return;
+                }
+            }
+        }
+        else{
+            //make sure answered all questions
+            if(!$this->checkQuestionsAnswered($answers, $quiz_id)){
+                return;
+            }
         }
 
 
+        $results = $this->gradeQuiz($answers, $quizParams, $quiz_id);
+        
 
-        //for each answer, check if its correct
+        //save general results
+        $quiz_record_results = (int) $quizParams->quiz_record_results;
+        $quiz_record_guest_results = (int) $quizParams->quiz_record_guest_results;
+
+        if ($quiz_record_results == -1) {
+            $quiz_record_results = (int) $globalParams->get('quiz_record_results', 0);
+        }
+        if ($quiz_record_guest_results == -1) {
+            $quiz_record_guest_results = (int) $globalParams->get('quiz_record_guest_results', 0);
+        }
+        if ($quiz_record_results >= 1) {
+            if ($quiz_record_guest_results == 1 || $app->getIdentity()->guest == 0) {
+                $model->saveGeneralResults($quiz_id, $results->scorepercentage, $results->passfail);
+            }
+        }
+
+        $qbhelper = new QuestionBuilderHelper();
+
+
+
+        $new_result_id = 0;
+
+        //save individual results (level 2 or 3)
+        if ($quiz_record_results >= 2) {
+            //user must be logged in
+            if (!$app->getIdentity()->guest) {
+                $new_result_id = $model->saveIndividualResults($results, $quiz_record_results);
+                if ($quizParams->quiz_use_timer === '1') {
+                    $model->updateTimerOnSubitted($user->id, $quiz_id, $new_result_id);
+                }
+            }
+
+        }
+
+        Log::add('value of $quiz_record_results: ' . $quiz_record_results, Log::INFO, 'com_yaquiz');
+
+        //set quiz title state var
+        $quiz = $model->getItem($quiz_id);
+        $title = $quiz->title;
+        $buildResults = $qbhelper->buildResultsArea($quiz_id, $results, $new_result_id);
+
+
+        //check if the user already started this quiz
+        $session = Factory::getApplication()->getSession();
+        $answers = $session->get('sq_answers', array());
+        //check if an entry exists for this quiz
+        if (isset($answers[$quiz_id])) {
+            $session->clear('sq_answers');
+            $session->clear('sq_quiz_id');
+        }
+
+        //set the results state var
+        $app->setUserState('com_yaquiz.results', $buildResults);
+
+        if($new_result_id != 0){
+            Log::add('redirecting to: ' . Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id . '&resultid=' . $new_result_id . '&Itemid=' . $itemid), Log::INFO, 'com_yaquiz');
+
+            $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id . '&resultid=' . $new_result_id . '&Itemid=' . $itemid));
+        }
+        else{
+            Log::add('redirecting to: ' . Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id), Log::INFO, 'com_yaquiz');
+            $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id));
+        }
+
+        
+        
+
+
+    }
+
+    public function gradeQuiz($answers, $quizParams, $quiz_id){
+
+        Log::add('gradequiz called with answer data: ' . print_r($answers, true), Log::INFO, 'com_yaquiz');
+
         $points = 0;
         $total = 0;
         $model = new QuizModel();
+
+        $all_questions = $model->getQuestions($quiz_id);
+
         $all_feedback = array();
+
+        //loop through each question in $all_questions
+        
+        foreach ($all_questions as $question){
+            //if the question is a section, skip it
+            if($question->params->question_type === 'html_section'){
+                continue;
+            }
+            //if the question is not in the answers array, add it with a blank answer
+            if(!array_key_exists($question->id, $answers)){
+                $answers[$question->id] = '';
+            }
+
+        }
+
         foreach ($answers as $question_id => $answer) {
             $question = $model->getQuestion($question_id);
 
@@ -153,78 +244,54 @@ class QuizController extends BaseController
             $passfail = 'fail';
         }
 
-        //save general results
-        $quiz_record_results = (int) $quizParams->quiz_record_results;
-        $quiz_record_guest_results = (int) $quizParams->quiz_record_guest_results;
-
-        if ($quiz_record_results == -1) {
-            $quiz_record_results = (int) $globalParams->get('quiz_record_results', 0);
-        }
-        if ($quiz_record_guest_results == -1) {
-            $quiz_record_guest_results = (int) $globalParams->get('quiz_record_guest_results', 0);
-        }
-        if ($quiz_record_results >= 1) {
-            if ($quiz_record_guest_results == 1 || $app->getIdentity()->guest == 0) {
-                $model->saveGeneralResults($quiz_id, $scorepercentage, $passfail);
-            }
-        }
-
-        $qbhelper = new QuestionBuilderHelper();
-
         //create a blank results object
         $results = new \stdClass();
         $results->correct = $points;
         $results->total = $total;
         $results->quiz_id = $quiz_id;
         $results->questions = $all_feedback;
+        $results->scorepercentage = $scorepercentage;
         $results->passfail = $passfail;
 
-        $new_result_id = 0;
+        return $results;
+    }
 
-        //save individual results (level 2 or 3)
-        if ($quiz_record_results >= 2) {
-            //user must be logged in
-            if (!$app->getIdentity()->guest) {
-                $new_result_id = $model->saveIndividualResults($results, $quiz_record_results);
+
+
+    /**
+     * Checks if the user has answered all the questions. If not, it saves the answers to the session and redirects them to the quiz page.
+     * @param array $answers
+     * @param int $quiz_id
+     */
+    public function checkQuestionsAnswered($answers, $quiz_id){
+        Log::add('checking questions answered');
+
+        $app = Factory::getApplication();
+        $model = new QuizModel();
+            //make sure they answered all the questions...
+            if (count($answers) < $model->getTotalQuestions($quiz_id)) {
+                Log::add('user not answered all questions');
+                $this->setMessage(Text::_('COM_YAQ_HAS_UNANSWERED_QUESTIONS'), 'warning');
+    
+                //foreach question, save its answer and id to an array
+                $answered = array();
+                foreach ($answers as $question_id => $answer) {
+                    $answered[] = array(
+                        'question_id' => $question_id,
+                        'answer' => $answer
+                    );
+                }
+    
+    
+                //save all answered info to their session
+                $session = $app->getSession();
+                $session->set('sq_retryanswers', $answered);
+                $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=quiz&id=' . $quiz_id . '&status=retry'));
+                return false;
             }
-
-        }
-
-        Log::add('value of $quiz_record_results: ' . $quiz_record_results, Log::INFO, 'com_yaquiz');
-
-        //set quiz title state var
-        $quiz = $model->getItem($quiz_id);
-        $title = $quiz->title;
-        $buildResults = $qbhelper->buildResultsArea($quiz_id, $results, $new_result_id);
-
-
-        //check if the user already started this quiz
-        $session = Factory::getApplication()->getSession();
-        $answers = $session->get('sq_answers', array());
-        //check if an entry exists for this quiz
-        if (isset($answers[$quiz_id])) {
-            $session->clear('sq_answers');
-            $session->clear('sq_quiz_id');
-        }
-
-        //set the results state var
-        $app->setUserState('com_yaquiz.results', $buildResults);
-
-        //echo $buildResults;
-        if($new_result_id != 0){
-            Log::add('redirecting to: ' . Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id . '&resultid=' . $new_result_id . '&Itemid=' . $itemid), Log::INFO, 'com_yaquiz');
-
-            $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id . '&resultid=' . $new_result_id . '&Itemid=' . $itemid));
-        }
-        else{
-            Log::add('redirecting to: ' . Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id), Log::INFO, 'com_yaquiz');
-            $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id));
-        }
-
-        
-        
-
-
+            else{
+                return true;
+            }
     }
 
 
@@ -334,6 +401,20 @@ class QuizController extends BaseController
             $app->enqueueMessage(Text::_('COM_YAQ_QUIZ_VERIFY_FAIL'), 'error');
             $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=certverify'));
         }
+
+    }
+
+
+
+    public function startTimedQuiz(){
+        $app = Factory::getApplication();
+        $user = $app->getIdentity();
+        $input = $app->getInput();
+        $quiz_id = $input->get('id', 0, 'int');
+        $model = $this->getModel('quiz');
+        $model->createNewTimer($user->id, $quiz_id);
+        $app->enqueueMessage(Text::_('COM_YAQ_QUIZ_TIMER_STARTED'), 'warning');
+        $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=quiz&id=' . $quiz_id));
 
     }
 
