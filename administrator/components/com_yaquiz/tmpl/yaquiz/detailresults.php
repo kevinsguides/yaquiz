@@ -2,6 +2,8 @@
 /*
  * @copyright   (C) 2023 KevinsGuides.com
  * @license     GNU General Public License version 2 or later;
+ * 
+ * This layout is for a single user attempt results along with any feedback, correct/incorrect, etc.
 */
 
 
@@ -135,7 +137,18 @@ $quiz_taker_username = $quiz_taker->username;
         ?>
         <hr>
         <p><?php echo Text::_('COM_YAQUIZ_POSSIBLE_ANSWERS');?></p>
-        <?php echo $item->question->answers;?>
+        <?php 
+        $possible_answers = $item->question->answers;
+
+        //turn json string array into array
+        $possible_answers = json_decode($possible_answers);
+        foreach($possible_answers as $answer){
+            echo $answer . '<br/>';
+        }
+        
+        
+        
+        ?>
         <hr>
         <p><?php echo Text::_('COM_YAQUIZ_USER_SELECTED_ANSWER');?></p>
         <?php echo $item->useranswer; ?>

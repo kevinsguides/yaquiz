@@ -131,7 +131,6 @@ class HtmlView extends BaseHtmlView
             }
             elseif ($using_timer){
                 //we must be using a 1 page quiz, check for timer
-
                 //check if timer has already begun
                 $timer_id = $model->getTimerId($user->id, $this->quiz_id);
                 if($timer_id == 0){

@@ -15,5 +15,5 @@ use Joomla\CMS\Language\Text;
 
 <div id="yaquizTimer">
     <i class="fas fa-clock me-2"></i>
-    <?php echo Text::_('COM_YAQ_TIME_REMAIN');?> <span id="yaqTimerTime"><?php echo $seconds_left; ?></span>
+    <?php echo Text::_('COM_YAQ_TIME_REMAIN');?> <span id="yaqTimerTime" data-initialtime="<?php echo $seconds_left; ?>"></span>
 </div>

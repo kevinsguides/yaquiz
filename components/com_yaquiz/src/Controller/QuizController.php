@@ -189,8 +189,6 @@ class QuizController extends BaseController
 
     public function gradeQuiz($answers, $quizParams, $quiz_id){
 
-        Log::add('gradequiz called with answer data: ' . print_r($answers, true), Log::INFO, 'com_yaquiz');
-
         $points = 0;
         $total = 0;
         $model = new QuizModel();
@@ -199,8 +197,9 @@ class QuizController extends BaseController
 
         $all_feedback = array();
 
+        $modified_array = false;
+
         //loop through each question in $all_questions
-        
         foreach ($all_questions as $question){
             //if the question is a section, skip it
             if($question->params->question_type === 'html_section'){
@@ -209,8 +208,25 @@ class QuizController extends BaseController
             //if the question is not in the answers array, add it with a blank answer
             if(!array_key_exists($question->id, $answers)){
                 $answers[$question->id] = '';
+                $modified_array = true;
             }
+        }
 
+        if($modified_array){
+            //sort array by $question->ordering
+            uksort($answers, function($a, $b) use ($all_questions) {
+                $a_ordering = 0;
+                $b_ordering = 0;
+                foreach($all_questions as $question){
+                    if($question->id == $a){
+                        $a_ordering = $question->ordering;
+                    }
+                    if($question->id == $b){
+                        $b_ordering = $question->ordering;
+                    }
+                }
+                return $a_ordering - $b_ordering;
+            });
         }
 
         foreach ($answers as $question_id => $answer) {
@@ -264,7 +280,6 @@ class QuizController extends BaseController
      * @param int $quiz_id
      */
     public function checkQuestionsAnswered($answers, $quiz_id){
-        Log::add('checking questions answered');
 
         $app = Factory::getApplication();
         $model = new QuizModel();
@@ -300,7 +315,7 @@ class QuizController extends BaseController
 
         $app = Factory::getApplication();
         $input = $app->getInput();
-        Log::add('input looks like this: ' . print_r($input, true), Log::INFO, 'com_yaquiz');
+        
         $quiz_id = $input->get('id', 0, 'int');
         $page = $input->get('page', 0, 'int');
         $nextpage = $input->get('nextpage', 0, 'int, string');
@@ -320,10 +335,7 @@ class QuizController extends BaseController
         if ($nextpage === 'results') {
             //redirect to results page
             $this->submitquiz();
-            //$this->setRedirect('index.php?option=com_yaquiz&view=quiz&layout=results&id='.$quiz_id);
-
         } else {
-            Log::add('redirecting to... ' . Route::_('index.php?option=com_yaquiz&view=quiz&id=' . $quiz_id . '&page=' . $page), Log::INFO, 'com_yaquiz');
             $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=quiz&id=' . $quiz_id . '&page=' . $page));
         }
 

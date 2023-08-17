@@ -53,6 +53,11 @@ class QuizModel extends ItemModel{
         return $quiz;
 	}
 
+    /**
+     * @param $pk int the id of the quiz
+     * @return object the params object
+     */
+    //TODO: Switch to using Registry for params
     public function getQuizParams($pk = null){
 
 
@@ -69,6 +74,10 @@ class QuizModel extends ItemModel{
         $db->setQuery($query);
         $params = $db->loadResult();
         $params = json_decode($params);
+        
+        if(!isset($params->quiz_use_timer)){
+            $params->quiz_use_timer = 0;
+        }
         return $params;
 
 
@@ -77,6 +86,11 @@ class QuizModel extends ItemModel{
 
 
 
+    /**
+     * Gets all question * data for a quiz in the correct order
+     * @param $pk int the id of the quiz
+     * @return array of question objects
+     */
     public function getQuestions($pk = null)
     {
 
@@ -102,6 +116,9 @@ class QuizModel extends ItemModel{
 
         return $questions;
     }
+
+
+ 
 
     public function getQuestionParams($question_id)
     {
@@ -167,6 +184,11 @@ class QuizModel extends ItemModel{
      */
     public function checkAnswer($question_id, $answer)
     {
+
+        //if question was unanswered, it is incorrect
+        if($answer == ''){
+            return 0;
+        }
 
         $app = Factory::getApplication();
         $gConfig = $app->getParams('com_yaquiz');

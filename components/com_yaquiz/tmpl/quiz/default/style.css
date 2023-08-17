@@ -72,4 +72,13 @@ input:checked + label.mchoice::before {
   padding: 1rem;
 }
 
+#yaquizTimer.warning {
+  animation: blinker 3s linear infinite;
+}
+@keyframes blinker {
+  50% {
+    background: rgba(255, 0, 0, 0.5);
+  }
+}
+
 /*# sourceMappingURL=style.css.map */

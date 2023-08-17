@@ -759,6 +759,12 @@ class YaquizModel extends AdminModel
 
     }
 
+    /**
+     * Get results from a specific attempt
+     * @param $pk int the quiz id
+     * @param $attempt_id int the attempt id
+     * @return object the results
+     */
     public function getIndividualAttemptResult($pk = 0, $attempt_id = 0){
 
 

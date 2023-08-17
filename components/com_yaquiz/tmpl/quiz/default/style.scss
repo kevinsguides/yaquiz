@@ -83,3 +83,15 @@ input:checked + label.mchoice::before{
     color: white;
     padding: 1rem;
 }
+
+#yaquizTimer.warning{
+    //make background animate fade red/black
+    animation: blinker 3s linear infinite;
+
+    @keyframes blinker {
+        50% {
+          background: rgba(255,0,0,0.5);
+        }
+      }
+    
+}

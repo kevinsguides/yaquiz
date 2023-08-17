@@ -4,7 +4,10 @@
  * @license     GNU General Public License version 2 or later;
 */
 
-//wraps a single question's result area
+/**
+ * This file wraps the results/feedback for a single question on the quiz feedback page after user takes quiz
+ * Accessible vars include: $question, $iscorrect, $useranswer, $questionnum, $quiz_id
+ */
 defined ( '_JEXEC' ) or die;
 use Joomla\CMS\Language\Text;
 
@@ -21,6 +24,10 @@ if ($quizParams->quiz_use_points === '1') {
 }
 
 $feedback = '';
+
+if($useranswer == ''){
+    $useranswer = Text::_('COM_YAQ_NOANSWER');
+}
 
 $feedback .= '<p><strong>'.Text::_('COM_YAQ_YOURANSWER').'</strong> ' . $useranswer . '</p>';
 
