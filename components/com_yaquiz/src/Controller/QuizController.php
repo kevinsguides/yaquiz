@@ -205,6 +205,12 @@ class QuizController extends BaseController
             if($question->params->question_type === 'html_section'){
                 continue;
             }
+
+            //if array is null, user didn't answer any questions
+            if($answers == null){
+                $answers = array();
+            }
+
             //if the question is not in the answers array, add it with a blank answer
             if(!array_key_exists($question->id, $answers)){
                 $answers[$question->id] = '';
@@ -310,12 +316,16 @@ class QuizController extends BaseController
     }
 
 
+    /**
+     * Loads the next page of the quiz in a multi page quiz and saves the answers to the session
+     * TODO: If quiz is timed, and they run out of time, submit quiz instead of loading next page
+     * //Also check if we need to start a timer after page 0
+     */
     public function loadnextpage()
     {
 
         $app = Factory::getApplication();
         $input = $app->getInput();
-        
         $quiz_id = $input->get('id', 0, 'int');
         $page = $input->get('page', 0, 'int');
         $nextpage = $input->get('nextpage', 0, 'int, string');
@@ -323,12 +333,37 @@ class QuizController extends BaseController
             $page += $nextpage;
         }
 
-
         if (isset($_POST['answers'])) {
             //$answers = $_POST['answers'];
             $answers = $input->get('answers', array(), 'array');
             $this->savePageAnswers($quiz_id, $answers);
         }
+
+
+        //timer stuff
+        $model = $this->getModel('Quiz');
+        $quizParams = $model->getQuizParams($quiz_id);
+        $use_timer = ($quizParams->quiz_use_timer==1)?true:false;
+        $user = $app->getIdentity();
+        if($use_timer){
+
+            $model->cleanupQuizTimer($user->id, $quiz_id);
+
+            $existing_timerid = $model->getTimerId($user->id, $quiz_id);
+            //see if we need to start a timer
+            if($page == 1 && $existing_timerid == 0){
+                $model->createNewTimer($user->id, $quiz_id);
+            }
+
+            //see if a timer has expired (15 seconds or less)
+            $timeleft = $model->getTimeRemainingAsSeconds($user->id, $quiz_id);
+            if($timeleft <= 15){
+                $this->submitquiz();
+                return;
+            }
+
+        }
+        
 
 
         //redirect to view quiz with id and page
@@ -424,6 +459,7 @@ class QuizController extends BaseController
         $input = $app->getInput();
         $quiz_id = $input->get('id', 0, 'int');
         $model = $this->getModel('quiz');
+        $model->cleanupQuizTimer($user->id, $quiz_id);
         $model->createNewTimer($user->id, $quiz_id);
         $app->enqueueMessage(Text::_('COM_YAQ_QUIZ_TIMER_STARTED'), 'warning');
         $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=quiz&id=' . $quiz_id));
