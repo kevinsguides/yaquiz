@@ -147,7 +147,6 @@ class QuizModel extends ItemModel{
         $question = $db->loadObject();
         $question->params = json_decode($question->params);
         $question->correct_answer= $this->getCorrectAnswerText($question);
-        Log::add('attempt load question id '.$question->id, Log::INFO, 'com_yaquiz');
         return $question;
     }
 
@@ -470,9 +469,6 @@ class QuizModel extends ItemModel{
             $results->full_results = '';
         }
 
-
-        Log::add('results object: ' . print_r($results, true), Log::INFO, 'com_yaquiz');
-
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->insert($db->quoteName('#__com_yaquiz_results'));
@@ -573,9 +569,9 @@ class QuizModel extends ItemModel{
      */
     public function reachedMaxAttempts($quiz_id){
 
-        Log::add('id of quiz: ' . $quiz_id, Log::INFO, 'com_yaquiz');
+
         $max_attempts = (int)$this->getQuizParams($quiz_id)->max_attempts;
-        Log::add('max_attempts: ' . $max_attempts, Log::INFO, 'com_yaquiz');
+
         if($max_attempts == 0){
             return false;
         }
@@ -601,7 +597,6 @@ class QuizModel extends ItemModel{
             return false;
         }
         if($attempt_count >= $max_attempts){
-            Log::add('attempt count is ' . $attempt_count . ' and max attempts is ' . $max_attempts . ' so max reached', Log::INFO, 'com_yaquiz');
             return true;
         }
         return false;
@@ -705,8 +700,7 @@ class QuizModel extends ItemModel{
      * @return - the id of the timer record
      */
     public function createNewTimer($user_id, $quiz_id){
-        Log::add('try to make timer with uid ' . $user_id . ' and quizid ' . $quiz_id, Log::INFO, 'com_yaquiz');
-            
+
             //the time allowed in minutes
             $time_allowed = $this->getQuizParams($quiz_id)->quiz_timer_limit;
 
