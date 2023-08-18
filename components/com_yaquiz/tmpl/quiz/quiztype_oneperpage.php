@@ -68,6 +68,17 @@ if($currPage > $totalQuestions){
     $app->redirect('index.php?option=com_yaquiz&view=quiz&id='.$quiz->id.'&page='.$totalQuestions);
 }
 
+$uses_timer = false;
+
+//if on page 1 or more, check if quiz is timed
+if($currPage > 0){
+    $uses_timer = $quiz_params->quiz_use_timer;
+    if($uses_timer == 1){
+        $uses_timer = true;
+        $wam->registerAndUseScript('com_yaquiz.timer', 'components/com_yaquiz/js/timer.js', [], ['defer' => true]);
+    }
+}
+
 
 
 $qbHelper = new QuestionBuilderHelper(); //used in includes
@@ -76,7 +87,7 @@ HTMLHelper::_('behavior.keepalive');
 
 ?>
 
-<form action="<?php echo Route::_('index.php?option=com_yaquiz&task=quiz.loadNextPage'); ?>" method="POST">
+<form id="yaQuizForm" action="<?php echo Route::_('index.php?option=com_yaquiz&task=quiz.loadNextPage'); ?>" method="POST">
     <input type="hidden" name="id" value="<?php echo $quiz->id; ?>" />
     <input type="hidden" name="page" value="<?php echo $currPage; ?>" />
 
@@ -98,3 +109,11 @@ HTMLHelper::_('behavior.keepalive');
 
 <?php echo HTMLHelper::_('form.token'); ?>
 </form>
+
+<?php
+        if ($uses_timer){
+            $user = $app->getIdentity();
+            $seconds_left = $model->getTimeRemainingAsSeconds($user->id, $quiz->id);
+            include(ThemeHelper::findFile('quiztimer.php'));
+        }
+?>

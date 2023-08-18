@@ -471,7 +471,7 @@ class QuizModel extends ItemModel{
         }
 
 
-
+        Log::add('results object: ' . print_r($results, true), Log::INFO, 'com_yaquiz');
 
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
@@ -498,33 +498,9 @@ class QuizModel extends ItemModel{
         $db->execute();
 
         //check for a record in __com_yaquiz_user_quiz_map linking this user to this quiz
-        $query = $db->getQuery(true);
-        $query->select('user_id');
-        $query->from($db->quoteName('#__com_yaquiz_user_quiz_map'));
-        $query->where($db->quoteName('user_id') . ' = ' . $db->quote($userid));
-        $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($results->quiz_id));
-        $db->setQuery($query);
-        $result = $db->loadResult();
+        $this->incrementAttemptCount($results->quiz_id, $userid);
 
-        if($result){
-            //update record
-            $query = $db->getQuery(true);
-            $query->update($db->quoteName('#__com_yaquiz_user_quiz_map'));
-            $query->set($db->quoteName('attempt_count') . ' = ' . $db->quoteName('attempt_count') . ' + 1');
-            $query->where($db->quoteName('user_id') . ' = ' . $db->quote($userid));
-            $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($results->quiz_id));
-            $db->setQuery($query);
-            $db->execute();
-        }
-        else{
-            //insert record
-            $query = $db->getQuery(true);
-            $query->insert($db->quoteName('#__com_yaquiz_user_quiz_map'));
-            $query->columns(array($db->quoteName('user_id'), $db->quoteName('quiz_id'), $db->quoteName('attempt_count')));
-            $query->values($db->quote($userid) . ', ' . $db->quote($results->quiz_id) . ', 1');
-            $db->setQuery($query);
-            $db->execute();
-        }
+        
 
         //return the result id (latest one there may be multiple)
         $query = $db->getQuery(true);
@@ -550,6 +526,43 @@ class QuizModel extends ItemModel{
         $db->execute();
 
         return $result_id;
+
+    }
+
+
+    public function incrementAttemptCount($quiz_id, $userid, $amount = 1){
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+
+        //check for a record in __com_yaquiz_user_quiz_map linking this user to this quiz
+        $query = $db->getQuery(true);
+        $query->select('user_id');
+        $query->from($db->quoteName('#__com_yaquiz_user_quiz_map'));
+        $query->where($db->quoteName('user_id') . ' = ' . $db->quote($userid));
+        $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($quiz_id));
+        $db->setQuery($query);
+        $result = $db->loadResult();
+
+        if($result){
+            //update record
+            $query = $db->getQuery(true);
+            $query->update($db->quoteName('#__com_yaquiz_user_quiz_map'));
+            $query->set($db->quoteName('attempt_count') . ' = ' . $db->quoteName('attempt_count') . ' + ' . $amount);
+            $query->where($db->quoteName('user_id') . ' = ' . $db->quote($userid));
+            $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($quiz_id));
+            $db->setQuery($query);
+            $db->execute();
+        }
+        else{
+            //insert record
+            $query = $db->getQuery(true);
+            $query->insert($db->quoteName('#__com_yaquiz_user_quiz_map'));
+            $query->columns(array($db->quoteName('user_id'), $db->quoteName('quiz_id'), $db->quoteName('attempt_count')));
+            $query->values($db->quote($userid) . ', ' . $db->quote($quiz_id) . ', ' . $db->quote($amount));
+            $db->setQuery($query);
+            $db->execute();
+        }
+
 
     }
 
@@ -784,6 +797,102 @@ class QuizModel extends ItemModel{
     
             return 1;
     
+    }
+
+
+    /**
+     * Check for expired timers and mark attempts incomplete with grades of 0
+     * Call this before starting a quiz or checking results
+     */
+    public function cleanupQuizTimer($user_id, $quiz_id){
+                
+        //count number of incomplete attempts
+        $db = Factory::getContainer()->get('DatabaseDriver');
+
+        $query = $db->getQuery(true);
+        $query->select('COUNT(*)');
+        $query->from($db->quoteName('#__com_yaquiz_user_quiz_times'));
+        $query->where($db->quoteName('user_id') . ' = ' . $db->quote($user_id));
+        $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($quiz_id));
+        $query->where($db->quoteName('completed') . ' = 0');
+        $query->where($db->quoteName('result_id') . ' = 0');
+        $query->where($db->quoteName('limit_time') . ' < NOW()');
+        $db->setQuery($query);
+        $incomplete_attempts = $db->loadResult();
+
+        //if there are no incomplete attempts, do nothing
+        if($incomplete_attempts == 0){
+            return;
+        }
+
+
+        //set completed to -1 for all incomplete attempts
+        $query = $db->getQuery(true);
+        $query->update($db->quoteName('#__com_yaquiz_user_quiz_times'));
+        $query->set($db->quoteName('completed') . ' = -1');
+        $query->where($db->quoteName('user_id') . ' = ' . $db->quote($user_id));
+        $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($quiz_id));
+        $query->where($db->quoteName('completed') . ' = 0');
+        $query->where($db->quoteName('result_id') . ' = 0');
+        $query->where($db->quoteName('limit_time') . ' < NOW()');
+        $db->setQuery($query);
+        $db->execute();
+
+        //create a new result record for each incomplete attempt
+        $results = new \stdClass();
+        $results->quiz_id = $quiz_id;
+        $results->score = 0;
+        $results->correct = 0;
+        $results->total = 100;
+        $results->passfail = 'fail';
+        $results->fullresults = '';
+
+        $result_records = array();
+
+        for($i = 0; $i < $incomplete_attempts; $i++){
+            $result_records[] = $this->saveIndividualResults($results, 2);
+        }
+
+        //update the timer records with the result ids
+        for ($i = 0; $i < $incomplete_attempts; $i++){
+            $query = $db->getQuery(true);
+            $query->update($db->quoteName('#__com_yaquiz_user_quiz_times'));
+            $query->set($db->quoteName('result_id') . ' = ' . $db->quote($result_records[$i]));
+            $query->where($db->quoteName('user_id') . ' = ' . $db->quote($user_id));
+            $query->where($db->quoteName('quiz_id') . ' = ' . $db->quote($quiz_id));
+            $query->where($db->quoteName('completed') . ' = -1');
+            $query->where($db->quoteName('result_id') . ' = 0');
+            $query->where($db->quoteName('limit_time') . ' < NOW()');
+            $db->setQuery($query);
+            $db->execute();
+        }
+        
+    }
+
+    public function cleanupQuizTimers($user_id){
+
+            //get the quiz ids
+            $db = Factory::getContainer()->get('DatabaseDriver');
+
+            $query = $db->getQuery(true);
+            $query->select('quiz_id');
+            $query->from($db->quoteName('#__com_yaquiz_user_quiz_times'));
+            $query->where($db->quoteName('user_id') . ' = ' . $db->quote($user_id));
+            $query->where($db->quoteName('completed') . ' = 0');
+            $query->where($db->quoteName('result_id') . ' = 0');
+            $query->where($db->quoteName('limit_time') . ' < NOW()');
+            $db->setQuery($query);
+            $quiz_ids = $db->loadColumn();
+
+            //if none
+            if(!$quiz_ids){
+                return;
+            }
+
+            //for each quiz id, call cleanupQuizTimer
+            foreach($quiz_ids as $quiz_id){
+                $this->cleanupQuizTimer($user_id, $quiz_id);
+            }
     }
 
 
