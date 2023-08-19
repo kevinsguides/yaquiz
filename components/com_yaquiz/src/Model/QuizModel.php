@@ -83,13 +83,12 @@ class QuizModel extends ItemModel{
         }
 
 
-        $params = new Registry($params);
+        $quizparams = new Registry($params);
 
         //global options registry
-        $gConfig = $app->getParams('com_yaquiz');
+        $globalparams = $app->getParams('com_yaquiz');
 
-        //merge global
-        $params->merge($gConfig);
+        $params = $globalparams->merge($quizparams);
 
         return $params;
 
