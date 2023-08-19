@@ -187,6 +187,34 @@ default="0">
 </field>
 
 <field
+name="max_attempts"
+type="number"
+label="COM_YAQUIZ_YAQUIZ_MAX_ATTEMPTS_LABEL"
+description="COM_YAQUIZ_YAQUIZ_MAX_ATTEMPTS_DESC"
+default="0"
+/>
+
+<field
+name="quiz_use_timer"
+type="list"
+label="COM_YAQUIZ_YAQUIZ_QUIZ_USE_TIMER_LABEL"
+description="COM_YAQUIZ_YAQUIZ_QUIZ_USE_TIMER_DESC"
+default="0"
+>
+<option value="1">Yes</option>
+<option value="0">No</option>
+</field>
+
+<field
+name="quiz_timer_limit"
+type="number"
+label="COM_YAQUIZ_YAQUIZ_QUIZ_TIMER_LIMIT_LABEL"
+description="COM_YAQUIZ_YAQUIZ_QUIZ_TIMER_LIMIT_DESC"
+default="15"
+/>
+
+
+<field
 name="quiz_record_guest_results"
 type="radio"
 label="COM_YAQUIZ_RECORD_GUEST_RESULTS_LABEL"

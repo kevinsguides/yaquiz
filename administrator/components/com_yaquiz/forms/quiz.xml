@@ -178,19 +178,16 @@ name="max_attempts"
 type="number"
 label="COM_YAQUIZ_YAQUIZ_MAX_ATTEMPTS_LABEL"
 description="COM_YAQUIZ_YAQUIZ_MAX_ATTEMPTS_DESC"
-showon="quiz_record_results:2,3"
-validate="options"
-default="0"
+validate="number"
+useglobal="true"
 />
 
 <field
 name="quiz_use_timer"
-type="radio"
+type="list"
 label="COM_YAQUIZ_YAQUIZ_QUIZ_USE_TIMER_LABEL"
 description="COM_YAQUIZ_YAQUIZ_QUIZ_USE_TIMER_DESC"
-showon="quiz_record_results:2,3"
-default="0"
-class="btn-group btn-group-yesno"
+useglobal="true"
 >
 <option value="1">Yes</option>
 <option value="0">No</option>
@@ -201,9 +198,7 @@ name="quiz_timer_limit"
 type="number"
 label="COM_YAQUIZ_YAQUIZ_QUIZ_TIMER_LIMIT_LABEL"
 description="COM_YAQUIZ_YAQUIZ_QUIZ_TIMER_LIMIT_DESC"
-required="true"
-default="15"
-showon="quiz_record_results:-1,2,3[AND]quiz_use_timer:1"
+useglobal="true"
 />
 
 
@@ -250,8 +245,6 @@ type="list"
 label="COM_YAQUIZ_USE_CERTIFICATES"
 description="COM_YAQUIZ_USE_CERTIFICATES_DESC"
 useglobal="true"
-showon="quiz_record_results:2,3"
-validate="options"
 >
 <option value="1">JYES</option>
 <option value="0">JNO</option>
@@ -265,7 +258,6 @@ label="COM_YAQUIZ_CERTFILE"
 description="COM_YAQUIZ_CERTFILE_DESC"
 useglobal="true"
 directory="/components/com_yaquiz/certificates"
-showon="quiz_record_results:2,3[AND]use_certificates:-1,1"
 fileFilter="\.html$"
 >
 </field>
