@@ -18,6 +18,7 @@ use KevinsGuides\Component\Yaquiz\Site\Helper\QuestionBuilderHelper;
 use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
 use Joomla\CMS\Language\Text;
 
+$model = new QuizModel();
 
 $app = Factory::getApplication();
 $wam = $app->getDocument()->getWebAssetManager();
@@ -53,22 +54,20 @@ if (isset($this->item)) {
 }
 
 //get quiz params
-$quiz_params = $quiz->params;
-//decode
-$quiz_params = json_decode($quiz_params);
+$quiz_params = $model->getQuizParams($quiz->id);
 
 $uses_point_system = false;
 
-if($quiz_params->quiz_use_points === "1"){
+if($quiz_params->get('quiz_use_points', "1") === "1"){
     $uses_point_system = true;
 }
 
 ?>
 
 <input id="uses_point_system" type="hidden" value="<?php echo ($uses_point_system==true)?'true':'false';?>">
-<input id="quiz_showfeedback" type="hidden" value="<?php echo ($quiz_params->quiz_showfeedback==1)?'true':'false';?>">
-<input id="quiz_feedback_showcorrect" type="hidden" value="<?php echo ($quiz_params->quiz_feedback_showcorrect==1)?'true':'false';?>">
-<input id="passing_score" type="hidden" value="<?php echo $quiz_params->passing_score;?>">
+<input id="quiz_showfeedback" type="hidden" value="<?php echo ($quiz_params->get('quiz_showfeedback', 1)==1)?'true':'false';?>">
+<input id="quiz_feedback_showcorrect" type="hidden" value="<?php echo ($quiz_params->get('quiz_feedback_showcorrect', 1)==1)?'true':'false';?>">
+<input id="passing_score" type="hidden" value="<?php echo $quiz_params->get('passing_score', 70);?>">
 <input type="hidden" id="shortans_ignore_trailing" value="<?php echo $gConfig->get('shortans_ignore_trailing','1'); ?>" />
 <div class="container p-2">
 
@@ -101,7 +100,7 @@ if($quiz_params->quiz_use_points === "1"){
 
 
 <?php
-$model = new QuizModel();
+
 //loop through all questions
 $questions = $model->getQuestions($quiz->id);
 $questionCount = count($questions);
@@ -120,7 +119,7 @@ foreach ($questions as $question):
 
 
     $numbering = "";
-    if($quiz_params->quiz_question_numbering == "1"){
+    if($quiz_params->get('quiz_question_numbering', 1) == "1"){
         $numbering = $model->getQuestionNumbering($question->id, $quiz->id) . ". ";
     }
 
@@ -178,7 +177,7 @@ foreach ($questions as $question):
                         <label class="form-check-label mchoice btn btn-dark text-start" for="answer<?php echo $i.'-F'; ?>"><?php echo \JText::_('COM_YAQ_FALSE');?></label>  
                     </form>                      
                 <?php endif; ?>
-                    <?php if($quiz_params->quiz_showfeedback==1):?>
+                    <?php if($quiz_params->get('quiz_showfeedback', 1)==1):?>
                         <div class="jsquiz-question-feedback-correct d-none">
                             <?php 
                             //if there is any actual feedback to give
@@ -201,7 +200,7 @@ foreach ($questions as $question):
                             }
 
                             //if we are showing the correct answer
-                            if($quiz_params->quiz_feedback_showcorrect=='1'){
+                            if($quiz_params->get('quiz_feedback_showcorrect', 1)=='1'){
                                 echo '<br/>'.$model->getCorrectAnswerText($question);
                             }
                             ?>

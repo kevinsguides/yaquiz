@@ -106,7 +106,7 @@ class HtmlView extends BaseHtmlView
 
 
         //check if quiz has a timer
-        if($quizparams->quiz_use_timer == 1 && $quizparams->quiz_timer_limit > 0){
+        if($quizparams->get('quiz_use_timer', 0) == 1 && $quizparams->get('quiz_timer_limit', 5) > 0){
 
             //check if user is logged in
             if($user->guest){
@@ -122,11 +122,11 @@ class HtmlView extends BaseHtmlView
         //if we're not on the results layout
         if ($this->getLayout() != 'results'){
             //if quiz displaymode is default 
-            if($quizparams->quiz_displaymode === 'individual'){
+            if($quizparams->get('quiz_displaymode', 'default') === 'individual'){
                 $this->setLayout('quiztype_oneperpage');
                 $this->currPage = $app->input->get('page', 0);
             }
-            elseif ($quizparams->quiz_displaymode === 'jsquiz'){
+            elseif ($quizparams->get('quiz_displaymode', 'default') === 'jsquiz'){
                 $this->setLayout('quiztype_jsquiz');
             }
             elseif ($using_timer){

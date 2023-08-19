@@ -25,7 +25,7 @@ use Joomla\CMS\Language\Text;
 
 
 
-<?php   if($quiz_params->quiz_use_points == 1 && $questionType != 'html_section') :?>
+<?php   if($quiz_params->get('quiz_use_points', 1) == 1 && $questionType != 'html_section') :?>
 
     <?php
   

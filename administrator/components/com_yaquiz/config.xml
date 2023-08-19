@@ -98,12 +98,24 @@ label="COM_YAQUIZ_GLOBAL_OPTIONS_LABEL">
     label="COM_YAQUIZ_GLOBAL_OPTIONS_LABEL"
     description="COM_YAQUIZ_GLOBAL_OPTIONS_DESC"
     />
+
+
+    <field
+    name="quiz_displaymode"
+    type="list"
+    label="COM_YAQUIZ_YAQUIZ_QUIZ_DISPLAYMODE_LABEL"
+    default="default"
+    >
+    <option value="default">Default (A Single Page Test)</option>
+    <option value="individual">Individual (One Question Per Page)</option>
+    <option value="jsquiz">JavaScript Quiz (fully cacheable)</option>
+    </field>
+
     <field
     name="access"
     type="accesslevel"
     label="COM_YAQUIZ_FIELD_QUIZACCESSLEVEL_LABEL"
     description="COM_YAQUIZ_FIELD_QUIZACCESSLEVEL_DESC"
-    default="1"
     />
     <field
     name="randomize_mchoice"
@@ -129,7 +141,7 @@ label="COM_YAQUIZ_GLOBAL_OPTIONS_LABEL">
 
     <field
     name="use_certificates"
-    type="radio"
+    type="list"
     label="COM_YAQUIZ_GLOBAL_USE_CERTIFICATES"
     description="COM_YAQUIZ_GLOBAL_USE_CERTIFICATES_DESC"
     default="0"

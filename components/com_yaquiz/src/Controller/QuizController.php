@@ -69,6 +69,7 @@ class QuizController extends BaseController
         $quiz = $this->getModel('Quiz')->getItem($quiz_id);
         $model = new QuizModel();
         $quizParams = $model->getQuizParams($quiz_id);
+        
         $globalParams = $app->getParams('com_yaquiz');
 
         if ($globalParams->get('record_submissions') === '1') {
@@ -76,10 +77,10 @@ class QuizController extends BaseController
         }
 
         //if this is a single page quiz
-        if ($quizParams->quiz_displaymode === 'default') {
+        if ($quizParams->get('quiz_displaymode', 'default') === 'default') {
             //then answers come from form input
             $answers = $input->get('answers', array(), 'array');
-        } else if ($quizParams->quiz_displaymode === 'individual') {
+        } else if ($quizParams->get('quiz_displaymode', 'default') === 'individual') {
             //then answers come from the session variable
             $session = $app->getSession();
             $answers = $session->get('sq_answers', array());
@@ -90,7 +91,7 @@ class QuizController extends BaseController
         $itemid = $input->get('Itemid', 0, 'int');
 
         //See if this is a timed quiz and if so, check if they ran out of time
-        if ($quizParams->quiz_use_timer === '1') {
+        if ($quizParams->get('quiz_use_timer', 1) === '1') {
             $timeleft = $model->getTimeRemainingAsSeconds($user->id, $quiz_id);
             //if they ran out of time with 15 seconds or less, submit the quiz and grade as is
             if ($timeleft <= 15) {
@@ -118,15 +119,9 @@ class QuizController extends BaseController
         
 
         //save general results
-        $quiz_record_results = (int) $quizParams->quiz_record_results;
-        $quiz_record_guest_results = (int) $quizParams->quiz_record_guest_results;
+        $quiz_record_results = (int) $quizParams->get('quiz_record_results', 0);
+        $quiz_record_guest_results = (int) $quizParams->get('quiz_record_guest_results', 0);
 
-        if ($quiz_record_results == -1) {
-            $quiz_record_results = (int) $globalParams->get('quiz_record_results', 0);
-        }
-        if ($quiz_record_guest_results == -1) {
-            $quiz_record_guest_results = (int) $globalParams->get('quiz_record_guest_results', 0);
-        }
         if ($quiz_record_results >= 1) {
             if ($quiz_record_guest_results == 1 || $app->getIdentity()->guest == 0) {
                 $model->saveGeneralResults($quiz_id, $results->scorepercentage, $results->passfail);
@@ -144,7 +139,7 @@ class QuizController extends BaseController
             //user must be logged in
             if (!$app->getIdentity()->guest) {
                 $new_result_id = $model->saveIndividualResults($results, $quiz_record_results);
-                if ($quizParams->quiz_use_timer === '1') {
+                if ($quizParams->get('quiz_use_timer', 0) === '1') {
                     $model->updateTimerOnSubitted($user->id, $quiz_id, $new_result_id);
                 }
             }
@@ -242,7 +237,7 @@ class QuizController extends BaseController
                 continue;
             }
 
-            if ($quizParams->quiz_use_points === '1') {
+            if ($quizParams->get('quiz_use_points', 0) === '1') {
                 $point_multiplier = $question->params->points;
             } else {
                 $point_multiplier = 1;
@@ -262,7 +257,7 @@ class QuizController extends BaseController
 
         $passfail = 'pass';
         $scorepercentage = $points / $total * 100;
-        if (($points / $total * 100) < $quizParams->passing_score) {
+        if (($points / $total * 100) < $quizParams->get('passing_score', 70)) {
             $passfail = 'fail';
         }
 
@@ -343,7 +338,7 @@ class QuizController extends BaseController
         //timer stuff
         $model = $this->getModel('Quiz');
         $quizParams = $model->getQuizParams($quiz_id);
-        $use_timer = ($quizParams->quiz_use_timer==1)?true:false;
+        $use_timer = ($quizParams->get('quiz_use_timer', 0)==1)?true:false;
         $user = $app->getIdentity();
         if($use_timer){
 

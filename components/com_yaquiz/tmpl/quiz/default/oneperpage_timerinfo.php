@@ -23,7 +23,7 @@ use Joomla\CMS\Language\Text;
 
 
         <hr/>
-        <p><?php echo Text::sprintf('COM_YAQ_TIME_LIMIT', $quiz_params->quiz_timer_limit); ?>
+        <p><?php echo Text::sprintf('COM_YAQ_TIME_LIMIT', $quiz_params->get('quiz_timer_limit', 10)); ?>
 </p>
 
 </div>

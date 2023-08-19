@@ -29,15 +29,15 @@ class QuestionBuilderHelper
     /**
      * @return string html for the question's form elements
      */
-    public function buildQuestion($question, $quiz_params)
+    public function buildQuestion($question, $quiz_params, $quiz_id = null)
     {
         //get the question params
         $question_params = $question->params;
         //get question type
         $questionType = $question_params->question_type;
         $formatted_questionnum = '';
-        if ($quiz_params->quiz_question_numbering == 1 && $questionType != 'html_section') {
-            $the_question_number = QuizModel::getQuestionNumbering($question->id, $quiz_params->quiz_id);
+        if ($quiz_params->get('quiz_question_numbering', 1) == 1 && $questionType != 'html_section') {
+            $the_question_number = QuizModel::getQuestionNumbering($question->id, $quiz_id);
             $formatted_questionnum = '<span class="questionnumber">' . $the_question_number . ')</span> ';
         } else {
             $this->questionnumber = '';
@@ -46,13 +46,13 @@ class QuestionBuilderHelper
 
         $html = '';
 
-        if($quiz_params->quiz_displaymode == 'default'){
+        if($quiz_params->get('quiz_displaymode', 'default') == 'default'){
             include(ThemeHelper::findFile('singlepage_question_before.php'));
         }
-        elseif($quiz_params->quiz_displaymode == 'individual'){
+        elseif($quiz_params->get('quiz_displaymode', 'default')  == 'individual'){
             include(ThemeHelper::findFile('oneperpage_question_before.php'));
         }
-        elseif($quiz_params->quiz_displaymode == 'jsquiz'){
+        elseif($quiz_params->get('quiz_displaymode', 'default')  == 'jsquiz'){
             include(ThemeHelper::findFile('jsquiz_question_before.php'));
         }
         
@@ -71,13 +71,13 @@ class QuestionBuilderHelper
             echo 'question type' . $questionType . ' not supported';
         }
 
-        if($quiz_params->quiz_displaymode == 'default'){
+        if($quiz_params->get('quiz_displaymode', 'default')  == 'default'){
             include(ThemeHelper::findFile('singlepage_question_after.php'));
         }
-        elseif($quiz_params->quiz_displaymode == 'individual'){
+        elseif($quiz_params->get('quiz_displaymode', 'default')  == 'individual'){
             include(ThemeHelper::findFile('oneperpage_question_after.php'));
         }
-        elseif($quiz_params->quiz_displaymode == 'jsquiz'){
+        elseif($quiz_params->get('quiz_displaymode', 'default')  == 'jsquiz'){
             include(ThemeHelper::findFile('jsquiz_question_after.php'));
         }
 
@@ -197,13 +197,13 @@ class QuestionBuilderHelper
         $html = '';
         $feedback = '';
         //check if quiz_showfeedback is 1
-        if ($quizParams->quiz_showfeedback == 1) {
+        if ($quizParams->get('quiz_showfeedback', 1) == 1) {
             //loop through results $results->question_feedback
             //Log::add('from qbhelper looks like this'.print_r($results->questions, true), Log::INFO, 'yaquiz');
             $questionnum = 0;
             
             foreach ($results->questions as $question) {
-                if ($quizParams->quiz_question_numbering == 1) {
+                if ($quizParams->get('quiz_question_numbering', 1) == 1) {
                     $questionnum++;
                 }
                 $feedback .= $this->getQuestionFeedback($quiz_id, $question['question'], $question['iscorrect'], $question['useranswer'], $questionnum);
@@ -212,10 +212,7 @@ class QuestionBuilderHelper
         }
 
         //see if we are showing general stats about this quiz
-        if($quizParams->quiz_show_general_stats == '-1'){
-            $quizParams->quiz_show_general_stats = $gConfig->get('quiz_show_general_stats');
-        }
-        if($quizParams->quiz_show_general_stats == '1'){
+        if($quizParams->get('quiz_show_general_stats', 0) == '1'){
             $gen_stats = $this->getGeneralQuizStats($quiz_id);
         }
         else{
@@ -271,7 +268,7 @@ class QuestionBuilderHelper
 
 
     //render all questions for singlepage layout
-    public function renderAllQuestions($questions, $quizparams, $oldanswers = null)
+    public function renderAllQuestions($questions, $quizparams, $quiz_id, $oldanswers = null)
     {
 
         $app = Factory::getApplication();
@@ -296,7 +293,7 @@ class QuestionBuilderHelper
             }
 
             $question->question_number = $i;
-            echo $this->buildQuestion($question, $quizparams);
+            echo $this->buildQuestion($question, $quizparams, $quiz_id);
         }
 
     }

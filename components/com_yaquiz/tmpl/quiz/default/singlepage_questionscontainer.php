@@ -20,7 +20,7 @@ use Joomla\CMS\Log\Log;
 
 
     
-    <?php $questionBuilder->renderAllQuestions($questions, $quizparams, $oldanswers); ?>
+    <?php $questionBuilder->renderAllQuestions($questions, $quizparams, $quiz->id, $oldanswers); ?>
               
     <?php echo HtmlHelper::_('form.token'); ?>
     <?php include($layout_submit_btn); ?>

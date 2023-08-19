@@ -123,15 +123,6 @@ class YaquizModel extends AdminModel
                 $this->checkout($data->id);
             }
 
-            //show global settings in labels
-            $global_use_certs = $cParams->get('use_certificates', 0);
-            //set label for form field use_certificates
-            $form->setFieldAttribute('use_certificates', 'label', Text::_('COM_YAQUIZ_USE_CERTIFICATES') . ' (' . Text::sprintf('COM_YAQUIZ_GLOBAL_LBL', (($global_use_certs == "1") ? Text::_('JYES') : Text::_('JNO'))).')');
-
-            $global_certificate_file = $cParams->get('certificate_file', 'default');
-            //set label for form field certificate_file
-            $form->setFieldAttribute('certificate_file', 'label', Text::_('COM_YAQUIZ_CERTFILE') . ' (' . Text::sprintf('COM_YAQUIZ_GLOBAL_LBL', (($global_certificate_file))).')');
-
             $form->bind($data);
             return $form;
         } else {

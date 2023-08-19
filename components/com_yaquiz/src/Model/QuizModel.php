@@ -16,6 +16,7 @@ use Joomla\CMS\MVC\Model\BaseModel;
 use Joomla\CMS\MVC\Model\FormModel;
 use Joomla\CMS\MVC\Model\ItemModel;
 use Joomla\CMS\Language\Text;
+use Joomla\Registry\Registry;
 
 class QuizModel extends ItemModel{
 
@@ -57,9 +58,9 @@ class QuizModel extends ItemModel{
 
     /**
      * @param $pk int the id of the quiz
-     * @return object the params object
+     * @return Registry the params object
      */
-    //TODO: Switch to using Registry for params
+
     public function getQuizParams($pk = null){
 
 
@@ -80,9 +81,17 @@ class QuizModel extends ItemModel{
         if(!isset($params->quiz_use_timer)){
             $params->quiz_use_timer = 0;
         }
+
+
+        $params = new Registry($params);
+
+        //global options registry
+        $gConfig = $app->getParams('com_yaquiz');
+
+        //merge global
+        $params->merge($gConfig);
+
         return $params;
-
-
 
     }
 
@@ -572,7 +581,7 @@ class QuizModel extends ItemModel{
     public function reachedMaxAttempts($quiz_id){
 
 
-        $max_attempts = (int)$this->getQuizParams($quiz_id)->max_attempts;
+        $max_attempts = (int)$this->getQuizParams($quiz_id)->get('max_attempts', 0);
 
         if($max_attempts == 0){
             return false;
@@ -613,7 +622,7 @@ class QuizModel extends ItemModel{
      */
     public function quizAttemptsLeft($quiz_id){
             
-            $max_attempts = (int)$this->getQuizParams($quiz_id)->max_attempts;
+            $max_attempts = (int)$this->getQuizParams($quiz_id)->get('max_attempts', 0);
             if($max_attempts == 0){
                 return -1;
             }
@@ -704,7 +713,7 @@ class QuizModel extends ItemModel{
     public function createNewTimer($user_id, $quiz_id){
 
             //the time allowed in minutes
-            $time_allowed = $this->getQuizParams($quiz_id)->quiz_timer_limit;
+            $time_allowed = $this->getQuizParams($quiz_id)->get('quiz_timer_limit', '10');
 
 
     

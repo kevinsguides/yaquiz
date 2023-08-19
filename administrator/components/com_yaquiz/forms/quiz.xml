@@ -66,8 +66,7 @@ default="0"
 name="quiz_displaymode"
 type="list"
 label="COM_YAQUIZ_YAQUIZ_QUIZ_DISPLAYMODE_LABEL"
-required="true"
-default="default"
+useglobal="true"
 >
 <option value="default">Default (A Single Page Test)</option>
 <option value="individual">Individual (One Question Per Page)</option>
@@ -156,13 +155,31 @@ default="70"
 </fieldset>
 
 
+
+
 <fieldset name="usersandrecords" addfieldprefix="Joomla\Component\Yaquiz\Administrator\Field">
+<field
+name="quiz_record_results"
+type="list"
+label="COM_YAQUIZ_YAQUIZ_QUIZ_RECORD_RESULTS_LABEL"
+description="COM_YAQUIZ_YAQUIZ_QUIZ_RECORD_RESULTS_DESC"
+useglobal="true"
+validate="options"
+>
+<option value="0">COM_YAQUIZ_RECLEVEL0</option>
+<option value="1">COM_YAQUIZ_RECLEVEL1</option>
+<option value="2">COM_YAQUIZ_RECLEVEL2</option>
+<option value="3">COM_YAQUIZ_RECLEVEL3</option>
+</field>
+
+
 <field
 name="max_attempts"
 type="number"
 label="COM_YAQUIZ_YAQUIZ_MAX_ATTEMPTS_LABEL"
 description="COM_YAQUIZ_YAQUIZ_MAX_ATTEMPTS_DESC"
-required="true"
+showon="quiz_record_results:2,3"
+validate="options"
 default="0"
 />
 
@@ -171,7 +188,7 @@ name="quiz_use_timer"
 type="radio"
 label="COM_YAQUIZ_YAQUIZ_QUIZ_USE_TIMER_LABEL"
 description="COM_YAQUIZ_YAQUIZ_QUIZ_USE_TIMER_DESC"
-required="true"
+showon="quiz_record_results:2,3"
 default="0"
 class="btn-group btn-group-yesno"
 >
@@ -186,23 +203,11 @@ label="COM_YAQUIZ_YAQUIZ_QUIZ_TIMER_LIMIT_LABEL"
 description="COM_YAQUIZ_YAQUIZ_QUIZ_TIMER_LIMIT_DESC"
 required="true"
 default="15"
-showon="quiz_use_timer:1"
+showon="quiz_record_results:-1,2,3[AND]quiz_use_timer:1"
 />
 
 
-<field
-name="quiz_record_results"
-type="list"
-label="COM_YAQUIZ_YAQUIZ_QUIZ_RECORD_RESULTS_LABEL"
-description="COM_YAQUIZ_YAQUIZ_QUIZ_RECORD_RESULTS_DESC"
-required="true"
-default="-1">
-<option value="-1">Use Global</option>
-<option value="0">0 - Don't Save Any Results</option>
-<option value="1">1 - Save General Results</option>
-<option value="2">2 - Save Individual User Scores</option>
-<option value="3">3 - Save EVERYTHING Including User Responses/Feedback</option>"
-</field>
+
 
 <field
 name="note_results"
@@ -217,9 +222,8 @@ name="quiz_record_guest_results"
 type="list"
 label="COM_YAQUIZ_RECORD_GUEST_RESULTS_LABEL"
 description="COM_YAQUIZ_RECORD_GUEST_RESULTS_DESC"
-default="-1"
+useglobal="true"
 >
-<option value="-1">Use Global</option>
 <option value="1">JYES</option>
 <option value="0">JNO</option>
 </field>
@@ -229,9 +233,9 @@ name="quiz_show_general_stats"
 type="list"
 label="COM_YAQUIZ_SHOW_GENSTAT_LABEL"
 description="COM_YAQUIZ_SHOW_GENSTAT_DESC"
-default="-1"
+useglobal="true"
 >
-<option value="-1">Use Global</option>
+
 <option value="1">JYES</option>
 <option value="0">JNO</option>
 </field>
@@ -242,14 +246,15 @@ default="-1"
 
 <field
 name="use_certificates"
-type="radio"
+type="list"
 label="COM_YAQUIZ_USE_CERTIFICATES"
 description="COM_YAQUIZ_USE_CERTIFICATES_DESC"
-default="-1"
+useglobal="true"
+showon="quiz_record_results:2,3"
+validate="options"
 >
 <option value="1">JYES</option>
 <option value="0">JNO</option>
-<option value="-1">Use Global</option>
 </field>
 
 
@@ -258,11 +263,11 @@ name="certificate_file"
 type="filelist"
 label="COM_YAQUIZ_CERTFILE"
 description="COM_YAQUIZ_CERTFILE_DESC"
-default="global"
+useglobal="true"
 directory="/components/com_yaquiz/certificates"
+showon="quiz_record_results:2,3[AND]use_certificates:-1,1"
 fileFilter="\.html$"
 >
-<option value="global">Use Global</option>
 </field>
 
 <field
@@ -303,11 +308,14 @@ class="readonly"
 readonly="true"
 />
 <field
-name="access"
-type="accesslevel"
-label="JFIELD_ACCESS_LABEL"
-required="true"
+    name="access"
+    type="accesslevel"
+    label="JFIELD_ACCESS_LABEL"
+    filter="UINT"
+    validate="options"
+    useglobal="true"
 />
+
 <field
 name="hits"
 type="text"

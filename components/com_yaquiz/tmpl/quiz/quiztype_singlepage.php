@@ -108,7 +108,7 @@ else{
 }
 
 //check if using a timer
-$uses_timer = $quizparams->quiz_use_timer;
+$uses_timer = $quizparams->get('quiz_use_timer', 0);
 if($uses_timer == 1){
     $uses_timer = true;
     $wam->registerAndUseScript('com_yaquiz.timer', 'components/com_yaquiz/js/timer.js', [], ['defer' => true]);
@@ -137,7 +137,7 @@ if ($quiz == null){
 <?php
 
 
-        if ($quizparams->quiz_displaymode == 'default'){
+        if ($quizparams->get('quiz_displaymode', 'default') == 'default'){
             include(ThemeHelper::findFile('singlepage_questionscontainer.php'));
         }
 

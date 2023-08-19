@@ -56,15 +56,8 @@ class UserController extends BaseController
         $comp_params = ComponentHelper::getParams('com_yaquiz');
 
         //figure out what cert file to use
-        if(isset($quiz_params->certificate_file)){
-            $certificate_file = $quiz_params->certificate_file;
-        }
-        else{
-            $certificate_file = "global";
-        }
-        if($certificate_file == "global"){
-            $certificate_file = $comp_params->get('certificate_file', 'default.html');
-        }
+
+        $certificate_file = $quiz_params->get('certificate_file', 'default.html');
 
         //get html for pdf
         //load from html file at components/com_yaquiz/certificates/default.html
