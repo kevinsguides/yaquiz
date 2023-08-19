@@ -8,6 +8,7 @@ defined ( '_JEXEC' ) or die ();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
+use KevinsGuides\Component\Yaquiz\Site\Helper\ThemeHelper;
 
 ?>
 
@@ -31,6 +32,10 @@ use Joomla\CMS\Router\Route;
             echo Text::sprintf('COM_YAQ_ATTEMPTS_REMAINING', $attempts_left);
         }
         echo '</div>';
+    }
+
+    if($uses_timer){
+       include ThemeHelper::findFile('oneperpage_timerinfo.php');
     }
 
 } ?>

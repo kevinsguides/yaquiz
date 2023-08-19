@@ -68,16 +68,13 @@ if($currPage > $totalQuestions){
     $app->redirect('index.php?option=com_yaquiz&view=quiz&id='.$quiz->id.'&page='.$totalQuestions);
 }
 
-$uses_timer = false;
+$uses_timer = $quiz_params->quiz_use_timer == 1 ? true : false;
 
 //if on page 1 or more, check if quiz is timed
-if($currPage > 0){
-    $uses_timer = $quiz_params->quiz_use_timer;
-    if($uses_timer == 1){
-        $uses_timer = true;
+if($currPage > 0 && $uses_timer){
         $wam->registerAndUseScript('com_yaquiz.timer', 'components/com_yaquiz/js/timer.js', [], ['defer' => true]);
-    }
 }
+
 
 
 
