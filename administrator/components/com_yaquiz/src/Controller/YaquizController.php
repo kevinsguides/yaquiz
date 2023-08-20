@@ -15,9 +15,9 @@ use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Component\Menus\Administrator\Controller\ItemController;
 use Joomla\Input\Input;
-use JSession;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
 
 //use json response
 use Joomla\CMS\Response\JsonResponse;
@@ -126,7 +126,7 @@ class YaquizController extends BaseController
 
         
         //check for token
-        if (!JSession::checkToken()) {
+        if (!Session::checkToken()) {
             Log::add('YaquizController::save() token failed', Log::INFO, 'com_yaquiz');
             //cue error message
             $this->setMessage('Token failed', 'error');
@@ -193,7 +193,7 @@ class YaquizController extends BaseController
         $quizid = $this->input->post->get('id', '', 'raw');
         $questionids = $this->input->post->get('question_ids', array(), 'array');
         //check for token
-        if (!JSession::checkToken()) {
+        if (!Session::checkToken()) {
             Log::add('YaquizController::save() token failed', Log::INFO, 'com_yaquiz');
             //cue error message
             $this->setMessage('Token failed', 'error');

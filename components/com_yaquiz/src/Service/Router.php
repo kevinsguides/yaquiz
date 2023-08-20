@@ -103,7 +103,7 @@ class Router extends RouterView
                 //we want the client menu object, not the admin
                 $sitemenu = Factory::getApplication()->getMenu('site');
                 $checkitem = $sitemenu->getItem($itemid);
-                $checkquizid = $checkitem->query['id'];
+                $checkquizid = isset($checkitem->query['id']) ? $checkitem->query['id'] : 0;
 
                 //if the menu item id doesn't match the quiz id, we need to add the quiz id
                 if ($checkquizid != $id) {
