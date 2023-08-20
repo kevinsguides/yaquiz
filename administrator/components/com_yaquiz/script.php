@@ -4,6 +4,7 @@ defined ( '_JEXEC' ) or die;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Version;
 use KevinsGuides\Component\Yaquiz\Administrator\Model\YaquizModel;
 
 class com_yaquizInstallerScript
@@ -98,7 +99,10 @@ class com_yaquizInstallerScript
 
                 $app = Factory::getApplication();
                 $app->enqueueMessage(Text::_('COM_YAQUIZ_UPDATE_0_4_25'), 'notice');
+            }
 
+            if (version_compare($this->old_version_short, '0.5.00', '<')){ 
+                $app->enqueueMessage(Text::_('COM_YAQUIZ_UPDATE_0_5_00'), 'notice');
             }
 
         }
