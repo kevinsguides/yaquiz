@@ -48,7 +48,7 @@ use KevinsGuides\Component\Yaquiz\Site\Helper\ThemeHelper;
         $question->defaultanswer = $previous_answer;
     }
     $question->question_number = $currPage;
-    echo $qbHelper->buildQuestion($question, $quiz_params, 1);
+    echo $qbHelper->buildQuestion($question, $quiz_params, $quiz->id);
     ?>
     
     <input type="hidden" name="question_id" value="<?php echo $question->id; ?>" />
