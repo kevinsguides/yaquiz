@@ -65,7 +65,7 @@ $attempt_count = $quizModel->getAttemptCount($dbresults->quiz_id, $user->id);
 
 $quiz_params = $quizModel->getQuizParams($dbresults->quiz_id);
 
-$max_attempts = $quiz_params->max_attempts;
+$max_attempts = $quiz_params->get('max_attempts', 0);
 
 $remaining_attempts = $max_attempts - $attempt_count;
 

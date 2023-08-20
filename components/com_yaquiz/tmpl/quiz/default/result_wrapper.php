@@ -15,7 +15,7 @@ use Joomla\CMS\Language\Text;
 //check points
 $quizParams = $model->getQuizParams($quiz_id);
 $pointsFeedback = '';
-if ($quizParams->quiz_use_points === '1') {
+if ($quizParams->get('quiz_use_points', 0) == 1) {
     if ($iscorrect) {
         $pointsFeedback = $question->params->points . ' / ' . $question->params->points . ' ' . Text::_('COM_YAQ_POINTS');
     } else {
@@ -40,7 +40,7 @@ if ($question->feedback_right != '' || $question->feedback_wrong != '') {
     $feedback .= '<br/>';
 }
 
-if ($quizParams->quiz_feedback_showcorrect === '1') {
+if ($quizParams->get('quiz_feedback_showcorrect', 1) == 1) {
     $feedback .= $question->correct_answer;
 }
 

@@ -106,8 +106,6 @@ class UserModel extends BaseModel
             $pk = $input->get('resultid', null, 'INT');
         }
 
-        Log::add('Loading result: ' . $pk, Log::INFO, 'yaquiz');
-
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('*');

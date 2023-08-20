@@ -8,18 +8,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 
 
-if(isset($quizParams->use_certificates))
-{
-    $use_certificates = $quizParams->use_certificates;
-}
-else
-{
-    $use_certificates = "-1";
-}
-
-if($use_certificates == "-1"){
-    $use_certificates = $gConfig->get('use_certificates', 0);
-}
+$use_certificates = $quizParams->get('use_certificates', 0);
 
 
 
@@ -27,7 +16,7 @@ if($use_certificates == "-1"){
 $html .= '<div class="card">
             <h3 class="card-header">'.Text::_('COM_YAQ_QUIZ_RESULTS').'</h3>
             <div class="card-body">';
-            if ($quizParams->quiz_use_points === '1') {
+            if ($quizParams->get('quiz_use_points', 0) == 1) {
                 $html .= '<p>'.Text::sprintf('COM_YAQ_NUM_CORRECT_OF_POINTS', $results->correct, $results->total).'</p>';
             
             }

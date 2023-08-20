@@ -679,6 +679,11 @@ class QuizModel extends ItemModel{
     }
 
 
+    /**
+     * Get the results of a quiz attempt
+     * @param $certcode - the certificate verification code
+     * @return - the results object (score, submitted, name, quiz title, passfail)
+     */
     public function getResultFromVerificationCode($certcode){
 
         $db = Factory::getContainer()->get('DatabaseDriver');
@@ -686,7 +691,7 @@ class QuizModel extends ItemModel{
         $query = $db->getQuery(true);
         
         //join results and users table
-        $query->select('r.score, r.submitted, u.name, q.title as quiz_title');
+        $query->select('r.score, r.submitted, u.name, q.title as quiz_title, r.passed');
         $query->from($db->quoteName('#__com_yaquiz_results', 'r'));
         $query->join('LEFT', $db->quoteName('#__users', 'u') . ' ON (' . $db->quoteName('r.user_id') . ' = ' . $db->quoteName('u.id') . ')');
         //join with quizzes too get the quiz name
@@ -694,8 +699,6 @@ class QuizModel extends ItemModel{
         $query->where($db->quoteName('r.verifyhash') . ' = ' . $db->quote($certcode));
         $db->setQuery($query);
         $result = $db->loadObject();
-
-
         return $result;
 
 

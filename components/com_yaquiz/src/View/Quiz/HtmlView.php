@@ -118,8 +118,12 @@ class HtmlView extends BaseHtmlView
 
             //check if user is logged in
             if($user->guest){
-                $app->enqueueMessage(Text::_('COM_YAQUIZ_VIEW_QUIZ_MUST_BE_LOGGED_IN'), 'error');
-                $app->redirect('index.php');
+                $this->setLayout('error');
+                $this->error = new \stdClass();
+                $this->error->type = 'error';
+                $this->error->message = Text::_('COM_YAQUIZ_VIEW_QUIZ_MUST_BE_LOGGED_IN');
+                $this->error->title = $this->item->title;
+                return parent::display($tpl);
             }
             $using_timer = true;
         }
