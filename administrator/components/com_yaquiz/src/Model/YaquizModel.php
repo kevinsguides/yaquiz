@@ -59,9 +59,6 @@ class YaquizModel extends AdminModel
         $app = Factory::getApplication();
         $cParams = ComponentHelper::getParams('com_yaquiz');
 
-        //the default access level
-        $access = $cParams->get('access', 1);
-
 
         //if layout is edit
         if ($app->input->get('layout') == 'edit') {
@@ -89,12 +86,6 @@ class YaquizModel extends AdminModel
                 $data->checked_out = $app->getIdentity()->id;
                 //set checked_out_time to current time
                 $data->checked_out_time = date('Y-m-d H:i:s');
-                $data->quiz_displaymode = 'default';
-                $data->use_certificates = "-1";
-                $data->certificate_file = "global";
-                $data->access = $access;
-                $data->quiz_use_timer = 0;
-                $data->quiz_timer_limit = 0;
             } else {
                 //they must be editing an existing quiz
 
@@ -115,7 +106,7 @@ class YaquizModel extends AdminModel
                     $data->use_certificates = $params['use_certificates'];
                 }
                 else{
-                    $data->use_certificates = "-1";
+                    $data->use_certificates = "0";
                 }
                 $data->certificate_file=((isset($params['certificate_file'])) ? $params['certificate_file'] : 'global');
                 $data->quiz_use_timer = ((isset($params['quiz_use_timer'])) ? $params['quiz_use_timer'] : 0);
@@ -143,6 +134,13 @@ class YaquizModel extends AdminModel
 
     public function save($data)
     {
+
+        //prep data
+        //if access is null, set to 0
+        if($data['access'] == null){
+            $data['access'] = 0;
+        }
+
         //see if is new quiz or update
 
         //if new quiz
@@ -220,16 +218,14 @@ class YaquizModel extends AdminModel
     public function update($data)
     {
 
-        //update quiz
+       //update quiz
         $app = Factory::getApplication();
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->update('#__com_yaquiz_quizzes');
         $query->set('title = ' . $db->quote($data['title']));
-        
         $alias = $this->sanitizeAlias($data['alias'], $data['title']);
         $query->set('alias = ' . $db->quote($alias));
-
         $query->set('description = ' . $db->quote($data['description']));
         $query->set('published = ' . $db->quote($data['published']));
         $query->set('modified_by = ' . $app->getIdentity()->id);

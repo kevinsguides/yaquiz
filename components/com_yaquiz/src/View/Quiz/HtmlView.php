@@ -68,8 +68,16 @@ class HtmlView extends BaseHtmlView
 
         $quizparams = $model->getQuizParams($this->item->id);
         $quizAccess = $this->item->access;
+
+        //if quizAccess is zero, get from global
+        if($quizAccess == 0){
+            $quizAccess = $globalParams->get('access', 1);
+        }
+
         $user = Factory::getApplication()->getIdentity();
         $userGroups = $user->getAuthorisedViewLevels();
+
+        //check if user has access
         if(!in_array($quizAccess, $userGroups)){
             $app->enqueueMessage(Text::_('COM_YAQUIZ_VIEW_QUIZ_DENIED'), 'error');
             $app->redirect('index.php');

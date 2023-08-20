@@ -54,12 +54,15 @@ default="1"
 <option value="1">JPUBLISHED</option>
 <option value="0">JUNPUBLISHED</option>
 </field>
+
 <field
 name="access"
 type="accesslevel"
 label="JFIELD_ACCESS_LABEL"
 description="JFIELD_ACCESS_DESC"
-default="0"
+filter="UINT"
+validate="options"
+useglobal="true"
 />
 
 <field
@@ -147,8 +150,7 @@ min="0"
 max="100"
 label="COM_YAQUIZ_YAQUIZ_QUIZ_PASSING_SCORE_LABEL"
 description="COM_YAQUIZ_YAQUIZ_QUIZ_PASSING_SCORE_DESC"
-required="true"
-default="70"
+useglobal="true"
 />
 
 
@@ -189,8 +191,8 @@ label="COM_YAQUIZ_YAQUIZ_QUIZ_USE_TIMER_LABEL"
 description="COM_YAQUIZ_YAQUIZ_QUIZ_USE_TIMER_DESC"
 useglobal="true"
 >
-<option value="1">Yes</option>
 <option value="0">No</option>
+<option value="1">Yes</option>
 </field>
 
 <field
@@ -299,14 +301,7 @@ label="JGLOBAL_FIELD_MODIFIED_BY_LABEL"
 class="readonly"
 readonly="true"
 />
-<field
-    name="access"
-    type="accesslevel"
-    label="JFIELD_ACCESS_LABEL"
-    filter="UINT"
-    validate="options"
-    useglobal="true"
-/>
+
 
 <field
 name="hits"

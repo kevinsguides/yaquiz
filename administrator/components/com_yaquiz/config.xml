@@ -91,12 +91,24 @@
 name="globaloptions"
 label="COM_YAQUIZ_GLOBAL_OPTIONS_LABEL">
 
+<fieldset
+name="quizzes"
+label="COM_YAQUIZ_GLOBAL_QUIZ_OPTIONS_LABEL">
 
     <field
     name="noteglobal"
     type="note"
     label="COM_YAQUIZ_GLOBAL_OPTIONS_LABEL"
     description="COM_YAQUIZ_GLOBAL_OPTIONS_DESC"
+    />
+
+    <field
+    name="access"
+    type="accesslevel"
+    label="JFIELD_ACCESS_LABEL"
+    description="JFIELD_ACCESS_DESC"
+    filter="UINT"
+    validate="options"
     />
 
 
@@ -109,70 +121,25 @@ label="COM_YAQUIZ_GLOBAL_OPTIONS_LABEL">
     <option value="default">Default (A Single Page Test)</option>
     <option value="individual">Individual (One Question Per Page)</option>
     <option value="jsquiz">JavaScript Quiz (fully cacheable)</option>
-    </field>
-
-    <field
-    name="access"
-    type="accesslevel"
-    label="COM_YAQUIZ_FIELD_QUIZACCESSLEVEL_LABEL"
-    description="COM_YAQUIZ_FIELD_QUIZACCESSLEVEL_DESC"
-    />
-    <field
-    name="randomize_mchoice"
-    type="radio"
-    label="COM_YAQUIZ_FIELD_RANDOMIZE_MCHOICE_LABEL"
-    description="COM_YAQUIZ_FIELD_RANDOMIZE_MCHOICE_DESC"
-    default="0"
-    >
-    <option value="1">JYES</option>
-    <option value="0">JNO</option>
-    </field>
+    </field>    
 
     <field 
-    name="shortans_ignore_trailing"
-    type="radio"
-    label="COM_YAQUIZ_FIELD_SHORTANS_IGNORE_TRAILING_LABEL"
-    description="COM_YAQUIZ_FIELD_SHORTANS_IGNORE_TRAILING_DESC"
-    default="1"
-    >
-    <option value="1">JYES</option>
-    <option value="0">JNO</option>
-    </field>
-
-    <field
-    name="use_certificates"
-    type="list"
-    label="COM_YAQUIZ_GLOBAL_USE_CERTIFICATES"
-    description="COM_YAQUIZ_GLOBAL_USE_CERTIFICATES_DESC"
-    default="0"
-    class="btn-group btn-group-yesno"
-    >
-    <option value="1">JYES</option>
-    <option value="0">JNO</option>
-    </field>
-
-    <field
-    name="certificate_file"
-    type="filelist"
-    label="COM_YAQUIZ_GLOBAL_CERTFILE"
-    description="COM_YAQUIZ_GLOBAL_CERTFILE_DESC"
-    default="default.html"
-    directory="/components/com_yaquiz/certificates"
-    fileFilter="\.html$"
-
+    name="passing_score"
+    type="number"
+    min="0"
+    max="100"
+    label="COM_YAQUIZ_YAQUIZ_QUIZ_PASSING_SCORE_LABEL"
+    description="COM_YAQUIZ_YAQUIZ_QUIZ_PASSING_SCORE_DESC"
+    default="70"
     />
-
-
-
-
-
-
 
 </fieldset>
 
+
 <fieldset
-name="results"
->
+name="recordkeeping"
+label="COM_YAQUIZ_GLOBAL_RECORDKEEPING_OPTIONS_LABEL">
+
 <field
 name="quiz_record_results"
 type="list"
@@ -263,6 +230,70 @@ default="10"
 <option value="50">50</option>
 </field>
 
+
+</fieldset>
+
+
+<fieldset
+name="globalquestions"
+label="COM_YAQUIZ_GLOBAL_QUESTION_OPTIONS_LABEL">
+
+    <field
+    name="randomize_mchoice"
+    type="radio"
+    label="COM_YAQUIZ_FIELD_RANDOMIZE_MCHOICE_LABEL"
+    description="COM_YAQUIZ_FIELD_RANDOMIZE_MCHOICE_DESC"
+    default="0"
+    >
+    <option value="1">JYES</option>
+    <option value="0">JNO</option>
+    </field>
+
+    <field 
+    name="shortans_ignore_trailing"
+    type="radio"
+    label="COM_YAQUIZ_FIELD_SHORTANS_IGNORE_TRAILING_LABEL"
+    description="COM_YAQUIZ_FIELD_SHORTANS_IGNORE_TRAILING_DESC"
+    default="1"
+    >
+    <option value="1">JYES</option>
+    <option value="0">JNO</option>
+    </field>
+</fieldset>
+<fieldset
+name="globalcerts"
+label="COM_YAQUIZ_GLOBAL_CERT_OPTIONS_LABEL">
+
+
+    <field
+    name="use_certificates"
+    type="list"
+    label="COM_YAQUIZ_GLOBAL_USE_CERTIFICATES"
+    description="COM_YAQUIZ_GLOBAL_USE_CERTIFICATES_DESC"
+    default="0"
+    class="btn-group btn-group-yesno"
+    >
+    <option value="1">JYES</option>
+    <option value="0">JNO</option>
+    </field>
+
+    <field
+    name="certificate_file"
+    type="filelist"
+    label="COM_YAQUIZ_GLOBAL_CERTFILE"
+    description="COM_YAQUIZ_GLOBAL_CERTFILE_DESC"
+    default="default.html"
+    directory="/components/com_yaquiz/certificates"
+    fileFilter="\.html$"
+
+    />
+
+
+
+
+
+
+</fieldset>
 
 </fieldset>
 
