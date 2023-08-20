@@ -28,7 +28,7 @@ if(isset($_GET['result_id'])){
     $result_id = $_GET['result_id'];
 }
 
-$their_results = $model->getIndividualAttemptResult($quiz_id, $result_id);
+$their_results = $model->getIndividualAttemptResult($result_id);
 $quiz = $model->getQuiz($quiz_id);
 
 $quiz_taker = Factory::getUser($their_results->user_id);
@@ -70,6 +70,23 @@ $quiz_taker_username = $quiz_taker->username;
                 <td><?php echo Text::_('COM_YAQUIZ_FULLNAME');?></td>
                 <td><?php echo $quiz_taker_name; ?></td>
             </tr>
+            <?php if (isset($their_results->start_time)) : ?>
+            <tr>
+                <td><?php echo Text::_('COM_YAQUIZ_STARTTIME');?></td>
+                <td><?php echo $their_results->start_time; ?></td>
+            </tr>
+            <?php //calculate duration
+                $start_time = strtotime($their_results->start_time);
+                $end_time = strtotime($their_results->submitted);
+                $duration = $end_time - $start_time;
+                $duration = gmdate("H:i:s", $duration);
+            ?>
+            <tr>
+                <td><?php echo Text::_('COM_YAQUIZ_DURATION');?></td>
+                <td><?php echo $duration; ?></td>
+            </tr>
+
+            <?php endif; ?>
             <tr>
                 <td><?php echo Text::_('COM_YAQUIZ_SUBMITTIME');?></td>
                 <td><?php echo $their_results->submitted; ?></td>

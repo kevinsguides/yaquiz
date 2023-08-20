@@ -748,24 +748,22 @@ class YaquizModel extends AdminModel
 
     /**
      * Get results from a specific attempt
-     * @param $pk int the quiz id
      * @param $attempt_id int the attempt id
      * @return object the results
      */
-    public function getIndividualAttemptResult($pk = 0, $attempt_id = 0){
+    public function getIndividualAttemptResult($attempt_id = 0){
 
 
 
-        if ($pk == 0 || $attempt_id == 0) {
+        if ($attempt_id == 0) {
             return;
         }
-
         $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
-        $query->select('*');
-        $query->from('#__com_yaquiz_results');
-        $query->where('quiz_id = ' . $pk);
-        $query->where('id = ' . $attempt_id);
+        $query->select('r.*, t.start_time');
+        $query->from($db->quoteName('#__com_yaquiz_results', 'r'));
+        $query->join('LEFT', $db->quoteName('#__com_yaquiz_user_quiz_times', 't') . ' ON (' . $db->quoteName('r.id') . ' = ' . $db->quoteName('t.result_id') . ')');
+        $query->where($db->quoteName('r.id') . ' = ' . $db->quote($attempt_id));
         $db->setQuery($query);
         $result = $db->loadObject();
         return $result;

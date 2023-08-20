@@ -93,37 +93,6 @@ class UserModel extends BaseModel
 
     }
 
-    /**
-     * load a single result
-     * @param pk result id
-     */
-    public function getIndividualResultOld($pk = null){
-
-        $app = Factory::getApplication();
-        $input = $app->input;
-
-        if($pk == null){
-            $pk = $input->get('resultid', null, 'INT');
-        }
-
-        $db = Factory::getContainer()->get('DatabaseDriver');
-        $query = $db->getQuery(true);
-        $query->select('*');
-        $query->from($db->quoteName('#__com_yaquiz_results'));
-        $query->where($db->quoteName('id') . ' = ' . $db->quote($pk));
-        $db->setQuery($query);
-        $result = $db->loadObject();
-
-        //the result->user_id must be the same as the current user
-        $user = Factory::getApplication()->getIdentity();
-        if($result->user_id != $user->id){
-            $app->enqueueMessage(Text::_('COM_YAQUIZ_VIEW_QUIZ_RESULT_DENIED'), 'error');
-            return false;
-        }
-        return $result;
-
-    }
-
 
     /**
      * load a single result with timer data
