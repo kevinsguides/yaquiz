@@ -22,6 +22,7 @@ $app = \Joomla\CMS\Factory::getApplication();
 $user = $app->getIdentity();
 
 $comp_params = ComponentHelper::getParams('com_yaquiz');
+$quizParams = $quizModel->getQuizParams($dbresults->quiz_id);
 
 $qbHelper = new QuestionBuilderHelper();
 
@@ -89,9 +90,13 @@ else {
 <span class="card-header fs-2"><?php echo (Text::_('COM_YAQ_QUIZ_RESULT_HISTORY').$quizTitle); ?></span>
 <div class="card-body">
     <p><?php echo Text::sprintf('COM_YAQ_QUIZ_SAVED_RESULT_FOR_USERNAME', $user->name); ?></p>
+    <?php if (isset($dbresults->start_time)): ?>
+<p><?php echo Text::sprintf('COM_YAQ_QUIZ_STARTED_AT', date('F j, Y, g:i a', strtotime($dbresults->start_time))); ?></p>
+<?php endif; ?>
 <p><?php echo (Text::_('COM_YAQ_ORIGINAL_SUBMIT').$format_submitted_date); ?></p>
 <p><?php echo Text::sprintf('COM_YAQ_ATTEMPT_COUNT', $attempt_count); ?></p>
 <p><?php echo $remaining_attempts; ?></p>
+
 </div>
 <div class="card-footer">
     <a href="index.php?option=com_yaquiz&view=user" class="btn btn-primary btn-sm"><i class="fas fa-arrow-circle-left"></i> <?php echo Text::_('COM_YAQ_RETURN');?></a>

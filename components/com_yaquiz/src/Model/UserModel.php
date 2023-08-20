@@ -97,7 +97,7 @@ class UserModel extends BaseModel
      * load a single result
      * @param pk result id
      */
-    public function getIndividualResult($pk = null){
+    public function getIndividualResultOld($pk = null){
 
         $app = Factory::getApplication();
         $input = $app->input;
@@ -121,6 +121,40 @@ class UserModel extends BaseModel
             return false;
         }
         return $result;
+
+    }
+
+
+    /**
+     * load a single result with timer data
+     * @param pk result id
+     */
+    public function getIndividualResult($pk = null){
+
+        $app = Factory::getApplication();
+        $input = $app->input;
+
+        if($pk == null){
+            $pk = $input->get('resultid', null, 'INT');
+        }
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('r.*, t.start_time');
+        $query->from($db->quoteName('#__com_yaquiz_results', 'r'));
+        $query->join('LEFT', $db->quoteName('#__com_yaquiz_user_quiz_times', 't') . ' ON (' . $db->quoteName('r.id') . ' = ' . $db->quoteName('t.result_id') . ')');
+        $query->where($db->quoteName('r.id') . ' = ' . $db->quote($pk));
+        $db->setQuery($query);
+        $result = $db->loadObject();
+
+        //the result->user_id must be the same as the current user
+        $user = Factory::getApplication()->getIdentity();
+        if($result->user_id != $user->id){
+            $app->enqueueMessage(Text::_('COM_YAQUIZ_VIEW_QUIZ_RESULT_DENIED'), 'error');
+            return false;
+        }
+        return $result;
+
 
     }
 
