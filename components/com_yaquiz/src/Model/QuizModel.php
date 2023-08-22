@@ -783,6 +783,17 @@ class QuizModel extends ItemModel{
 
     }
 
+    public function checkUnfinishedTimerExists($user_id, $quiz_id){
+
+        $timer_id = $this->getTimerId($user_id, $quiz_id);
+
+        if(!$timer_id){
+            return false;
+        }
+        return true;
+
+    }
+
 
     public function updateTimerOnSubitted($user_id, $quiz_id, $result_id){
             

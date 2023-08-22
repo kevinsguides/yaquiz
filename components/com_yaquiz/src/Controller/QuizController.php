@@ -95,7 +95,7 @@ class QuizController extends BaseController
             $timeleft = $model->getTimeRemainingAsSeconds($user->id, $quiz_id);
             //if they ran out of time with 15 seconds or less, submit the quiz and grade as is
             if ($timeleft <= 15) {
-                $app->enqueueMessage('Time up', 'warning');
+                $app->enqueueMessage(Text::_('COM_YAQ_TIME_UP'), 'warning');
             }
             //if they ran out of time and quiz is more than 15 seconds expired, the whole quiz is wrong
             elseif ($timeleft < 0) {
@@ -138,6 +138,16 @@ class QuizController extends BaseController
         if ($quiz_record_results >= 2) {
             //user must be logged in
             if (!$app->getIdentity()->guest) {
+
+                //if using a timer, make sure an incomplete timer entry exists
+                if ($quizParams->get('quiz_use_timer', 0) === '1') {
+                    if($model->checkUnfinishedTimerExists($user->id, $quiz_id) === false){
+                        //error
+                        $app->enqueueMessage(Text::_('COM_YAQ_ERROR_TIMERMISMATCH'), 'error');
+                        return;
+                    }
+                }
+
                 $new_result_id = $model->saveIndividualResults($results, $quiz_record_results);
                 if ($quizParams->get('quiz_use_timer', 0) === '1') {
                     $model->updateTimerOnSubitted($user->id, $quiz_id, $new_result_id);

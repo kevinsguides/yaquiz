@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+    //only submit once
+    let submittedForm = false;
+
     const timerDisplay = document.getElementById('yaqTimerTime');
     const timerBox = document.getElementById('yaquizTimer');
 
@@ -27,9 +30,10 @@ document.addEventListener('DOMContentLoaded', function () {
             timeLeft = timeLeft - 1;
     
             //if time runs out, submit form
-            if (timeLeft <= 0) {
-                clearInterval(timeLeft = 0);
+            if (timeLeft < 0) {
                 forceSubmit();
+                //stop timer
+                clearInterval();
             }
 
             //when there is less than 60 seconds left, add .warning class to timerBox
@@ -39,13 +43,16 @@ document.addEventListener('DOMContentLoaded', function () {
     
 
         }
-        , 1000);
+    , 1000);
 
 
 
     
     function forceSubmit() {
-        document.getElementById('yaQuizForm').submit();
+        if (!submittedForm) {
+            document.getElementById('yaQuizForm').submit();
+            submittedForm = true;
+        }
     }
     
 

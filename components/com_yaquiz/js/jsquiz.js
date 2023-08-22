@@ -8,6 +8,9 @@ let quiz_feedback_showcorrect = document.getElementById('quiz_feedback_showcorre
 let shortans_ignore_trailing = document.getElementById('shortans_ignore_trailing').value;
 
 
+
+
+
 //listen for click on jsquiz-btn-finish
 var btnFinish = document.getElementById('jsquiz-btn-finish');
 
