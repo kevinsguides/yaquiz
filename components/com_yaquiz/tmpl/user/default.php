@@ -5,7 +5,8 @@
 */
 
 namespace KevinsGuides\Component\Yaquiz\Site\View\User;
-use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
+
+
 //render user quiz profile
 // For now lets just have this link to all results...
 
@@ -14,12 +15,14 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Log\Log;
+use KevinsGuides\Component\Yaquiz\Site\Model\QuizModel;
 
 //we might make this changeable later
 $filter_limit = 10;
 
 $model = $this->getModel();
 $quizModel = new QuizModel();
+$quizModel->cleanupQuizTimers();
 
 $app = Factory::getApplication();
 

@@ -887,7 +887,11 @@ class QuizModel extends ItemModel{
         
     }
 
-    public function cleanupQuizTimers($user_id){
+    public function cleanupQuizTimers($user_id = null){
+
+            if($user_id == null){
+                $user_id = Factory::getApplication()->getIdentity()->id;
+            }
 
             //get the quiz ids
             $db = Factory::getContainer()->get('DatabaseDriver');
