@@ -102,6 +102,7 @@ class com_yaquizInstallerScript
             }
 
             if (version_compare($this->old_version_short, '0.5.00', '<')){ 
+                $app = Factory::getApplication();
                 $app->enqueueMessage(Text::_('COM_YAQUIZ_UPDATE_0_5_00'), 'notice');
             }
 
