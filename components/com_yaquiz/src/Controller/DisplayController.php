@@ -138,16 +138,11 @@ class DisplayController extends BaseController
         if ($active && $view == 'quiz') {
             $model = new QuizModel();
             $title = $model->getQuizTitle();
-            if ($active && $active->component == 'com_yaquiz') {
-                //make this item a child of itself
-                $active->parent_id = $active->id;
-                $active->title = $title;
-                $active->tree[0] = $active->id;
-                $active->tree[1] = 9999999999;
+            if ($active && $active->component == 'com_yaquiz' && $active->query['view'] != 'quiz') {
+                $app = Factory::getApplication();
+                $pathway = $app->getPathway();
+                $pathway->addItem($title);
             }
-
-
-           
         }
 
         parent::display($cachable, $urlparams);

@@ -38,7 +38,7 @@ class Router extends RouterView
 
     public function __construct($app = null, $menu = null)
     {
-
+        Log::add('router construct called');
         parent::__construct($app, $menu);
     }
 
@@ -143,6 +143,8 @@ class Router extends RouterView
             $segments[] = 'resultid-' . $query['resultid'];
             unset($query['resultid']);
         }
+
+        Log::add('segments: ' . print_r($segments, true), Log::DEBUG, 'yaquiz');
 
         return $segments;
     }
