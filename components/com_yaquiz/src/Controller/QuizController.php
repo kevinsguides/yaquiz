@@ -89,6 +89,7 @@ class QuizController extends BaseController
 
         //check for existing set Itemid
         $itemid = $input->get('Itemid', 0, 'int');
+        Log::add('value of $itemid: ' . $itemid, Log::INFO, 'com_yaquiz');
 
         //See if this is a timed quiz and if so, check if they ran out of time
         if ($quizParams->get('quiz_use_timer', 1) === '1') {
@@ -177,9 +178,8 @@ class QuizController extends BaseController
         $app->setUserState('com_yaquiz.results', $buildResults);
 
         if($new_result_id != 0){
-            Log::add('redirecting to: ' . Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id . '&resultid=' . $new_result_id . '&Itemid=' . $itemid), Log::INFO, 'com_yaquiz');
-
-            $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id . '&resultid=' . $new_result_id . '&Itemid=' . $itemid));
+            Log::add('redirecting to: ' . Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id . '&resultid=' . $new_result_id), Log::INFO, 'com_yaquiz');
+            $this->setRedirect(Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id . '&resultid=' . $new_result_id));
         }
         else{
             Log::add('redirecting to: ' . Route::_('index.php?option=com_yaquiz&view=quiz&layout=results&id=' . $quiz_id), Log::INFO, 'com_yaquiz');

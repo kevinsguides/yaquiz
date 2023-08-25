@@ -45,7 +45,7 @@ class DisplayController extends BaseController
         $menu = $this->app->getMenu();
         $active = $menu->getActive();
         //if active component not com_yaquiz
-        if ($active && $active->component != 'com_yaquiz') {
+        if ($active && $active->component != 'com_yaquiz' && $sef == 0) {
 
             $router = new YaquizRouter();
 
@@ -106,7 +106,7 @@ class DisplayController extends BaseController
      */
     public function display($cachable = false, $urlparams = array())
     {
-        
+
         $cachable = false;
         $layout = $this->input->get('layout');
         $pagenum = $this->input->get('page');
@@ -132,6 +132,23 @@ class DisplayController extends BaseController
         $wam = $app->getDocument()->getWebAssetManager();
         $wam->useStyle('fontawesome');
 
+        //set current menu item title to "Quiz"
+        $menu = $app->getMenu();
+        $active = $menu->getActive();
+        if ($active && $view == 'quiz') {
+            $model = new QuizModel();
+            $title = $model->getQuizTitle();
+            if ($active && $active->component == 'com_yaquiz') {
+                //make this item a child of itself
+                $active->parent_id = $active->id;
+                $active->title = $title;
+                $active->tree[0] = $active->id;
+                $active->tree[1] = 9999999999;
+            }
+
+
+           
+        }
 
         parent::display($cachable, $urlparams);
     }

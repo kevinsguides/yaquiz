@@ -918,5 +918,29 @@ class QuizModel extends ItemModel{
     }
 
 
+
+    public function getQuizTitle($quiz_id = null){
+        if($quiz_id == null){
+            $active = Factory::getApplication()->getMenu()->getActive();
+            //get params from the menu item
+            $quiz_id = $active->getParams()->get('quiz_id', 0);
+            //if quiz_id == 0, get from request
+            if($quiz_id == 0){
+                $quiz_id = Factory::getApplication()->input->getInt('id', 0);
+            }
+        }
+
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true);
+        $query->select('title');
+        $query->from($db->quoteName('#__com_yaquiz_quizzes'));
+        $query->where($db->quoteName('id') . ' = ' . $db->quote($quiz_id));
+        $db->setQuery($query);
+        $title = $db->loadResult();
+        return $title;
+
+    }
+
+
 }
 

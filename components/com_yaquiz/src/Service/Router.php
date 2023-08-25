@@ -151,8 +151,10 @@ class Router extends RouterView
 
     public function parse(&$segments)
     {
+        Log::add('segments: ' . print_r($segments, true), Log::DEBUG, 'yaquiz');
         $active = $this->menu->getActive();
         $vars = [];
+        $app = Factory::getApplication();
 
 
             //if the last item is p-# on any view or layout, it's the page number
@@ -201,6 +203,8 @@ class Router extends RouterView
                 if (isset($vars['id'])) {
                     $vars['Itemid'] = $this->getMenuItemIdByQuizId($vars['id']);
                     Log::add('found menu item id: ' . $vars['Itemid'], Log::DEBUG, 'yaquiz');
+                    $app->input->set('Itemid', $vars['Itemid']);
+                    
                 }
             } else {
                 //the first segment is the view
@@ -223,6 +227,7 @@ class Router extends RouterView
                 //if view is user, getUserResultsMenuItemId
                 if ($vars['view'] == 'user') {
                     $vars['Itemid'] = $this->getUserResultsMenuItemId();
+                    
                 }
             }
 
@@ -231,7 +236,7 @@ class Router extends RouterView
 
 
             $segments = [];
-
+            Log::add('vars: ' . print_r($vars, true), Log::DEBUG, 'yaquiz');
             return $vars;
         
 
@@ -263,6 +268,7 @@ class Router extends RouterView
         $query->where('link LIKE "%com_yaquiz%"');
         //where link like id=#
         $query->where('link LIKE "%id=' . $quiz_id . '%"');
+        $query->where('published = 1');
         $db->setQuery($query);
         $result = $db->loadResult();
         //if there is a result
