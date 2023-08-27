@@ -34,8 +34,17 @@ use KevinsGuides\Component\Yaquiz\Site\Helper\ThemeHelper;
         echo '</div>';
     }
 
-    if($uses_timer){
+    if($uses_timer && $seconds_left == 0){
        include ThemeHelper::findFile('oneperpage_timerinfo.php');
+    }
+
+    if($uses_timer && $seconds_left > 0){
+        echo '<br/><div class="card card-body bg-warning p-1 text-white fs-5">';
+        $seconds_left -= 15;
+        $mins_left = floor($seconds_left / 60);
+        $remainder_secs = $seconds_left % 60;
+        echo Text::sprintf('COM_YAQ_TIMER_ALREADY_STARTED', $mins_left, $remainder_secs);
+        echo '</div>';
     }
 
 } ?>

@@ -32,6 +32,7 @@ else{
 }
 
 $app = Factory::getApplication();
+$user = $app->getIdentity();
 $wam = $app->getDocument()->getWebAssetManager();
 //get config from component
 $gConfig = $app->getParams('com_yaquiz');
@@ -69,11 +70,17 @@ if($currPage > $totalQuestions){
 }
 
 $uses_timer = $quiz_params->get('quiz_use_timer', 0) == 1 ? true : false;
+$seconds_left = 0;
+if($uses_timer){
+    $seconds_left = $model->getTimeRemainingAsSeconds($user->id, $quiz->id);
+}
 
 //if on page 1 or more, check if quiz is timed
 if($currPage > 0 && $uses_timer){
-        $wam->registerAndUseScript('com_yaquiz.timer', 'components/com_yaquiz/js/timer.js', [], ['defer' => true]);
+        $wam->registerAndUseScript('com_yaquiz.timer', 'components/com_yaquiz/js/timer.js');
 }
+
+
 
 
 
@@ -108,9 +115,7 @@ HTMLHelper::_('behavior.keepalive');
 </form>
 
 <?php
-        if ($uses_timer){
-            $user = $app->getIdentity();
-            $seconds_left = $model->getTimeRemainingAsSeconds($user->id, $quiz->id);
+        if ($uses_timer && $currPage > 0){
             include(ThemeHelper::findFile('quiztimer.php'));
         }
 ?>
