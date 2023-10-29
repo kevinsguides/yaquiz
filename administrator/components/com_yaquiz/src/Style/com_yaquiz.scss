@@ -57,3 +57,13 @@
     background-color: #ffffff5d;
 }
 
+// dark mode fixes... ugh
+@media (prefers-color-scheme: dark) {
+    .drag-dropzone.visible {
+        background-color: #0000005d;
+    }
+
+    .card-header.bg-light{
+        background: rgb(20, 20, 20) !important;
+    }
+}

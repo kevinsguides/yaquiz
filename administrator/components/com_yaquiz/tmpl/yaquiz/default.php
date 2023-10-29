@@ -360,7 +360,7 @@ HTMLHelper::_('bootstrap.toast');
                         <span class="w-100 d-block"><?php echo Text::_('COM_YAQUIZ_RESET_ALL_STATS_AND_RECORDS_DESC'); ?></span>
                     </div>
                     <div class="col-12 col-lg-5">
-                        <div class="card card-body bg-light">
+                        <div class="card card-body bg-info">
                             <h3><?php echo Text::_('COM_YAQUIZ_BATCHOPS'); ?></h3>
                             <p><?php echo Text::_('COM_YAQUIZ_BATCHOPS_DESC'); ?></p>
                             <input type="hidden" name="id" value="<?php echo $item->id; ?>">

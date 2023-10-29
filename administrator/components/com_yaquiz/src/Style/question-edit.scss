@@ -18,6 +18,14 @@
     }
 }
 
+//dark mode fixes
+@media (prefers-color-scheme: dark) {
+    #mchoice-answer-list li{
+        background: #333;
+    }
+}
+
+
 
 #yaquiz-toast{
     position: fixed;
