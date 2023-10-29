@@ -1,17 +1,19 @@
 # YAQ (Yet Another Quiz Extension)
-## For Joomla 4
+## For Joomla 4/5
 Developer: [KevinsGuides.com](https://kevinsguides.com) / Kevin Olson
 **License GPL v3**
 [Full Documentation / How To Use](https://kevinsguides.com/guides/webdev/joomla4/free-extensions/yaq)
 
 
-This is a component for Joomla 4.
+This is a component for Joomla 4/5.
 
 It allows you to add graded review quizzes to your website.
 
 Currently, this is in beta. Do not use on critical sites or without testing.
 ## Requirements
-You just need a site running Joomla 4 with a template that uses Bootstrap 5 (most templates will work). Install it like any other component. Extension works with Joomla's cache system, but not the full page cache plugin.
+You just need a site running Joomla 5 with a template that uses Bootstrap 5 (most templates will work).
+
+Install it like any other component. Extension works with Joomla's cache system, but not the full page cache plugin.
 
 
 ## What's Working...
