@@ -58,3 +58,5 @@ class="table table-striped table-hover"
 
 <span><i class="fas fa-info-circle me-2"></i><?php echo Text::_('COM_YAQUIZ_REBUILD_VERIFY_CODES_DESC');?></span>
 </div>
+<br/>
+<a href="https://extensions.joomla.org/extension/living/education-a-culture/yaquiz/" target="_blank" class="btn btn-info btn-lg">Leave Review JED</a>

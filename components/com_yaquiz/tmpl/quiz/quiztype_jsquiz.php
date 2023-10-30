@@ -152,7 +152,7 @@ foreach ($questions as $question):
                         foreach ($answers as $answer):
                              ?>
                              <input class="d-none" type="radio" name="useranswer" id="answer<?php echo $i.'-'.$x; ?>" value="<?php echo $x; ?>">
-                             <label class="form-check-label mchoice btn btn-dark text-start" for="answer<?php echo $i.'-'.$x; ?>"><?php echo $answer; ?></label>
+                             <label class="form-check-label mchoice text-start" for="answer<?php echo $i.'-'.$x; ?>"><?php echo $answer; ?></label>
                              <br/>
                         <?php $x++; endforeach;?>
                     </form>

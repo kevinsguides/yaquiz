@@ -185,4 +185,5 @@ $quiz_taker_username = $quiz_taker->username;
 <br/>
 <div class="text-center">
 <a href="https://kevinsguides.com/tips" class="btn btn-success btn-lg"><?php echo Text::_('COM_YAQUIZ_SUPPORT_THIS_PROJECT');?></a>
+<a href="https://extensions.joomla.org/extension/living/education-a-culture/yaquiz/" target="_blank" class="btn btn-info btn-lg">Leave Review JED</a>
 </div>

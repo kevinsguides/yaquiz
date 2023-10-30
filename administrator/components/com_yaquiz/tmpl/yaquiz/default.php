@@ -360,17 +360,17 @@ HTMLHelper::_('bootstrap.toast');
                         <span class="w-100 d-block"><?php echo Text::_('COM_YAQUIZ_RESET_ALL_STATS_AND_RECORDS_DESC'); ?></span>
                     </div>
                     <div class="col-12 col-lg-5">
-                        <div class="card card-body bg-info">
-                            <h3><?php echo Text::_('COM_YAQUIZ_BATCHOPS'); ?></h3>
+                        <div class="card card-body text-light bg-info">
+                            <h3 class="text-light"><?php echo Text::_('COM_YAQUIZ_BATCHOPS'); ?></h3>
                             <p><?php echo Text::_('COM_YAQUIZ_BATCHOPS_DESC'); ?></p>
                             <input type="hidden" name="id" value="<?php echo $item->id; ?>">
                             <input type="hidden" name="task" value="Yaquiz.executeBatchOps">
-                            <label for="batch_op"><?php echo Text::_('COM_YAQUIZ_BATCHOPS_WITHSELECTED'); ?></label>
+                            <label for="batch_op" class="text-light"><?php echo Text::_('COM_YAQUIZ_BATCHOPS_WITHSELECTED'); ?></label>
                             <select name="batch_op" class="form-select mb-1">
                                 <option value="0"><?php echo Text::_('COM_YAQUIZ_BATCHOPS_SELECTOP'); ?></option>
                                 <option value="remove"><?php echo Text::_('COM_YAQUIZ_BATCHOPS_REMOVESELECTED'); ?></option>
                             </select>
-                            <input type="submit" class="btn btn-info btn-sm" value="<?php echo Text::_('COM_YAQUIZ_BATCHOPS_EXECUTE'); ?>">
+                            <input type="submit" class="btn btn-dark btn-sm" value="<?php echo Text::_('COM_YAQUIZ_BATCHOPS_EXECUTE'); ?>">
                             <br />
                             <hr/>
                             <a href="index.php?option=com_yaquiz&task=Yaquiz.removeAllQuestionsFromQuiz&id=<?php echo $item->id; ?>" class="btn btn-danger btn-sm doublecheckdialog" data-confirm="<?php echo Text::_('COM_YAQUIZ_REMOVEALLQNS_CONFIRM'); ?>"><span class="icon-delete"></span> <?php echo Text::_('COM_YAQUIZ_REMOVEALLQNS'); ?></a>
@@ -407,4 +407,5 @@ HTMLHelper::_('bootstrap.toast');
 <br />
 <div class="text-center">
 <a href="https://kevinsguides.com/tips" class="btn btn-success btn-lg"><?php echo Text::_('COM_YAQUIZ_SUPPORT_THIS_PROJECT');?></a>
+<a href="https://extensions.joomla.org/extension/living/education-a-culture/yaquiz/" target="_blank" class="btn btn-info btn-lg">Leave Review JED</a>
 </div>

@@ -61,3 +61,4 @@ else{
 
 <h3><?php echo Text::_('COM_YAQUIZ_MISC_HELP'); ?></h3>
 <?php echo Text::_('COM_YAQUIZ_MISC_HELP_DETAILS'); ?>
+<a href="https://extensions.joomla.org/extension/living/education-a-culture/yaquiz/" target="_blank" class="btn btn-info btn-lg">Leave Review JED</a>
