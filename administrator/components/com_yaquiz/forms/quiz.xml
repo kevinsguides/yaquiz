@@ -71,9 +71,10 @@ type="list"
 label="COM_YAQUIZ_YAQUIZ_QUIZ_DISPLAYMODE_LABEL"
 useglobal="true"
 >
-<option value="default">Default (A Single Page Test)</option>
-<option value="individual">Individual (One Question Per Page)</option>
-<option value="jsquiz">JavaScript Quiz (fully cacheable)</option>
+<option value="default">COM_YAQUIZ_QTYPE_DEFAULT</option>
+<option value="individual">COM_YAQUIZ_QTYPE_INDIVIDUAL</option>
+<option value="jsquiz">COM_YAQUIZ_QTYPE_JSQUIZ</option>
+<option value="instareview">COM_YAQUIZ_QTYPE_INSTAREVIEW</option>
 </field>
 
 <field
@@ -94,8 +95,8 @@ required="true"
 default="1"
 class="btn-group btn-group-yesno"
 >
-<option value="1">Yes</option>
-<option value="0">No</option>
+<option value="1">JYES</option>
+<option value="0">JNO</option>
 </field>
 
 </fieldset>
@@ -123,8 +124,8 @@ showon="quiz_showfeedback:1"
 description="COM_YAQUIZ_YAQUIZ_QUIZ_FEEDBACK_SHOWCORRECT_DESC"
 default="1"
 >
-<option value="1">Yes</option>
-<option value="0">No</option>
+<option value="1">JYES</option>
+<option value="0">JNO</option>
 </field>
 
 
@@ -137,8 +138,8 @@ description="COM_YAQUIZ_YAQUIZ_QUIZ_USE_POINTS_DESC"
 required="true"
 default="0"
 >
-<option value="1">Yes</option>
-<option value="0">No</option>
+<option value="1">JYES</option>
+<option value="0">JNO</option>
 </field>
 
 

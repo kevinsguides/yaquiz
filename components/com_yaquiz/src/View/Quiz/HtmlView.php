@@ -32,14 +32,14 @@ class HtmlView extends BaseHtmlView
 
         //if it didnt work, see if it's in the menu item params
         if($this->quiz_id == 0){
-            Log::add('Quiz id not found in input, checking menu', Log::DEBUG, 'com_yaquiz');
+          
             $this->quiz_id = $active->getParams()->get('id');
             //if that didn't work, check for the old quiz_id
             if($this->quiz_id == 0){
-                Log::add('Quiz id not found in menu, checking for old quiz_id', Log::DEBUG, 'com_yaquiz');
+             
                 $this->quiz_id = $active->getParams()->get('quiz_id');
             }
-            Log::add('found quiz id from menu its ' . $this->quiz_id, Log::DEBUG, 'com_yaquiz');
+  
         }
 
 
@@ -140,6 +140,9 @@ class HtmlView extends BaseHtmlView
             }
             elseif ($quizparams->get('quiz_displaymode', 'default') === 'jsquiz'){
                 $this->setLayout('quiztype_jsquiz');
+            }
+            elseif ($quizparams->get('quiz_displaymode','default') === 'instareview'){
+                $this->setLayout('quiztype_instareview');
             }
             elseif ($using_timer){
                 //we must be using a 1 page quiz, check for timer

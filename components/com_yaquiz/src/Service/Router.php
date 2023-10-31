@@ -189,7 +189,7 @@ class Router extends RouterView
                 }
 
                 //look at $segment[1] and check against possible layouts (segment 0 is id or alias, 1 is omitted if view is quiz, so 1 is actually 2 - the layout)
-                $layouts = ['results', 'quiztype_singlepage', 'quiztype_oneperpage', 'quiztype_jsquiz', 'quiztype_individual', 'max_attempt_reached', 'default'];
+                $layouts = ['results', 'quiztype_singlepage', 'quiztype_oneperpage', 'quiztype_jsquiz', 'quiztype_individual', 'quiztype_instareview', 'max_attempt_reached', 'default'];
 
                 if (isset($segments[1]) && in_array($segments[1], $layouts)) {
                     $vars['layout'] = $segments[1];

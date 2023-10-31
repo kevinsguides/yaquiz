@@ -118,9 +118,10 @@ label="COM_YAQUIZ_GLOBAL_QUIZ_OPTIONS_LABEL">
     label="COM_YAQUIZ_YAQUIZ_QUIZ_DISPLAYMODE_LABEL"
     default="default"
     >
-    <option value="default">Default (A Single Page Test)</option>
-    <option value="individual">Individual (One Question Per Page)</option>
-    <option value="jsquiz">JavaScript Quiz (fully cacheable)</option>
+    <option value="default">COM_YAQUIZ_QTYPE_DEFAULT</option>
+    <option value="individual">COM_YAQUIZ_QTYPE_INDIVIDUAL</option>
+    <option value="jsquiz">COM_YAQUIZ_QTYPE_JSQUIZ</option>
+    <option value="instareview">COM_YAQUIZ_QTYPE_INSTAREVIEW</option>
     </field>    
 
     <field 
