@@ -4,11 +4,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let quizData = Joomla.getOptions('quizData');
     let questionData = Joomla.getOptions('questionData');
     //turn questionData into an object
-
-
-
-    console.log(quizData);
-    console.log(questionData);
     let currQuestion = 0;
 
     let feedback_summary = '';
@@ -49,9 +44,33 @@ document.addEventListener('DOMContentLoaded', function () {
         quizBody.innerHTML = '';
     }
 
-    function loadQuestion(questionId) {
+    function fix_images(html){
 
-        console.log('loading question ' + questionId);
+        //find any img elements in html
+        let img_regex = /<img[^>]+src="([^">]+)"/g;
+        let img_matches = html.matchAll(img_regex);
+        for (const match of img_matches) {
+            //check if image resolves
+            let img = new Image();
+            img.src = match[1];
+
+            //see if image exists
+            img.addEventListener('load', function () {
+
+                return(html);
+            });
+
+            //add a relative slash to img src if it doesn't have one at the beginning
+            if(match[1].charAt(0) != '/'){
+                html = html.replace(match[1], '/' + match[1]);
+            }
+            
+            
+        }
+        return html;
+    }
+
+    function loadQuestion(questionId) {
 
         nextBtn.classList.add('hidden');
 
@@ -60,7 +79,11 @@ document.addEventListener('DOMContentLoaded', function () {
         let questionAnswers = question.answers;
         let questionCorrect = question.correct;
         let questionType = question.question_type;
+
+        question.details = fix_images(question.details);
+
         let questionHtml = question.details ? question.details : '';
+
 
 
 
