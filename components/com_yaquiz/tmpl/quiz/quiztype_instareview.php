@@ -64,11 +64,7 @@ if($quiz_params->get('quiz_use_points', "1") === "1"){
 
 ?>
 
-<input id="uses_point_system" type="hidden" value="<?php echo ($uses_point_system==true)?'true':'false';?>">
-<input id="quiz_showfeedback" type="hidden" value="<?php echo ($quiz_params->get('quiz_showfeedback', 1)==1)?'true':'false';?>">
-<input id="quiz_feedback_showcorrect" type="hidden" value="<?php echo ($quiz_params->get('quiz_feedback_showcorrect', 1)==1)?'true':'false';?>">
-<input id="passing_score" type="hidden" value="<?php echo $quiz_params->get('passing_score', 70);?>">
-<input type="hidden" id="shortans_ignore_trailing" value="<?php echo $gConfig->get('shortans_ignore_trailing','1'); ?>" />
+
 <div class="container p-2">
 
 <div id="reviewquiz" class="card" data-reviewquiz-page="0">
@@ -86,6 +82,7 @@ if($quiz_params->get('quiz_use_points', "1") === "1"){
         <span id="pageCount"></span>
         <a class="btn btn-primary" id="reviewquiz-btn-start"><?php echo Text::_('COM_YAQ_START_QUIZ');?></a>
         <a class="btn btn-primary float-end hidden" id="reviewquiz-btn-next"><?php echo Text::_('COM_YAQ_NEXT');?></a>
+        <a class="btn btn-success float-end hidden" id="reviewquiz-btn-finish"><?php echo Text::_('COM_YAQ_QUIZ_RESULTS');?></a>
     </div>
 </div>
 
@@ -101,10 +98,13 @@ if($quiz_params->get('quiz_use_points', "1") === "1"){
 </div>
 
 
+
 <?php
+
 
 //loop through all questions
 $questions = $model->getQuestions($quiz->id);
+
 
 //create array of questions, answers, and feedback
 $question_array = array();
@@ -117,6 +117,7 @@ foreach ($questions as $question) {
         'details' => $question->details,
         'feedback_right' => $question->feedback_right,
         'feedback_wrong' => $question->feedback_wrong,
+        'points' => $question->params->points,
     );
 }
 
@@ -133,6 +134,18 @@ $question_array_json = json_encode($question_array);
     const lang_true = '<?php echo Text::_('COM_YAQ_TRUE');?>';
     const lang_false = '<?php echo Text::_('COM_YAQ_FALSE');?>';
     const lang_submit = '<?php echo Text::_('COM_YAQ_SUBMIT');?>';
+    const display_feedback = <?php echo $quiz_params->get('quiz_showfeedback', 1); ?>;
+    const display_correct = <?php echo $quiz_params->get('quiz_feedback_showcorrect', 1); ?>;
+    const use_point_system = <?php echo ($uses_point_system==true)?'true':'false';?>;
+    const passing_score = <?php echo  $quiz_params->get('passing_score', 70);?>;
+    const lang_s_was_correct = '<?php echo Text::_('COM_YAQ_S_WAS_THE_CORRECT_ANS');?>';
+    const lang_was_correct_if_contained = '<?php echo Text::_('COM_YAQ_FILLBLANK_ANYCORRECT');?>';
+    const lang_true_was_correct = '<?php echo Text::_('COM_YAQ_TF_CORRECT_ANS_WAS_TRUE');?>';
+    const lang_false_was_correct = '<?php echo Text::_('COM_YAQ_TF_CORRECT_ANS_WAS_FALSE');?>';
+    const lang_num_correct_of_total = '<?php echo Text::_('COM_YAQ_NUMCORRECTOFTOTAL');?>';
+    const lang_your_score = '<?php echo Text::_('COM_YAQ_JSQ_YOURSCORE');?>';
+    const lang_points = '<?php echo Text::_('COM_YAQ_POINTS');?>';
+    const lang_score_as_percent = '<?php echo Text::_('COM_YAQ_PERCENTOFCORRECT');?>';
 </script>
 
 

@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let currQuestion = 0;
     let questionData = question_array; //really a json object
+    let feedback_summary = '';
 
     const quizElem = document.getElementById('reviewquiz');
     const quizHeader = document.querySelector('#reviewquiz .card-header');
@@ -10,13 +11,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const startBtn = document.getElementById('reviewquiz-btn-start');
     const nextBtn = document.getElementById('reviewquiz-btn-next');
     const pageCount = document.getElementById('pageCount');
+    const btnFinalResults = document.getElementById('reviewquiz-btn-finish');
 
     const lang_correct = default_correct_text;
     const lang_incorrect = default_incorrect_text;
 
-    const totalQuestions = Object.keys(questionData).length;
+    let totalQuestions = Object.keys(questionData).length;
 
     startBtn.addEventListener('click', startQuiz);
+
+    let total_points = 0;
+    let points_acquired = 0;
+    let html_section_count = 0;
+
+    let questions_correct = 0;
 
     function startQuiz() {
 
@@ -114,16 +122,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         //if question type html_section just add a next button
         if (questionType == 'html_section'){
-            console.log('html section');
             quizBody.innerHTML = questionHtml;
             nextBtn.classList.remove('hidden');
+            html_section_count++;
         }
 
     }
 
 
     function checkAnswer(e){
-        console.log('checking answer');
 
         let question = questionData[currQuestion];
         let gotItRight = false;
@@ -175,11 +182,56 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        if (display_correct == 1){
+            if(question.question_type == 'fill_blank'){
+                //turn question.answers into a comma separated list
+                let answers = question.answers;
+                let answers_list = '';
+                for (let i = 0; i < answers.length; i++) {
+                    answers_list += answers[i] + ', ';
+                }
+                feedback += '<br/><strong>' + lang_was_correct_if_contained + '</strong> ' + answers_list;
+            }
+            if(question.question_type == 'multiple_choice'){
+                
+                //replace %s with in lang_s_was_correct with correct answer
+                correct_ans_text = lang_s_was_correct.replace('%s', question.answers[question.correct]);
+                feedback += '<br/><strong>' + correct_ans_text + '</strong>';
+            }
+            if(question.question_type == 'true_false'){
+                if (question.correct == 0){
+                    feedback += '<br/><strong>' + lang_true_was_correct + '</strong>';
+                }
+                else{
+                    feedback += '<br/><strong>' + lang_false_was_correct + '</strong>';
+                }
+            }
+        }
+
+
         quizBody.innerHTML = '<h3>' + question.question + '</h3>' + question.details + '<br/> <strong>' + lang_youranswer + '</strong>' + users_answer + '<p>' + feedback + '</p>';
+
+        //update points
+        total_points += parseInt(question.points);
+        if (gotItRight){
+            points_acquired += parseInt(question.points);
+            questions_correct++;
+        }
 
 
         if (currQuestion < totalQuestions){
             nextBtn.classList.remove('hidden');
+        }
+
+        if (currQuestion == totalQuestions){
+            //display view final results button
+            btnFinalResults.classList.remove('hidden');
+        }
+
+        //feedback summary
+        if(display_feedback == 1){
+            feedback_summary += currQuestion+') ' + question.question + '<br/>'+ question.details + '<br/>' + lang_youranswer + users_answer + '<br/>' + feedback + '<hr/>';
+        
         }
 
     }
@@ -192,6 +244,39 @@ document.addEventListener('DOMContentLoaded', function() {
         loadQuestion(currQuestion);
         pageCount.innerHTML = currQuestion + ' / ' + totalQuestions;
         
+    });
+
+    btnFinalResults.addEventListener('click', function(){
+
+        totalQuestions -= html_section_count;
+
+        let score = points_acquired + ' / ' + total_points;
+        let percent = (points_acquired / total_points) * 100;
+        let percentStr = percent.toFixed(2) + '%';
+
+        clearInner();
+        let scoreHtml = '';
+        scoreHtml += '<p>' + lang_num_correct_of_total.replace('%s', questions_correct).replace('%s', totalQuestions) + '</p><br/>';
+
+        if(use_point_system){
+            scoreHtml += '<p>' + lang_your_score + ': ' + score + ' ' + lang_points + '</p><br/>';
+        }
+        else{
+            
+            scoreHtml += '<p>' + lang_score_as_percent.replace('%s%%', percentStr) + '</p><br/>';
+        }
+
+
+        quizBody.innerHTML = scoreHtml;
+
+        if(display_feedback == 1){
+            quizBody.innerHTML += '<hr/>' + feedback_summary;
+        }
+
+        btnFinalResults.classList.add('hidden');
+
+
+
     });
     
 
