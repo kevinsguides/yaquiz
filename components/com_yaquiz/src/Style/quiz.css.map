@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":["quiz.scss"],"names":[],"mappings":";AAAA;EACI;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAIJ;EAGI;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAIJ;EACI;EACA;;;AAIJ;EACI;EACA;EACA;EACA;EACA;EAEA;EACA","file":"quiz.css"}
+{"version":3,"sourceRoot":"","sources":["quiz.scss"],"names":[],"mappings":"CAAA,cACI,WACA,mBACA,kBACA,WACA,iCACA,oBACA,gBACA,eAIJ,sBAGI,YACA,mBACA,YACA,kBACA,OACA,MACA,eACA,sBACA,gBAIJ,4BACI,sBACA,WAIJ,oCACI,YACA,mBACA,YACA,kBACA,OAEA,sBACA,gBAIJ,YACI","file":"quiz.css"}

@@ -62,6 +62,57 @@ if($quiz_params->get('quiz_use_points', "1") === "1"){
     $uses_point_system = true;
 }
 
+
+
+
+//loop through all questions
+$questions = $model->getQuestions($quiz->id);
+
+
+//create array of questions, answers, and feedback
+$question_array = array();
+foreach ($questions as $question) {
+    $question_array[$question->id] = array(
+        'question' => $question->question,
+        'question_type' => $question->params->question_type,
+        'answers' => $question->answers ? json_decode($question->answers) : '',
+        'correct' => $question->correct,
+        'details' => $question->details,
+        'feedback_right' => $question->feedback_right,
+        'feedback_wrong' => $question->feedback_wrong,
+        'points' => $question->params->points,
+    );
+}
+
+
+
+$doc = Factory::getApplication()->getDocument();
+
+$quizData = array(
+    'default_correct_text' => Text::_('COM_YAQ_CORRECTANS'),
+    'default_incorrect_text' => Text::_('COM_YAQ_INCORRECTANS'),
+    'lang_youranswer' => Text::_('COM_YAQ_YOURANSWER'),
+    'lang_true' => Text::_('COM_YAQ_TRUE'),
+    'lang_false' => Text::_('COM_YAQ_FALSE'),
+    'lang_submit' => Text::_('COM_YAQ_SUBMIT'),
+    'display_feedback' => $quiz_params->get('quiz_showfeedback', 1),
+    'display_correct' => $quiz_params->get('quiz_feedback_showcorrect', 1),
+    'use_point_system' => $uses_point_system ? true : false,
+    'passing_score' => $quiz_params->get('passing_score', 70),
+    'lang_s_was_correct' => Text::_('COM_YAQ_S_WAS_THE_CORRECT_ANS'),
+    'lang_was_correct_if_contained' => Text::_('COM_YAQ_FILLBLANK_ANYCORRECT'),
+    'lang_true_was_correct' => Text::_('COM_YAQ_TF_CORRECT_ANS_WAS_TRUE'),
+    'lang_false_was_correct' => Text::_('COM_YAQ_TF_CORRECT_ANS_WAS_FALSE'),
+    'lang_num_correct_of_total' => Text::_('COM_YAQ_NUMCORRECTOFTOTAL'),
+    'lang_your_score' => Text::_('COM_YAQ_JSQ_YOURSCORE'),
+    'lang_points' => Text::_('COM_YAQ_POINTS'),
+    'lang_score_as_percent' => Text::_('COM_YAQ_PERCENTOFCORRECT'),
+);
+
+$doc->addScriptOptions('quizData', $quizData);
+
+$doc->addScriptOptions('questionData', $question_array);
+
 ?>
 
 
@@ -96,56 +147,5 @@ if($quiz_params->get('quiz_use_points', "1") === "1"){
         <div id="reviewquiz-feedback-failed" class="bg-light text-danger p-2 rounded d-none"><i class="fas fa-sad-cry"></i> <?php echo $gConfig->get('lang_fail');?></div>
     </div>
 </div>
-
-
-
-<?php
-
-
-//loop through all questions
-$questions = $model->getQuestions($quiz->id);
-
-
-//create array of questions, answers, and feedback
-$question_array = array();
-foreach ($questions as $question) {
-    $question_array[$question->id] = array(
-        'question' => $question->question,
-        'question_type' => $question->params->question_type,
-        'answers' => $question->answers ? json_decode($question->answers) : '',
-        'correct' => $question->correct,
-        'details' => $question->details,
-        'feedback_right' => $question->feedback_right,
-        'feedback_wrong' => $question->feedback_wrong,
-        'points' => $question->params->points,
-    );
-}
-
-
-
-//encode to json and make available to javascript
-$question_array_json = json_encode($question_array);
-?>
-<script>
-    const default_correct_text = '<?php echo Text::_('COM_YAQ_CORRECTANS');?>';
-    const default_incorrect_text = '<?php echo Text::_('COM_YAQ_INCORRECTANS');?>';
-    const lang_youranswer = '<?php echo Text::_('COM_YAQ_YOURANSWER');?>';
-    const question_array = <?php echo $question_array_json; ?>;
-    const lang_true = '<?php echo Text::_('COM_YAQ_TRUE');?>';
-    const lang_false = '<?php echo Text::_('COM_YAQ_FALSE');?>';
-    const lang_submit = '<?php echo Text::_('COM_YAQ_SUBMIT');?>';
-    const display_feedback = <?php echo $quiz_params->get('quiz_showfeedback', 1); ?>;
-    const display_correct = <?php echo $quiz_params->get('quiz_feedback_showcorrect', 1); ?>;
-    const use_point_system = <?php echo ($uses_point_system==true)?'true':'false';?>;
-    const passing_score = <?php echo  $quiz_params->get('passing_score', 70);?>;
-    const lang_s_was_correct = '<?php echo Text::_('COM_YAQ_S_WAS_THE_CORRECT_ANS');?>';
-    const lang_was_correct_if_contained = '<?php echo Text::_('COM_YAQ_FILLBLANK_ANYCORRECT');?>';
-    const lang_true_was_correct = '<?php echo Text::_('COM_YAQ_TF_CORRECT_ANS_WAS_TRUE');?>';
-    const lang_false_was_correct = '<?php echo Text::_('COM_YAQ_TF_CORRECT_ANS_WAS_FALSE');?>';
-    const lang_num_correct_of_total = '<?php echo Text::_('COM_YAQ_NUMCORRECTOFTOTAL');?>';
-    const lang_your_score = '<?php echo Text::_('COM_YAQ_JSQ_YOURSCORE');?>';
-    const lang_points = '<?php echo Text::_('COM_YAQ_POINTS');?>';
-    const lang_score_as_percent = '<?php echo Text::_('COM_YAQ_PERCENTOFCORRECT');?>';
-</script>
 
 
