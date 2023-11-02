@@ -22,7 +22,6 @@ $model = new QuizModel();
 
 $app = Factory::getApplication();
 $wam = $app->getDocument()->getWebAssetManager();
-$wam->registerAndUseScript('com_yaquiz.instareview', 'components/com_yaquiz/js/instareview.js', [], ['defer' => true]);
 $wam->registerAndUseStyle('com_yaquiz.quiz', 'components/com_yaquiz/src/Style/quiz.css');
 $gConfig = $app->getParams('com_yaquiz');
 
@@ -71,8 +70,9 @@ $questions = $model->getQuestions($quiz->id);
 
 //create array of questions, answers, and feedback
 $question_array = array();
+$i = 1;
 foreach ($questions as $question) {
-    $question_array[$question->id] = array(
+    $question_array[$i] = array(
         'question' => $question->question,
         'question_type' => $question->params->question_type,
         'answers' => $question->answers ? json_decode($question->answers) : '',
@@ -82,6 +82,7 @@ foreach ($questions as $question) {
         'feedback_wrong' => $question->feedback_wrong,
         'points' => $question->params->points,
     );
+    $i++;
 }
 
 
@@ -112,6 +113,21 @@ $quizData = array(
 $doc->addScriptOptions('quizData', $quizData);
 
 $doc->addScriptOptions('questionData', $question_array);
+
+$wam->registerAndUseScript('core', 'media/system/js/core.min.js', [], [
+    'data-cfasync'=> 'false',
+    'defer' => true
+    ]
+);
+
+$wam->registerAndUseScript('com_yaquiz.instareview', 'components/com_yaquiz/js/instareview.js', [], [
+    'data-cfasync'=> 'false',
+    'defer' => true
+    ]
+);
+
+
+
 
 ?>
 
@@ -147,5 +163,3 @@ $doc->addScriptOptions('questionData', $question_array);
         <div id="reviewquiz-feedback-failed" class="bg-light text-danger p-2 rounded d-none"><i class="fas fa-sad-cry"></i> <?php echo $gConfig->get('lang_fail');?></div>
     </div>
 </div>
-
-
