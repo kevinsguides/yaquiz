@@ -106,16 +106,16 @@ document.addEventListener('DOMContentLoaded', function () {
             // same as multiple choice but only two answers
             let answerId = 'answer-' + questionId + '-0';
             let answerHtml = '<input type="radio" class="mchoice-rb" name="answer-' + questionId + '" id="' + answerId + '" value="0">';
-            answerHtml += '<label class="form-check-label mchoice text-start mt-1" data-mchoiceAnsIndex="0" for="' + answerId + '">' + quizData.lang_true + '</label>';
+            answerHtml += '<label class="form-check-label mchoice text-start mt-1" data-mchoiceAnsIndex="1" for="' + answerId + '">' + quizData.lang_true + '</label>';
             answerHtml += '<input type="radio" class="mchoice-rb" name="answer-' + questionId + '" id="' + answerId + '" value="1">';
-            answerHtml += '<label class="form-check-label mchoice text-start mt-1" data-mchoiceAnsIndex="1" for="' + answerId + '">' + quizData.lang_false + '</label>';
+            answerHtml += '<label class="form-check-label mchoice text-start mt-1" data-mchoiceAnsIndex="0" for="' + answerId + '">' + quizData.lang_false + '</label>';
             questionHtml += answerHtml;
         }
 
         if (questionType == 'fill_blank') {
             //create a text box for the answer
             let answerId = 'answer-' + questionId + '-0';
-            let answerHtml = '<input type="text" class="form-control" name="answer-' + questionId + '" id="' + answerId + '" value="">';
+            let answerHtml = '<input type="text" class="form-control yaq_fill_blank_input" name="answer-' + questionId + '" id="' + answerId + '" value="" >';
             //and add submit button
             answerHtml += '<button type="button" class="btn btn-primary mt-3" id="submit-' + questionId + '">' + quizData.lang_submit + '</button>';
             questionHtml += answerHtml;
@@ -138,14 +138,15 @@ document.addEventListener('DOMContentLoaded', function () {
             let submitBtn = document.getElementById('submit-' + questionId);
             submitBtn.addEventListener('click', checkAnswer);
 
-            //listen for enter key
             let answerBox = document.getElementById(answerId);
+            //if user hits enter in the text box, submit the answer
             answerBox.addEventListener('keyup', function (e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
-                    submitBtn.click();
+                    checkAnswer(e);
                 }
             });
+
         }
 
         //if question type html_section just add a next button
@@ -180,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (question.question_type == 'fill_blank') {
             //answer in text box can match any of the answers
-            users_answer = e.target.previousElementSibling.value;
+            users_answer = document.getElementsByClassName('yaq_fill_blank_input')[0].value;
             let answers = question.answers;
             for (let i = 0; i < answers.length; i++) {
                 if (users_answer.toLowerCase() == answers[i].toLowerCase()) {
@@ -228,10 +229,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             if (question.question_type == 'true_false') {
                 if (question.correct == 0) {
-                    feedback += '<br/><strong>' + quizData.lang_true_was_correct + '</strong>';
+                    feedback += '<br/><strong>' + quizData.lang_false_was_correct + '</strong>';
                 }
                 else {
-                    feedback += '<br/><strong>' + quizData.lang_false_was_correct + '</strong>';
+                    feedback += '<br/><strong>' + quizData.lang_true_was_correct + '</strong>';
                 }
             }
         }
@@ -265,14 +266,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     nextBtn.addEventListener('click', function () {
+        loadNextPage();
+    });
+
+    function loadNextPage(){
         currQuestion++;
         if (currQuestion > totalQuestions) {
             currQuestion = 1;
+            console.log('resetting');
         }
         loadQuestion(currQuestion);
         pageCount.innerHTML = currQuestion + ' / ' + totalQuestions;
-
-    });
+    }
 
     btnFinalResults.addEventListener('click', function () {
 
