@@ -4,15 +4,15 @@
     <description></description>
     <element>com_yaquiz</element>
     <type>component</type>
-    <version>0.5.02</version>
+    <version>0.5.10</version>
     <infourl title="YAQuiz Docs">https://kevinsguides.com/guides/webdev/joomla4/free-extensions/yaq</infourl>
     <downloads>
-      <downloadurl type="full" format="zip">https://github.com/kevinsguides/yaquiz/releases/download/v0.5.00/com_yaquiz_0.5.02.zip</downloadurl>
+      <downloadurl type="full" format="zip">https://github.com/kevinsguides/yaquiz/releases/download/v0.5.10/com_yaquiz_0.5.10.zip</downloadurl>
     </downloads>
     <tags>
       <tag>stable</tag>
     </tags>
-    <sha256>EBC90DB69E1F4D14DBDA09523BEF73E7C18D24A7E24493E50C8FBEFFA1257B51</sha256>
+    <sha256>aa1bf027513cc72ba64761510f0f464e9c23fe231b6d94d511c00029dfbdc5f3</sha256>
     <maintainer>KevinsGuides</maintainer>
     <maintainerurl>https://kevinsguides.com/</maintainerurl>
     <section>Updates</section>
