@@ -1,18 +1,18 @@
 <updates>
    <update>
-    <name>YaQuiz 0.5.16</name>
+    <name>YaQuiz 0.5.21</name>
     <description></description>
     <element>com_yaquiz</element>
     <type>component</type>
-    <version>0.5.15</version>
+    <version>0.5.21</version>
     <infourl title="YAQuiz Docs">https://kevinsguides.com/guides/webdev/joomla/free-extensions/yaq</infourl>
     <downloads>
-      <downloadurl type="full" format="zip">https://github.com/kevinsguides/yaquiz/releases/download/v0.5.16/com_yaquiz_0.5.16.zip</downloadurl>
+      <downloadurl type="full" format="zip">https://github.com/kevinsguides/yaquiz/releases/download/v0.5.21/com_yaquiz_0.5.21.zip</downloadurl>
     </downloads>
     <tags>
       <tag>stable</tag>
     </tags>
-    <sha256>a6537b59513e3d7392d9bfe967692617687872585ab037f0361494a9b326ffa8</sha256>
+    <sha256>9746c558681969eb314201971d213e148a1ba321729479f6374553092d91458d</sha256>
     <maintainer>KevinsGuides</maintainer>
     <maintainerurl>https://kevinsguides.com/</maintainerurl>
     <section>Updates</section>
