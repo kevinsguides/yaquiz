@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
 
-        quizBody.innerHTML = '<h3>' + question.question + '</h3>' + question.details + '<br/> <strong>' + quizData.lang_youranswer + '</strong>' + users_answer + '<p>' + feedback + '</p>';
+        quizBody.innerHTML = '<h3>' + question.question + '</h3>' + question.details + '<br/> <strong>' + quizData.lang_youranswer + '</strong>' + users_answer + '<br>' + feedback;
 
         //update points
         total_points += parseInt(question.points);

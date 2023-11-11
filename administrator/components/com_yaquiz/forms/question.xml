@@ -79,20 +79,22 @@ default="-1"
 
 <field
 name="feedback_right"
-type="textarea"
+type="editor"
 showon="id!:0"
 label="COM_YAQUIZ_QUESTION_FEEDBACK_RIGHT_LABEL"
 hint="COM_YAQUIZ_QUESTION_FEEDBACK_RIGHT_HINT"
 filter="JComponentHelper::filterText"
+buttons="true"
 />
 
 <field
 name="feedback_wrong"
-type="textarea"
+type="editor"
 showon="id!:0"
 label="COM_YAQUIZ_QUESTION_FEEDBACK_WRONG_LABEL"
 hint="COM_YAQUIZ_QUESTION_FEEDBACK_WRONG_HINT"
 filter="JComponentHelper::filterText"
+buttons="true"
 />
 
 

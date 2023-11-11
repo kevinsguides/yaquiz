@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS `#__com_yaquiz_questions` (
   `answers` mediumtext,
   `correct` text,
   `catid` int(11) NOT NULL DEFAULT '0',
-  `feedback_right` text NULL,
-  `feedback_wrong` text NULL,
+  `feedback_right` mediumtext NULL,
+  `feedback_wrong` mediumtext NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
