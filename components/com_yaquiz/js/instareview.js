@@ -202,12 +202,14 @@ document.addEventListener('DOMContentLoaded', function () {
             feedback = question.feedback_right;
             if (feedback == '' || !feedback) {
                 feedback = quizData.default_correct_text;
+                feedback = fix_images(feedback);
             }
         }
         else {
             feedback = question.feedback_wrong;
             if (feedback == '' || !feedback) {
                 feedback = quizData.default_incorrect_text
+                feedback = fix_images(feedback);
             }
         }
 
