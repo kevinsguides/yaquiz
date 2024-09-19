@@ -1,4 +1,12 @@
 # YAQ (Yet Another Quiz Extension)
+
+#PROJECT DISCONTINUED 9/19/24
+I no longer have time to support this and frankly it's too large of a project to be worth the $100 I've made off it. Ya cheap batards lol.
+I'll leave it up if anyone wants to pick it up.
+- Kevin
+
+
+
 ## For Joomla 4/5
 Developer: [KevinsGuides.com](https://kevinsguides.com) / Kevin Olson
 **License GPL v3**
